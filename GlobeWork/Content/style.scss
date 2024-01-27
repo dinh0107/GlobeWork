@@ -1221,3 +1221,39 @@ footer {
     padding: 1.25rem 1.5rem;
     width: 100%;
 }
+.job-detail__box--right-title {
+    color: $black;
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+.job-search-box {
+    border: 1px solid #DEE0E2;
+    border-radius: 0.3125rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 .625rem;
+    margin-top: .625rem;
+
+    button, input {
+        border: 0;
+        height: 2rem;
+        background: none;
+        height: 2.75rem;
+        outline: none;
+    }
+
+    button {
+        color: $green;
+        font-size: 1.25rem;
+    }
+
+    input {
+        width: 100%;
+        flex: 1;
+
+        &::placeholder {
+            font-size: 0.875rem;
+        }
+    }
+}
