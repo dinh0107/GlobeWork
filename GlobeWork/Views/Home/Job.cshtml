@@ -1,0 +1,207 @@
+﻿@{
+    var date = DateTime.Now;
+}
+<section class="banner-job pb-0">
+    <div class="container">
+        <div class="job-title">
+            Tìm việc làm nhanh 24h, việc làm mới nhất trên toàn quốc.
+        </div>
+        <div class="job-sub">
+            Tiếp cận 40,000+ tin tuyển dụng việc làm mỗi ngày từ hàng nghìn doanh nghiệp uy tín tại Việt Nam
+        </div>
+        <form id="frm-search-job">
+            <div class="group-search">
+                <div class=" item-search">
+                    <input class="w-100 form-controlui-autocomplete-input" value="" placeholder="Vị trí tuyển dụng" id="keyword" autocomplete="off">
+                </div>
+                <div class="search-city border-left">
+                    <select class="select2">
+                        <option value="">Khu vực Tỉnh / Thành phố</option>
+                    </select>
+                    <i class="far fa-location mx-2"></i>
+                </div>
+            </div>
+            <div class="group-search">
+                <select class="select2 select-nn">
+                    <option value="">Ngành nghề</option>
+                </select>
+            </div>
+            <div class="group-search">
+                <select class="select2 select-nn">
+                    <option value="">Tất cả mức lương</option>
+                    <option value="">Dưới 10 triệu</option>
+                    <option value="">10 - 15 triệu</option>
+                    <option value="">15 - 20 triệu</option>
+                    <option value="">20 - 25 triệu</option>
+                    <option value="">25 - 30 triệu</option>
+                    <option value="">30 - 50 triệu</option>
+                    <option value="">Trên 50 triệu</option>
+                    <option value="">Thoả thuận</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-block filter-btn"><i class="far fa-search"></i>Tìm kiếm</button>
+        </form>
+        <div class="box-work-market">
+            <div class="box-work-market__item">
+                <span class="item-label">
+                    Vị trí chờ bạn khám phá
+                </span>
+                <span class="number-job-new-today counter">27.844</span>
+            </div>
+            <div class="box-work-market__item">
+                <span class="item-label">Việc làm mới nhất</span>
+                <span class="number-job-new-today counter">2.064</span>
+            </div>
+            <div class="box-work-market__item">
+                <span class="item-label">Cập nhật lúc:</span>
+                <span class="number-job-new-today">@DateTime.Now</span>
+            </div>
+        </div>
+        <div class="list-bannerjob mt-3">
+            <img src="~/Content/images/banner.jpg" alt="Alternate Text" class="lazyload" />
+            <img src="~/Content/images/banner.jpg" alt="Alternate Text" class="lazyload" />
+        </div>
+    </div>
+</section>
+<section class="py-4">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between">
+            <h2 class="title">
+                Việc làm tốt nhất
+            </h2>
+            <a href="" class="view-all">Xem tất cả</a>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mt-3">
+            <div class="sort-contruy w-25 form-control border">
+                <span>
+                    <i class="fa-solid fa-bars-filter"></i>
+                    Lọc theo :
+                </span>
+                <select class="form-control ouline-none">
+                    <option value="">Quốc gia</option>
+                </select>
+            </div>
+            <div class="list-contruy">
+                <div>
+                    <div class="contruy-name active">
+                        Ngẫu nhiên
+                    </div>
+                </div>
+                @for (var i = 0; i < 10; i++)
+                {
+                    <div>
+                        <div class="contruy-name">
+                            Việt Nam
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="list-hotjob">
+            @for (var i = 0; i < 20; i++)
+            {
+                <div class="job border bg-white hot">
+                    <div class="hot-job" data-toggle="tooltip" data-placement="top" title="Việc làm tốt nhất">
+                        <i class="fab fa-hotjar mr-1"></i> Hot
+                    </div>
+                    <div class="media">
+                        <div class="rounded-circle border thuml-job">
+                            <img src="~/Content/images/logo.png" alt="Alternate Text" class="lazyload job-avt " />
+                        </div>
+                        <div class="media-body ml-2">
+                            <a href="" class="job-name">Kế Toán Nội Bộ - Senior Staff - Tại Hà ... Kế Toán Nội Bộ - Senior Staff - Tại Hà ...</a>
+                            <div class="company-name">
+                                Công Ty TNHH Hóa Chất Toàn Hữu
+                            </div>
+                            <div class="discount-job">
+                                Đơn hàng giảm phí 25 triệu
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between mt-3">
+                        <div class="w-75">
+                            <span class="info-job">12 - 20 triệu</span>
+                            <span class="info-job">Trung Quốc</span>
+                        </div>
+                        <a href="#" class="heart active"><i class="fas fa-heart"></i></a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<div class="container">
+    <div class="py-4">
+        <h2 class="title">
+            Top ngành nghề nổi bật
+        </h2>
+        <div class="title-sub">
+            Bạn muốn tìm việc mới? Xem danh sách việc làm <a href="#">tại đây</a>
+        </div>
+        <div class="list-career">
+            @for (var i = 0; i < 16; i++)
+            {
+                <a href="" class="card card-career border-0">
+                    <div class="thuml-img">
+                        <img src="~/Content/images/nganh-nghe.png" alt="Alternate Text" class="lazyload" />
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="career-name">
+                            Kinh doanh / Bán hàng
+                        </div>
+                        <div class="career-quantity">
+                            8.417 việc làm
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+</div>
+<section class="bg-light py-4">
+    <div class="container">
+        <h2 class="title">
+            Top công ty hàng đầu
+        </h2>
+        <div class="list-support arrows-cusotm">
+            @for (var i = 0; i < 6; i++)
+            {
+                <div class="card career-top">
+                    <a href="" class="thuml">
+                        <img src="~/Content/images/duhoc.jpg" alt="Alternate Text" class="lazyload" />
+                        <div class="tag-i">
+                            TOP 10
+                        </div>
+                    </a>
+                    <div class="card-body p-3">
+                        <a href="#" class="career-top-name">công ty CP vật tư thiết bị công trình minh đức công ty CP vật tư thiết bị công trình minh đức</a>
+                        <div class="box-rating" style="gap:10px;">
+                            <div class="rating">
+                                <i class="fas fa-star active"></i>
+                                <i class="fas fa-star active"></i>
+                                <i class="fas fa-star active"></i>
+                                <i class="fas fa-star active"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            / 322 Phản hồi
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@section scripts{
+    <script src="~/Scripts/waypoints.min.js"></script>
+    <script src="~/Scripts/select2.js"></script>
+    <script src="~/Scripts/jquery.countup.min.js"></script>
+    <script>
+        $('.select2').select2();
+        $('.counter').countUp({
+            'time': 2000,
+            'delay': 10
+        });
+        HomeJs();
+    </script>
+}
