@@ -11,10 +11,10 @@
             </div>
             <div class="company-detail-overview">
                 <div class="box-detail">
-                    <h1 class="company-detail-name ">CÔNG TY CỔ PHẦN SYSTEMATIC FUNCTIONS</h1>
+                    <h1 class="company-detail-name ">CÔNG TY CỔ PHẦN SYSTEMATIC FUNCTIONS <span class="tag-name">Hà Nội</span></h1>
                     <div class="company-subdetail">
                         <a href="#" target="_blank"><i class="fa-light fa-globe"></i>https://www.fis.com.vn/</a>
-                        <a href="javascripts:;"><i class="fa-solid fa-building-memo"></i>5000+ nhân viên</a>
+                        <a href="javascripts:;"><i class="fa-solid fa-buildings"></i>5000+ nhân viên</a>
                         <a href="javascripts:;"><i class="fa-solid fa-users"></i>30+ công việc đang tuyển</a>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row custom-row">
             <div class="col-lg-8">
                 <div class="job-detail__box--left ">
                     <div class="job-detail__name">
@@ -82,7 +82,61 @@
                     <div class="job-detail__information-detail--title">
                         Chi tiết tin tuyển dụng
                     </div>
+                    <div class="detail-title-box">
+                        Hình ảnh minh họa
+                    </div>
+                    <div class="list-img">
+                        @for (var i = 0; i < 4; i++)
+                        {
+                            <a href="#">
+                                <img src="~/Content/images/duhoc.jpg" alt="Alternate Text" />
+                            </a>
+                        }
+                    </div>
+                    <div class="detail-title-box">
+                        Mô tả công việc
+                    </div>
+                    <div class="content-detail">
+
+                    </div>
+                    <div class="detail-title-box">
+                        Quyền lợi
+                    </div>
+                    <div class="content-detail">
+
+                    </div>
+                    <div class="detail-title-box">
+                        Địa điểm làm việc
+                    </div>
+                    <div class="content-detail">
+
+                    </div>
                 </div>
+                <div class="job-detail__information-detail--title mt-3 mb-4">
+                    Top công ty cùng lĩnh vực
+                </div>
+                @for (var i = 0; i < 4; i++)
+                {
+                    <div class="samefield mb-3">
+                        <div class="media align-items-center">
+                            <div class="samefield-thuml">
+                                <img src="~/Content/images/logo.png" alt="Alternate Text" class="lazyload" />
+                            </div>
+                            <div class="media-body ml-3">
+                                <a href="#" class="samefield-name">CÔNG TY CỔ PHẦN GẠCH KHỐI TÂN KỶ NGUYÊN</a>
+                                <div class="job-qtity">
+                                    11 việc làm
+                                </div>
+                            </div>
+                        </div>
+                        <a href="" class="fl-samefield">
+                            <i class="fa-light fa-plus mr-2"></i> Theo dõi
+                        </a>
+                        <div class="tag-i">
+                            TOP 10
+                        </div>
+                    </div>
+                }
             </div>
             <div class="col-lg-4">
                 <div class="job-detail__box--right ">
@@ -94,13 +148,99 @@
                         <button type="submit"><i class="fas fa-search"></i></button>
                     </form>
                     <hr />
-                    <div class="media job-in-company">
-                        <div class="company">
-
+                    @for (var i = 0; i < 2; i++)
+                    {
+                        <div class="job-in-company">
+                            <div class="media">
+                                <div class="company-avata border rounded">
+                                    <img src="~/Content/images/logo.png" alt="Alternate Text" class="lazyload" />
+                                </div>
+                                <div class="media-body ml-2">
+                                    <a href="#" class="job-in-company-name">Middle/Senior UX Designer</a>
+                                </div>
+                            </div>
+                            <div class="company-job-name">
+                                CÔNG TY CỔ PHẦN SYSTEMATIC FUNCTIONS
+                            </div>
+                            <div class="info-job-company">
+                                <div class="info-job-company1">12 - 20 triệu </div>
+                                <div class="info-job-company2">Hà Nội </div>
+                                <div class="info-job-company3">Cập nhật 3 ngày trước </div>
+                                <div class="info-job-company4 p-3"> <i class="fa-solid fa-clock mr-2"></i>Hạn nộp hồ sơ: 05/02/2024</div>
+                            </div>
+                            <a href="#" class="heart active"><i class="fas fa-heart"></i></a>
                         </div>
-                    </div>
+                    }
+                    <a href="" class="view-more-job">Xem thêm công việc<i class="fal fa-long-arrow-right ml-2"></i></a>
                 </div>
+                <div class="job-detail__box--right mt-3">
+                    <div class="job-detail__box--right-title">
+                        Việc làm liên quan
+                    </div>
+                    <form class="job-search-box">
+                        <input type="text" name="name" value="" placeholder="Tên công việc, vị trí bạn muốn ứng tuyển..." />
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </form>
+                    <hr />
+                    @for (var i = 0; i < 2; i++)
+                    {
+                        <div class="job-in-company pt-0 mb-3">
+                            <div class="media align-items-center">
+                                <div class="company-avata border rounded rounded-circle">
+                                    <img src="~/Content/images/logo.png" alt="Alternate Text" class="lazyload rounded-circle" />
+                                </div>
+                                <div class="media-body ml-2">
+                                    <a href="#" class="job-in-company-name mt-0">Middle/Senior UX Designer</a>
+                                    <div class="company-job-name">
+                                        CÔNG TY CỔ PHẦN SYSTEMATIC FUNCTIONS
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-job-company resize-h">
+                                <div class="info-job-company1">12 - 20 triệu </div>
+                                <div class="info-job-company2">Hà Nội </div>
+                            </div>
+                            <a href="#" class="heart active"><i class="fas fa-heart"></i></a>
+                        </div>
+                    }
+                    <a href="" class="view-more-job">Xem thêm công việc<i class="fal fa-long-arrow-right ml-2"></i></a>
+                </div>
+                <div class="job-detail__box--right mt-3">
+                    <div class="job-detail__box--right-title">
+                        Chia sẻ công ty tới bạn bè
+                    </div>
+                    <div class="copy-link">
+                        <div class="link">
+                            <span>
+                                https://edujob.net/cong-ty/cong-ty-comm
+                                https://edujob.net/cong-ty/cong-ty-comm
+                                https://edujob.net/cong-ty/cong-ty-comm
+                            </span>
+                        </div>
+                        <button type="button"><i class="fas fa-copy"></i></button>
+                    </div>
+                    <div class="job-detail__box--right-title mt-4">
+                        Chia sẻ qua mạng xã hội
+                    </div>
+                    <ul class="ul-reset share-social mt-2">
+                        <li>
+                            <a href="#" target="_blank"><img src="~/Content/images/facebook.png" alt="Facebook" /></a>
+                        </li>
+                        <li>
+                            <a href="#" target="_blank"><img src="~/Content/images/twitter.png" alt="Facebook" /></a>
+                        </li>
+                        <li>
+                            <a href="#" target="_blank"><img src="~/Content/images/linkedin.png" alt="Facebook" /></a>
+                        </li>
+                    </ul>
+                </div>
+                
             </div>
         </div>
     </div>
 </div>
+@section scripts{
+    <script>
+        Details()
+    </script>
+    } 

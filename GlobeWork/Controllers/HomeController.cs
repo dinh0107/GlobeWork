@@ -33,6 +33,14 @@ namespace GlobeWork.Controllers
         {
             return View();
         }
+        public ActionResult Employer()
+        {
+            return View();
+        }
+        public ActionResult Recruitment()
+        {
+            return View();
+        }
         public ActionResult About()
         {
             return View();

@@ -171,9 +171,13 @@
     <Content Include="Content\images\bct.png" />
     <Content Include="Content\images\cty.png" />
     <Content Include="Content\images\duhoc.jpg" />
+    <Content Include="Content\images\facebook.png" />
+    <Content Include="Content\images\linkedin.png" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\nganh-nghe.png" />
     <Content Include="Content\images\tag.png" />
+    <Content Include="Content\images\twitter.png" />
+    <Content Include="Content\images\z5108183533913_f5a32e9f0440e3b6d60d9c260e3e82c8.jpg" />
     <Content Include="Content\jquery.fancybox.css" />
     <Content Include="Content\jquery.toast.css" />
     <Content Include="Content\login.css" />
@@ -1279,6 +1283,8 @@
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\Shared\_UserLayout.cshtml" />
     <Content Include="Views\Home\JobDetail.cshtml" />
+    <Content Include="Views\Home\Employer.cshtml" />
+    <Content Include="Views\Home\Recruitment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

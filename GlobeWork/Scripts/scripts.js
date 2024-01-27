@@ -168,117 +168,79 @@ function HomeJs() {
 }
 
 function Details() {
-    $('.panel').hide();
-    $('#content-1').show();
-    $('.panel-title-course').click(function () {
-        var contentId = $(this).data('toggle');
-        $('#' + contentId).slideToggle();
+    $('.list-img').slick({
+        infinite: true,
+        speed: 300,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        prevArrow: '<button class="previous-fb"><i class="fa-solid fa-chevron-left"></i></button>',
+        nextArrow: '<button class="next-fb"><i class="fa-solid fa-chevron-right"></i></button>',
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    infinite: true,
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
     });
-    $(window).scroll(function (event) {
-        var pos_body = $('html,body').scrollTop();
-        if (pos_body > 100) {
-            $('.menu-course-price').addClass('active');
-        }
-        else {
-            $('.menu-course-price').removeClass('active');
-        }
+    $('.policy').slick({
+        infinite: true,
+        speed: 800,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        prevArrow: '<button class="previous-fb"><i class="fal fa-chevron-circle-left"></i></button>',
+        nextArrow: '<button class="next-fb"><i class="fal fa-chevron-circle-right"></i></button>',
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    infinite: true,
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
     });
     $(".show-more").click(function () {
-        $(".content-teacher").toggleClass("active")
-        if ($(".content-teacher").hasClass("active")) {
-            $(".show-more").text("Ẩn bớt");
-        } else {
-            $(".show-more").text("Xem thêm");
-        }
-    })
-    function Seeding() {
-        const name = [
-            "Tran Trung Hieu",
-            "Tran Quynh Anh",
-            "Pham My Hanh",
-            "Duong Van Dinh",
-            "Nguyen Van Hai",
-            "Pham Van Tuyen",
-            "Tran Trung Kien",
-            "Tran Huyen Trang",
-            "Pham Van Manh",
-            "Nguyen Tra My",
-            "Pham Thu Trang",
-            "Nguyen Thu Hoa",
-            "Tran Ngoc Chien",
-            "Nguyen Ba Ha",
-            "Nguyen Ngoc Lan",
-            "Nguyen Thanh Quy",
-            "Tran Ngoc Ha"];
-        let i = 0;
-
-        setInterval(function () {
-
-            $(".user-seeding .content").css('transform', 'translateY(0px)');
-
-            $(".user-seeding .name").text(name[i]);
-            i++;
-            if (i > name.length - 1) {
-                i = 0;
-            }
-            setTimeout(function () {
-                $(".user-seeding .content").css('transform', 'translateY(-30px)');
-            }, 3500)
-        }, 7000);
-    } Seeding()
-    $("#addToCart").on("submit", function (e) {
-        e.preventDefault();
-        $.post("/gio-hang/them-vao-gio-hang", $(this).serialize(), function (data) {
-            if (data.result === 2) {
-                $.toast({
-                    text: "Bạn chưa đăng nhập",
-                    icon: "error",
-                    position: "bottom-center"
-                });
-            }
-            else if (data.result === 1) {
-                $.toast({
-                    text: "Thêm vào giỏ hàng thành công",
-                    icon: "success",
-                    position: "bottom-center"
-                });
-                $(".cart-header").attr("data-count", data.count);
-            } else {
-                $.toast(
-                    {
-                        text: "Quá trình thực hiện không thành công",
-                        icon: "error",
-                        position: "bottom-center"
-                    });
-            }
-        });
-    }); $("#addToCartMb").on("submit", function (e) {
-        e.preventDefault();
-        $.post("/gio-hang/them-vao-gio-hang", $(this).serialize(), function (data) {
-            if (data.result === 2) {
-                $.toast({
-                    text: "Bạn chưa đăng nhập",
-                    icon: "error",
-                    position: "bottom-center"
-                });
-            }
-            else if (data.result === 1) {
-                $.toast({
-                    text: "Thêm vào giỏ hàng thành công",
-                    icon: "success",
-                    position: "bottom-center"
-                });
-                $(".cart-header").attr("data-count", data.count);
-            } else {
-                $.toast(
-                    {
-                        text: "Quá trình thực hiện không thành công",
-                        icon: "error",
-                        position: "bottom-center"
-                    });
-            }
-        });
+        $(".intro").toggleClass("active");
+        var buttonText = $(".intro").hasClass("active") ? "Ẩn bớt" : "Xem thêm";
+        $(".show-more .icon").text(buttonText);
+        var iconClass = $(".intro").hasClass("active") ? "fa-chevron-up" : "fa-chevron-down";
+        $(".show-more i").removeClass("fa-chevron-up fa-chevron-down").addClass(iconClass);
     });
+
+
 }
 function Lesson() {
     $('.stepItem_title').click(function () {
