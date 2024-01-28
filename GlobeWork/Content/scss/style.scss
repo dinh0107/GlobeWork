@@ -1,58 +1,5 @@
-﻿
-@mixin letterSpacing($value, $value2) {
-    .slick-slide {
-        margin: 0 $value;
-    }
-
-    .slick-list {
-        margin: 0 $value2;
-    }
-}
-
-@mixin flex-center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-$green: #66BC46;
-$orange: #FF8400;
-$white: #fff;
-$red: #D92027;
-$blur: #F4F5F5;
-$black: #000;
-$text-blur: #656565;
-
-@mixin maxWidth($value) {
-    @media (max-width: $value) {
-        @content;
-    }
-}
-
-
-@mixin item-center {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-@mixin before($width, $height) {
-    content: '';
-    position: absolute;
-    width: $width;
-    height: $height;
-}
-
-@mixin flex-item($content, $align) {
-    display: flex;
-    justify-content: $content;
-    align-items: $align;
-}
-
-@mixin text-center {
-    left: 50%;
-    transform: translateX(-50%)
-}
+﻿@import "mixins";
+@import "variables";
 
 html {
     scroll-behavior: smooth;
@@ -100,26 +47,17 @@ a:not([href]):not([class]):hover {
     }
 }
 
+.custom-row [class*=col] {
+    padding: 0 .625rem;
+}
+
 a, a:hover {
     text-decoration: none;
     color: $black;
 }
 
-@mixin truncate($value) {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    -webkit-line-clamp: $value;
-}
-
-@mixin vertical-center {
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-@mixin horizontal-center {
-    left: 50%;
-    transform: translateX(-50%);
+img {
+    max-width: 100%;
 }
 
 .btn-primary {

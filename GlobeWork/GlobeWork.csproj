@@ -124,6 +124,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\EmployerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -173,6 +174,7 @@
     <Content Include="Content\images\duhoc.jpg" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\nganh-nghe.png" />
+    <Content Include="Content\images\anhhocbong.png" />
     <Content Include="Content\images\tag.png" />
     <Content Include="Content\jquery.fancybox.css" />
     <Content Include="Content\jquery.toast.css" />
@@ -180,12 +182,15 @@
     <Content Include="Content\login.min.css" />
     <Content Include="Content\owl.carousel.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\simple-notify.min.css" />
     <Content Include="Content\slick.css" />
-    <Content Include="Content\style.css">
-      <DependentUpon>style.scss</DependentUpon>
-    </Content>
+    <Content Include="Content\style.css" />
     <Content Include="Content\style.min.css">
       <DependentUpon>style.css</DependentUpon>
+    </Content>
+    <Content Include="Content\style2.css" />
+    <Content Include="Content\style2.min.css">
+      <DependentUpon>style2.css</DependentUpon>
     </Content>
     <Content Include="Content\themes\adminSite.css" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -1033,7 +1038,7 @@
     <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="Content\adminSite.less" />
     <Content Include="Content\login.less" />
-    <Content Include="Content\style.scss" />
+    <Content Include="Content\scss\style.scss" />
     <Content Include="Scripts\ckeditor\CHANGES.md" />
     <Content Include="Scripts\ckeditor\esm\popper-utils.js.map" />
     <Content Include="Scripts\ckeditor\esm\popper-utils.min.js.map" />
@@ -1115,6 +1120,9 @@
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
+    <Content Include="Content\scss\style2.scss" />
+    <Content Include="Content\scss\_variables.scss" />
+    <Content Include="Content\scss\_mixins.scss" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\isotope.pkgd.min.js" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
@@ -1158,8 +1166,10 @@
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\scriptAdmin.js" />
+    <Content Include="Scripts\scripts2.js" />
     <Content Include="Scripts\scripts.js" />
     <Content Include="Scripts\select2.js" />
+    <Content Include="Scripts\simple-notify.min.js" />
     <Content Include="Scripts\slick.min.js" />
     <Content Include="Scripts\src\index.js" />
     <Content Include="Scripts\src\methods\defaults.js" />
@@ -1279,6 +1289,11 @@
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\Shared\_UserLayout.cshtml" />
     <Content Include="Views\Home\JobDetail.cshtml" />
+    <Content Include="Views\Home\StudyAbroad.cshtml" />
+    <Content Include="Views\Shared\_EmployerLayout.cshtml" />
+    <Content Include="Views\Employer\Index.cshtml" />
+    <Content Include="Views\Employer\Header.cshtml" />
+    <Content Include="Views\Employer\Sidebar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1323,16 +1338,16 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
