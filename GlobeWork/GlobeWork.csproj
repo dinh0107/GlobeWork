@@ -169,6 +169,7 @@
     <Content Include="Content\images\banner-com.jpg" />
     <Content Include="Content\images\banner.jpg" />
     <Content Include="Content\images\bct.png" />
+    <Content Include="Content\images\company-banner.jpg" />
     <Content Include="Content\images\cty.png" />
     <Content Include="Content\images\duhoc.jpg" />
     <Content Include="Content\images\facebook.png" />
@@ -1285,6 +1286,7 @@
     <Content Include="Views\Home\JobDetail.cshtml" />
     <Content Include="Views\Home\Employer.cshtml" />
     <Content Include="Views\Home\Recruitment.cshtml" />
+    <Content Include="Views\Home\ListCompany.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

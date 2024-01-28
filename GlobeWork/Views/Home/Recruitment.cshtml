@@ -40,22 +40,44 @@
             <div class="job-q mb-3">
                 Hiện tại đang tuyển dụng <span>14</span> vị trí
             </div>
-            <form class="grid-form">
+            <form class="grid-form mb-4">
                 <input type="text" name="name" value="" class="grid-form1 form-control" placeholder="Tên công việc, ví trí bạn muốn ứng tuyển..." />
                 <div class="grid-form2 form-control">
-                    <select class="select2">
+                    <select class="select2 form-control">
                         <option value="">Khu vực</option>
                     </select>
                     <i class="far fa-location mx-2"></i>
                 </div>
                 <div class="grid-form3 form-control">
-                    <select class="select2">
+                    <select class="select2 form-control">
                         <option value="">Ngành nghề</option>
                     </select>
                 </div>
-                
                 <button type="submit" class="btn btn-block filter-btn grid-form4"><i class="far fa-search"></i>Tìm kiếm</button>
             </form>
+            @for (var i = 0; i < 6; i++)
+            {
+                <div class="job bg-white detail-job active @(i == 1 ? "active" : "")">
+                    <div class="media ">
+                        <div>
+                            <a href="" class="job-name">Middle/Senior UX Designer</a>
+                            <div class="company-name">
+                                Công Ty TNHH Hóa Chất Toàn Hữu
+                            </div>
+                        </div>
+                        <div class="media-body time-deadline text-right">
+                            Còn <strong>8</strong> ngày để ứng tuyển
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between mt-1">
+                        <div class="w-75">
+                            <span class="info-job">12 - 20 triệu</span>
+                            <span class="info-job">Trung Quốc</span>
+                        </div>
+                        <a href="#" class="heart active"><i class="fas fa-heart"></i></a>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>

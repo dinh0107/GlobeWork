@@ -41,6 +41,15 @@ namespace GlobeWork.Controllers
         {
             return View();
         }
+
+        public ActionResult ListCompany()
+        {
+            return View();
+        }
+        public ActionResult CompanyTop()
+        {
+            return View();
+        }
         public ActionResult About()
         {
             return View();
