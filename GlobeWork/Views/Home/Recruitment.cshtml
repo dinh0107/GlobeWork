@@ -1,0 +1,90 @@
+﻿@functions {
+    public string IsLinkActive(string path)
+    {
+        string currentPath = Context.Request.Path;
+        return currentPath.Equals(path, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+    }
+}
+<div class="bg-light py-4">
+    <div class="container">
+        <div class="company-cover-inner">
+            <div class="cover-wrapper">
+                <img src="~/Content/images/banner-com.jpg" class="lazyload">
+            </div>
+            <div class="company-logo">
+                <div class="company-image-logo shadow">
+                    <img src="~/Content/images/logo.png" alt="" class="img-responsive">
+                </div>
+            </div>
+            <div class="company-detail-overview employer-detail">
+                <div class="box-detail">
+                    <h1 class="company-detail-name text-dark">CÔNG TY CỔ PHẦN SYSTEMATIC FUNCTIONS <span class="tag-name">Hà Nội</span></h1>
+                    <div class="company-subdetail">
+                        <a href="#" target="_blank"><i class="fa-sharp fa-solid fa-globe"></i>https://www.fis.com.vn/</a>
+                        <a href="javascripts:;"><i class="fa-solid fa-buildings"></i>5000+ nhân viên</a>
+                        <a href="javascripts:;"><i class="fa-solid fa-users"></i>30+ công việc đang tuyển</a>
+                    </div>
+                </div>
+                <div class="box-follow">
+                    <a href="" class="btn btn-follow">
+                        <i class="fa-light fa-plus"></i> Theo dõi công ty
+                    </a>
+                </div>
+                <div class="navs-employer">
+                    <a href="@Url.Action("Employer")" class="@(IsLinkActive(Url.Action("Employer")))">Trang chủ</a>
+                    <a href="@Url.Action("Recruitment")" class="@(IsLinkActive(Url.Action("Recruitment")))">Tin tuyển dụng</a>
+                </div>
+            </div>
+        </div>
+        <div class="recruitment">
+            <div class="job-q mb-3">
+                Hiện tại đang tuyển dụng <span>14</span> vị trí
+            </div>
+            <form class="grid-form mb-4">
+                <input type="text" name="name" value="" class="grid-form1 form-control" placeholder="Tên công việc, ví trí bạn muốn ứng tuyển..." />
+                <div class="grid-form2 form-control">
+                    <select class="select2 form-control">
+                        <option value="">Khu vực</option>
+                    </select>
+                    <i class="far fa-location mx-2"></i>
+                </div>
+                <div class="grid-form3 form-control">
+                    <select class="select2 form-control">
+                        <option value="">Ngành nghề</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-block filter-btn grid-form4"><i class="far fa-search"></i>Tìm kiếm</button>
+            </form>
+            @for (var i = 0; i < 6; i++)
+            {
+                <div class="job bg-white detail-job active @(i == 1 ? "active" : "")">
+                    <div class="media ">
+                        <div>
+                            <a href="" class="job-name">Middle/Senior UX Designer</a>
+                            <div class="company-name">
+                                Công Ty TNHH Hóa Chất Toàn Hữu
+                            </div>
+                        </div>
+                        <div class="media-body time-deadline text-right">
+                            Còn <strong>8</strong> ngày để ứng tuyển
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between mt-1">
+                        <div class="w-75">
+                            <span class="info-job">12 - 20 triệu</span>
+                            <span class="info-job">Trung Quốc</span>
+                        </div>
+                        <a href="#" class="heart active"><i class="fas fa-heart"></i></a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@section scripts{
+    <script src="~/Scripts/select2.js"></script>
+    <script>
+        $('.select2').select2();
+    </script>
+}
