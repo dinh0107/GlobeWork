@@ -334,159 +334,19 @@ function articleDetail() {
         ]
     });
 }
-$("#form-contact").on("submit", function (e) {
-    e.preventDefault();
-    if ($(this).valid()) {
-        $.post("/Home/Contact", $(this).serialize(), function (data) {
-            if (data.status) {
-                $.toast({
-                    heading: 'Liên hệ thành công',
-                    text: data.msg,
-                    icon: 'success'
-                });
-                $("#form-contact").trigger("reset");
-            } else {
-                $.toast({
-                    heading: 'Liên hệ không thành công',
-                    text: data.msg,
-                    icon: 'error'
-                });
-            }
-        });
-    }
-});
-$(".order-form").on("submit", function (e) {
-    e.preventDefault();
-    if ($(this).valid()) {
-        $.post("/Home/Order", $(this).serialize(), function (data) {
-            if (data.status) {
-                $.toast({
-                    heading: 'Liên hệ thành công',
-                    text: data.msg,
-                    icon: 'success'
-                });
-                $(".order-form").trigger("reset");
-            } else {
-                $.toast({
-                    heading: 'Liên hệ không thành công',
-                    text: data.msg,
-                    icon: 'error'
-                });
-            }
-        });
-    }
-});
+function User() {
+    $('.type-input').click(function () {
+        var input = $(this).prev('input');
 
-function Sort(action) {
-    $(document).on("change", "[data-filter]", function () {
-        let sort = "";
-        var catIds = "";
-        var topicIds = "";
-        let url = $("input[name=currentUrl]").val();
-        const title = $(".breadcrumb-item.active").text();
-
-        $("[name=sort]:selected").map(function () {
-            sort += $(this).val();
-        });
-        console.log(sort)
-        $("[name=catId]:checked").map(function () {
-            catIds += $(this).val() + '-';
-        })
-        catIds = catIds.slice(0, -1);
-        $("[name=topicId]:checked").map(function () {
-            topicIds += $(this).val() + '-';
-        })
-        topicIds = topicIds.slice(0, -1);
-
-        url = url.split('/').at(-1);
-        window.history.pushState(title, "", url);
-        $.get(action, { sort: sort, catId: catIds, topicId: topicIds }, function (data) {
-            $("#list-item-sort").empty();
-            $("#list-item-sort").html(data);
-        });
-    });
-}
-
-$(".user").click(function () {
-    $(".box-user").toggleClass("active")
-})
-function addCart(n) {
-    $.post("/gio-hang/them-vao-gio-hang", { courseId: n }, function (data) {
-        if (data.result === 2) {
-            $.toast({
-                text: "Bạn chưa đăng nhập",
-                icon: "error",
-                position: "bottom-center"
-            });
-            window.location = url;
-        }
-        else if (data.result === 1) {
-            $.toast({
-                text: "Thêm vào giỏ hàng thành công",
-                icon: "success",
-                position: "bottom-center"
-            });
-            $(".cart-header").attr("data-count", data.count);
+        if (input.attr('type') === 'password') {
+            input.attr('type', 'text');
+            $(this).find('i').removeClass('fa-eye').addClass('fa-eye-slash ');
         } else {
-            $.toast(
-                {
-                    text: "Quá trình thực hiện không thành công",
-                    icon: "error",
-                    position: "bottom-center"
-                });
+            input.attr('type', 'password');
+            $(this).find('i').removeClass('fa-eye-slash').addClass('fa-eye');
         }
     });
 }
-function addToCart() {
-    let n = $("[name=courseId]").val();
-    let m = $("[name=currentUrl]").val();
-    $.post("/gio-hang/them-vao-gio-hang", { courseId: n, currentUrl: m, quantity: 1 }, function (data) {
-        if (data.result === 2) {
-            $.toast({
-                text: "Bạn chưa đăng nhập",
-                icon: "error",
-                position: "bottom-center"
-            });
-        }
-        else if (data.result === 1) {
-            $.toast({
-                text: "Thêm vào giỏ hàng thành công",
-                icon: "success",
-                position: "bottom-center"
-            });
-            window.location.href = "/gio-hang/thanh-toan";
-        } else {
-            $.toast(
-                {
-                    text: "Quá trình thực hiện không thành công",
-                    icon: "error",
-                    position: "bottom-center"
-                });
-        }
-    });
-}
-$(".remove-product").click(function () {
-    if (confirm("Bạn có chắc chắn xóa sản phẩm này khỏi giỏ hàng?")) {
-        const recordToDelete = $(this).attr("data-id");
-        if (recordToDelete !== "") {
-            $.post("/ShoppingCart/RemoveFromCart", { "id": recordToDelete }, function (data) {
-                if (data.Status === 1) {
-                    $("div[data-row='" + recordToDelete + "']").fadeOut();
-                    window.location.reload();
-                } else {
-                    alert("Quá trình thực hiện không thành công");
-                }
-            });
-        }
-    }
-});
-
-$(".search").click(function () {
-    $(".search-box").addClass("active")
-})
-$(".remove-box").click(function () {
-    $(".search-box").removeClass("active")
-})
 $(".back-top").click(function () {
     $("html, body").animate({ scrollTop: 0 }, 0);
 });
@@ -504,15 +364,6 @@ $(".close-course").click(function () {
     $(this).toggleClass("active")
     icon.toggleClass("fa-bars fa-times");
     $(".nav-right").toggleClass("active")
-});
-window.addEventListener("scroll", function () {
-    if ($(this).scrollTop() > 200) {
-        $(".header-fixed").addClass('active');
-        $(".btn-scroll").fadeIn(200);
-    } else {
-        $(".header-fixed").removeClass('active');
-        $(".btn-scroll").fadeOut(200);
-    }
 });
 $(".btn-scroll").click(function () {
     $("html, body").animate({ scrollTop: 0 }, "");

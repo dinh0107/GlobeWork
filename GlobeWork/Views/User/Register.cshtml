@@ -8,12 +8,19 @@
             <img src="~/Content/images/z5108183533913_f5a32e9f0440e3b6d60d9c260e3e82c8.jpg" alt="Đăng nhập" class="logo-form" />
         </a>
         <div class="title-form">
-            Chào mừng bạn đã quay trở lại
+            Chào mừng bạn đến với GlobeWork
         </div>
         <div class="title-form_sub">
             Cùng xây dựng một hồ sơ nổi bật và nhận được các cơ hội sự nghiệp lý tưởng
         </div>
         <form class="user-form">
+            <label>
+                Họ và tên
+            </label>
+            <div class="form-group form-control control-user">
+                <i class="fas fa-user"></i>
+                <input type="text" name="name" value="" placeholder="Nhập họ tên" />
+            </div>
             <label>
                 Email
             </label>
@@ -31,11 +38,26 @@
                     <i class="fas fa-eye"></i>
                 </div>
             </div>
+            <label>
+                Xác nhận mật khẩu
+            </label>
+            <div class="form-group form-control control-user">
+                <i class="fa-solid fa-shield-keyhole"></i>
+                <input type="password" name="name" value="" placeholder="Nhập lại mật khẩu" />
+                <div class="type-input">
+                    <i class="fas fa-eye"></i>
+                </div>
+            </div>
+            <label class="checkbox-wrapper-42 agreement-login mb-3">
+                <input id="cbx-42" type="checkbox" checked />
+                <label class="cbx" for="cbx-42"></label>
+                <label class="lbl" for="cbx-42">Tôi đã đọc và đồng ý với <a href="">Điều khoản dịch vụ</a> và <a href="#">Chính sách bảo mật</a> của Globework</label>
+            </label>
             <button type="submit" class="submit-form btn btn-block form-group">
-                Đăng nhập
+                Đăng ký
             </button>
             <div class="text-center">
-                Hoặc đăng nhập bằng tài khoản mạng xã hội
+                Hoặc đăng nhập bằng
             </div>
             <div class="login-social-list">
                 <a href="#" class="google"><i class="fa-brands fa-google mr-2"></i>Google</a>
@@ -48,9 +70,8 @@
                 <label class="lbl" for="cbx-43">Bằng việc đăng nhập bằng tài khoản mạng xã hội, tôi đã đọc và đồng ý với <a href="">Điều khoản dịch vụ</a> và <a href="#">Chính sách bảo mật</a> của Globework</label>
             </label>
         </form>
-        <div class="d-flex align-items-center justify-content-between">
-            <span>Bạn đã có tài khoản? <a href="@Url.Action("Register", "User")" class="text-success">Đăng ký ngay</a></span>
-            <a href="@Url.Action("ForgotPassword", "User")" class="text-success">Quên mật khẩu</a>
+        <div class="text-center">
+            Bạn đã có tài khoản? <a href="@Url.Action("Login", "User")" class="text-success">Đăng nhập ngay</a>
         </div>
         <hr />
         <div class="text-center">

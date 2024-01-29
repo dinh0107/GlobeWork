@@ -1,0 +1,128 @@
+﻿<div class="bg-light py-4">
+    <div class="container">
+        <div class="company-cover-inner">
+            <div class="cover-wrapper">
+                <img src="~/Content/images/banner-com.jpg" class="lazyload">
+            </div>
+            <div class="company-logo">
+                <div class="company-image-logo shadow">
+                    <img src="~/Content/images/logo.png" alt="" class="img-responsive">
+                </div>
+            </div>
+            <div class="company-detail-overview employer-detail">
+                <div class="box-detail name-profile">
+                    <h1 class="company-detail-name text-dark">Nguyễn Văn A</h1>
+                    <div class="sub-line">
+                        Nhân viên văn phòng
+                    </div>
+                    <div class="group-btn-profile">
+                        <a href="javascripts:;" data-action="@Url.Action("InfoUser", "User"@*, new { id = Model.Product.Id }*@)" class="change-info active">Thêm mục <i class="fa-solid fa-caret-down"></i></a>
+                        <a href="#">Tải xuống PDF</a>
+                        <a href="#">Chia sẻ profile</a>
+                    </div>
+                </div>
+                <div class="box-follow">
+                    <div class="media  align-items-center">
+                        <div class="border rounded-circle thuml-profile">
+                            <img src="~/Content/images/logo.png" alt="" class="img-fluid" />
+                        </div>
+                        <div class="media-body">
+                            Công ty CP Công nghệ Đa nền tản...
+                        </div>
+                    </div>
+                    <div class="media align-items-center">
+                        <div class="border rounded-circle thuml-profile">
+                            <img src="~/Content/images/logo.png" alt="" class="img-fluid" />
+                        </div>
+                        <div class="media-body">
+                            Đại học Kinh doanh công nghệ
+                        </div>
+                    </div>
+                    <div class="media  align-items-center">
+                        <div class="icon-profile">
+                            <i class="fa-sharp fa-solid fa-location-dot"></i>
+                        </div>
+                        <div class="media-body">
+                            Thanh Xuân, Hà Nội
+                        </div>
+                    </div>
+                    <div class="media  align-items-center">
+                        <div class="icon-profile">
+                            <i class="fa-sharp fa-solid fa-phone-volume"></i>
+                        </div>
+                        <a href="" class="media-body">
+                            0123456789
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="user-dashboard">
+            <span class="user-dashboard-title mb-3">Thống kê số lượt xem từ Nhà tuyển dụng</span>
+            <span class="user-dashboard-sub ">Phần này chỉ hiển thị với riêng bạn</span>
+            <div class="row mt-4">
+                <div class="col-lg-4">
+                    <div class="box-dashboard">
+                        <div class="count-dashboard">
+                            1
+                        </div>
+                        <div class="sub-dashboard">
+                            Lượt xem trong tuần
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="box-dashboard">
+                        <div class="count-dashboard">
+                            1
+                        </div>
+                        <div class="sub-dashboard">
+                            Lượt xem trong tháng
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="box-dashboard">
+                        <div class="count-dashboard">
+                            1
+                        </div>
+                        <div class="sub-dashboard">
+                            Lượt xem trong năm
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="skill-profile mt-3">
+            <div class="skill-profile-title">Học vấn <div class="plus-item"><i class="fal fa-plus"></i></div></div>
+            <div class="">
+
+            </div>
+        </div>
+        <div class="skill-profile mt-3">
+            <div class="skill-profile-title">Kinh nghiệm <div class="plus-item"><i class="fal fa-plus"></i></div></div>
+        </div>
+        <div class="skill-profile mt-3">
+            <div class="skill-profile-title">Kỹ năng<div class="plus-item"><i class="fal fa-plus"></i></div></div>
+        </div>
+    </div>
+</div>
+<div class="">
+
+</div>
+@section scripts{
+    <script>
+        $('.change-info').click(function (e) {
+            e.preventDefault();
+            var quantity = $('#number').val();
+            var url = $(this).data('action') + '?quantity=' + encodeURIComponent(quantity);
+            $.fancybox.open({
+                src: url,
+                type: 'ajax',
+                touch: false,
+                smallBtn: false
+            });
+        });
+    </script>
+    }
