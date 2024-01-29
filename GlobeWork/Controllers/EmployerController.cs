@@ -9,10 +9,6 @@ namespace GlobeWork.Controllers
     public class EmployerController : Controller
     {
         // GET: Employer
-        public ActionResult Index()
-        {
-            return View();
-        }
 
         public PartialViewResult Header()
         {
@@ -22,6 +18,25 @@ namespace GlobeWork.Controllers
         public PartialViewResult Sidebar()
         {
             return PartialView();
+        }
+        public PartialViewResult Personal()
+        {
+            return PartialView();
+        }
+
+        public PartialViewResult ChangePassword()
+        {
+            return PartialView();
+        }
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult Profile()
+        {
+            return View();
         }
     }
 }

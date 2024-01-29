@@ -222,7 +222,6 @@ header.header-employer {
 
 .sidebar {
     padding-top: $headerHeight;
-    flex: 1 1 16rem;
     width: 16rem;
     height: 100vh;
     background-color: $sidebar;
@@ -346,7 +345,7 @@ header.header-employer {
     a > div {
         position: absolute;
         top: 100%;
-        left: 0;
+        right: 0;
         width: 120px;
         padding: .75rem;
         border-radius: 3px;
@@ -457,14 +456,20 @@ header.header-employer {
     border-radius: 35px 0 0 35px;
     background-color: $green;
 
-    a {
+    a:first-child {
         @include flex-center;
         width: 40px;
         height: 40px;
         border-radius: 50%;
         background-color: $white;
         color: $green;
+        font-size: 20px;
         margin-right: 10px;
+    }
+
+    a:last-child {
+        color: $white;
+        padding-left: 10px;
     }
 
     h5 {
@@ -475,5 +480,75 @@ header.header-employer {
     p {
         font-size: .75rem;
         margin-bottom: 0;
+    }
+}
+
+.profile-tabs {
+    display: flex;
+    gap: 0.625rem;
+
+    ul {
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    a {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        width: 14.5rem;
+        padding: 0.625rem 1.25rem;
+        border-radius: 3px;
+        background-color: #f5f8fa;
+        transition: .4s;
+    }
+
+    li.ui-tabs-active a {
+        color: $white;
+        background-color: $green;
+    }
+
+    > div {
+        flex-grow: 1;
+        padding: 0.75rem;
+        border-radius: 3px;
+        background-color: #f5f8fa;
+    }
+}
+
+.form-content {
+    padding: 1.25rem;
+    border-radius: 3px;
+    background-color: $white;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.form-avartar {
+    @include flex-item(start, center);
+    gap: .75rem;
+
+    label {
+        margin-bottom: 0;
+    }
+
+    img {
+        width: 2rem;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+    }
+
+    button {
+        padding: 4px 8px;
+        background-color: #f5f8fa;
+        border-radius: 3px;
+        outline: none;
+        border: none;
+        font-size: .75rem;
+        font-weight: 600;
     }
 }

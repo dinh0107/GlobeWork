@@ -209,7 +209,6 @@ header.header-employer logo {
 
 .sidebar {
   padding-top: 4.25rem;
-  flex: 1 1 16rem;
   width: 16rem;
   height: 100vh;
   background-color: #fff;
@@ -327,7 +326,7 @@ header.header-employer logo {
 .box-header a > div {
   position: absolute;
   top: 100%;
-  left: 0;
+  right: 0;
   width: 120px;
   padding: 0.75rem;
   border-radius: 3px;
@@ -431,7 +430,7 @@ header.header-employer logo {
   border-radius: 35px 0 0 35px;
   background-color: #66BC46;
 }
-.use-package.media a {
+.use-package.media a:first-child {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -440,7 +439,12 @@ header.header-employer logo {
   border-radius: 50%;
   background-color: #fff;
   color: #66BC46;
+  font-size: 20px;
   margin-right: 10px;
+}
+.use-package.media a:last-child {
+  color: #fff;
+  padding-left: 10px;
 }
 .use-package.media h5 {
   font-size: 1rem;
@@ -449,4 +453,69 @@ header.header-employer logo {
 .use-package.media p {
   font-size: 0.75rem;
   margin-bottom: 0;
+}
+
+.profile-tabs {
+  display: flex;
+  gap: 0.625rem;
+}
+.profile-tabs ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.profile-tabs a {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  width: 14.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 3px;
+  background-color: #f5f8fa;
+  transition: 0.4s;
+}
+.profile-tabs li.ui-tabs-active a {
+  color: #fff;
+  background-color: #66BC46;
+}
+.profile-tabs > div {
+  flex-grow: 1;
+  padding: 0.75rem;
+  border-radius: 3px;
+  background-color: #f5f8fa;
+}
+
+.form-content {
+  padding: 1.25rem;
+  border-radius: 3px;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+.form-avartar {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 0.75rem;
+}
+.form-avartar label {
+  margin-bottom: 0;
+}
+.form-avartar img {
+  width: 2rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+.form-avartar button {
+  padding: 4px 8px;
+  background-color: #f5f8fa;
+  border-radius: 3px;
+  outline: none;
+  border: none;
+  font-size: 0.75rem;
+  font-weight: 600;
 }

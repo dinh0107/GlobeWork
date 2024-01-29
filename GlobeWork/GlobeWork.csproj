@@ -180,6 +180,7 @@
     <Content Include="Content\images\anhhocbong.png" />
     <Content Include="Content\images\tag.png" />
     <Content Include="Content\images\twitter.png" />
+    <Content Include="Content\images\user.jpg" />
     <Content Include="Content\images\z5108183533913_f5a32e9f0440e3b6d60d9c260e3e82c8.jpg" />
     <Content Include="Content\jquery.fancybox.css" />
     <Content Include="Content\jquery.toast.css" />
@@ -1302,6 +1303,9 @@
     <Content Include="Views\Home\Employer.cshtml" />
     <Content Include="Views\Home\Recruitment.cshtml" />
     <Content Include="Views\Home\ListCompany.cshtml" />
+    <Content Include="Views\Employer\Profile.cshtml" />
+    <Content Include="Views\Employer\Personal.cshtml" />
+    <Content Include="Views\Employer\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
