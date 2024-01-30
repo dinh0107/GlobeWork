@@ -1,0 +1,183 @@
+﻿<form class="customer-form" style="min-width:50%;">
+    <div class="title--child">
+        Thông tin cá nhân
+    </div>
+    <hr />
+    <div class="form-group">
+        <label>
+            Họ và tên*
+        </label>
+        <input type="text" name="name" value="" placeholder="Nhập họ và tên" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>
+            Vị trí*
+        </label>
+        <input type="text" name="name" value="" placeholder="Nhân viên văn phòng" class="form-control" />
+    </div>
+    <div class="form-group">
+        <div class="add-item add-education">
+            <i class="fal fa-plus mr-2"></i>Thêm thông tin học vấn
+        </div>
+    </div>
+    <div class="box-education">
+        <label class="d-flex align-items-center">
+            <label class="clone-item-education mr-2 rounded">
+                <i class="fal fa-plus text-white"></i>
+            </label>
+            Học vấn
+        </label>
+        <div class="d-flex box-input mt-3 align-items-center">
+            <div class="left" style="width:100%; flex:1;">
+                <div class="d-flex  mt-2">
+                    <input type="text" name="name" value="" placeholder="Bắt đầu" style="width:5rem" />
+                    -
+                    <input type="text" name="name" value="" placeholder="Hiện tại" style="width:5rem" class="ml-3" />
+                </div>
+                <input type="text" name="name" value="" placeholder="Ngành học / Môn học" class="mt-2" />
+                <input type="text" name="name" value="" placeholder="Tên trường học" class="mt-2 d-block" />
+                <textarea class="border-0 mt-2 w-100" placeholder="Mô tả quá trình học tập hoặc thành tích của bạn"></textarea>
+            </div>
+            <div class="remove-edu">
+                <i class="fa-solid fa-trash text-danger"></i>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="add-item add-experience">
+            <i class="fal fa-plus mr-2"></i>Thêm kinh nghiệm
+        </div>
+    </div>
+    <div class="box-experience">
+        <label class="d-flex align-items-center">
+            <label class="clone-item mr-2 rounded">
+                <i class="fal fa-plus text-white"></i>
+            </label>
+            Kinh nghiệm làm việc
+        </label>
+        <div class="d-flex box-input mt-3">
+            <div class="left">
+                <input type="text" name="name" value="" placeholder="Tên công ty" />
+                <div class="d-flex mt-2">
+                    <input type="text" name="name" value="" placeholder="Bắt đầu" style="width:5rem" />
+                    <input type="text" name="name" value="" placeholder="Hiện tại" style="width:5rem" />
+                </div>
+            </div>
+            <div class="right">
+                <input type="text" name="name" value="" placeholder="Vị trí công việc" class="w-100" />
+                <input class="mt-2 w-100" type="text" name="name" value="" placeholder="Mô tả kinh nghiệm làm việc của bạn" />
+            </div>
+            <div class="remove">
+                <i class="fa-solid fa-trash text-danger"></i>
+            </div>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <label>
+            Địa chỉ hiện tại*
+        </label>
+        <div class="d-flex" style="gap:.625rem">
+            <label for="nam">
+                <input id="nam" type="radio" name="name" value="" /> Nam
+            </label>
+            <label for="nu">
+                <input id="nu" type="radio" name="name" value="" /> Nữ
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>
+            Ngày sinh
+        </label>
+        <div class="row">
+            <div class="col-lg-4">
+                <select class="form-control">
+                    <option value="">Ngày</option>
+                </select>
+            </div>
+            <div class="col-lg-4">
+                <select class="form-control">
+                    <option value="">Tháng</option>
+                </select>
+            </div>
+            <div class="col-lg-4">
+                <select class="form-control">
+                    <option value="">Năm</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>
+            Địa chỉ hiện tại*
+        </label>
+        <input type="text" name="name" value="" placeholder="Nhập địa chỉ" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>
+            Số điện thoại liên lạc*
+        </label>
+        <input type="text" name="name" value="" placeholder="Thêm số điện thoại" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>
+            Liên kết*
+            <span class="user-sub">Thay đổi tên người dùng trên địa chỉ liên kết đến hồ sơ của bạn.</span>
+        </label>
+        <div class="row">
+            <div class="col-lg-8">
+                <input type="text" name="name" value="nguyen-van-a-12356789" placeholder="Nhập liên kết" class="form-control" />
+            </div>
+            <div class="col-lg-4">
+                <div class="check-username">
+                    <i class="fal fa-check"></i>
+                    Liên kết khả dụng
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>
+            Giới thiệu bản thân
+        </label>
+        <textarea class="form-control" placeholder="Thêm mô tả bản thân để nhà tuyển dụng có thể hiểu hơn về bạn"></textarea>
+    </div>
+    <div class="text-center">
+        <button type="submit">
+            Cập nhật
+        </button>
+    </div>
+</form>
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    var maxBoxInputs = 5;
+    $(".add-experience").on("click", function () {
+        $(".box-experience").slideToggle();
+    });
+    $(".add-education").on("click", function () {
+        $(".box-education").slideToggle();
+    });
+    $(".clone-item-education").on("click", function () {
+        var currentBoxInputs = $(".box-education .box-input").length;
+        if (currentBoxInputs < maxBoxInputs) {
+            var newBoxInput = $(".box-education .box-input").first().clone();  // Select the first .box-input
+            newBoxInput.find("input").val("");
+            $(".box-education").append(newBoxInput);  // Append the cloned box-input to .box-education
+        }
+    });
+    $(".clone-item").on("click", function () {
+        var currentBoxInputs = $(".box-experience .box-input").length;
+        if (currentBoxInputs < maxBoxInputs) {
+            var newBoxInput = $(".box-experience .box-input").first().clone();  // Select the first .box-input
+            newBoxInput.find("input").val("");
+            $(".box-experience").append(newBoxInput);  // Append the cloned box-input to .box-education
+        }
+    });
+    $(document).on("click", ".remove-edu", function () {
+        $(this).closest('.box-input').remove();
+    });
+    $(document).on("click", ".remove", function () {
+        $(this).closest('.box-input').remove();
+    });
+</script>
