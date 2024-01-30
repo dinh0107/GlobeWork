@@ -45,18 +45,26 @@ a:not([href]):not([class]):hover {
   }
 }
 
+.custom-row [class*=col] {
+  padding: 0 0.625rem;
+}
+
 a, a:hover {
   text-decoration: none;
   color: #000;
 }
 
+img {
+  max-width: 100%;
+}
+
 .btn-primary {
-  background: #D92027;
-  border-color: #D92027;
+  background: #66BC46;
+  border-color: #66BC46;
 }
 .btn-primary:hover {
-  background: #D92027;
-  border-color: #D92027;
+  background: #66BC46;
+  border-color: #66BC46;
   opacity: 0.8;
 }
 
@@ -756,7 +764,7 @@ header {
   top: 0.625rem;
   left: 0.625rem;
   color: #fff;
-  background: url(images/tag.png);
+  background: url(scss/images/tag.png);
   background-size: contain;
   background-repeat: no-repeat;
   font-weight: 700;
@@ -983,7 +991,7 @@ footer {
   width: 4.75rem;
   height: 1.5625rem;
   color: #fff;
-  background: url(images/tag.png);
+  background: url(scss/images/tag.png);
   background-size: contain;
   background-repeat: no-repeat;
   font-weight: 700;
@@ -1780,7 +1788,7 @@ footer {
 
 .company-banner {
   height: 18.1875rem;
-  background: url(images/company-banner.jpg);
+  background: url(scss/images/company-banner.jpg);
   background-size: cover;
   background-position: center;
 }

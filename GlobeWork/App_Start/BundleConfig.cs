@@ -27,7 +27,7 @@ namespace GlobeWork
                       "~/Scripts/owl.carousel.js",
                       "~/Scripts/jquery.fancybox.js",
                       "~/Scripts/slick.min.js",
-                      "~/Scripts/jquery.toast.js",
+                      "~/Scripts/simple-notify.min.js",
                       "~/Scripts/aos.js",
                       "~/Scripts/jquery-migrate.min.js",
                       "~/Scripts/lazysizes.min.js",
@@ -47,7 +47,7 @@ namespace GlobeWork
             bundles.Add(new StyleBundle("~/Content/admincss").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/all.css",
-                      "~/Content/jquery.toast.css",
+                      "~/Content/simple-notify.min.css",
                       "~/Content/PagedList.css",
                       "~/Content/jquery.fancybox.css",
                       "~/Content/adminSite.css"));

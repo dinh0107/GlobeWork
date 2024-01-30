@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "StudyAbroad";
+}
+
+<div class="container py-5">
+    <div class="study-abroad">
+        @for (int i = 0; i < 5; i++)
+        {
+            <a href="">
+                <img src="https://img.freepik.com/free-photo/plus-size-woman-working-professional-business-office_23-2150579595.jpg?w=996&t=st=1706323494~exp=1706324094~hmac=b695a3a7eba5b030af0ec4869308e2722234012bd70236b7edc78545f1b5e244" alt="" />
+            </a>
+        }
+    </div>
+    <div class="section-title my-4">
+        <h2>
+            Học bổng mới nhất
+        </h2>
+        <span>Bạn muốn tìm học bổng mới? Xem danh sách học bổng <a href="" class="link-green">tại đây</a></span>
+    </div>
+    <div class="scholarship">
+        @for (int i = 0; i < 5; i++)
+        {
+            <div class="card item-scholarship">
+                <a href="">
+                    <img src="~/Content/images/anhhocbong.png" alt="anhhhongbong" />
+                </a>
+                <div class="card-body">
+                    <a href="" class="card-title">
+                        <h5>Kế Toán Nội Bộ - Senior Staff- Tại Hà MMMMMMMMMMMMMMMMMMMMMMMMMMM</h5>
+                    </a>
+                    <p class="card-text">Công Ty TNHH Hóa Chất Toàn Hữu</p>
+
+                    <div class="card-btns">
+                        <a href="#" class="link-scholarship">
+                            12 - 20 triệu
+                        </a>
+                        <a href="#" class="link-scholarship">
+                            Trung Quốc
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="section-title my-4">
+        <h2>
+            Du học ngành HOT
+        </h2>
+    </div>
+    <div class="study-abroad-grid">
+        @for (int i = 0; i < 30; i++)
+        {
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img src="..." alt="...">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        StudyAbroad()
+    </script>
+}
