@@ -133,7 +133,7 @@ header.header-employer {
   height: 4.25rem;
   display: flex;
   background: #fff;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
   padding: 0 1rem 0 0;
 }
 header.header-employer .hamburger {
@@ -198,13 +198,27 @@ header.header-employer logo {
   background: #e8edf2;
 }
 .wrapper .contents {
-  padding-top: 5.188rem;
+  padding: 4.25rem 0 0 0;
   height: 100vh;
   flex: 1 1 auto;
+  overflow-y: scroll;
 }
 .wrapper .contents > * {
   margin-left: auto;
   margin-right: auto;
+}
+.wrapper .contents-header {
+  position: sticky;
+  top: 0;
+  padding: 1.25rem 0.75rem;
+  z-index: 999;
+  background-color: #fff;
+  border-bottom: 1px solid #cdcdcd;
+}
+.wrapper .contents-header h1 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0;
 }
 
 .sidebar {
@@ -212,6 +226,7 @@ header.header-employer logo {
   width: 16rem;
   height: 100vh;
   background-color: #fff;
+  border-right: 1px solid #cdcdcd;
   overflow: hidden;
   overflow-y: auto;
   transition: 0.4s;
@@ -518,4 +533,38 @@ header.header-employer logo {
   border: none;
   font-size: 0.75rem;
   font-weight: 600;
+}
+
+.title-package h2 {
+  font-size: 24px;
+}
+.title-package h2 span {
+  color: #66BC46;
+}
+
+.item-package {
+  transition: 0.4s;
+}
+.item-package:hover {
+  border-color: #66BC46;
+}
+.item-package .card-title {
+  text-transform: uppercase;
+}
+.item-package .card-text {
+  color: #66BC46;
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+.item-package .card-text b {
+  color: #D92027;
+  font-size: 0.75rem;
+}
+.item-package .btns {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.item-package .btns .btn {
+  flex: 1 1 calc(50% - 10px);
 }

@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.Title = "Service";
+    Layout = "~/Views/Shared/_EmployerLayout.cshtml";
+}
+
+<div class="contents-header">
+    <h1>@ViewBag.Title</h1>
+</div>
+
+<div class="container py-5">
+    @for (int j = 0; j < 3; j++)
+    {
+        <div class="title-package">
+            <h2><span>TOP JOBS TRIAL</span> | Quảng cáo tin tuyển dụng</h2>
+            <p class="text-muted">
+                Trải nghiệm cộng hưởng sức mạnh công nghệ tạo ra hiệu quả đột phá cho tin tuyển dụng của Doanh nghiệp với chi phí tối ưu
+            </p>
+        </div>
+        <div class="row custom-row row-cols-3 mb-5">
+            @for (int i = 0; i < 3; i++)
+            {
+                <div class="col">
+                    <div class="card item-package">
+                        <div class="card-body">
+                            <h5 class="card-title">Top max trial</h5>
+                            <h6 class="card-text mb-3">2,123,124 VNĐ<b>*</b></h6>
+                            <p class="card-subtitle text-muted mb-2">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <div class="btns">
+                                <button type="button" class="btn btn-outline-primary">Thêm vào giỏ</button>
+                                <button type="button" class="btn btn-primary">Mua ngay</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

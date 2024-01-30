@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewBag.Title = "ShoppingCart";
+    Layout = "~/Views/Shared/_EmployerLayout.cshtml";
+}
+
+<div class="contents-header">
+    <h1>@ViewBag.Title</h1>
+</div>
+
+<div class="container py-5">
+    <div class="row custom-row">
+        <div class="col-lg-8">
+            <div class="box-content">
+                <table>
+                    <thead>
+                        <tr>Tên dịch vụ</tr>
+                        <tr>Đơn giá</tr>
+                        <tr>Số lượng</tr>
+                        <tr>Số tiền (VNĐ)</tr>
+                        <tr>Thao tác</tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            <tr>
+                                <td>
+                                    <h5>Top max</h5>
+                                    <p>
+                                        Quảng cáo tin đăng tuyển dụng hiệu quả với vị trí nổi bật trong Việc làm tốt nhất kết hợp cùng các dịch vụ cao cấp và được bảo hành vị trí ưu tiên.
+                                    </p>
+                                </td>
+                                <td>
+                                    <strong>
+                                        7,500,000
+                                    </strong>
+                                </td>
+                                <td>
+                                    <input class="input-number" value="1" />
+                                </td>
+                                <td>
+                                    <strong class="text-green">
+                                        7,500,000
+                                    </strong>
+                                </td>
+                                <td>
+                                    <a href="javascript:;">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="box-content employer-sum">
+                <h5>Thông tin đơn hàng</h5>
+                <ul>
+                    <li>
+                        <span>
+                            Tổng giá trị đơn hàng
+                        </span>
+                        <span>
+                            0 VND
+                        </span>
+                    </li>
+                </ul>
+                <div>
+                    <p>
+                        <input type="checkbox" id="checkboxA" />
+                        <label for="checkboxA">
+                            Tôi đồng ý với <a href="">Điều khoản dịch vụ</a> của TopCV.
+                        </label>
+                    </p>
+                    <button>Tạo đơn hàng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -65,9 +65,19 @@ img {
     border-color: $green;
 
     &:hover {
-        background: $green;
-        border-color: $green;
-        opacity: .8;
+        background: lighten($green, 5%);
+        border-color: lighten($green, 5%);
+    }
+}
+
+.btn-outline-primary {
+    color: $green;
+    border-color: $green;
+
+    &:hover {
+        color: $white;
+        border-color: lighten($green, 5%);
+        background-color: $green;
     }
 }
 

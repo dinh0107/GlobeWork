@@ -1306,6 +1306,8 @@
     <Content Include="Views\Employer\Profile.cshtml" />
     <Content Include="Views\Employer\Personal.cshtml" />
     <Content Include="Views\Employer\ChangePassword.cshtml" />
+    <Content Include="Views\Employer\Service.cshtml" />
+    <Content Include="Views\Employer\ShoppingCart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
