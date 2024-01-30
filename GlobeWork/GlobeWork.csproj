@@ -45,11 +45,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CKFinder, Version=2.5.0.2768, Culture=neutral, PublicKeyToken=579e7adc719a1423, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\.NET Library\CKFinder.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Facebook, Version=6.0.10.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
+      <HintPath>..\packages\Facebook.7.0.6\lib\net45\Facebook.dll</HintPath>
+    </Reference>
+    <Reference Include="GoogleAuthentication, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GoogleAuthentication.1.0.0\lib\net46\GoogleAuthentication.dll</HintPath>
+    </Reference>
+    <Reference Include="Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\.NET Library\Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="ImageResizer, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ImageResizer.4.2.8\lib\net45\ImageResizer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\lib\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -127,10 +144,31 @@
     <Compile Include="Controllers\EmployerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\VcmsController.cs" />
+    <Compile Include="DAL\DataEntities.cs" />
+    <Compile Include="DAL\GenericRepository.cs" />
+    <Compile Include="DAL\UnitOfWork.cs" />
+    <Compile Include="Filters\MemberFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202401301022270_ad.cs" />
+    <Compile Include="Migrations\202401301022270_ad.Designer.cs">
+      <DependentUpon>202401301022270_ad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202401301348433_ad1.cs" />
+    <Compile Include="Migrations\202401301348433_ad1.designer.cs">
+      <DependentUpon>202401301348433_ad1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202401301405139_ad2.cs" />
+    <Compile Include="Migrations\202401301405139_ad2.designer.cs">
+      <DependentUpon>202401301405139_ad2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Admin.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\AdminViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\adminSite.css" />
@@ -1317,10 +1355,41 @@
     <Content Include="Views\Employer\ShoppingCart.cshtml" />
     <Content Include="Views\Home\StudyAbroadCategory.cshtml" />
     <Content Include="Views\Home\StudyAbroadDetail.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\DisplayOrderStatus.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\DisplayTypePay.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Enum.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\GroupId.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\ImageArticle.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\ImageArticleCat.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\ImageSupport.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DateTimePicker.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\EditorBox.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\MoneyBox.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\NumberBox.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Password.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\TextArea.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\TextBox.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\UploadMultiFile.cshtml" />
+    <Content Include="Views\Shared\_AdminIframeLayout.cshtml" />
+    <Content Include="Views\Shared\_AdminLayout.cshtml" />
+    <Content Include="Views\Vcms\ChangePassword.cshtml" />
+    <Content Include="Views\Vcms\City.cshtml" />
+    <Content Include="Views\Vcms\ConfigSite.cshtml" />
+    <Content Include="Views\Vcms\CreateAdmin.cshtml" />
+    <Content Include="Views\Vcms\EditAdmin.cshtml" />
+    <Content Include="Views\Vcms\EditCity.cshtml" />
+    <Content Include="Views\Vcms\EditUser.cshtml" />
+    <Content Include="Views\Vcms\Index.cshtml" />
+    <Content Include="Views\Vcms\ListAdmin.cshtml" />
+    <Content Include="Views\Vcms\ListCity.cshtml" />
+    <Content Include="Views\Vcms\ListShowroom.cshtml" />
+    <Content Include="Views\Vcms\ListUser.cshtml" />
+    <Content Include="Views\Vcms\Login.cshtml" />
+    <Content Include="Views\Vcms\Showroom.cshtml" />
+    <Content Include="Views\Vcms\UpdateShowroom.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -1332,6 +1401,17 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202401301022270_ad.resx">
+      <DependentUpon>202401301022270_ad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202401301348433_ad1.resx">
+      <DependentUpon>202401301348433_ad1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202401301405139_ad2.resx">
+      <DependentUpon>202401301405139_ad2.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

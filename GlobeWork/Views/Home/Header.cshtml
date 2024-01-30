@@ -1,4 +1,7 @@
-﻿<header class="shadow">
+﻿@{
+    var FullName = ViewContext.RouteData.Values["FullName"].ToString();
+}
+<header class="shadow">
     <div class="container">
         <div class="row">
             <div class="col-lg-9 d-flex align-items-center justify-content-between">
@@ -17,8 +20,8 @@
             </div>
             <div class="col-lg-3">
                 <div class="d-flex align-items-center h-100 justify-content-end" style="gap:10px;">
-                    <a href="" class="user-action">Đăng ký</a>
-                    <a href="" class="user-action opacity-1">Đăng nhập</a>
+                    <a href="@Url.Action("Register", "User")" class="user-action">Đăng ký</a>
+                    <a href="@Url.Action("Login", "User")" class="user-action opacity-1">Đăng nhập</a>
                 </div>
             </div>
         </div>

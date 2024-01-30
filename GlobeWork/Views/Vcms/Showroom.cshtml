@@ -1,0 +1,71 @@
+﻿@model GlobeWork.Models.ShowRoom
+@{
+    ViewBag.Title = "Thêm Showroom";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Thêm Showroom</h2>
+@if (ViewBag.Showroom == "success")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Thêm mới showroom thành công</strong></div>
+}
+@if (ViewBag.Showroom == "update")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật showroom thành công</strong></div>
+}
+<a class="btn quick-link" id="create-cat" href="#list-showroom"><i class="far fa-list mr-1"></i> Danh sách showroom</a>
+<div class="box_content">
+    <div class="row">
+        <div class="col-sm-12 col-lg-12">
+            @using (Html.BeginForm("Showroom", "Vcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.ValidationSummary(true)
+            <table class="form_table form-table-cat">
+                <tr>
+                    <td class="form_name">@Html.LabelFor(a => Model.Name)</td>
+                    <td class="form_text">@Html.EditorFor(a => Model.Name)</td>
+                </tr>
+                <tr>
+                    <td class="form_name">@Html.LabelFor(a => Model.Address)</td>
+                    <td class="form_text">@Html.EditorFor(a => Model.Address)</td>
+                </tr>
+                <tr>
+                    <td class="form_name">@Html.LabelFor(a => Model.Phone)</td>
+                    <td class="form_text">@Html.EditorFor(a => Model.Phone)</td>
+                </tr>
+                <tr>
+                    <td class="form_name">@Html.LabelFor(model => model.Image)</td>
+                    <td class="form_text">
+                        @Html.TextBoxFor(model => model.Image, new { type = "file" })<span class="red-warring">Chấp nhận ảnh jpg, png, gif, jpeg < 4MB</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form_name">@Html.LabelFor(a => Model.WorkingTime)</td>
+                    <td class="form_text">@Html.EditorFor(a => Model.WorkingTime)</td>
+                </tr>
+                <tr>
+                    <td class="form_name">@Html.LabelFor(a => Model.LinkMap)</td>
+                    <td class="form_text">@Html.EditorFor(a => Model.LinkMap)</td>
+                </tr>
+                <tr>
+                    <td class="form_name">@Html.LabelFor(a => Model.Sort)</td>
+                    <td class="form_text">@Html.EditorFor(a => Model.Sort)</td>
+                </tr>
+                <tr>
+                    <td class="form_name">@Html.LabelFor(a => Model.Active)</td>
+                    <td class="form_text">@Html.CheckBoxFor(a => Model.Active, new { @checked = "checked" })</td>
+                </tr>
+                <tr>
+                    <td class="form_name"></td>
+                    <td class="form_text">
+                        <input type="submit" class="btn quick-link" value="Thêm mới" />
+                    </td>
+                </tr>
+            </table>
+            }
+        </div>
+        <div class="col-sm-12 col-lg-12">
+            @Html.Action("ListShowroom", "Vcms")
+        </div>
+    </div>
+</div>

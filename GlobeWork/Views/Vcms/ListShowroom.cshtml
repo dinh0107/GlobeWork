@@ -1,0 +1,60 @@
+﻿@model IEnumerable<GlobeWork.Models.ShowRoom>
+
+<table class="list_table tablecenter mb-4" id="list-showroom">
+    <tr>
+        <th>STT</th>
+        <th>Hình ảnh</th>
+        <th>Tên Showroom</th>
+        <th>Địa chỉ</th>
+        <th>Hotline</th>
+        <th>Thời gian làm việc</th>
+        <th>Hoạt động</th>
+        <th style="width: 100px"></th>
+    </tr>
+    <tbody id="sortable-cat">
+        @foreach (var showroom in Model)
+        {
+            <tr data-id="@showroom.Id" style="background: #ededed;">
+                <td style="width: 120px;">
+                    @showroom.Sort
+                </td>
+                <td style="width: 120px;">
+                    @if (showroom.Image != null)
+                    {
+                        <img src="@Path.Combine("/images/showroom/", showroom.Image)" style="width: 100px; height: 100px; object-fit: contain; " />
+                    }
+                </td>
+                <td class="left"><strong>@showroom.Name</strong></td>
+                <td>@showroom.Address</td>
+                <td>@showroom.Phone</td>
+                <td>@showroom.WorkingTime</td>
+                <td>@Html.DisplayFor(model => showroom.Active)</td>
+                <td>
+                    @Html.ActionLink("Sửa", "UpdateShowroom", new { showroomId = showroom.Id }) -
+                    <a href="javascript:;" onclick="deleteShowroom('@showroom.Id')" style="color: red">Xóa</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script type="text/javascript">
+    function deleteShowroom(id) {
+        if (confirm("Bạn có chắc chắn xóa showroom này không?")) {
+            $.post("/Vcms/DeleteShowroom", { showroomId: id }, function (data) {
+                if (data) {
+                    $.toast({
+                        text: 'Đang xóa showroom',
+                        position: 'bottom-right',
+                        icon: 'success',
+                    })
+                    $("tr[data-id='" + id + "']").fadeOut();
+                } else {
+                    $.toast({
+                        text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                        icon: 'error',
+                    })
+                }
+            });
+        }
+    }
+</script>

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace GlobeWork.Controllers
 {
@@ -34,10 +36,10 @@ namespace GlobeWork.Controllers
             return View();
         }
 
-        public ActionResult Profile()
-        {
-            return View();
-        }
+        //public ActionResult Profile()
+        //{
+        //    return View();
+        //}
 
         public ActionResult Service()
         {
