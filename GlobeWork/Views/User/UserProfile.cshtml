@@ -92,37 +92,110 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <div class="skill-profile mt-3">
-            <div class="skill-profile-title">Học vấn <div class="plus-item"><i class="fal fa-plus"></i></div></div>
-            <div class="">
-
-            </div>
+            <div class="skill-profile-title mb-3">Học vấn <div class="plus-item add-education"><i class="fal fa-plus"></i></div></div>
+            @for (var i = 0; i < 2; i++)
+            {
+                <div class="media media-skill education-skill" data-index="@i">
+                    <div class="thuml-shill">
+                        <img src="~/Content/images/logo.png" alt="" />
+                    </div>
+                    <div class="media-body position-relative">
+                        <div class="skill-name">
+                            Đại học Kinh doanh Công nghệ
+                        </div>
+                        <div class="skill-sub">
+                            Tài chính ngân hàng
+                        </div>
+                        <div class="skill-time">
+                            2019 - 2021
+                        </div>
+                        <div class="edit edit-education">
+                            <i class="fa-solid fa-pen text-success"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="media-form-education">
+                    <form class="media-form education-form" style="display:none;" data-index="@i">
+                        <label for="skill-img-@i" class="skill-img">
+                            <input type="file" name="name" value="" id="skill-img-@i" class="skill-input" />
+                            <i class="fa-duotone fa-camera"></i>
+                            <img src="" alt="" class="preview-image" />
+                        </label>
+                        <div class="media-body">
+                            <input type="text" class="skill-name" name="name" value="Đại học Kinh doanh Công nghệ" placeholder="Tên trường" />
+                            <input type="text" class="skill-sub" name="name" value="Tài chính ngân hàng" placeholder="Ngành học" />
+                            <div class="d-flex mt-1">
+                                <input type="text" class="skill-time" name="name" value="2019" placeholder="Bắt đầu" style="width:5rem" />
+                                <input type="text" class="skill-time" name="name" value="2021" placeholder="Hiện tại" style="width:5rem" />
+                            </div>
+                        </div>
+                        <div class="group mt-3">
+                            <button type="submit" class="btn btn-success">Lưu</button>
+                            <button type="button" class="btn btn-danger cance-education">Hủy</button>
+                        </div>
+                    </form>
+                </div>
+            }
         </div>
         <div class="skill-profile mt-3">
-            <div class="skill-profile-title">Kinh nghiệm <div class="plus-item"><i class="fal fa-plus"></i></div></div>
+            <div class="skill-profile-title mb-3">Kinh nghiệm<div class="plus-item add-experience"><i class="fal fa-plus"></i></div></div>
+            @for (var i = 0; i < 2; i++)
+            {
+                <div class="media media-skill" data-index="@i">
+                    <div class="thuml-shill">
+                        <img src="~/Content/images/logo.png" alt="" />
+                    </div>
+                    <div class="media-body position-relative">
+                        <div class="skill-name">
+                            Photoshop
+                        </div>
+                        <div class="rating-star">
+                            <i class="fa-solid fa-star active"></i>
+                            <i class="fa-solid fa-star active"></i>
+                            <i class="fa-solid fa-star active"></i>
+                            <i class="fa-solid fa-star active"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <div class="edit">
+                            <i class="fa-solid fa-pen text-success"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="media-form-experience">
+                    <form class="media-form media-experience" style="display:none;" data-index="@i">
+                        <label for="skill-img-@i" class="skill-img">
+                            <input type="file" name="name" value="" id="skill-img-@i" class="skill-input" />
+                            <i class="fa-duotone fa-camera"></i>
+                            <img src="" alt="" class="preview-image" />
+                        </label>
+                        <div class="media-body">
+                            <input type="text" class="skill-name" name="name" value="Photoshop" placeholder="Tên trường" />
+                            <select class="">
+                                <option value="value">1 sao</option>
+                                <option value="value">2 sao</option>
+                                <option value="value">3 sao</option>
+                                <option value="value">4 sao</option>
+                                <option value="value">5 sao</option>
+                            </select>
+                        </div>
+                        <div class="group mt-3">
+                            <button type="submit" class="btn btn-success">Lưu</button>
+                            <button type="button" class="btn btn-danger cance-edit">Hủy</button>
+                        </div>
+                    </form>
+                </div>
+            }
         </div>
         <div class="skill-profile mt-3">
             <div class="skill-profile-title">Kỹ năng<div class="plus-item"><i class="fal fa-plus"></i></div></div>
+            
         </div>
     </div>
 </div>
-<div class="">
-
-</div>
 @section scripts{
     <script>
-        $('.change-info').click(function (e) {
-            e.preventDefault();
-            var quantity = $('#number').val();
-            var url = $(this).data('action') + '?quantity=' + encodeURIComponent(quantity);
-            $.fancybox.open({
-                src: url,
-                type: 'ajax',
-                touch: false,
-                smallBtn: false
-            });
-        });
+        ProfileJs()
     </script>
     }

@@ -11,7 +11,16 @@
         prevArrow: '<button class="chevron-prev"><i class="fal fa-chevron-left"></i></button>',
         nextArrow: '<button class="chevron-next"><i class="fal fa-chevron-right"></i></button>',
     });
-
+    $(".banner-page").slick({
+        dots: false,
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        speed: 500,
+        arrows: false,
+        autoplay: true,
+        autoplaySpeed: 3000,
+    });
     $(".scholarship").slick({
         dots: false,
         infinite: true,
@@ -27,14 +36,14 @@
 
     $('.study-abroad-grid').slick({
         rows: 5,
-        dots: false,
-        arrows: true,
+        dots: true,
+        arrows: false,
         infinite: true,
         speed: 800,
-        slidesToShow: 3,
+        slidesToShow: 2,
         //fade: true,
         //cssEase: 'linear',
-        slidesToScroll: 3,
+        slidesToScroll: 2,
         prevArrow: '<button class="previous-slie"><i class="fal fa-chevron-circle-left"></i></button>',
         nextArrow: '<button class="next-slie"><i class="fal fa-chevron-circle-right"></i></button>',
         responsive: [

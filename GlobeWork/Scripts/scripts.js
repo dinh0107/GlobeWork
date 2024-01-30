@@ -248,27 +248,6 @@ function Lesson() {
         $('#' + contentId).slideToggle();
     });
 }
-$("#subcribe").on("submit", function (e) {
-    e.preventDefault();
-    if ($(this).valid()) {
-        $.post("/Home/SubcribeForm", $(this).serialize(), function (data) {
-            if (data.status) {
-                $.toast({
-                    heading: 'Liên hệ thành công',
-                    text: data.msg,
-                    icon: 'success'
-                });
-                $("#subcribe").trigger("reset");
-            } else {
-                $.toast({
-                    heading: 'Liên hệ không thành công',
-                    text: data.msg,
-                    icon: 'error'
-                });
-            }
-        });
-    }
-});
 function CompanyJs() {
     $('.lits-com').slick({
         rows: 2,
@@ -345,6 +324,21 @@ function User() {
             input.attr('type', 'password');
             $(this).find('i').removeClass('fa-eye-slash').addClass('fa-eye');
         }
+    });
+}
+
+
+function ProfileJs() {
+    $('.change-info').click(function (e) {
+        e.preventDefault();
+        var quantity = $('#number').val();
+        var url = $(this).data('action') + '?quantity=' + encodeURIComponent(quantity);
+        $.fancybox.open({
+            src: url,
+            type: 'ajax',
+            touch: false,
+            smallBtn: false
+        });
     });
 }
 $(".back-top").click(function () {

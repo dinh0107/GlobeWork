@@ -1,0 +1,52 @@
+﻿<div class="studyAbroad-filter">
+    <div class="container">
+        <form class="row custom-row">
+            <div class="col-lg-7">
+                <input type="text" name="name" value="" placeholder="Nhập từ khóa" class="form-control" />
+            </div>
+            <div class="col-lg-3">
+                <div class="form-control d-flex align-items-center justify-content-between">
+                    <input type="text" name="name" value="" placeholder="Khu vực" class="border-0 form-control ouline-none" />
+                    <i class="far fa-location"></i>
+                </div>
+            </div>
+            <div class="col-lg-2">
+                <button type="submit" class="btn btn-block filter-btn">
+                    <i class="far fa-search"></i>
+                    TÌM KIẾM
+                </button>
+            </div>
+        </form>
+        <div class="hot-keyword">
+            <span>Từ Khóa Thịnh Hành:</span>
+            <div class="list-keyword">
+                @for (var i = 0; i < 6; i++)
+                {
+                    <a href="#">LẬP TRÌNH VIÊN</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="banner-page">
+    @for (int i = 0; i < 5; i++)
+    {
+        <a href="">
+            <img src="https://img.freepik.com/free-photo/plus-size-woman-working-professional-business-office_23-2150579595.jpg?w=996&t=st=1706323494~exp=1706324094~hmac=b695a3a7eba5b030af0ec4869308e2722234012bd70236b7edc78545f1b5e244" alt="" />
+        </a>
+    }
+</div>
+<div class="container py-4">
+    <div class="date">
+        <i class="fa-regular fa-calendar-days mr-1"></i> 10/05/2023
+    </div>
+    <h1 class="detail-subject">Tương quan giữa pháp luật và chính trị, và tầm quan trọng của tính trung thực và công bằng trong quy trình lập pháp</h1>
+    <div class="content-detail">
+
+    </div>
+</div>
+@section scripts{
+    <script>
+            StudyAbroad()
+    </script>
+}

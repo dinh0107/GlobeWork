@@ -197,10 +197,10 @@ header {
 
 .logo {
     width: 14.125rem;
-    margin-right: 1.875rem;
 }
 
 .menu-nav {
+    margin-left: 1.875rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -2487,6 +2487,7 @@ input, button {
         margin-right: .6rem;
     }
 }
+
 .customer-form {
     label {
         color: $black;
@@ -2504,23 +2505,27 @@ input, button {
         border-radius: 0.3125rem;
     }
 }
+
 .user-sub {
     color: #212F3F;
     font-size: 0.875rem;
     font-weight: 400;
-    display:block;
+    display: block;
 }
+
 .title--child {
     color: #212F3F;
     font-size: 1rem;
     font-weight: 700;
 }
+
 .add-item {
     color: $green;
     font-size: 0.875rem;
     font-weight: 700;
-    cursor:pointer;
+    cursor: pointer;
 }
+
 .box-experience, .box-education {
     border: 1px dashed $black;
     padding: .6rem;
@@ -2544,6 +2549,7 @@ input, button {
         }
     }
 }
+
 .left {
     width: 13rem;
 
@@ -2553,10 +2559,12 @@ input, button {
         }
     }
 }
+
 .right {
     width: 100%;
     position: relative;
-    padding-left:.6rem;
+    padding-left: .6rem;
+
     &:before {
         content: "";
         position: absolute;
@@ -2570,6 +2578,7 @@ input, button {
         display: block;
     }
 }
+
 .clone-item, .clone-item-education {
     width: 1.5rem;
     height: 1.5rem;
@@ -2578,13 +2587,395 @@ input, button {
     margin: 0;
     cursor: pointer;
 }
+
 .remove, .remove-edu {
     cursor: pointer;
 }
+
 .box-input {
     &:nth-child(2) {
         .remove, .remove-edu {
             display: none;
         }
     }
+}
+
+.media-skill {
+    padding: 1rem 0;
+    align-items: center;
+    border-bottom: 1px solid #DEE0E2;
+
+    &:last-child {
+        border-bottom: 0;
+    }
+}
+
+.thuml-shill {
+    width: 5.25rem;
+    height: 5.25rem;
+    background: #D9D9D9;
+    border-radius: 50%;
+    margin-right: 1rem;
+
+    img {
+        width: 100%;
+        object-fit: contain;
+        aspect-ratio: 1;
+    }
+}
+
+.skill-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    @include truncate(1);
+    width: 31.25rem;
+}
+
+.skill-sub, .skill-time {
+    font-size: .9rem;
+    font-weight: 400;
+}
+
+.skill-img {
+    @extend .thuml-shill;
+    @include flex-center;
+    cursor: pointer;
+    overflow: hidden;
+
+    img {
+        object-fit: cover;
+    }
+
+    &:hover {
+        i {
+            transform: scale(1);
+        }
+    }
+
+    i {
+        position: absolute;
+        font-size: 1.25rem;
+        transform: scale(0);
+        transition: all .5s;
+    }
+
+    input {
+        display: none;
+    }
+}
+
+.media-form {
+    border: 1px dashed $black;
+    padding: .7rem;
+    display: none;
+    margin-bottom: .8rem;
+
+    &.active {
+        display: flex !important
+    }
+
+    input {
+        width: 70%;
+    }
+}
+
+.edit {
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+    @include vertical-center;
+}
+
+.plus-item {
+    cursor: pointer;
+}
+
+.rating-star {
+    i {
+        color: #DEE0E2;
+
+        &.active {
+            color: #FFE818;
+        }
+    }
+}
+
+.studyAbroad-filter {
+    background: #212F3F;
+    padding: 1.5rem 0;
+}
+
+.custom-title {
+    text-transform: uppercase;
+    display: block;
+    text-align: center;
+    color: $black;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.sub-title {
+    color: #000;
+    text-align: center;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    display: block;
+}
+
+.study-abroad-grid {
+    @include letterSpacing(15px, -15px);
+    margin-top: 2rem;
+
+    .slick-dots {
+        display: flex;
+        justify-content: center;
+        margin: 0;
+        padding: 1rem 0;
+        list-style-type: none;
+
+        li {
+            margin: 0 0.25rem;
+        }
+
+        button {
+            display: block;
+            width: 0.625rem;
+            height: 0.625rem;
+            padding: 0;
+            border: none;
+            border-radius: 100%;
+            border: 2px solid $green;
+            text-indent: -9999px;
+        }
+
+        li.slick-active button {
+            border: 2px solid $green;
+            background-color: $green;
+        }
+    }
+
+    .media {
+        display: flex !important;
+        border-radius: 0.3125rem;
+        background: $white;
+        align-items: center;
+    }
+
+    img {
+        width: 8.5625rem;
+        height: 6.5rem;
+        object-fit: cover;
+        margin-right: 1rem;
+    }
+}
+
+.study-name {
+    color: $black;
+    font-size: 1rem;
+    font-weight: 600;
+    @include truncate(1);
+}
+
+.study-company {
+    margin-top: .2rem;
+    color: #757579;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    @include truncate(1);
+}
+
+.group-info {
+    margin-top: 0.4rem;
+    display: flex;
+    gap: 1rem;
+
+    span {
+        color: #757579;
+        font-size: 0.8125rem;
+        font-weight: 400;
+
+        &.hot {
+            padding: .2rem .8rem;
+            border-radius: 0.1875rem;
+            background: #FFE8E8;
+            color: #E73B2F;
+            font-size: 0.75rem;
+            font-weight: 400;
+        }
+    }
+}
+
+.title-name {
+    color: #000;
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: normal;
+    position: relative;
+    width: 24rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &:before {
+        content: "";
+        position: absolute;
+        width: 2.8125rem;
+        height: 0.125rem;
+        background: $green;
+        left: 0;
+        bottom: -15%;
+    }
+
+    a {
+        color: #757579;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-decoration-line: underline;
+
+        &:hover {
+            color: $green;
+        }
+    }
+}
+
+.study-article {
+    border: 0;
+
+    img {
+        width: 100%;
+        object-fit: cover;
+        height: 15.84775rem;
+        border-radius: 0.3125rem;
+    }
+
+    .date {
+        color: #333;
+        font-size: 0.875rem;
+        margin-top: .7rem;
+        margin-top: .7rem;
+        font-weight: 400;
+    }
+}
+
+.subject-study {
+    color: #333;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    @include truncate(2);
+    margin-top: .7rem;
+    height: 3rem;
+
+    &:hover {
+        color: $green;
+    }
+}
+
+.study-des {
+    color: #333;
+    font-size: 0.875rem;
+    font-weight: 400;
+    margin-top: .5rem;
+    @include truncate(3);
+    height: 3.938rem;
+}
+
+.study-media {
+    img {
+        width: 6.5625rem;
+        height: 6rem;
+        border-radius: 0.3125rem;
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.20);
+        flex: 1;
+    }
+}
+
+.subject-study-media {
+    color: #333;
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1.25rem;
+    @include truncate(1);
+
+    &:hover {
+        color: $green;
+    }
+}
+
+.study-media-des {
+    color: #333;
+    font-size: 0.875rem;
+    font-weight: 400;
+    @include truncate(2 );
+}
+
+.banner-page {
+    img {
+        width: 100%;
+        height: 35.15625rem;
+        object-fit: cover;
+    }
+}
+
+.studyAbroad-footer {
+    background: url("/Content/images/banner-footer.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 2rem 0;
+}
+
+.studyAbroad-footer-title {
+    color: #FFF;
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.ul-studyAbroad {
+    margin-top: .5rem;
+
+    a {
+        color: #FFF;
+        font-size: 0.875rem;
+        font-weight: 400;
+    }
+}
+
+.info-footer {
+    background: #003825;
+    padding: 2rem 0;
+
+    i {
+        color: $green;
+        font-size:1.5rem;
+    }
+
+    span {
+        color: #FFF;
+        font-size: 0.875rem;
+        font-weight: 400;
+        display:block;
+
+    }
+
+    a {
+        color: #FFF;
+        font-size: 1rem;
+        font-weight: 700;
+    }
+
+    .media {
+        align-items: center;
+    }
+
+    .media-body {
+        margin-left: .7rem;
+    }
+}
+.detail-subject {
+    margin-top:.5rem;
+    color: $black;
+    font-size: 1.5rem;
+    font-weight: 700;
 }
