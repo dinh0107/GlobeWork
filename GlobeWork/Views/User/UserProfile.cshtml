@@ -1,0 +1,201 @@
+﻿<div class="bg-light py-4">
+    <div class="container">
+        <div class="company-cover-inner">
+            <div class="cover-wrapper">
+                <img src="~/Content/images/banner-com.jpg" class="lazyload">
+            </div>
+            <div class="company-logo">
+                <div class="company-image-logo shadow">
+                    <img src="~/Content/images/logo.png" alt="" class="img-responsive">
+                </div>
+            </div>
+            <div class="company-detail-overview employer-detail">
+                <div class="box-detail name-profile">
+                    <h1 class="company-detail-name text-dark">Nguyễn Văn A</h1>
+                    <div class="sub-line">
+                        Nhân viên văn phòng
+                    </div>
+                    <div class="group-btn-profile">
+                        <a href="javascripts:;" data-action="@Url.Action("InfoUser", "User"@*, new { id = Model.Product.Id }*@)" class="change-info active">Thêm mục <i class="fa-solid fa-caret-down"></i></a>
+                        <a href="#">Tải xuống PDF</a>
+                        <a href="#">Chia sẻ profile</a>
+                    </div>
+                </div>
+                <div class="box-follow">
+                    <div class="media  align-items-center">
+                        <div class="border rounded-circle thuml-profile">
+                            <img src="~/Content/images/logo.png" alt="" class="img-fluid" />
+                        </div>
+                        <div class="media-body">
+                            Công ty CP Công nghệ Đa nền tản...
+                        </div>
+                    </div>
+                    <div class="media align-items-center">
+                        <div class="border rounded-circle thuml-profile">
+                            <img src="~/Content/images/logo.png" alt="" class="img-fluid" />
+                        </div>
+                        <div class="media-body">
+                            Đại học Kinh doanh công nghệ
+                        </div>
+                    </div>
+                    <div class="media  align-items-center">
+                        <div class="icon-profile">
+                            <i class="fa-sharp fa-solid fa-location-dot"></i>
+                        </div>
+                        <div class="media-body">
+                            Thanh Xuân, Hà Nội
+                        </div>
+                    </div>
+                    <div class="media  align-items-center">
+                        <div class="icon-profile">
+                            <i class="fa-sharp fa-solid fa-phone-volume"></i>
+                        </div>
+                        <a href="" class="media-body">
+                            0123456789
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="user-dashboard">
+            <span class="user-dashboard-title mb-3">Thống kê số lượt xem từ Nhà tuyển dụng</span>
+            <span class="user-dashboard-sub ">Phần này chỉ hiển thị với riêng bạn</span>
+            <div class="row mt-4">
+                <div class="col-lg-4">
+                    <div class="box-dashboard">
+                        <div class="count-dashboard">
+                            1
+                        </div>
+                        <div class="sub-dashboard">
+                            Lượt xem trong tuần
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="box-dashboard">
+                        <div class="count-dashboard">
+                            1
+                        </div>
+                        <div class="sub-dashboard">
+                            Lượt xem trong tháng
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="box-dashboard">
+                        <div class="count-dashboard">
+                            1
+                        </div>
+                        <div class="sub-dashboard">
+                            Lượt xem trong năm
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="skill-profile mt-3">
+            <div class="skill-profile-title mb-3">Học vấn <div class="plus-item add-education"><i class="fal fa-plus"></i></div></div>
+            @for (var i = 0; i < 2; i++)
+            {
+                <div class="media media-skill education-skill" data-index="@i">
+                    <div class="thuml-shill">
+                        <img src="~/Content/images/logo.png" alt="" />
+                    </div>
+                    <div class="media-body position-relative">
+                        <div class="skill-name">
+                            Đại học Kinh doanh Công nghệ
+                        </div>
+                        <div class="skill-sub">
+                            Tài chính ngân hàng
+                        </div>
+                        <div class="skill-time">
+                            2019 - 2021
+                        </div>
+                        <div class="edit edit-education">
+                            <i class="fa-solid fa-pen text-success"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="media-form-education">
+                    <form class="media-form education-form" style="display:none;" data-index="@i">
+                        <label for="skill-img-@i" class="skill-img">
+                            <input type="file" name="name" value="" id="skill-img-@i" class="skill-input" />
+                            <i class="fa-duotone fa-camera"></i>
+                            <img src="" alt="" class="preview-image" />
+                        </label>
+                        <div class="media-body">
+                            <input type="text" class="skill-name" name="name" value="Đại học Kinh doanh Công nghệ" placeholder="Tên trường" />
+                            <input type="text" class="skill-sub" name="name" value="Tài chính ngân hàng" placeholder="Ngành học" />
+                            <div class="d-flex mt-1">
+                                <input type="text" class="skill-time" name="name" value="2019" placeholder="Bắt đầu" style="width:5rem" />
+                                <input type="text" class="skill-time" name="name" value="2021" placeholder="Hiện tại" style="width:5rem" />
+                            </div>
+                        </div>
+                        <div class="group mt-3">
+                            <button type="submit" class="btn btn-success">Lưu</button>
+                            <button type="button" class="btn btn-danger cance-education">Hủy</button>
+                        </div>
+                    </form>
+                </div>
+            }
+        </div>
+        <div class="skill-profile mt-3">
+            <div class="skill-profile-title mb-3">Kinh nghiệm<div class="plus-item add-experience"><i class="fal fa-plus"></i></div></div>
+            @for (var i = 0; i < 2; i++)
+            {
+                <div class="media media-skill" data-index="@i">
+                    <div class="thuml-shill">
+                        <img src="~/Content/images/logo.png" alt="" />
+                    </div>
+                    <div class="media-body position-relative">
+                        <div class="skill-name">
+                            Photoshop
+                        </div>
+                        <div class="rating-star">
+                            <i class="fa-solid fa-star active"></i>
+                            <i class="fa-solid fa-star active"></i>
+                            <i class="fa-solid fa-star active"></i>
+                            <i class="fa-solid fa-star active"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <div class="edit">
+                            <i class="fa-solid fa-pen text-success"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="media-form-experience">
+                    <form class="media-form media-experience" style="display:none;" data-index="@i">
+                        <label for="skill-img-@i" class="skill-img">
+                            <input type="file" name="name" value="" id="skill-img-@i" class="skill-input" />
+                            <i class="fa-duotone fa-camera"></i>
+                            <img src="" alt="" class="preview-image" />
+                        </label>
+                        <div class="media-body">
+                            <input type="text" class="skill-name" name="name" value="Photoshop" placeholder="Tên trường" />
+                            <select class="">
+                                <option value="value">1 sao</option>
+                                <option value="value">2 sao</option>
+                                <option value="value">3 sao</option>
+                                <option value="value">4 sao</option>
+                                <option value="value">5 sao</option>
+                            </select>
+                        </div>
+                        <div class="group mt-3">
+                            <button type="submit" class="btn btn-success">Lưu</button>
+                            <button type="button" class="btn btn-danger cance-edit">Hủy</button>
+                        </div>
+                    </form>
+                </div>
+            }
+        </div>
+        <div class="skill-profile mt-3">
+            <div class="skill-profile-title">Kỹ năng<div class="plus-item"><i class="fal fa-plus"></i></div></div>
+            
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        ProfileJs()
+    </script>
+    }

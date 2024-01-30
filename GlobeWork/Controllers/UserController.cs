@@ -13,9 +13,21 @@ namespace GlobeWork.Controllers
         {
             return View();
         }
-        public ActionResult Profile()
+        public ActionResult Register()
         {
             return View();
+        }
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+        public ActionResult UserProfile()
+        {
+            return View();
+        }
+        public PartialViewResult InfoUser()
+        {
+            return PartialView();
         }
     }
 }

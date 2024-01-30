@@ -25,6 +25,14 @@ namespace GlobeWork.Controllers
         {
             return View();
         }
+        public ActionResult StudyAbroadCategory()
+        {
+            return View();
+        }
+        public ActionResult StudyAbroadDetail()
+        {
+            return View();
+        }
          public ActionResult Job()
         {
             return View();

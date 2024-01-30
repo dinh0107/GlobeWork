@@ -65,9 +65,7 @@
 
 .scholarship {
     @include letterSpacing(10px, -10px);
-
     $widthArrow: 2.5rem;
-
     button.slick-arrow {
         position: absolute;
         top: calc(50% - $widthArrow / 2);
