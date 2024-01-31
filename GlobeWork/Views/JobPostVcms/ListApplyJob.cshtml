@@ -1,0 +1,152 @@
+﻿@model GlobeWork.ViewModel.ListApplyJobViewModel
+@using PagedList.Mvc
+@{ ViewBag.Title = "Đơn ứng tuyển";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
+<h2>Đơn ứng tuyển</h2>
+<div class="box_content mt-0">
+    <form action="@Url.Action("ListApplyJob")">
+        <div class="row">
+            <div class="col-lg-3">
+                <label>Từ khóa</label>
+                @Html.TextBoxFor(model => model.Keyword, new { @placeholder = "Từ khóa" })
+            </div>
+            <div class="col-lg-3">
+                <label>Thứ tự</label>
+                <select name="Sort">
+                    <option value="date-desc">Mới nhất</option>
+                    <option value="date-asc" @if (Model.Sort == "date-asc") { @Html.Raw("selected='selected'") }>Cũ nhất</option>
+                    <option value="name" @if (Model.Sort == "name") { @Html.Raw("selected='selected'") }>Theo tên</option>
+                    <option value="sort-asc" @if (Model.Sort == "sort-asc") { @Html.Raw("selected='selected'") }>STT nhỏ nhất</option>
+                    <option value="sort-desc" @if (Model.Sort == "sort-desc") { @Html.Raw("selected='selected'") }>STT lớn nhất</option>
+                </select>
+            </div>
+            <div class="col-lg-3">
+                <label>Trạng thái</label>
+                @Html.DropDownListFor(model => model.Status, Model.StatusSelectList, "Tất cả")
+            </div>
+            <div class="col-lg-3 mb-lg-0 mb-2">
+                <label>Khoảng thời gian</label>
+                <div class="datepicker-to-from">
+                    <input autocomplete="off" id="date-range" value="@Model.StartTime @Model.EndTime" />
+                    <input type="hidden" id="startTime" name="startTime" class="date-picker" value="@Model.StartTime">
+                    <input type="hidden" id="endTime" name="endTime" class="date-picker" value="@Model.EndTime">
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <button type="submit" class="btn-search mb-3">Tìm kiếm</button>
+                <button type="submit" name="submit" value="delete" class="btn-search bg-danger mb-3">Xóa tất cả @Model.ApplyJobs.TotalItemCount</button>
+            </div>
+        </div>
+    </form>
+    <p>Có tổng <strong>@Model.ApplyJobs.TotalItemCount</strong> đơn ứng tuyển.</p>
+    <table class="list_table tablecenter table-striped">
+        <tbody>
+            <tr>
+
+                <th width="16%">Tên công việc</th>
+                <th width="10%">Nhà tuyển dụng</th>
+                <th width="8%">Ngày ứng tuyển</th>
+                <th width="20%">Thông tin</th>
+                <th width="26%">Nội dung</th>
+                <th width="12%">Trạng thái</th>
+                <th width="8%"></th>
+            </tr>
+            @foreach (var item in Model.ApplyJobs)
+            {
+                <tr data-id="@item.Id" class="text-sm">
+                    <td>
+                        <div class="text-left">
+                            <strong>
+                                <a href="@Url.Action("JobPostDetail", "Home", new {url = item.JobPost.Url, jobId = item.JobPost.Id})">
+                                    @item.JobPost.Name
+                                </a>
+                            </strong>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="text-left">
+                            @item.JobPost.Company.Name
+                        </div>
+                    </td>
+                    <td>@item.CreateDate.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <div class="text-left">
+                            @if (item.Candidate.Email != null)
+                            {
+                                <p class="mb-2">
+                                    Email: @item.Email
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="mb-2">
+                                    Email: @item.Candidate.User.Email
+                                </p>
+                            }
+                            <p class="mb-2">Ngày sinh: @item.Candidate.DateOfBirth.Value.ToString("dd/MM/yyyy")</p>
+                            @if (item.Phone != null)
+                            {
+                                <p class="mb-2">Số điện thoại: @item.Phone</p>
+                            }
+                        </div>
+                    </td>
+                    <td>@item.Body</td>
+                    <td>@Html.DisplayFor(a => item.Status)</td>
+                    <td>
+                        <a href="@Url.Action("PreviewCanidate", new {candidateId = item.UserId})" data-fancybox data-type="iframe">Xem hồ sơ -</a>
+                        <a href="javascript:;" onclick="deleteApplyJob('@item.Id')" class="red-warring">Xóa</a>
+                    </td>
+                </tr>
+            }
+            @if (Model.ApplyJobs.PageCount > 1)
+            {
+                <tr>
+                    <td colspan="9">
+                        @Html.PagedListPager(Model.ApplyJobs, page => Url.Action("ListApplyJob", new { page, keyword = Model.Keyword, sort = Model.Sort }))
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+@section scripts
+{
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/jquery.daterangepicker.js"></script>
+    <script type="text/javascript">
+        function deleteApplyJob(id) {
+            if (confirm("Bạn có chắc chắn xóa đơn ứng tuyển này không?")) {
+                $.post("/JobPostVcms/DeleteApplyJob", { applyJobId: id }, function (data) {
+                    if (data === "True") {
+                        $.toast({
+                            text: 'Xóa việc làm thành công',
+                            position: 'bottom-right',
+                            icon: 'success'
+                        });
+                        $("tr[data-id='" + id + "']").fadeOut();
+                    }
+                    else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            icon: 'error'
+                        });
+                    }
+                });
+            }
+        }
+        $('#date-range').dateRangePicker({
+            format: 'DD/MM/YYYY',
+            language: 'vn',
+            autoClose: true,
+            separator: ' đến ',
+            setValue: function (s, s1, s2) {
+                $(this).val(s);
+                $('#startTime').val(s1);
+                $('#endTime').val(s2);
+            },
+        });
+    </script>
+}
+
+

@@ -1,0 +1,174 @@
+﻿@model GlobeWork.ViewModel.AdminEditCompanyViewModel
+@{
+    ViewBag.Title = "Sửa thông tin công ty";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    .w100 {
+        width: 100% !important;
+    }
+
+    .load-order-view {
+        padding: 0 15px;
+    }
+
+    .vscomp-ele {
+        max-width: none;
+    }
+
+    .item {
+        margin-top: 24px;
+    }
+
+    .title {
+        font-size: 1.25rem;
+    }
+
+    .box {
+        margin-top: 16px;
+    }
+
+    .vscomp-toggle-all-button {
+        display: none !important;
+    }
+
+    .avatar {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+</style>
+
+<h2>Sửa thông tin công ty</h2>
+<a class="btn quick-link" href="@Url.Action("ListCompany")"><i class="far fa-list mr-1"></i> Danh sách công ty</a>
+<div class="box_content">
+    @if (ViewBag.Result == "success")
+    {
+        <div id="AlertBox" class="alert alert-success"><strong>Cập nhật thông tin thành công</strong></div>
+    }
+    @using (Html.BeginForm("EditCompany", "UserVcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+        <div class="top d-flex">
+            @if (Model.Avatar != null)
+            {
+                <img src="@Path.Combine("/images/user/", Model.Avatar)" class="avatar" />
+            }
+            else
+            {
+                <img src="~/Content/images/avatar.png" class="avatar" />
+            }
+            <div class="ml-lg-5 ml-3">
+                <p class="desc text-sm">
+                    Bạn có thể thay đổi hình đại diện khác. Nếu không sẽ sử dụng hình đại diện mặc định
+                </p>
+                @Html.TextBoxFor(model => model.Avatar, new { type = "file" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="item">
+                    <label>Tên đăng nhập*</label>
+                    @Html.TextBoxFor(model => model.UserName, new { @class = "form_control" })
+                    @Html.ValidationMessageFor(a => a.UserName)
+                </div>
+                <div class="item">
+                    <label>Mật khẩu*</label>
+                    @Html.PasswordFor(model => model.Password, new { @class = "form_control", placeholder = "Mật khẩu thành viên (Để trống nếu không thay đổi)" })
+                    @Html.ValidationMessageFor(a => a.Password)
+                </div>
+                <div class="item">
+                    <label>Cộng ngày Vip</label>
+                    @Html.EditorFor(model => model.TimeVip)
+                    @Html.ValidationMessageFor(model => model.TimeVip)
+                    @if (Model.Vipdate > DateTime.Now)
+                    {
+                        <span>Thời gian vip đến: <strong>@Model.Vipdate.ToString("HH:mm - dd/MM/yyyy")</strong></span>
+                    }
+                </div>
+                <div class="item">
+                    <label>Tên công ty*</label>
+                    @Html.EditorFor(model => model.NameCompany)
+                </div>
+                <div class="item">
+                    <label>Website</label>
+                    @Html.EditorFor(model => model.WebsiteUrl)
+                </div>
+                <div class="item">
+                    <label>Quy mô công ty</label>
+                    @Html.EditorFor(model => model.CompanySize)
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="item">
+                    <label>Email đăng ký*</label>
+                    @Html.TextBoxFor(model => model.EmailRegister, new { @class = "form_control" })
+                    @Html.ValidationMessageFor(a => a.EmailRegister)
+                </div>
+                <div class="item">
+                    <label>Email</label>
+                    @Html.EditorFor(model => model.Email)
+                </div>
+                <div class="item">
+                    <label>Số điện thoại</label>
+                    @Html.EditorFor(model => model.Phone)
+                </div>
+                <div class="item">
+                    <label>Ngày thành lập*</label>
+                    <input class="form_control datepicker" autocomplete="off" required type="text" name="EstablishmentDate" value="@Html.DisplayFor(model => model.EstablishmentDate)"/>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <h3 class="title">
+                Mô tả
+            </h3>
+            @Html.EditorFor(model => model.Body)
+        </div>
+        <div class="box">
+            <h3 class="title">
+                Tham khảo
+            </h3>
+            <div class="item">
+                <label>Ngành nghề*</label>
+                <select class="career" multiple required name="career" placeholder="Chọn hình thức">
+                    <option value="" selected disabled>Chọn hình thức</option>
+                    @foreach (var item in Model.CareerSelectList)
+                    {
+                        <option value="@item.Value" @if (Model.CareersCompany.Any(p => p.Id == Convert.ToInt32(item.Value))) { @Html.Raw("selected") }>@item.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="box">
+            <h3 class="title">
+                Địa điểm & bản đồ
+            </h3>
+            <div class="item">
+                <label>Địa điểm làm việc</label>
+                <select class="city" name="city" placeholder="Chọn thành phố">
+                    <option value="" selected disabled>Chọn chọn thành phố</option>
+                    @foreach (var item in Model.CitySelectList)
+                    {
+                        <option value="@item.Value" @if (Model.CityId == Convert.ToInt32(item.Value)) { @Html.Raw("selected") }>@item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="item">
+                <label>Địa chỉ</label>
+                @Html.EditorFor(model => model.Address)
+                @Html.ValidationMessageFor(model => model.Address)
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-search">Cập nhật thông tin</button>
+    }
+</div>
+@section scripts {
+    <script>
+        VitualSelect();
+    </script>
+}
+

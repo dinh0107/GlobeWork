@@ -1,0 +1,48 @@
+﻿@model GlobeWork.ViewModel.UploadJobViewModel
+@{
+    ViewBag.Title = "UploadJobs";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+<h2 class="mb-4">Upload file công việc theo công ty</h2>
+<a href="@Url.Action("ListJobPost", "JobPostVcms")" class="btn quick-link">Danh sách công việc</a>
+<div class="box_content">
+    @if (ViewBag.Result == 1)
+    {
+        <div id="AlertBox" class="alert alert-success">
+            <strong>Upload thông tin thành công</strong><br/>
+            Số thông tin @ViewBag.Count 
+        </div>
+    }
+    <div class="row">
+        <div class="col-lg-4 offset-lg-4">
+            <div class="mb-3">
+                <a href="@Path.Combine("/Content/images/uploadFileJob.xlsx")" target="_blank">Xem file mẫu</a>
+            </div>
+            @using (Html.BeginForm("UploadJobs", "UserVcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                if (Model.CompaniesSelectList.Any())
+                {
+                    @Html.DropDownListFor(m => Model.CompanyId, Model.CompaniesSelectList, "Tìm công ty", new { @class = "form_control" })
+                }
+                @Html.ValidationSummary(true)
+                @Html.AntiForgeryToken()
+                <div class="pt-3">
+                    <input type="file" name="fileUploadJobs" required="" accept=".xls, .xlsx"/>
+                    <span class="text-danger">Chấp nhận file xls, .xlsx và nhỏ hơn 100MB</span>
+                </div>
+                <div class="py-2">
+                    <button type="submit" class="btn-search">UPLOAD</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script>
+        $("#CompanyId").select2();
+    </script>
+}
+
+

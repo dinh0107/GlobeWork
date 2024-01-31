@@ -1,0 +1,189 @@
+﻿@model GlobeWork.Models.Candidate
+@{
+    ViewBag.Title = Model.Name;
+    Layout = "~/Views/Shared/_AdminIframeLayout.cshtml";
+}
+<style>
+    body {
+        font-size: 1rem;
+    }
+</style>
+<section class="candidate-detail py-lg-4 py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="box">
+                    <img src="~/Content/images/bg-candidate-detail.jpg" class="background" />
+                    <div class="p-lg-4 p-3">
+                        <div class="top mb-3">
+                            @if (Model.User.Avatar != null)
+                            {
+                                <img src="@Path.Combine("/images/user/", Model.User.Avatar)" class="avatar" alt="@Model.Name" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/images/avatar.png" class="avatar" alt="@Model.Name" />
+                            }
+                            <div class="info">
+                                <h1 class="name text-lg">
+                                    @Model.Name
+                                </h1>
+                                <h3 class="career-title text-md">
+                                    @Model.CareerTitle
+                                </h3>
+                            </div>
+                            <div class="meta ml-lg-5 ml-3">
+                                <span>
+                                    @if (Model.Email != null)
+                                    {
+                                        <strong>Email:</strong>
+                                        @Model.Email
+                                    }
+                                    else
+                                    {
+                                        <strong>Email: </strong>
+                                        @Model.User.EmailRegister
+                                    }
+                                </span>
+                                @if (Model.User.Phone != null)
+                                {
+                                    <span>
+                                        <strong>Số điện thoại: </strong>
+                                        @Model.User.Phone
+                                    </span>
+                                }
+                                @if (Model.DateOfBirth != null)
+                                {
+                                    <span>
+                                        <strong>Ngày sinh: </strong>
+                                        @Model.DateOfBirth.Value.ToString("dd/MM/yyyy")
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                        <div class="group-link">
+                            @if (Model.FileCv != null)
+                            {
+                                <a href="@Path.Combine("/fileCv/", Model.FileCv)">Tải xuống PDF</a>
+                            }
+                            <button class="btn ml-2" onclick="window.open('https://www.facebook.com/sharer.php?u='+encodeURIComponent(location.href)+'&amp;t='+encodeURIComponent(document.title));return false">Chia sẻ Profile</button>
+                        </div>
+                        @if (Model.Introduce != null)
+                        {
+                            <div class="desc">
+                                @Model.Introduce
+                            </div>
+                        }
+
+                    </div>
+                </div>
+                @if (Model.Education != null)
+                {
+                    <div class="box p-lg-4 p-3">
+                        <div class="title text-md mb-3 font-weight-bold">
+                            Học vấn
+                        </div>
+                        @Html.Raw(Model.Education)
+                    </div>
+                }
+                @if (Model.Experience != null)
+                {
+                    <div class="box p-lg-4 p-3">
+                        <div class="title text-md mb-3 font-weight-bold">
+                            Kinh nghiệm
+                        </div>
+                        @Html.Raw(Model.Experience)
+                    </div>
+                }
+            </div>
+            <div class="col-lg-4">
+                <div class="menu-sidebar bg-light-blue p-lg-4 p-3">
+                    <div class="box shadow-none mb-0">
+                        <div class="menu-title mb-5 text-md font-weight-bold">
+                            Thông tin
+                        </div>
+                        <div class="company-info">
+                            <div class="item mb-3">
+                                <span class="font-weight-bold mr-2 flex-shrink-0">Ngành nghề: </span>
+                                <span class="desc text-sm text-truncate" data-line="1">
+                                    @foreach (var item in Model.Careers)
+                                    {
+                                        <span class="text-sm">@item.Name,</span>
+                                    }
+                                </span>
+                            </div>
+                            <div class="item mb-3">
+                                <span class="font-weight-bold mr-2 flex-shrink-0">Cấp bậc: </span>
+                                <span class="desc text-sm text-truncate" data-line="1">
+                                    @foreach (var item in Model.Ranks)
+                                    {
+                                        <span class="text-sm">@item.Name,</span>
+                                    }
+                                </span>
+                            </div>
+                            <div class="item mb-3">
+                                <span class="font-weight-bold flex-shrink-0">Giới tính: </span>
+                                <span class="desc text-truncate text-sm" data-line="2">
+                                    @Html.DisplayFor(a => Model.Genders)
+                                </span>
+                            </div>
+                            <div class="item mb-3">
+                                <span class="font-weight-bold flex-shrink-0">Email: </span>
+                                @if (Model.Email != null)
+                                {
+                                    <span class="desc text-truncate text-sm" data-line="2">
+                                        @Model.Email
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="desc text-truncate text-sm" data-line="2">
+                                        @Model.User.EmailRegister
+                                    </span>
+                                }
+                            </div>
+                            @if (Model.Address != null)
+                            {
+                                <div class="item mb-3">
+                                    <span class="font-weight-bold flex-shrink-0">Địa chỉ:</span>
+                                    <span class="desc text-truncate text-sm" data-line="2">
+                                        @Model.Address
+                                    </span>
+                                </div>
+                            }
+                            <div class="item">
+                                <span class="font-weight-bold flex-shrink-0">Mạng xã hội: </span>
+                                <ul class="social">
+                                    <li>
+                                        <a href="@Model.User.Facebook">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="@Model.User.Twitter">
+                                            <i class="fab fa-twitter"></i>
+
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="@Model.User.Instagram">
+                                            <i class="fab fa-instagram"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="@Model.User.Youtube">
+                                            <i class="fab fa-youtube"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+

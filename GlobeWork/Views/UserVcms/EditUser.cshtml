@@ -1,0 +1,73 @@
+﻿@model GlobeWork.ViewModel.AdminEditUserViewModel
+@{
+    ViewBag.Title = "Cập nhật tài khoản người dùng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Cập nhật tài khoản người dùng</h2>
+<style>
+    .form_name {
+        width: 150px;
+    }
+</style>
+<a href="@Url.Action("ListUser")" class="btn quick-link">Danh sách thành viên</a>
+<div class="box_content">
+    @if (ViewBag.Result == 1)
+    {
+        <div class="alert alert-success">Cập nhật thành công.</div>}
+    @using (Html.BeginForm("EditUser", "UserVcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(a => a.Id)
+        <table class="form_table">
+            <tr>
+                <td class="form_name">Tên đăng nhập</td>
+                @*<td class="form_text">@Model.UserName</td>*@
+            </tr>
+            <tr>
+                <td class="form_name">Email</td>
+                <td class="form_text">@Html.TextBoxFor(a => a.EmailRegister)</td>
+                @Html.ValidationMessageFor(a => a.EmailRegister)
+
+            </tr>
+            <tr>
+                <td class="form_name">Điện thoại</td>
+                <td class="form_text">@Html.TextBoxFor(a => a.Phone)</td>
+                @Html.ValidationMessageFor(a => a.Phone)
+            </tr>
+            <tr>
+                <td class="form_name">Loại tài khoản</td>
+                <td class="form_text">@Html.DisplayFor(a => a.TypeUser)</td>
+            </tr>
+            <tr>
+                <td class="form_name">Ảnh</td>
+                <td class="form_text">
+                    @Html.TextBoxFor(a => a.Avatar, new { type = "file" })
+                </td>
+            </tr>
+
+            @if (Model.Avatar != null)
+            {
+                <tr>
+                    <td class="form_name"></td>
+                    <td class="form_text">
+                        <img src="@Path.Combine("/images/user/", Model.Avatar)" width="150" />
+                    </td>
+                </tr>
+            }
+
+            <tr>
+                <td class="form_name">Mật khẩu</td>
+                <td class="form_text">@Html.PasswordFor(a => a.Password, new { placeholder = "Để trống nếu không thay đổi" })</td>
+            </tr>
+            <tr>
+                <td class="form_name">Ngày đăng ký</td>
+                <td class="form_text">@Model.CreateDate.ToString("dd/MM/yyyy HH:mm")</td>
+            </tr>
+            <tr>
+                <td class="form_name"></td>
+                <td class="form_text"><input type="submit" class="btn quick-link" value="Cập nhật" /></td>
+            </tr>
+        </table>}
+</div>
+

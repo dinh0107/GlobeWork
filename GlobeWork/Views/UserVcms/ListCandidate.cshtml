@@ -1,0 +1,221 @@
+﻿@model GlobeWork.ViewModel.AdminListCandidateViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Danh sách ứng viên";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var i = 0;
+}
+<h2>Danh sách ứng viên</h2>
+<div class="box_content mt-0">
+    @if (ViewBag.Result == "success")
+    {
+        <div id="AlertBox" class="alert alert-success"><strong>Cập nhật thông tin thành công</strong></div>
+    }
+    <form action="@Url.Action("ListCandidate")" method="get">
+        <div class="row">
+            <div class="col-3">
+                <label>Họ và tên</label>
+                @Html.TextBoxFor(a => a.Name, new { @class = "form_control" })
+            </div>
+            <div class="col-3">
+                <label>Email</label>
+                @Html.TextBoxFor(a => a.Email, new { @class = "form_control" })
+            </div>
+            <div class="col-3">
+                <label>Trạng thái</label>
+                @Html.DropDownListFor(a => a.Status, Model.StatuSelectList, "Tất cả", new { @class = "form_control" })
+            </div>
+            <div class="col-lg-3 mb-lg-0 mb-2">
+                <label>Khoảng thời gian</label>
+                <div class="datepicker-to-from">
+                    <input autocomplete="off" id="date-range" value="@Model.StartTime @Model.EndTime" />
+                    <input type="hidden" id="startTime" name="startTime" class="date-picker" value="">
+                    <input type="hidden" id="endTime" name="endTime" class="date-picker" value="">
+                </div>
+            </div>
+            <div class="col-lg-3 mb-3">
+                <label>Ngành nghề</label>
+                <select class="filter" name="CareerIds" multiple="multiple">
+                    @foreach (var item in Model.CareerSelectList)
+                    {
+                        <option value="@item.Value" @if (Model.CareerIds.Contains(Convert.ToInt32(item.Value))) { @Html.Raw("selected") } )>@item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-lg-3 mb-3">
+                <label>Thành phố</label>
+                <select class="filter" name="CityIds" multiple="multiple">
+                    @foreach (var item in Model.CitySelectList)
+                    {
+                        <option value="@item.Value" @if (Model.CityIds.Contains(Convert.ToInt32(item.Value))) { @Html.Raw("selected") } )>@item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-lg-3 mb-3">
+                <label>Kỹ năng</label>
+                <select class="filter" name="SkillIds" multiple="multiple">
+                    @foreach (var item in Model.SkillSelectList)
+                    {
+                        <option value="@item.Value" @if (Model.SkillIds.Contains(Convert.ToInt32(item.Value))) { @Html.Raw("selected") } )>@item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-lg-3 mb-3">
+                <label>Cấp bậc</label>
+                <select class="filter" name="RankIds" multiple="multiple">
+                    @foreach (var item in Model.RankSelectList)
+                    {
+                        <option value="@item.Value" @if (Model.RankIds.Contains(Convert.ToInt32(item.Value))) { @Html.Raw("selected") } )>@item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-lg-3 mb-3">
+                <label>Hình thức công việc</label>
+                <select class="filter" name="JobTypeIds" multiple="multiple">
+                    @foreach (var item in Model.JobTypeSelectList)
+                    {
+                        <option value="@item.Value" @if (Model.JobTypeIds.Contains(Convert.ToInt32(item.Value))) { @Html.Raw("selected") } )>@item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-lg-3 mb-3 align-self-center">
+                <div class="form-group">
+                    <button type="submit" class="btn-search">Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <p>Có tổng số <strong>@Model.Candidates.TotalItemCount</strong> ứng viên</p>
+    <form id="productList">
+        <table class="list_table tablecenter table-striped">
+            <tbody>
+                <tr>
+                    <th style="width: 100px">STT</th>
+                    <th>Họ và tên</th>
+                    <th>Ngành nghề</th>
+                    <th>CV</th>
+                    <th>Ngày sinh</th>
+                    <th>Email</th>
+                    <th>Công khai TT</th>
+                    <th style="width: 240px;"></th>
+                </tr>
+                @foreach (var candidate in Model.Candidates)
+                {
+                    i++;
+                    <tr data-id="@candidate.UserId">
+                        <td>@i</td>
+                        <td>@candidate.Name</td>
+                        <td>@candidate.CareerTitle</td>
+                        <td>
+                            @if (candidate.FileCv != null)
+                            {
+                                <a href="@Path.Combine("/fileCv/", candidate.FileCv)" target="_blank">
+                                    @candidate.FileCv
+                                </a>
+                            }
+                            else
+                            {
+                                @:-
+                            }
+                        </td>
+                        <td>@Html.DisplayFor(a => candidate.DateOfBirth)</td>
+                        <td>@candidate.User.UserName / @candidate.Email</td>
+                        <td>@Html.EditorFor(a => candidate.ActiveProfile)</td>
+                        <td>
+                            <a href="@Url.Action("PreviewCanidate", new {candidateId = candidate.UserId})" data-fancybox data-type="iframe">Xem hồ sơ -</a>
+                            <a href="javascript:;" onclick="updateCanidate('@candidate.UserId')">Cập nhật - </a>
+                            <a href="@Url.Action("EditCandidate", new{candidateId = candidate.UserId})">Sửa</a>
+                            @*- <a href="javascript:;" onclick="deleteCanidate('@candidate.UserId')" class="red-warring">Xóa</a>*@
+                        </td>
+                    </tr>
+                }
+                @if (Model.Candidates.PageCount > 1)
+                {
+                    <tr>
+                        <td colspan="9">
+                            @Html.PagedListPager(Model.Candidates, page => Url.Action("ListCandidate", new
+                           {
+                               page,
+                               startTime = Model.StartTime,
+                               endTime = Model.EndTime,
+                               name = Model.Name,
+                               email = Model.Email,
+                               //careerIds = Model.CareerIds,
+                               //cityIds = Model.CityIds,
+                               //rankIds = Model.RankIds,
+                               //jobTypeIds = Model.JobTypeIds,
+                               //skillIds = Model.CityIds,
+                           }))
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
+</div>
+@section scripts {
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/jquery.daterangepicker.js"></script>
+    <script type="text/javascript">
+        function deleteCanidate(id) {
+            if (confirm("Bạn có chắc chắn xóa ứng viên này không?")) {
+                $.post("/UserVcms/DeleteCanidate",
+                    { userId: id },
+                    function (data) {
+                        if (data) {
+                            $.toast({
+                                text: 'Xóa công ty thành công',
+                                position: 'bottom-right',
+                                icon: 'success',
+                            })
+                            $("tr[data-id='" + id + "']").fadeOut();
+                        } else {
+                            $.toast({
+                                text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                                icon: 'error',
+                            })
+                        }
+                    });
+            }
+        }
+
+        function updateCanidate(id) {
+            var elm = $('tr[data-id="' + id + '"]');
+            var activeProfile = elm.find("input#candidate_ActiveProfile").prop("checked");
+
+            $.post("/UserVcms/QuickUpdateCandidate",
+                { candidateId: id, activeProfile },
+                function (data) {
+                    if (data) {
+                        $.toast({
+                            text: 'Cập nhật thành công',
+                            position: 'bottom-right',
+                            icon: 'success',
+                        })
+                    } else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            position: 'bottom-right',
+                            icon: 'error',
+                        })
+                        window.location.reload();
+                    };
+                });
+        }
+
+        $('#date-range').dateRangePicker({
+            format: 'DD/MM/YYYY',
+            language: 'vn',
+            autoClose: true,
+            separator: ' đến ',
+            setValue: function (s, s1, s2) {
+                $(this).val(s);
+                $('#startTime').val(s1);
+                $('#endTime').val(s2);
+            },
+        });
+
+        Select2();
+    </script>
+
+}

@@ -7,13 +7,13 @@ namespace GlobeWork.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class ad1 : IMigrationMetadata
+    public sealed partial class add1 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ad1));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(add1));
         
         string IMigrationMetadata.Id
         {
-            get { return "202401301348433_ad1"; }
+            get { return "202401311218050_add1"; }
         }
         
         string IMigrationMetadata.Source

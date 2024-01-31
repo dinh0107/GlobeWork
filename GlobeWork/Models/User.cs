@@ -10,6 +10,7 @@ namespace GlobeWork.Models
     public class User
     {
         public int Id { get; set; }
+        [Display(Name ="Họ và tên")]
         public string FullName { get; set; }
         [StringLength(50), Display(Name = "Tên đăng nhập")]
         public string Username { get; set; }
@@ -23,14 +24,24 @@ namespace GlobeWork.Models
         public string Avatar { get; set; }
         [Display(Name = "Hoạt động")]
         public bool Active { get; set; }
-
+        public string Url { get; set; }
+        [Display(Name = "Hoạt động")]
+        public string Address { get; set; }
+        [Display(Name = "Giới tính")]
+        public string  Gender { get; set; }
+        [Display(Name = "Chức vụ")]
+        public string Classtify { get; set; }
+        [Display(Name = "Tên công ty")]
+        public string CompanyName { get; set; }
         //Facebook Info
         public string FaceBookId { get; set; }
         //Google Info
         public string GoogleId { get; set; }
+        //Linkedin Info
+        public string LinkedinId { get; set; }
         public string Token { get; set; }
+
         public DateTime CreateDate { get; set; }
-        public TypeUser TypeUser { get; set; }
         public TypeRegister TypeRegister { get; set; }
         public User()
         {
@@ -39,14 +50,6 @@ namespace GlobeWork.Models
             Token = HtmlHelpers.RandomCode(50);
         }
     }
-    public enum TypeUser
-    {
-        [Display(Name ="Nhà tuyển dụng")]
-        Employer,
-        [Display(Name = "Người dùng")]
-        User,
-    }
-
     public enum TypeRegister
     {
         [Display(Name = "Website")]

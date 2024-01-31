@@ -1,18 +1,15 @@
-﻿<form class="customer-form" style="min-width:50%;">
+﻿@model GlobeWork.Models.User
+<form class="customer-form" style="min-width:50%;">
     <div class="title--child">
         Thông tin cá nhân
     </div>
     <hr />
     <div class="form-group">
-        <label>
-            Họ và tên*
-        </label>
-        <input type="text" name="name" value="" placeholder="Nhập họ và tên" class="form-control" />
+        @Html.LabelFor(a => a.FullName)
+        @Html.TextBoxFor(a => a.FullName , new { @placeholder = "Nhập họ và tên" , @class="form-control"})
     </div>
     <div class="form-group">
-        <label>
-            Vị trí*
-        </label>
+        @Html.LabelFor(a => a.FullName)
         <input type="text" name="name" value="" placeholder="Nhân viên văn phòng" class="form-control" />
     </div>
     <div class="form-group">

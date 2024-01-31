@@ -59,15 +59,18 @@
                         </div>
                     </li>
                     <li data-id="2">
-                        <a class="root"><span>Quản lý Địa danh</span><i class="fas fa-caret-down"></i></a>
+                        <a class="root"><span>Quản lý việc làm</span><i class="fas fa-caret-down"></i></a>
                         <div class="sub hidden">
-                            <div>@Html.ActionLink("Quản lý địa danh", "City", "Vcms", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Danh sách việc làm", "ListJobPost", "JobPostVcms", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Danh sách đơn ứng tuyển", "ListApplyJob", "JobPostVcms", null, new { @class = "text_link" })</div>
                         </div>
                     </li>
                     <li data-id="3">
-                        <a class="root"><span>Quản lý Người dùng</span><i class="fas fa-caret-down"></i></a>
+                        <a class="root"><span>Quản lý người dùng</span><i class="fas fa-caret-down"></i></a>
                         <div class="sub hidden">
-                            <div>@Html.ActionLink("Danh sách người dùng", "ListUser", "Vcms", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Danh sách tài khoản", "ListUser", "UserVcms", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Danh sách công ty", "ListCompany", "UserVcms", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Danh sách ứng viên", "ListCandidate", "UserVcms", null, new { @class = "text_link" })</div>
                         </div>
                     </li>
                     <li data-id="4">

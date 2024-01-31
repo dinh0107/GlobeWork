@@ -1,0 +1,138 @@
+﻿@model GlobeWork.ViewModel.EmployerRegisterViewModel
+@{
+    ViewBag.Title = "Đăng ký tài khoản nhà tuyển dụng";
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("Employer");
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<div class="d-lg-flex half">
+    <div class="bg order-1 order-md-2"></div>
+    <div class="contents order-2 order-md-1">
+        <a href="/">
+            <img src="~/Content/images/z5108183533913_f5a32e9f0440e3b6d60d9c260e3e82c8.jpg" alt="Đăng nhập" class="logo-form" />
+        </a>
+        <div class="title-form">
+            Đăng ký tài khoản Nhà tuyển dụng
+        </div>
+        <div class="title-form_sub">
+            Cùng tạo dựng lợi thế cho doanh nghiệp bằng trải nghiệm công nghệ tuyển dụng ứng dụng sâu
+        </div>
+        @using (Html.BeginForm("Employer", "User", FormMethod.Post, new { @class = "user-form" }))
+        {
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+
+            @Html.LabelFor(a => a.Email)
+            <div class="form-group form-control control-user">
+                <i class="fas fa-user"></i>
+                @Html.TextBoxFor(a => a.Email, new { @placeholder = "Email" })
+            </div>
+            @Html.ValidationMessageFor(a => a.Password)
+            @Html.LabelFor(a => a.Password)
+            <div class="form-group form-control control-user">
+                <i class="fas fa-user"></i>
+                @Html.TextBoxFor(a => a.Password, new { @placeholder = "Nhập mật khẩu" })
+            </div>
+            @Html.ValidationMessageFor(a => a.Password)
+            @Html.LabelFor(a => a.ConfirmPassword)
+            <div class="form-group form-control control-user">
+                <i class="fas fa-user"></i>
+                @Html.TextBoxFor(a => a.ConfirmPassword, new { @placeholder = "Nhập lại mật khẩu" })
+            </div>
+            @Html.ValidationMessageFor(a => a.ConfirmPassword)
+            @Html.LabelFor(a => a.ConfirmPassword)
+            <div class="form-group form-control control-user">
+                <i class="fas fa-user"></i>
+                @Html.TextBoxFor(a => a.ConfirmPassword, new { @placeholder = "Nhập lại mật khẩu" })
+            </div>
+            @Html.ValidationMessageFor(a => a.ConfirmPassword)
+            <div class="title-form">
+                Thông tin nhà tuyển dụng
+            </div>
+            <div class="row">
+                <div class="col-lg-7">
+                    @Html.LabelFor(a => a.FullName)
+                    <div class="form-group form-control control-user">
+                        <i class="fas fa-user"></i>
+                        @Html.TextBoxFor(a => a.FullName, new { @placeholder = "Họ và tên" })
+                    </div>
+                    @Html.ValidationMessageFor(a => a.FullName)
+                </div>
+                <div class="col-lg-5">
+                    @Html.LabelFor(a => a.Gender)
+                    <div class="form-group  control-user">
+                        <div class="checkbox-wrapper-18">
+                            <div class="round">
+                                <input type="radio" id="checkbox-18" name="Gender" value="Nam" checked />
+                                <label for="checkbox-18"></label>
+                                Nam
+                            </div>
+                        </div>
+                        <div class="checkbox-wrapper-18 ml-4">
+                            <div class="round">
+                                <input type="radio" id="checkbox-19" name="Gender" value="Nữ" />
+                                <label for="checkbox-19"></label>
+                                Nữ
+                            </div>
+                        </div>
+                    </div>
+                    @Html.ValidationMessageFor(a => a.FullName)
+                </div>
+            </div>
+            @Html.LabelFor(a => a.PhoneNumber)
+            <div class="form-group form-control control-user">
+                <i class="fas fa-user"></i>
+                @Html.TextBoxFor(a => a.PhoneNumber, new { @placeholder = "Nhập số điện thoại" })
+            </div>
+            @Html.ValidationMessageFor(a => a.PhoneNumber)
+            <div class="row">
+                <div class="col-6">
+                    @Html.LabelFor(a => a.CompanyName)
+                    <div class="form-group form-control control-user">
+                        <i class="fas fa-user"></i>
+                        @Html.TextBoxFor(a => a.CompanyName, new { @placeholder = "Nhập tên công ty" })
+                    </div>
+                    @Html.ValidationMessageFor(a => a.CompanyName)
+                </div>
+                <div class="col-6">
+                    @Html.LabelFor(a => a.RankId)
+                    <div class="form-group form-control control-user">
+                        <i class="fas fa-user"></i>
+                        <select name="RankId">
+                            @foreach (var item in Model.Ranks)
+                            {
+                                <option value="@item.Id">
+                                    @item.Name
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    @Html.ValidationMessageFor(a => a.RankId)
+                </div>
+                <div class="col-6">
+
+                </div>
+                <div class="col-6">
+
+                </div>
+            </div>
+            <button type="submit" class="submit-form btn btn-block form-group">
+                Đăng ký
+            </button>
+        }
+        <div class="text-center">
+            Bạn đã có tài khoản? <a href="@Url.Action("Login", "User")" class="text-success">Đăng nhập ngay</a>
+        </div>
+        <hr />
+        <div class="text-center">
+            <strong> Bạn gặp khó khăn khi tạo tài khoản?</strong>
+            <br />
+            Vui lòng gọi tới số <a href="tel" class="text-success">024 6660 5588</a> (giờ hành chính).
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        User();
+    </script>
+}
+

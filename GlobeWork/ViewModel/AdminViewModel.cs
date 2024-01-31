@@ -64,4 +64,42 @@ namespace GlobeWork.ViewModel
         [Display(Name = "Mật khẩu"), UIHint("Password"), StringLength(20, MinimumLength = 6, ErrorMessage = "Mật khẩu từ 6 - 20 ký tự")]
         public string Password { get; set; }
     }
+
+    public class AdminEditUserViewModel
+    {
+        public int Id { get; set; }
+        [Display(Name = "Tên đăng nhập"), StringLength(50, ErrorMessage = "Tối đa 50 ký tự")]
+        public string Username { get; set; }
+        [DisplayName("Mật khẩu"), StringLength(60, MinimumLength = 6, ErrorMessage = "Mật khẩu từ 6 - 60 ký tự")]
+        public string Password { get; set; }
+        [Display(Name = "Số điện thoại"), Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
+        public string Phone { get; set; }
+        [StringLength(50, ErrorMessage = "Tối đa 50 ký tự"), Display(Name = "Địa chỉ email"), EmailAddress(ErrorMessage = "Email không chính xác"), Required(ErrorMessage = "Bạn vui lòng nhập email")]
+        public string EmailRegister { get; set; }
+        [StringLength(500)]
+        public string Avatar { get; set; }
+        public DateTime CreateDate { get; set; }
+    }
+
+    public class ListMemberViewModel
+    {
+        public IPagedList<User> Users { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public int? Status { get; set; }
+        public int? TypeUser { get; set; }
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
+        public SelectList StatuSelectList { get; }
+        public SelectList TypeUserSelectList { get; }
+
+        public ListMemberViewModel()
+        {
+            var status = new Dictionary<int, string> { { 1, "Kích hoạt" }, { 2, "Chưa kích hoạt" } };
+            StatuSelectList = new SelectList(status, "Key", "Value");
+            var typeUser = new Dictionary<int, string> { { 1, "Ứng viên" }, { 2, "Nhà tuyển dụng" } };
+            TypeUserSelectList = new SelectList(typeUser, "Key", "Value");
+        }
+
+    }
 }

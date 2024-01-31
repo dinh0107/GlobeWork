@@ -1,5 +1,8 @@
 ﻿@{
     var FullName = ViewContext.RouteData.Values["FullName"].ToString();
+    var id = ViewContext.RouteData.Values["Id"].ToString();
+    var avatar = ViewContext.RouteData.Values["Avatar"].ToString();
+    var email = ViewContext.RouteData.Values["Email"].ToString();
 }
 <header class="shadow">
     <div class="container">
@@ -18,12 +21,62 @@
                     <li><a href="">Liên hệ</a></li>
                 </ul>
             </div>
-            <div class="col-lg-3">
-                <div class="d-flex align-items-center h-100 justify-content-end" style="gap:10px;">
-                    <a href="@Url.Action("Register", "User")" class="user-action">Đăng ký</a>
-                    <a href="@Url.Action("Login", "User")" class="user-action opacity-1">Đăng nhập</a>
-                </div>
+            <div class="col-lg-3 d-flex align-items-center justify-content-end position-relative">
+                @if (id == "")
+                {
+                    <div class="d-flex align-items-center h-100 justify-content-end" style="gap:10px;">
+                        <a href="@Url.Action("Register", "User")" class="user-action">Đăng ký</a>
+                        <a href="@Url.Action("Login", "User")" class="user-action opacity-1">Đăng nhập</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="navbar-right__item group media">
+                        @if (avatar == "")
+                        {
+                            <img src="~/Content/images/avatar-default.jpg" alt="@FullName" />
+                        }
+                        else
+                        {
+                            <img src="@Path.Combine("/images/users/", avatar)" alt="@FullName" />
+                        }
+                        <div class="media-body">
+                            @FullName
+                        </div>
+                        <div class="navbar__item__dropdown-menu">
+                            <div class="media align-items-center">
+                                @if (avatar == "")
+                                {
+                                    <img src="~/Content/images/avatar-default.jpg" alt="@FullName" />
+                                }
+                                else
+                                {
+                                    <img src="@Path.Combine("/images/users/", avatar)" alt="@FullName" />
+                                }
+                                <div class="media-body">
+                                    <span class="name">@FullName</span>
+                                    <div class="email">
+                                        @email
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <a href="@Url.Action("UserProfile", "User")" class="navbar-btn">
+                                <i class="icon fa-regular fa-pen-to-square"></i>
+                                Thông tin cá nhân
+                            </a>
+                            <a href="" class="navbar-btn">
+                                <i class="icon fa-regular fa-lock"></i>
+                                Đổi mật khẩu
+                            </a>
+                            <a href="@Url.Action("Logout", "User")" class="navbar-btn">
+                                <i class="icon fa-regular fa-arrow-right-from-bracket"></i>
+                                Đăng xuất
+                            </a>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>
-</header>
+</header>   

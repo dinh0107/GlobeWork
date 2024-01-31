@@ -1,0 +1,127 @@
+﻿@model GlobeWork.ViewModel.ListMemberViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Danh sách người dùng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var i = 0;
+}
+<h2>Danh sách người dùng</h2>
+<div class="box_content mt-0">
+    <form action="@Url.Action("ListUser")" method="get">
+        <div class="row">
+            <div class="col-3">
+                <label>Họ và tên</label>
+                @Html.TextBoxFor(a => a.Name, new { @class = "form_control" })
+            </div>
+            <div class="col-3">
+                <label>Email</label>
+                @Html.TextBoxFor(a => a.Email, new { @class = "form_control" })
+            </div>
+            <div class="col-3">
+                <label>Trạng thái</label>
+                @Html.DropDownListFor(a => a.Status, Model.StatuSelectList, "Tất cả", new { @class = "form_control" })
+            </div>
+            <div class="col-3">
+                <label>Loại tài khoản</label>
+                @Html.DropDownListFor(a => a.TypeUser, Model.TypeUserSelectList, "Tất cả", new { @class = "form_control" })
+            </div>
+            <div class="col-lg-3 mb-lg-0 mb-2">
+                <label>Khoảng thời gian</label>
+                <div class="datepicker-to-from">
+                    <input autocomplete="off" id="date-range" value="@Model.StartTime @Model.EndTime" />
+                    <input type="hidden" id="startTime" name="startTime" class="date-picker" value="">
+                    <input type="hidden" id="endTime" name="endTime" class="date-picker" value="">
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <button type="submit" class="btn-search mb-3">Tìm kiếm</button>
+            </div>
+        </div>
+    </form>
+    <p>Có tổng số <strong>@Model.Users.TotalItemCount</strong> tài khoản</p>
+    <form id="productList">
+        <table class="list_table tablecenter table-striped mt-3">
+            <tbody>
+                <tr>
+                    <th style="width: 100px">STT</th>
+                    <th>Tên đăng nhập</th>
+                    <th>Email đăng ký</th>
+                    <th>Ngày tạo</th>
+                    <th>Kích hoạt</th>
+                    <th>Loại tài khoản</th>
+                    <th style="width: 140px;"></th>
+                </tr>
+                @foreach (var user in Model.Users)
+                {
+                    i++;
+                    <tr data-id="@user.Id">
+                        <td>@i</td>
+                        <td>@user.Username</td>
+                        <td>@user.Email</td>
+                        <td>@user.CreateDate.ToString("dd/MM/yyyy")</td>
+                        <td>@Html.DisplayFor(a => user.Active)</td>
+                        <td>@Html.DisplayFor(a => user.TypeUser)</td>
+                        <td>
+                            <a href="@Url.Action("EditUser", new{userId = user.Id})">Sửa</a>
+                            - <a href="javascript:;" onclick="deleteUser('@user.Id')" class="red-warring">Xóa</a>
+                        </td>
+                    </tr>
+                }
+                @if (Model.Users.PageCount > 1)
+                {
+                    <tr>
+                        <td colspan="9">
+                            @Html.PagedListPager(Model.Users, page => Url.Action("ListUser", new
+                            {
+                                page,
+                                name = Model.Name,
+                                status = Model.Status,
+                                startTime = Model.StartTime,
+                                endTime = Model.EndTime,
+                                typeUser = Model.TypeUser
+                            }))
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
+</div>
+@section scripts {
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/jquery.daterangepicker.js"></script>
+    <script type="text/javascript">
+        function deleteUser(id) {
+            if (confirm("Bạn có chắc chắn xóa tài khoản này không?")) {
+                $.post("/UserVcms/DeleteUser", { userId: id }, function (data) {
+                    if (data) {
+                        $.toast({
+                            text: 'Xóa tài khoản thành công',
+                            position: 'bottom-right',
+                            icon: 'success'
+                        });
+                        $("tr[data-id='" + id + "']").fadeOut();
+                    }
+                    else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            icon: 'error'
+                        });
+                    }
+                });
+            }
+        }
+
+        $('#date-range').dateRangePicker({
+            format: 'DD/MM/YYYY',
+            language: 'vn',
+            autoClose: true,
+            separator: ' đến ',
+            setValue: function (s, s1, s2) {
+                $(this).val(s);
+                $('#startTime').val(s1);
+                $('#endTime').val(s2);
+            }
+        });
+    </script>
+}

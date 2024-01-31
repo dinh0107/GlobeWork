@@ -49,6 +49,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\.NET Library\CKFinder.dll</HintPath>
     </Reference>
+    <Reference Include="CloudrailSI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinkedIn.Api.1.0.6\lib\CloudrailSI.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -68,6 +71,9 @@
     <Reference Include="ImageResizer, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ImageResizer.4.2.8\lib\net45\ImageResizer.dll</HintPath>
     </Reference>
+    <Reference Include="LinkedinLogin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinkedinLogin.1.0.0\lib\net47\LinkedinLogin.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\lib\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -75,11 +81,20 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="OpenSSL.PrivateKeyDecoder, Version=1.2.0.0, Culture=neutral, PublicKeyToken=78f5ba1b024431f9, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenSSL.PrivateKeyDecoder.1.2.0\lib\net45\OpenSSL.PrivateKeyDecoder.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenSSL.X509Certificate2.Provider, Version=1.2.0.0, Culture=neutral, PublicKeyToken=78f5ba1b024431f9, processorArchitecture=MSIL">
+      <HintPath>..\packages\OpenSSL.X509Certificate2.Provider.1.2.0\lib\net45\OpenSSL.X509Certificate2.Provider.dll</HintPath>
+    </Reference>
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
     <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp, Version=110.2.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.110.2.0\lib\net471\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -141,9 +156,13 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\EmployerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JobPostVcmsController.cs" />
+    <Compile Include="Controllers\UploaderController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\UserVcmsController.cs" />
     <Compile Include="Controllers\VcmsController.cs" />
     <Compile Include="DAL\DataEntities.cs" />
     <Compile Include="DAL\GenericRepository.cs" />
@@ -152,23 +171,33 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202401301022270_ad.cs" />
-    <Compile Include="Migrations\202401301022270_ad.Designer.cs">
-      <DependentUpon>202401301022270_ad.cs</DependentUpon>
+    <Compile Include="Migrations\202401311147506_add.cs" />
+    <Compile Include="Migrations\202401311147506_add.designer.cs">
+      <DependentUpon>202401311147506_add.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202401301348433_ad1.cs" />
-    <Compile Include="Migrations\202401301348433_ad1.designer.cs">
-      <DependentUpon>202401301348433_ad1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202401301405139_ad2.cs" />
-    <Compile Include="Migrations\202401301405139_ad2.designer.cs">
-      <DependentUpon>202401301405139_ad2.cs</DependentUpon>
+    <Compile Include="Migrations\202401311218050_add1.cs" />
+    <Compile Include="Migrations\202401311218050_add1.designer.cs">
+      <DependentUpon>202401311218050_add1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
+    <Compile Include="Models\ApplyJob.cs" />
+    <Compile Include="Models\Candidate.cs" />
+    <Compile Include="Models\Career.cs" />
+    <Compile Include="Models\City.cs" />
+    <Compile Include="Models\Company.cs" />
+    <Compile Include="Models\District.cs" />
+    <Compile Include="Models\Employer.cs" />
+    <Compile Include="Models\JobPost.cs" />
+    <Compile Include="Models\JobType.cs" />
+    <Compile Include="Models\Rank.cs" />
+    <Compile Include="Models\Skill.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\AdminViewModel.cs" />
+    <Compile Include="ViewModel\DashboardViewModel.cs" />
+    <Compile Include="ViewModel\JobViewModel.cs" />
+    <Compile Include="ViewModel\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\adminSite.css" />
@@ -205,11 +234,14 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\datepicker.css" />
+    <Content Include="Content\images\avatar-default.jpg" />
     <Content Include="Content\images\banner-com.jpg" />
     <Content Include="Content\images\banner-footer.jpg" />
     <Content Include="Content\images\banner-login.jpg" />
     <Content Include="Content\images\banner.jpg" />
+    <Content Include="Content\images\base64.gif" />
     <Content Include="Content\images\bct.png" />
+    <Content Include="Content\images\bussiness.efbec2d.png" />
     <Content Include="Content\images\company-banner.jpg" />
     <Content Include="Content\images\cty.png" />
     <Content Include="Content\images\duhoc.jpg" />
@@ -218,6 +250,7 @@
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\nganh-nghe.png" />
     <Content Include="Content\images\anhhocbong.png" />
+    <Content Include="Content\images\student.c1c39ee.png" />
     <Content Include="Content\images\tag.png" />
     <Content Include="Content\images\twitter.png" />
     <Content Include="Content\images\user.jpg" />
@@ -283,6 +316,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="LinkedIn-Icon-Logo.wine.ico" />
     <Content Include="Scripts\aos.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -1387,6 +1421,20 @@
     <Content Include="Views\Vcms\Login.cshtml" />
     <Content Include="Views\Vcms\Showroom.cshtml" />
     <Content Include="Views\Vcms\UpdateShowroom.cshtml" />
+    <Content Include="Views\JobPostVcms\ListApplyByJobPost.cshtml" />
+    <Content Include="Views\JobPostVcms\ListApplyJob.cshtml" />
+    <Content Include="Views\JobPostVcms\ListJobPost.cshtml" />
+    <Content Include="Views\JobPostVcms\PreviewCanidate.cshtml" />
+    <Content Include="Views\JobPostVcms\UpdateJobPostVcms.cshtml" />
+    <Content Include="Views\UserVcms\EditCandidate.cshtml" />
+    <Content Include="Views\UserVcms\EditCompany.cshtml" />
+    <Content Include="Views\UserVcms\EditUser.cshtml" />
+    <Content Include="Views\UserVcms\ListCandidate.cshtml" />
+    <Content Include="Views\UserVcms\ListCompany.cshtml" />
+    <Content Include="Views\UserVcms\ListUser.cshtml" />
+    <Content Include="Views\UserVcms\PreviewCanidate.cshtml" />
+    <Content Include="Views\UserVcms\UploadJobs.cshtml" />
+    <Content Include="Views\User\Employer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1403,14 +1451,11 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202401301022270_ad.resx">
-      <DependentUpon>202401301022270_ad.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202401311147506_add.resx">
+      <DependentUpon>202401311147506_add.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202401301348433_ad1.resx">
-      <DependentUpon>202401301348433_ad1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202401301405139_ad2.resx">
-      <DependentUpon>202401301405139_ad2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202401311218050_add1.resx">
+      <DependentUpon>202401311218050_add1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

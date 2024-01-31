@@ -1,0 +1,236 @@
+﻿@model GlobeWork.ViewModel.AdminListCompanyViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Danh sách công ty";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var i = 0;
+}
+<h2>Danh sách người dùng</h2>
+<div class="box_content mt-0">
+    @if (ViewBag.Result == "success")
+    {
+        <div id="AlertBox" class="alert alert-success"><strong>Cập nhật thông tin thành công</strong></div>
+    }
+    <form action="@Url.Action("ListCompany")" method="get">
+        <div class="row">
+            <div class="col-3">
+                <label>Tên công ty</label>
+                @Html.TextBoxFor(a => a.Name, new { @class = "form_control" })
+            </div>
+            <div class="col-3">
+                <label>Email</label>
+                @Html.TextBoxFor(a => a.Email, new { @class = "form_control" })
+            </div>
+            <div class="col-lg-3 mb-lg-0 mb-2">
+                <label>Khoảng thời gian</label>
+                <div class="datepicker-to-from">
+                    <input autocomplete="off" id="date-range" value="@Model.StartTime @Model.EndTime" />
+                    <input type="hidden" id="startTime" name="startTime" class="date-picker" value="">
+                    <input type="hidden" id="endTime" name="endTime" class="date-picker" value="">
+                </div>
+            </div>
+            <div class="col-lg-3 mb-3">
+                <label>Ngành nghề</label>
+                <select class="filter" name="CareerIds" multiple="multiple">
+                    @foreach (var item in Model.CareerSelectList)
+                    {
+                        <option value="@item.Value" @if (Model.CareerIds.Contains(Convert.ToInt32(item.Value))) { @Html.Raw("selected") } )>@item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-lg-3 mb-3">
+                <label>Thành phố</label>
+                <select class="filter" name="CityIds" multiple="multiple">
+                    @foreach (var item in Model.CitySelectList)
+                    {
+                        <option value="@item.Value" @if (Model.CityIds.Contains(Convert.ToInt32(item.Value))) { @Html.Raw("selected") } )>@item.Text</option>
+                    }
+                </select>
+            </div>
+            <div class="col-lg-3 mb-3">
+                <label>Trạng thái tài khoản</label>
+                <select name="Status">
+                    <option value="">Hoạt động</option>
+                    <option value="1" @if (Model.Status == 1) { @Html.Raw("selected='selected'") }>
+                        Khóa
+                    </option>
+                </select>
+            </div>
+            <div class="col-3 align-self-center">
+                <div class="form-group">
+                    <button type="submit" class="btn-search">Tìm kiếm</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <p>Có tổng số <strong>@Model.Companies.TotalItemCount</strong> công ty</p>
+    <form id="productList">
+        <table class="list_table tablecenter table-striped">
+            <tbody>
+                <tr>
+                    <th style="width: 100px">STT</th>
+                    <th>Tên đăng nhập</th>
+                    <th>Tên công ty</th>
+                    <th>Email nhận tin</th>
+                    <th>Website</th>
+                    <th>Quy mô</th>
+                    <th>Hiện trang chủ</th>
+                    <th>Xác thực</th>
+                    <th style="width: 200px;"></th>
+                </tr>
+                @foreach (var company in Model.Companies)
+                {
+                    i++;
+                    <tr data-id="@company.UserId">
+                        <td>
+                            @Html.HiddenFor(a => company.UserId)
+                            @i
+                        </td>
+                        <td>@company.User.Username</td>
+                        <td>
+                            <div class="position-relative">
+                                @company.Name
+                                @if (company.Vipdate > DateTime.Now)
+                                {
+                                    <span class="isvip">
+                                        vip
+                                    </span>
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            @if (company.Email != null)
+                            {
+                                @company.Email
+                            }
+                            else
+                            {
+                                @company.User.Username
+                            }
+
+                        </td>
+                        <td>@company.WebsiteUrl</td>
+                        <td>@company.CompanySize</td>
+                        <td>@Html.EditorFor(a => company.ShowHome)</td>
+                        <td>@Html.CheckBoxFor(a => company.User.Active, new{id = "active"})</td>
+                        <td>
+                            @if (company.User.Active)
+                            {
+                                <a href="javascript:;" onclick="deleteCompany('@company.UserId')" class="red-warring">Xóa vĩnh viễn</a>
+                                @:- <a href="javascript:;" onclick="restoreCompany('@company.UserId')" class="text-success">Khôi phục</a>
+                            }
+                            else
+                            {
+                                <a href="javascript:;" onclick="updateCompany('@company.UserId')">Cập nhật</a>
+                                @:- <a href="@Url.Action("EditCompany", new{companyId = company.UserId})">Sửa</a>
+                                @:- <a href="javascript:;" onclick="deleteCompany('@company.UserId')" class="red-warring">Xóa</a>
+                            }
+                        </td>
+                    </tr>
+                }
+                @if (Model.Companies.PageCount > 1)
+                {
+                    <tr>
+                        <td colspan="9">
+                            @Html.PagedListPager(Model.Companies, page => Url.Action("ListCompany", new
+                            {
+                                page,
+                                name = Model.Name,
+                                startTime = Model.StartTime,
+                                endTime = Model.EndTime,
+                                email = Model.Email,
+                                cityIds = Model.CityIds,
+                                careerIds = Model.CareerIds,
+                                status = Model.Status
+                            }))
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
+</div>
+@section scripts {
+
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/jquery.daterangepicker.js"></script>
+    <script type="text/javascript">
+        function deleteCompany(id) {
+            if (confirm("Bạn có chắc chắn xóa công ty này không?")) {
+                $.post("/UserVcms/DeleteCompany", { companyId: id }, function (data) {
+                    if (data) {
+                        $.toast({
+                            text: 'Xóa công ty thành công',
+                            position: 'bottom-right',
+                            icon: 'success'
+                        });
+                        $("tr[data-id='" + id + "']").fadeOut();
+                    }
+                    else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            icon: 'error'
+                        });
+                    }
+                });
+            }
+        }
+        function restoreCompany(id) {
+            if (confirm("Bạn có chắc chắn khôi phục công ty này không?")) {
+                $.post("/UserVcms/RestoreCompany", { companyId: id }, function (data) {
+                    if (data) {
+                        $.toast({
+                            text: 'Khôi phục công ty thành công',
+                            position: 'bottom-right',
+                            icon: 'success'
+                        });
+                        $("tr[data-id='" + id + "']").fadeOut();
+                    }
+                    else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            icon: 'error'
+                        });
+                    }
+                });
+            }
+        }
+        function updateCompany(id) {
+            var elm = $('tr[data-id="' + id + '"]');
+            var home = elm.find("input#company_ShowHome").prop("checked");
+            var active = elm.find("input#active").prop("checked");
+
+            $.post("/UserVcms/QuickUpdateCompany", { companyId: id, home, active },
+                function (data) {
+                    if (data) {
+                        $.toast({
+                            text: 'Cập nhật thành công',
+                            position: 'bottom-right',
+                            icon: 'success'
+                        });
+                    } else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            position: 'bottom-right',
+                            icon: 'error'
+                        });
+                        window.location.reload();
+                    };
+                });
+        }
+
+        $('#date-range').dateRangePicker({
+            format: 'DD/MM/YYYY',
+            language: 'vn',
+            autoClose: true,
+            separator: ' đến ',
+            setValue: function (s, s1, s2) {
+                $(this).val(s);
+                $('#startTime').val(s1);
+                $('#endTime').val(s2);
+            },
+        });
+        Select2();
+    </script>
+}
+

@@ -1,4 +1,7 @@
-﻿@{
+﻿@model GlobeWork.ViewModel.RegisterViewModel
+@{
+    ViewBag.Title = "Đăng ký tài khoản";
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("Register");
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 <div class="d-lg-flex half">
@@ -13,41 +16,40 @@
         <div class="title-form_sub">
             Cùng xây dựng một hồ sơ nổi bật và nhận được các cơ hội sự nghiệp lý tưởng
         </div>
-        <form class="user-form">
-            <label>
-                Họ và tên
-            </label>
+        @using (Html.BeginForm("Register", "User", FormMethod.Post , new {@class="user-form"}))
+        {
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            @Html.LabelFor(a => a.FullName)
             <div class="form-group form-control control-user">
                 <i class="fas fa-user"></i>
-                <input type="text" name="name" value="" placeholder="Nhập họ tên" />
+                @Html.TextBoxFor(a => a.FullName, new { @placeholder = "Nhập họ tên" })
             </div>
-            <label>
-                Email
-            </label>
+            @Html.ValidationMessageFor(a => a.FullName)
+            @Html.LabelFor(a => a.Email)
             <div class="form-group form-control control-user">
                 <i class="fas fa-envelope"></i>
-                <input type="text" name="name" value="" placeholder="Nhập email " />
+                @Html.TextBoxFor(a => a.Email, new { @placeholder = "Nhập email" })
             </div>
-            <label>
-                Mật khẩu
-            </label>
+            @Html.ValidationMessageFor(a => a.Email)
+            @Html.LabelFor(a => a.Password)
             <div class="form-group form-control control-user">
                 <i class="fa-solid fa-shield-keyhole"></i>
-                <input type="password" name="name" value="" placeholder="Nhập mật khẩu" />
+                @Html.PasswordFor(a => a.Password, new { @placeholder = "Nhập mật khẩu" })
                 <div class="type-input">
                     <i class="fas fa-eye"></i>
                 </div>
             </div>
-            <label>
-                Xác nhận mật khẩu
-            </label>
+            @Html.ValidationMessageFor(a => a.Password)
+            @Html.LabelFor(a => a.ConfirmPassword)
             <div class="form-group form-control control-user">
                 <i class="fa-solid fa-shield-keyhole"></i>
-                <input type="password" name="name" value="" placeholder="Nhập lại mật khẩu" />
+                @Html.PasswordFor(a => a.ConfirmPassword, new { @placeholder = "Nhập lại mật khẩu" })
                 <div class="type-input">
                     <i class="fas fa-eye"></i>
                 </div>
             </div>
+            @Html.ValidationMessageFor(a => a.ConfirmPassword)
             <label class="checkbox-wrapper-42 agreement-login mb-3">
                 <input id="cbx-42" type="checkbox" checked />
                 <label class="cbx" for="cbx-42"></label>
@@ -69,7 +71,7 @@
                 <label class="cbx" for="cbx-43"></label>
                 <label class="lbl" for="cbx-43">Bằng việc đăng nhập bằng tài khoản mạng xã hội, tôi đã đọc và đồng ý với <a href="">Điều khoản dịch vụ</a> và <a href="#">Chính sách bảo mật</a> của Globework</label>
             </label>
-        </form>
+        }
         <div class="text-center">
             Bạn đã có tài khoản? <a href="@Url.Action("Login", "User")" class="text-success">Đăng nhập ngay</a>
         </div>
@@ -81,8 +83,43 @@
         </div>
     </div>
 </div>
+<div class="Popup">
+    <div class="popupuser">
+        <div class="text-center titlepPop-up">
+            <span>Chào bạn,</span>
+            Bạn hãy dành ra vài giây để xác nhận thông tin dưới đây nhé!
+        </div>
+        <hr />
+        <span class="titlepPop-up-sub">
+            Để tối ưu tốt nhất cho trải nghiệm của bạn với TopCV,
+            vui lòng lựa chọn nhóm phù hợp nhất với bạn.
+        </span>
+        <div class="row mt-4">
+            <div class="col-6 text-center">
+                <img src="~/Content/images/bussiness.efbec2d.png" alt="Nhà tuyển dụng" class="img-fluid" />
+                <a href="@Url.Action("Employer" ,"User")" class="popupBtn">Tôi là nhà tuyển dụng</a>
+            </div>
+            <div class="col-6 text-center">
+                <img src="~/Content/images/student.c1c39ee.png" alt="Ứng viên" class="img-fluid" />
+                <a href="javascripts:;" onclick="ClosePopUp()" class="popupBtn">Tôi là ứng viên tìm việc</a>
+            </div>
+        </div>
+    </div>
+</div>
 @section scripts{
     <script>
         User();
+        var popup = $(".Popup");
+        if (localStorage.getItem("popupClosed") == null || localStorage.getItem("popupClosed") == false) {
+            popup.addClass("active");
+        } else {
+            popup.removeClass("active");
+
+        }
+
+        function ClosePopUp() {
+            $(".Popup").removeClass("active");
+            localStorage.setItem("popupClosed", true);
+        }
     </script>
 }

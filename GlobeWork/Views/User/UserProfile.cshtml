@@ -1,4 +1,8 @@
-﻿<div class="bg-light py-4">
+﻿@model GlobeWork.ViewModel.UserInfoViewModel
+@{
+
+}
+<div class="bg-light py-4">
     <div class="container">
         <div class="company-cover-inner">
             <div class="cover-wrapper">
@@ -6,17 +10,25 @@
             </div>
             <div class="company-logo">
                 <div class="company-image-logo shadow">
-                    <img src="~/Content/images/logo.png" alt="" class="img-responsive">
+                    @if (Model.User.Avatar != "")
+                    {
+
+                        <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/user/", Model.User.Avatar)"  alt="@Model.User.FullName" class="img-responsive lazyload">
+                    }
+                    else
+                    {
+                        <img src="~/Content/images/avatar-default.jpg" alt="@Model.User.FullName" class="img-responsive">
+                    }
                 </div>
             </div>
             <div class="company-detail-overview employer-detail">
                 <div class="box-detail name-profile">
-                    <h1 class="company-detail-name text-dark">Nguyễn Văn A</h1>
+                    <h1 class="company-detail-name text-dark">@Model.User.FullName</h1>
                     <div class="sub-line">
                         Nhân viên văn phòng
                     </div>
                     <div class="group-btn-profile">
-                        <a href="javascripts:;" data-action="@Url.Action("InfoUser", "User"@*, new { id = Model.Product.Id }*@)" class="change-info active">Thêm mục <i class="fa-solid fa-caret-down"></i></a>
+                        <a href="javascripts:;" data-action="@Url.Action("InfoUser", "User", new { id = Model.User.Id })" class="change-info active">Thêm mục <i class="fa-solid fa-caret-down"></i></a>
                         <a href="#">Tải xuống PDF</a>
                         <a href="#">Chia sẻ profile</a>
                     </div>
@@ -190,7 +202,7 @@
         </div>
         <div class="skill-profile mt-3">
             <div class="skill-profile-title">Kỹ năng<div class="plus-item"><i class="fal fa-plus"></i></div></div>
-            
+
         </div>
     </div>
 </div>
@@ -198,4 +210,4 @@
     <script>
         ProfileJs()
     </script>
-    }
+}

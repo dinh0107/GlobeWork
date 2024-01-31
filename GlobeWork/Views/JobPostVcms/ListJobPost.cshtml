@@ -1,0 +1,291 @@
+﻿@model GlobeWork.ViewModel.ListJobPostViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Danh sách công việc";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    .overflow-x-auto {
+        overflow-x: auto;
+    }
+</style>
+@if (ViewBag.Result == "true")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật việc làm thành công</strong></div>}
+
+@if (ViewBag.Result == "success")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Upload file thành công</strong></div>
+}
+<h2>Danh sách việc làm</h2>
+<a class="btn quick-link" href=""></a>
+
+<div class="box_content">
+    @using (Html.BeginForm("ListJobPost", "JobPostVcms", FormMethod.Get))
+    {
+        <div class="row">
+            <div class="col-lg-3 mb-lg-0 mb-2">
+                <label>Từ khóa</label>
+                @Html.TextBoxFor(model => model.Name, new { @placeholder = "Từ khóa" })
+            </div>
+            <div class="col-lg-3 mb-lg-0 mb-2">
+                <label>Thứ tự</label>
+                <select name="Sort">
+                    <option value="date-asc" @if (Model.Sort == "date-asc") { @Html.Raw("selected='selected'") }>Mới nhất</option>
+                    <option value="date-desc" @if (Model.Sort == "date-desc") { @Html.Raw("selected='selected'") }>Cũ nhất</option>
+                    <option value="name" @if (Model.Sort == "name") { @Html.Raw("selected='selected'") }>Theo tên</option>
+                </select>
+            </div>
+            <div class="col-lg-3 mb-lg-0 mb-2">
+                <label>Hạn ứng tuyển</label>
+                <select name="StatusTime">
+                    <option value="">Tất cả</option>
+                    <option value="1" @if (Model.StatusTime == 1) { @Html.Raw("selected='selected'") }>Việc đang tuyển </option>
+                    <option value="0" @if (Model.StatusTime == 0) { @Html.Raw("selected='selected'") }>Việc hết hạn</option>
+                </select>
+            </div>
+            <div class="col-lg-3 mb-lg-0 mb-2">
+                <label>Trạng thái</label>
+                @Html.DropDownListFor(model => model.Status, Model.StatuSelectList, "Tất cả")
+            </div>
+            <div class="col-lg-3 mb-lg-0 mb-2">
+                <label>Khoảng thời gian</label>
+                <div class="datepicker-to-from">
+                    <input autocomplete="off" id="date-range" value="@Model.StartTime @Model.EndTime" />
+                    <input type="hidden" id="startTime" name="startTime" class="date-picker" value="">
+                    <input type="hidden" id="endTime" name="endTime" class="date-picker" value="">
+                </div>
+            </div>
+            <div class="col-lg-3 mb-2">
+                <label>Ngành nghề</label>
+                <select class="filter" name="CareerIds" multiple="multiple">
+                    @foreach (var item in Model.Careers)
+                    {
+                        if (!string.IsNullOrEmpty(Model.CareerIds))
+                        {
+                            <option value="@item.Id" @if (Model.CareerIds.Split(',').Contains(item.Id.ToString())) { @Html.Raw("selected") } )>@item.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-lg-3 mb-2">
+                <label>Thành phố</label>
+                <select class="filter" name="CityIds" multiple="multiple">
+                    @foreach (var item in Model.CitySelectList)
+                    {
+                        if (!string.IsNullOrEmpty(Model.CityIds))
+                        {
+                            <option value="@item.Value" @if (Model.CityIds.Split(',').Contains(item.Value)) { @Html.Raw("selected") } )>@item.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-lg-3 mb-2">
+                <label>Kỹ năng</label>
+                <select class="filter" name="SkillIds" multiple="multiple">
+                    @foreach (var item in Model.SkillSelectList)
+                    {
+                        if (!string.IsNullOrEmpty(Model.SkillIds))
+                        {
+                            <option value="@item.Value" @if (Model.SkillIds.Split(',').Contains(item.Value)) { @Html.Raw("selected") } )>@item.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-lg-3 mb-2">
+                <label>Cấp bậc</label>
+                <select class="filter" name="RankIds" multiple="multiple">
+                    @foreach (var item in Model.RankSelectList)
+                    {
+                        if (!string.IsNullOrEmpty(Model.RankIds))
+                        {
+                            <option value="@item.Value" @if (Model.RankIds.Split(',').Contains(item.Value)) { @Html.Raw("selected") } )>@item.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-lg-3 mb-2">
+                <label>Hình thức công việc</label>
+                <select class="filter" name="JobTypeIds" multiple="multiple">
+                    @foreach (var item in Model.JobTypeSelectList)
+                    {
+                        if (!string.IsNullOrEmpty(Model.JobTypeIds))
+                        {
+                            <option value="@item.Value" @if (Model.JobTypeIds.Split(',').Contains(item.Value)) { @Html.Raw("selected") } )>@item.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="col-lg-3 align-self-center">
+                <button type="submit" class="btn-search ">Tìm kiếm</button>
+            </div>
+        </div>
+    }
+    <p>Có tổng số <strong>@Model.JobPosts.TotalItemCount</strong> việc làm</p>
+    <div class="overflow-x-auto">
+        <form id="productList">
+            <table class="list_table tablecenter table-striped">
+                <tbody>
+                    <tr>
+                        <th width="20%">Tiêu đề</th>
+                        <th width="15%">Công ty / Tên đăng nhập</th>
+                        <th width="10%">Đơn xin việc</th>
+                        <th width="8%">Ngày tạo</th>
+                        <th width="8%">Ngày hết hạn</th>
+                        <th width="80px">Lượt xem</th>
+                        <th width="80px">Đã đăng</th>
+                        <th width="80px">Hiện trang chủ</th>
+                        <th width="80px">Nổi bật</th>
+                        <th width="120px"></th>
+                    </tr>
+                    @foreach (var item in Model.JobPosts)
+                    {
+                        <tr data-id="@item.Id">
+                            <td class="left">
+                                <a href="@Url.Action("JobPostDetail", "Home", new{url = item.Url, jobId = item.Id})" target="_blank">@item.Name</a>
+                            </td>
+                            <td class="left">@item.Company.Name (@item.Company.User.Username)</td>
+                            <td>
+                                @if (item.ApplyJobs.Any())
+                                {
+                                    <a href="@Url.Action("ListApplyByJobPost", new {jobPostId = item.Id})" data-fancybox data-type="iframe">Có @item.ApplyJobs.Count() đơn</a>
+                                }
+                                else
+                                {
+                                    <span>N/A</span>
+                                }
+
+                            </td>
+                            <td>@item.CreateDate.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                @if (item.ExpirationDate != null)
+                                {
+                                    @item.ExpirationDate.Value.ToString("dd/MM/yyyy")
+                                }
+                                else
+                                {
+                                    <span>Luôn tuyển</span>
+                                }
+                            </td>
+                            <td>@item.View</td>
+                            <td>@Html.EditorFor(a => item.Active)</td>
+                            <td>@Html.EditorFor(a => item.ShowHome)</td>
+                            <td>@Html.EditorFor(a => item.Special)</td>
+                            <td>
+                                <a href="javascript:;" onclick="updateJobPost('@item.Id')">Cập nhật - </a>
+                                <a href="@Url.Action("UpdateJobPostVcms", new{jobPostId = item.Id})">Sửa</a>
+                                - <a href="javascript:;" onclick="deleteJobPost('@item.Id')" class="red-warring">Xóa</a>
+                            </td>
+                        </tr>
+                    }
+                    @if (Model.JobPosts.PageCount > 1)
+                    {
+                        <tr>
+                            <td colspan="10">
+                                @Html.PagedListPager(Model.JobPosts, page => Url.Action("ListJobPost", new
+                                {
+                                    page,
+                                    name = Model.Name,
+                                    startTime = Model.StartTime,
+                                    endTime = Model.EndTime,
+                                    status = Model.Status,
+                                    sort = Model.Sort,
+                                    statusTime = Model.StatusTime,
+                                    careerIds = Model.CareerIds,
+                                    cityIds = Model.CityIds,
+                                    rankIds = Model.RankIds,
+                                    jobTypeIds = Model.JobTypeIds,
+                                    skillIds = Model.SkillIds
+                                }))
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </form>
+
+    </div>
+</div>
+@section scripts
+{
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/jquery.daterangepicker.js"></script>
+    <script type="text/javascript">
+        function deleteJobPost(id) {
+            if (confirm("Bạn có chắc chắn xóa bài viết này không?")) {
+                $.post("/JobPostVcms/DeleteJobPost", { jobPostId: id }, function (data) {
+                    if (data) {
+                        $.toast({
+                            text: 'Xóa việc làm thành công',
+                            position: 'bottom-right',
+                            icon: 'success',
+                        })
+                        $("tr[data-id='" + id + "']").fadeOut();
+                    }
+                    else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            icon: 'error',
+                        })
+                    }
+                });
+            }
+        }
+        function updateJobPost(id) {
+            var elm = $('tr[data-id="' + id + '"]');
+            var active = elm.find("input#item_Active").prop("checked");
+            var home = elm.find("input#item_ShowHome").prop("checked");
+            var special = elm.find("input#item_Special").prop("checked");
+
+            $.post("/JobPostVcms/QuickUpdateJobPost", { jobPostId: id, active, home, special },
+                function (data) {
+                    if (data) {
+                        $.toast({
+                            text: 'Cập nhật thành công',
+                            position: 'bottom-right',
+                            icon: 'success'
+                        });
+                    } else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            position: 'bottom-right',
+                            icon: 'error'
+                        });
+                        window.location.reload();
+                    };
+                });
+        }
+        $('#date-range').dateRangePicker({
+            format: 'DD/MM/YYYY',
+            language: 'vn',
+            autoClose: true,
+            separator: ' đến ',
+            setValue: function (s, s1, s2) {
+                $(this).val(s);
+                $('#startTime').val(s1);
+                $('#endTime').val(s2);
+            },
+        })
+        Select2();
+    </script>
+}
