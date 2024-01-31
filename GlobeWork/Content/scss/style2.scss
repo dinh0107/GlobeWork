@@ -168,7 +168,7 @@ header.header-employer {
         color: $white;
         height: 2.25rem;
         border-radius: 20px;
-        background: lighten($green, 10%);
+        background: lighten($text-title, 10%);
     }
 
     a > span {
@@ -221,7 +221,8 @@ header.header-employer {
     .contents-header {
         position: sticky;
         top: 0;
-        padding: 1.25rem .75rem;
+        @include flex-item(space-between, center);
+        padding: .5rem 1rem;
         z-index: 999;
         background-color: $white;
         border-bottom: 1px solid #cdcdcd;
@@ -229,6 +230,7 @@ header.header-employer {
         h1 {
             font-size: 1rem;
             font-weight: 600;
+            line-height: 2.25rem;
             margin-bottom: 0;
         }
     }
@@ -609,5 +611,202 @@ header.header-employer {
         .btn {
             flex: 1 1 calc(50% - 10px);
         }
+    }
+}
+
+.nice-number {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: max-content !important;
+    border: 1px solid #cdcdcd;
+    border-radius: 3px;
+    overflow: hidden;
+
+    button, button:hover, button:focus {
+        width: 2.25rem;
+        height: 2.25rem;
+        outline: none;
+        border: none;
+        box-shadow: none;
+        background: none;
+    }
+}
+
+.input-number {
+    width: 3rem !important;
+    height: 2.25rem;
+    text-align: center;
+    border-right: 1px solid #cdcdcd;
+    border-left: 1px solid #cdcdcd;
+}
+
+.text-green {
+    color: $green;
+}
+
+.table-cart {
+    tbody td {
+        vertical-align: middle;
+    }
+
+    tbody tr:hover {
+        background-color: $blur;
+    }
+
+    td h5 {
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    td p {
+        font-size: .85rem;
+        font-weight: 400;
+    }
+}
+
+.employer-sum {
+
+    ul {
+        margin: 1rem 0;
+        padding: 0;
+        list-style-type: none;
+    }
+
+    li {
+        @include flex-item(space-between, center);
+    }
+}
+
+.info-ntd {
+    background-color: $white;
+    border-radius: 5px;
+    border-left: 6px solid $green;
+    padding: 1.25rem;
+
+    ul {
+        @include flex-item(start, center);
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        flex: 1 1 auto;
+    }
+}
+
+.box-body.payment {
+    padding-bottom: 0;
+
+    .nav > * {
+        flex: 1 1 auto;
+    }
+
+    .nav-tabs {
+        border: none;
+    }
+
+    .nav-link {
+        border: none;
+        border-bottom: 3px solid transparent;
+        transition: .4s;
+    }
+
+    .nav-link.active {
+        border-color: var(--payment-color);
+    }
+
+    .accordion {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .accordion > a {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 20px;
+        background-color: $blur;
+        margin-bottom: 1rem;
+    }
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+
+    > * {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+
+}
+
+.vscomp-toggle-button {
+    padding: .5rem .75rem;
+    border-radius: 3px;
+}
+
+.hidden-arrow.dropdown-toggle::after {
+    display: none;
+}
+
+.box-content.order-tracking {
+
+    .box-header {
+        border-bottom: 1px solid $green;
+    }
+
+    .nav {
+        border: none;
+    }
+
+    .nav-link {
+        color: $text-span;
+        margin-bottom: -2px;
+    }
+
+    .nav-link.active {
+        color: $green;
+        border: 1px solid $green;
+        border-bottom: 0;
+    }
+}
+
+$timeColo: #2d7cf1;
+
+.time-line {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    margin-left: 1rem;
+    border-left: 1px solid lighten($timeColo, 36%);
+
+    .time {
+        padding: 3px 6px;
+        color: $timeColo;
+        font-weight: 600;
+        border-radius: 3px;
+        background-color: lighten($timeColo, 36%);
+        margin-right: .5rem;
+    }
+
+    li {
+        position: relative;
+        padding-left: 1.5rem;
+    }
+
+    li::before {
+        content: "";
+        position: absolute;
+        top: calc(50% - 7px / 2);
+        left: -4px;
+        display: block;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background-color: lighten($timeColo, 36%);
+        box-shadow: 0 0 0 5px #f5f8fa;
     }
 }

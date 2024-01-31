@@ -36,10 +36,10 @@ namespace GlobeWork.Controllers
             return View();
         }
 
-        //public ActionResult Profile()
-        //{
-        //    return View();
-        //}
+        public ActionResult Profile()
+        {
+            return View();
+        }
 
         public ActionResult Service()
         {
@@ -47,6 +47,26 @@ namespace GlobeWork.Controllers
         }
 
         public ActionResult ShoppingCart()
+        {
+            return View();
+        }
+
+        public ActionResult Checkout()
+        {
+            return View();
+        }
+
+        public ActionResult PostNews()
+        {
+            return View();
+        }
+
+        public ActionResult OrderTracking()
+        {
+            return View();
+        }
+
+        public ActionResult History()
         {
             return View();
         }

@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewBag.Title = "Lịch sử hoạt dộng";
+    Layout = "~/Views/Shared/_EmployerLayout.cshtml";
+}
+
+<div class="contents-header">
+    <h1>@ViewBag.Title</h1>
+</div>
+
+<div class="container py-5">
+    <div class="box-content">
+        <div class="box-body profile-tabs" id="tabs">
+            <ul>
+                <li><a href="#allHistory"><i class="fa-regular fa-clock-rotate-left"></i>Tất cả lịch sử</a></li>
+                <li><a href="#temporary"><i class="fa-sharp fa-regular fa-timeline-arrow"></i>Test</a></li>
+            </ul>
+            <div id="allHistory" class="pl-5">
+                <ul class="time-line">
+                    @for (int i = 0; i < 5; i++)
+                    {
+                        <li>
+                            <span class="time">16:49</span>Bỏ theo dõi ứng viên <strong class="text-green">Bùi Hữu Nghĩa</strong>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div id="temporary">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $("#tabs").tabs({
+                beforeLoad: function (event, ui) {
+                    ui.jqXHR.fail(function (data) {
+                        console.log(data)
+                        ui.panel.html();
+                    });
+                }
+            });
+        });
+    </script>
+}

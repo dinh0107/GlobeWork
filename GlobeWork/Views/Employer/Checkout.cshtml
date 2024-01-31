@@ -1,0 +1,125 @@
+﻿
+@{
+    ViewBag.Title = "Checkout";
+    Layout = "~/Views/Shared/_EmployerLayout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="info-ntd mb-4">
+        <ul>
+            <li>
+                <p>
+                    Mã đơn hàng: <strong class="text-green">93870</strong>
+                </p>
+                <p class="mb-0">
+                    Người tạo đơn: <strong>Nhà tuyển dụng</strong>
+                </p>
+            </li>
+            <li>
+                <p>
+                    Ngày tạo đơn: <strong>29/01/2024</strong>
+                </p>
+                <p class="mb-0">
+                    Trạng thái đơn hàng: <strong>Đang chờ duyệt</strong>
+                </p>
+            </li>
+            <li>
+                <p>
+                    Ngày hoàn thành thanh toán: <strong>N/A</strong>
+                </p>
+                <p class="mb-0">
+                    Trạng thái thanh toán: <strong>0/ 3,240,000</strong>
+                </p>
+            </li>
+        </ul>
+    </div>
+    <div class="row custom-row">
+        <div class="col-lg-8">
+            <div class="box-content">
+                <div class="box-header">
+                    <h3>
+                        Thông tin đơn hàng
+                    </h3>
+                </div>
+                <div class="box-body pb-0">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Tên dịch vụ</th>
+                                <th>Số lượng</th>
+                                <th>Đơn giá</th>
+                                <th>Số tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < 5; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        Nạp Credit mở hồ sơ ứng viên (1000C)
+                                    </td>
+                                    <td>
+                                        1
+                                    </td>
+                                    <td>
+                                        3,000,000
+                                    </td>
+                                    <td>
+                                        3,000,000
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-danger mt-3">
+                        Huỷ đơn hàng
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="box-content">
+                <div class="box-header">
+                    <h3>Mã thanh toán</h3>
+                </div>
+                <div class="box-body payment">
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <button class="nav-link active" id="nav-home-tab" data-toggle="tab" data-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true" style="--payment-color: #141fd1;">
+                                <img src="~/Content/images/mb-tab.png" />
+                            </button>
+                            <button class="nav-link" id="nav-profile-tab" data-toggle="tab" data-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" style="--payment-color: #ed1b24;">
+                                <img src="~/Content/images/mb-tab.png" />
+                            </button>
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane pt-3 fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                            <p class="text-center">
+                                Tên chủ TK: <strong>CONG TY CO PHAN TOPCV VIET NAM</strong>
+                            </p>
+
+                            <a class="d-block text-center mb-2">
+                                Số TK: <strong>MBTCV00000093870</strong>
+                            </a>
+
+                            <span class="d-block text-center text-muted mb-3">
+                                Ngân hàng TMCP Quân đội
+                            </span>
+
+                            <div class="accordion">
+                                <a role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
+                                    Hiện mã QR
+                                </a>
+                                <div id="collapse-1" class="collapse p-0 show" data-parent=".accordion">
+                                    <img src="~/Content/images/MB-MBTCV00000093870-qr_only.png" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane pt-3 fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

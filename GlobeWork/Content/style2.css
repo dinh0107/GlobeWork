@@ -162,7 +162,7 @@ header.header-employer li > a, header.header-employer li button {
   color: #fff;
   height: 2.25rem;
   border-radius: 20px;
-  background: #85ca6b;
+  background: #334860;
 }
 header.header-employer a > span {
   position: absolute;
@@ -210,7 +210,10 @@ header.header-employer logo {
 .wrapper .contents-header {
   position: sticky;
   top: 0;
-  padding: 1.25rem 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
   z-index: 999;
   background-color: #fff;
   border-bottom: 1px solid #cdcdcd;
@@ -218,6 +221,7 @@ header.header-employer logo {
 .wrapper .contents-header h1 {
   font-size: 1rem;
   font-weight: 600;
+  line-height: 2.25rem;
   margin-bottom: 0;
 }
 
@@ -567,4 +571,174 @@ header.header-employer logo {
 }
 .item-package .btns .btn {
   flex: 1 1 calc(50% - 10px);
+}
+
+.nice-number {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: max-content !important;
+  border: 1px solid #cdcdcd;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.nice-number button, .nice-number button:hover, .nice-number button:focus {
+  width: 2.25rem;
+  height: 2.25rem;
+  outline: none;
+  border: none;
+  box-shadow: none;
+  background: none;
+}
+
+.input-number {
+  width: 3rem !important;
+  height: 2.25rem;
+  text-align: center;
+  border-right: 1px solid #cdcdcd;
+  border-left: 1px solid #cdcdcd;
+}
+
+.text-green {
+  color: #66BC46;
+}
+
+.table-cart tbody td {
+  vertical-align: middle;
+}
+.table-cart tbody tr:hover {
+  background-color: #F4F5F5;
+}
+.table-cart td h5 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+.table-cart td p {
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+.employer-sum ul {
+  margin: 1rem 0;
+  padding: 0;
+  list-style-type: none;
+}
+.employer-sum li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-ntd {
+  background-color: #fff;
+  border-radius: 5px;
+  border-left: 6px solid #66BC46;
+  padding: 1.25rem;
+}
+.info-ntd ul {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.info-ntd li {
+  flex: 1 1 auto;
+}
+
+.box-body.payment {
+  padding-bottom: 0;
+}
+.box-body.payment .nav > * {
+  flex: 1 1 auto;
+}
+.box-body.payment .nav-tabs {
+  border: none;
+}
+.box-body.payment .nav-link {
+  border: none;
+  border-bottom: 3px solid transparent;
+  transition: 0.4s;
+}
+.box-body.payment .nav-link.active {
+  border-color: var(--payment-color);
+}
+.box-body.payment .accordion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.box-body.payment .accordion > a {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background-color: #F4F5F5;
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+.form-group > * {
+  flex: 1 1 100%;
+  max-width: 100%;
+}
+
+.vscomp-toggle-button {
+  padding: 0.5rem 0.75rem;
+  border-radius: 3px;
+}
+
+.hidden-arrow.dropdown-toggle::after {
+  display: none;
+}
+
+.box-content.order-tracking .box-header {
+  border-bottom: 1px solid #66BC46;
+}
+.box-content.order-tracking .nav {
+  border: none;
+}
+.box-content.order-tracking .nav-link {
+  color: #757579;
+  margin-bottom: -2px;
+}
+.box-content.order-tracking .nav-link.active {
+  color: #66BC46;
+  border: 1px solid #66BC46;
+  border-bottom: 0;
+}
+
+.time-line {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-left: 1rem;
+  border-left: 1px solid #d9e7fc;
+}
+.time-line .time {
+  padding: 3px 6px;
+  color: #2d7cf1;
+  font-weight: 600;
+  border-radius: 3px;
+  background-color: #d9e7fc;
+  margin-right: 0.5rem;
+}
+.time-line li {
+  position: relative;
+  padding-left: 1.5rem;
+}
+.time-line li::before {
+  content: "";
+  position: absolute;
+  top: calc(50% - 3.5px);
+  left: -4px;
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #d9e7fc;
+  box-shadow: 0 0 0 5px #f5f8fa;
 }

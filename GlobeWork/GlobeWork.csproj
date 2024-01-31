@@ -47,7 +47,7 @@
   <ItemGroup>
     <Reference Include="CKFinder, Version=2.5.0.2768, Culture=neutral, PublicKeyToken=579e7adc719a1423, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\.NET Library\CKFinder.dll</HintPath>
+      <HintPath>C:\Users\sonng\OneDrive\Desktop\CKFinder.dll</HintPath>
     </Reference>
     <Reference Include="CloudrailSI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\LinkedIn.Api.1.0.6\lib\CloudrailSI.dll</HintPath>
@@ -66,7 +66,7 @@
     </Reference>
     <Reference Include="Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\.NET Library\Helpers.dll</HintPath>
+      <HintPath>C:\Users\sonng\OneDrive\Desktop\Helpers.dll</HintPath>
     </Reference>
     <Reference Include="ImageResizer, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ImageResizer.4.2.8\lib\net45\ImageResizer.dll</HintPath>
@@ -248,6 +248,8 @@
     <Content Include="Content\images\facebook.png" />
     <Content Include="Content\images\linkedin.png" />
     <Content Include="Content\images\logo.png" />
+    <Content Include="Content\images\MB-MBTCV00000093870-qr_only.png" />
+    <Content Include="Content\images\mb-tab.png" />
     <Content Include="Content\images\nganh-nghe.png" />
     <Content Include="Content\images\anhhocbong.png" />
     <Content Include="Content\images\student.c1c39ee.png" />
@@ -313,6 +315,8 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="Content\tooltip.min.css" />
+    <Content Include="Content\virtual-select.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -1223,6 +1227,7 @@
     <Content Include="Scripts\jquery.countup.min.js" />
     <Content Include="Scripts\jquery.fancybox.js" />
     <Content Include="Scripts\jquery.maskMoney.min.js" />
+    <Content Include="Scripts\jquery.nice-number.js" />
     <Content Include="Scripts\jquery.toast.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
@@ -1314,10 +1319,12 @@
     <Content Include="Scripts\src\utils\setAttributes.js" />
     <Content Include="Scripts\src\utils\setStyles.js" />
     <Content Include="Scripts\src\utils\setupEventListeners.js" />
+    <Content Include="Scripts\tooltip.min.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Scripts\virtual-select.min.js" />
     <Content Include="Scripts\waypoints.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -1421,6 +1428,10 @@
     <Content Include="Views\Vcms\Login.cshtml" />
     <Content Include="Views\Vcms\Showroom.cshtml" />
     <Content Include="Views\Vcms\UpdateShowroom.cshtml" />
+    <Content Include="Views\Employer\Checkout.cshtml" />
+    <Content Include="Views\Employer\PostNews.cshtml" />
+    <Content Include="Views\Employer\OrderTracking.cshtml" />
+    <Content Include="Views\Employer\History.cshtml" />
     <Content Include="Views\JobPostVcms\ListApplyByJobPost.cshtml" />
     <Content Include="Views\JobPostVcms\ListApplyJob.cshtml" />
     <Content Include="Views\JobPostVcms\ListJobPost.cshtml" />
