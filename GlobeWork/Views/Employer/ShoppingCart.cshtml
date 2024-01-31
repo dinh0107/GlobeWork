@@ -12,13 +12,15 @@
     <div class="row custom-row">
         <div class="col-lg-8">
             <div class="box-content">
-                <table>
+                <table class="table table-cart">
                     <thead>
-                        <tr>Tên dịch vụ</tr>
-                        <tr>Đơn giá</tr>
-                        <tr>Số lượng</tr>
-                        <tr>Số tiền (VNĐ)</tr>
-                        <tr>Thao tác</tr>
+                        <tr>
+                            <th scope="col" style="min-width: 200px;">Tên dịch vụ</th>
+                            <th scope="col" style="min-width: 130px;">Đơn giá</th>
+                            <th scope="col" class="text-center">Số lượng</th>
+                            <th scope="col" style="min-width: 130px;">Số tiền (VNĐ)</th>
+                            <th scope="col" class="text-center" style="width: 100px;">Thao tác</th>
+                        </tr>
                     </thead>
                     <tbody>
                         @for (int i = 0; i < 5; i++)
@@ -31,20 +33,20 @@
                                     </p>
                                 </td>
                                 <td>
-                                    <strong>
+                                    <strong class="text-green">
                                         7,500,000
                                     </strong>
                                 </td>
-                                <td>
-                                    <input class="input-number" value="1" />
+                                <td class="text-center">
+                                    <input class="input-number" value="1" min="1" max="5000" />
                                 </td>
                                 <td>
                                     <strong class="text-green">
                                         7,500,000
                                     </strong>
                                 </td>
-                                <td>
-                                    <a href="javascript:;">
+                                <td class="text-center">
+                                    <a href="javascript:;" class="text-danger">
                                         <i class="fa-solid fa-trash-can"></i>
                                     </a>
                                 </td>
@@ -56,26 +58,20 @@
         </div>
         <div class="col-lg-4">
             <div class="box-content employer-sum">
-                <h5>Thông tin đơn hàng</h5>
+                <div class="box-header">
+                    <h3>Thông tin đơn hàng</h3>
+                </div>
                 <ul>
                     <li>
                         <span>
                             Tổng giá trị đơn hàng
                         </span>
-                        <span>
+                        <strong class="text-green">
                             0 VND
-                        </span>
+                        </strong>
                     </li>
                 </ul>
-                <div>
-                    <p>
-                        <input type="checkbox" id="checkboxA" />
-                        <label for="checkboxA">
-                            Tôi đồng ý với <a href="">Điều khoản dịch vụ</a> của TopCV.
-                        </label>
-                    </p>
-                    <button>Tạo đơn hàng</button>
-                </div>
+                <a href="" class="btn btn-primary">Tạo đơn hàng</a>
             </div>
         </div>
     </div>

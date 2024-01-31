@@ -76,7 +76,32 @@
 }
 
 $(document).ready(function () {
+    $(".input-number").niceNumber({
+        autoSize: true,
+        autoSizeBuffer: 1,
+        //onDecrement: function (input, number, object) {
+        //    UpdateToCart($(input));
+        //    return false;
+        //},
+        //onIncrement: function (input, number, object) {
+        //    UpdateToCart($(input));
+        //    return false;
+        //}
+    })
 
+    VirtualSelect.init({
+        ele: '.v-select',
+        search: true,
+    });
+    VirtualSelect.init({
+        ele: '.v-select-multiple',
+        search: true,
+        multiple: true,
+        showValueAsTags: true,
+    });
+
+    $("textarea.ckeditor").ckeditor();
+    CKEDITOR.timestamp = new Date();
 })
 
 function toggleSidebar() {

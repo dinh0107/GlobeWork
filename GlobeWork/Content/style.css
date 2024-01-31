@@ -63,9 +63,18 @@ img {
   border-color: #66BC46;
 }
 .btn-primary:hover {
-  background: #66BC46;
+  background: #75c359;
+  border-color: #75c359;
+}
+
+.btn-outline-primary {
+  color: #66BC46;
   border-color: #66BC46;
-  opacity: 0.8;
+}
+.btn-outline-primary:hover {
+  color: #fff;
+  border-color: #75c359;
+  background-color: #66BC46;
 }
 
 .field-validation-error {

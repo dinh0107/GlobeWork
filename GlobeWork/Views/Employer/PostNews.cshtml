@@ -1,0 +1,304 @@
+﻿
+@{
+    ViewBag.Title = "Đăng tin";
+    Layout = "~/Views/Shared/_EmployerLayout.cshtml";
+}
+
+<div class="contents-header">
+    <h1>@ViewBag.Title</h1>
+    <div class="btn-group">
+        <button class="btn btn-primary">Lưu lại</button>
+        <button class="btn btn-danger">Huỷ bỏ</button>
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+    <div class="container py-5">
+        <div class="box-content mb-4">
+            <div class="box-header">
+                <h3>
+                    Thông tin chung
+                </h3>
+            </div>
+            <div class="box-body">
+                <div class="form-group">
+                    <label>
+                        Tiêu đề tin <i class="text-danger">*</i>
+                    </label>
+                    <input class="form-control" />
+                </div>
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label>
+                            Vị trí tuyển dụng <i class="text-danger">*</i>
+                        </label>
+                        <select class="v-select">
+                            @for (int i = 0; i < 10; i++)
+                            {
+                                <option>
+                                    lựa chọn @i
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label>
+                            Ngành nghề <i class="text-danger">*</i>
+                        </label>
+                        <select class="v-select-multiple">
+                            @for (int i = 0; i < 10; i++)
+                            {
+                                <option value="@i">
+                                    lựa chọn @i
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label>
+                            Hạn nhận hồ sơ <i class="text-danger">*</i>
+                        </label>
+                        <input type="date" class="form-control" />
+                    </div>
+                    <div class="form-group col-6">
+                        <label>
+                            Số lượng <i class="text-danger">*</i>
+                        </label>
+                        <input class="input-number" min="1" max="5000" />
+                    </div>
+                </div>
+                @*<div class="form-group">
+                    <label>
+                        Khu vực làm việc <i class="text-danger">*</i>
+                    </label>
+                    <div class="">
+
+                    </div>
+                </div>*@
+            </div>
+        </div>
+
+        <div class="box-content mb-4">
+            <div class="box-header">
+                <h3>
+                    Yêu cầu chung
+                </h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label>
+                            Loại công việc <i class="text-danger">*</i>
+                        </label>
+                        <select class="v-select">
+                            @for (int i = 0; i < 10; i++)
+                            {
+                                <option>
+                                    lựa chọn @i
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label>
+                            Cấp bậc <i class="text-danger">*</i>
+                        </label>
+                        <select class="v-select">
+                            @for (int i = 0; i < 10; i++)
+                            {
+                                <option value="@i">
+                                    lựa chọn @i
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label>
+                            Kinh nghiệm <i class="text-danger">*</i>
+                        </label>
+                        <select class="v-select">
+                            @for (int i = 0; i < 10; i++)
+                            {
+                                <option>
+                                    lựa chọn @i
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label>
+                            Mức lương <i class="text-danger">*</i>
+                        </label>
+                        <div class="input-group">
+                            <input class="form-control" placeholder="Từ" />
+                            <input class="form-control" placeholder="Đến" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>
+                    Thời gian làm việc
+                </label>
+                <div class="input-group" style="gap: 20px;">
+                    <select class="v-select">
+                        <option value="2">
+                            Thứ 2
+                        </option>
+                        <option value="3">
+                            Thứ 3
+                        </option>
+                        <option value="4">
+                            Thứ 4
+                        </option>
+                        <option value="5">
+                            Thứ 5
+                        </option>
+                        <option value="6">
+                            Thứ 6
+                        </option>
+                        <option value="7">
+                            Thứ 7
+                        </option>
+                        <option value="8">
+                            Chủ nhật
+                        </option>
+                    </select>
+                    <select class="v-select">
+                        <option value="2">
+                            Thứ 2
+                        </option>
+                        <option value="3">
+                            Thứ 3
+                        </option>
+                        <option value="4">
+                            Thứ 4
+                        </option>
+                        <option value="5">
+                            Thứ 5
+                        </option>
+                        <option value="6">
+                            Thứ 6
+                        </option>
+                        <option value="7">
+                            Thứ 7
+                        </option>
+                        <option value="8">
+                            Chủ nhật
+                        </option>
+                    </select>
+                    <input class="form-control rounded" type="time" />
+                    <input class="form-control rounded" type="time" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label>
+                    Giới tính <i class="text-danger">*</i>
+                </label>
+                <select class="v-select">
+                    @for (int i = 0; i < 3; i++)
+                    {
+                        <option>
+                            lựa chọn @i
+                        </option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="box-content mb-4">
+            <div class="box-header">
+                <h3>
+                    Thông tin chi tiết
+                </h3>
+            </div>
+            <div class="box-body">
+                <div class="form-group">
+                    <label>
+                        Mô tả công việc <i class="text-danger">*</i>
+                    </label>
+                    <textarea class="ckeditor"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>
+                        Quyền lợi ứng viên <i class="text-danger">*</i>
+                    </label>
+                    <textarea class="ckeditor"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>
+                        Kỹ năng cần có <i class="text-danger">*</i>
+                    </label>
+                    <textarea class="ckeditor"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>
+                        Kỹ năng cần có <i class="text-danger">*</i>
+                    </label>
+                    <select class="v-select">
+                        @for (int i = 0; i < 3; i++)
+                        {
+                            <option>
+                                lựa chọn @i
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>
+                        Kỹ năng nên có <i class="text-danger">*</i>
+                    </label>
+                    <select class="v-select">
+                        @for (int i = 0; i < 3; i++)
+                        {
+                            <option>
+                                lựa chọn @i
+                            </option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="box-content">
+            <div class="box-header">
+                <h3>
+                    Thông tin nhận CV
+                </h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="form-group col-6">
+                        <label>
+                            Họ và tên người nhận <i class="text-danger">*</i>
+                        </label>
+                        <input class="form-control" />
+                    </div>
+                    <div class="form-group col-6">
+                        <label>
+                            Số điện thoại <i class="text-danger">*</i>
+                        </label>
+                        <input class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>
+                        Email nhận hồ sơ <i class="text-danger">*</i>
+                    </label>
+                    <input class="form-control" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script type="text/javascript">
+
+    </script>    
+}

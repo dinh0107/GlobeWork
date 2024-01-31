@@ -26,6 +26,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     @Styles.Render("~/Content/css")
+    <link href="~/Content/virtual-select.min.css" rel="stylesheet" />
+    <link href="~/Content/tooltip.min.css" rel="stylesheet" />
     <link href="~/Content/style2.min.css" rel="stylesheet" />
     @*@if (config.GoogleAnalytics != null)
         {
@@ -36,11 +38,16 @@
     @Html.Action("Header", "Employer")
     <div class="wrapper">
         @Html.Action("Sidebar", "Employer")
-        <div class="contents">  
+        <div class="contents">
             @RenderBody()
         </div>
     </div>
     @Scripts.Render("~/bundles/jquery", "~/bundles/bootstrap", "~/bundles/jqueryval", "~/bundles/jqueryui")
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+    <script src="~/Scripts/ckeditor/adapters/jquery.js"></script>
+    <script src="~/Scripts/virtual-select.min.js"></script>
+    <script src="~/Scripts/tooltip.min.js"></script>
+    <script src="~/Scripts/jquery.nice-number.js"></script>
     <script src="~/Scripts/scripts2.js"></script>
     @RenderSection("scripts", false)
     <div id="fb-root"></div>

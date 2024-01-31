@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewBag.Title = "Theo dõi đơn hàng";
+    Layout = "~/Views/Shared/_EmployerLayout.cshtml";
+}
+
+<div class="contents-header">
+    <h1>@ViewBag.Title</h1>
+</div>
+
+<div class="container py-5">
+    <div class="box-content order-tracking">
+        <div class="box-header pb-0">
+            <ul class="nav nav-tabs" id="orderTrackingTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="all-tab" data-toggle="tab" data-target="#all" type="button" role="tab" aria-controls="all" aria-selected="true">Tất đơn hàng</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="awaiting-approval-tab" data-toggle="tab" data-target="#awaitingApproval" type="button" role="tab" aria-controls="awaitingApproval" aria-selected="false">Đang chờ duyệt</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="running-service-tab" data-toggle="tab" data-target="#runningService" type="button" role="tab" aria-controls="runningService" aria-selected="false">Đang chạy dịch vụ</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="complete-tab" data-toggle="tab" data-target="#complete" type="button" role="tab" aria-controls="complete" aria-selected="false">Hoàn thành</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="expired-tab" data-toggle="tab" data-target="#expired" type="button" role="tab" aria-controls="expired" aria-selected="false">Hết hạn</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="canceled-tab" data-toggle="tab" data-target="#canceled" type="button" role="tab" aria-controls="canceled" aria-selected="false">Bị huỷ</button>
+                </li>
+            </ul>
+        </div>
+        <div class="d-flex justify-content-between align-items-center py-3 px-0">
+            <h5 class="font-weight-bold mb-0">
+                Danh sách đơn hàng
+            </h5>
+            <select class="v-select">
+                @for(int i = 0; i < 5; i++)
+                {
+                    <option value="@i">
+                        Mã đơn hàng @i
+                    </option>
+                }
+            </select>
+        </div>
+        <div class="tab-content" id="orderTrackingContent">
+            <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Mã</th>
+                            <th scope="col" class="text-center">Tạo đơn hàng</th>
+                            <th scope="col" class="text-center">Giá trị đơn hàng</th>
+                            <th scope="col" class="text-center">Trạng thái thanh toán</th>
+                            <th scope="col" class="text-center">Trạng thái đơn hàng</th>
+                            <th scope="col" class="text-center">Kích hoạt dịch vụ</th>
+                            <th scope="col" class="text-center">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            <tr>
+                                <th scope="row" class="align-middle">
+                                    <a href="" class="text-green">#93870</a>
+                                </th>
+                                <td class="text-center">
+                                    <span class="d-block badge badge-success">Nhà tuyển dụng</span>
+                                    <small class="d-block text-muted">29/01/2024</small>
+                                </td>
+                                <td class="text-center align-middle">
+                                    3,240,000
+                                </td>
+                                <td class="text-center align-middle">
+                                    <span class="text-muted">Chưa thanh toán</span>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <span class="badge badge-warning">Đang chờ duyệt</span>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <span class="d-block">
+                                        Hạn kích hoạt:
+                                    </span>
+                                    <small class="d-block text-muted">29/01/2025</small>
+                                </td>
+                                <td class="text-center align-middle">
+                                    <div class="dropdown">
+                                        <button class="hidden-arrow dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="#">Xem chi tiết</a>
+                                            <a class="dropdown-item" href="#">Huỷ</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="tab-pane fade" id="awaitingApproval" role="tabpanel" aria-labelledby="awaiting-approval-tab">...</div>
+            <div class="tab-pane fade" id="runningService" role="tabpanel" aria-labelledby="running-service-tab">...</div>
+            <div class="tab-pane fade" id="complete" role="tabpanel" aria-labelledby="complete-tab">...</div>
+            <div class="tab-pane fade" id="expired" role="tabpanel" aria-labelledby="expired-tab">...</div>
+            <div class="tab-pane fade" id="canceled" role="tabpanel" aria-labelledby="canceled-tab">...</div>
+        </div>
+    </div>
+</div>
