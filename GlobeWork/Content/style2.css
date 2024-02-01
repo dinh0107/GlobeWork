@@ -366,6 +366,20 @@ header.header-employer logo {
   opacity: 1;
   visibility: visible;
 }
+.box-header .input-group {
+  border: 1px solid #cdcdcd;
+  border-radius: 3px;
+}
+.box-header .input-group-text {
+  background-color: transparent;
+  color: #757579;
+  font-weight: 500;
+  border: none;
+}
+.box-header .input-group .form-control,
+.box-header .vscomp-toggle-button {
+  border: none;
+}
 
 .box-body {
   padding: 1rem;
@@ -690,7 +704,7 @@ header.header-employer logo {
 }
 
 .vscomp-toggle-button {
-  padding: 0.5rem 0.75rem;
+  padding: 0.563rem 0.75rem;
   border-radius: 3px;
 }
 
@@ -744,4 +758,24 @@ header.header-employer logo {
   border-radius: 50%;
   background-color: #d9e7fc;
   box-shadow: 0 0 0 5px #f5f8fa;
+}
+
+.tools-group {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+}
+.tools-group a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  background-color: #F4F5F5;
+  border-radius: 50%;
 }

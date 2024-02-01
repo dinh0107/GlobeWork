@@ -4,56 +4,44 @@
             <img src="~/Content/images/anhhocbong.png" alt="..." />
         </div>
         <div class="w-hidden media-body">
-            <h5 class="mt-0">thằng định</h5>
+            <h5 class="mt-0">bạn định</h5>
             <p>Employer</p>
         </div>
     </div>
     <div class="vw"></div>
     <ul class="nav-sidebar">
-        @for (int i = 0; i < 5; i++)
-        {
-            <li>
-                <a href="">
-                    <div class="w-show">
-                        <i class="fa-regular fa-circle-user"></i>
-                    </div>
-                    <div class="w-hidden">
-                        Quản lý CV
-                    </div>
-                </a>
-            </li>
-        }
+        <li>
+            <a href="@Url.Action("ListNews", "Employer")">
+                <div class="w-show">
+                    <i class="fa-regular fa-file-invoice"></i>
+                </div>
+                <div class="w-hidden">
+                    Tin tuyển dụng
+                </div>
+            </a>
+        </li>
     </ul>
     <div class="vw"></div>
     <ul class="nav-sidebar">
-        @for (int i = 0; i < 5; i++)
-        {
-            <li>
-                <a href="">
-                    <div class="w-show">
-                        <i class="fa-regular fa-circle-user"></i>
-                    </div>
-                    <div class="w-hidden">
-                        Quản lý CV
-                    </div>
-                </a>
-            </li>
-        }
-    </ul>
-    <div class="vw"></div>
-    <ul class="nav-sidebar">
-        @for (int i = 0; i < 5; i++)
-        {
-            <li>
-                <a href="">
-                    <div class="w-show">
-                        <i class="fa-regular fa-circle-user"></i>
-                    </div>
-                    <div class="w-hidden">
-                        Quản lý CV
-                    </div>
-                </a>
-            </li>
-        }
+        <li>
+            <a href="@Url.Action("History", "Employer")">
+                <div class="w-show">
+                    <i class="fa-regular fa-clock-rotate-left"></i>
+                </div>
+                <div class="w-hidden">
+                    Lịch sử hoạt động
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("Profile", "Employer")">
+                <div class="w-show">
+                    <i class="fa-regular fa-gear"></i>
+                </div>
+                <div class="w-hidden">
+                    Cài đặt tài khoản
+                </div>
+            </a>
+        </li>
     </ul>
 </div>
