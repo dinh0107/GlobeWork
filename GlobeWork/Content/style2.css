@@ -779,3 +779,68 @@ header.header-employer logo {
   background-color: #F4F5F5;
   border-radius: 50%;
 }
+
+.li-notification {
+  position: relative;
+}
+.li-notification:hover .notification {
+  opacity: 1;
+  visibility: visible;
+}
+
+.notification {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  width: 20rem;
+  max-height: 26rem;
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.4s;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+.notification li.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: #fff;
+}
+.notification li.header h5 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0;
+}
+.notification li.header a {
+  color: #D92027;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  background-color: transparent;
+}
+.notification li.media {
+  padding: 1rem;
+  border-bottom: 1px solid #cdcdcd;
+}
+.notification li.media > i {
+  color: #66BC46;
+  font-size: 1.5rem;
+}
+.notification p {
+  font-size: 0.85rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  margin-bottom: 0;
+}
+.notification .media-body > i {
+  font-size: 0.65rem;
+}
