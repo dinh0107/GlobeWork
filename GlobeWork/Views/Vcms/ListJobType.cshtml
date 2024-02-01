@@ -1,0 +1,48 @@
+﻿@model IEnumerable<GlobeWork.Models.JobType>
+<h2>Danh sách loại công việc</h2>
+<div class="box_content mt-0">
+    <table class="list_table tablecenter table-striped" id="list-rank">
+        <tbody>
+            <tr>
+                <th style="width: 100px">STT</th>
+                <th>Tên loại công việc</th>
+                <th style="width: 130px"></th>
+            </tr>
+            @foreach (var jobtype in Model)
+            {
+                <tr data-id="@jobtype.Id">
+                    <td>@Html.DisplayFor(model => jobtype.Id)</td>
+                    <td class="left">
+                        @Html.DisplayFor(model => jobtype.Name)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Sửa", "UpdateJobType", new { jobtypeId = jobtype.Id }) -
+                        <a href="javascript:;" onclick="deleteJobType('@jobtype.Id')" style="color: red;">Xóa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    function deleteJobType(id) {
+        if (confirm("Bạn có chắc chắn xóa cập bậc này không?")) {
+            $.post("/Vcms/DeleteJobType", { jobtypeId: id }, function (data) {
+                if (data) {
+                    $.toast({
+                        text: 'Đang xóa loại công việc',
+                        position: 'bottom-right',
+                        icon: 'success',
+                    })
+                    $("tr[data-id='" + id + "']").fadeOut();
+                } else {
+                    $.toast({
+                        text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                        icon: 'error',
+                    })
+                }
+            });
+        }
+    }
+
+</script>

@@ -191,7 +191,7 @@ header {
 }
 
 .logo {
-    width: 14.125rem;
+  width: 14.125rem;
 }
 
 .menu-nav {
@@ -3084,18 +3084,16 @@ input, button {
   opacity: 1;
 }
 
-.vscomp-ele {
+.control-user .vscomp-ele {
   display: inline-block;
   max-width: unset !important;
   width: 100%;
 }
-
-.vscomp-toggle-button {
+.control-user .vscomp-toggle-button {
   padding: 0.5rem 0.75rem;
   border-radius: 3px;
   border: 0 !important;
 }
-
-.vscomp-wrapper.focused .vscomp-toggle-button, .vscomp-wrapper:focus .vscomp-toggle-button {
+.control-user .vscomp-wrapper.focused .vscomp-toggle-button, .control-user .vscomp-wrapper:focus .vscomp-toggle-button {
   box-shadow: none !important;
 }

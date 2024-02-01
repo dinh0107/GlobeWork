@@ -1,11 +1,24 @@
-﻿<div class="sidebar">
+﻿@{
+    var FullName = ViewContext.RouteData.Values["FullName"].ToString();
+    var id = ViewContext.RouteData.Values["Id"].ToString();
+    var avatar = ViewContext.RouteData.Values["Avatar"].ToString();
+    var email = ViewContext.RouteData.Values["Email"].ToString();
+}
+<div class="sidebar">
     <div class="media user-sidebar">
         <div class="w-show">
-            <img src="~/Content/images/anhhocbong.png" alt="..." />
+            @if (avatar == "")
+            {
+                <img src="~/Content/images/avatar-default.jpg" alt="@FullName" />
+            }
+            else
+            {
+                <img src="@Path.Combine("/images/employer/", avatar)" alt="@FullName" />
+            }
         </div>
         <div class="w-hidden media-body">
-            <h5 class="mt-0">bạn định</h5>
-            <p>Employer</p>
+            <h5 class="mt-0">@FullName</h5>
+            <p>Nhà tuyển dụng</p>
         </div>
     </div>
     <div class="vw"></div>

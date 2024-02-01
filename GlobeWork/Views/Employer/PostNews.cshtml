@@ -1,19 +1,20 @@
-﻿
+﻿@model GlobeWork.ViewModel.InsertEmployerViewModel
 @{
     ViewBag.Title = "Đăng tin";
     Layout = "~/Views/Shared/_EmployerLayout.cshtml";
 }
 
-<div class="contents-header">
-    <h1>@ViewBag.Title</h1>
-    <div class="btn-group">
-        <button class="btn btn-primary">Lưu lại</button>
-        <button class="btn btn-danger">Huỷ bỏ</button>
-    </div>
-</div>
 
 @using (Html.BeginForm())
 {
+
+    <div class="contents-header">
+        <h1>@ViewBag.Title</h1>
+        <div class="btn-group">
+            <button class="btn btn-primary">Lưu lại</button>
+            <button class="btn btn-danger">Huỷ bỏ</button>
+        </div>
+    </div>
     <div class="container py-5">
         <div class="box-content mb-4">
             <div class="box-header">
@@ -26,31 +27,25 @@
                     <label>
                         Tiêu đề tin <i class="text-danger">*</i>
                     </label>
-                    <input class="form-control" />
+                    @Html.TextBoxFor(a => a.JobPost.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.JobPost.Name)
                 </div>
                 <div class="row">
                     <div class="form-group col-6">
                         <label>
                             Vị trí tuyển dụng <i class="text-danger">*</i>
                         </label>
-                        <select class="v-select">
-                            @for (int i = 0; i < 10; i++)
-                            {
-                                <option>
-                                    lựa chọn @i
-                                </option>
-                            }
-                        </select>
+                        <input class="form-control" />
                     </div>
                     <div class="form-group col-6">
                         <label>
                             Ngành nghề <i class="text-danger">*</i>
                         </label>
-                        <select class="v-select-multiple">
-                            @for (int i = 0; i < 10; i++)
+                        <select class="v-select-multiple" name="CareerId">
+                            @foreach (var item in Model.Careers)
                             {
-                                <option value="@i">
-                                    lựa chọn @i
+                                <option value="@item.Id">
+                                    @item.Name
                                 </option>
                             }
                         </select>
@@ -71,13 +66,13 @@
                     </div>
                 </div>
                 @*<div class="form-group">
-                    <label>
-                        Khu vực làm việc <i class="text-danger">*</i>
-                    </label>
-                    <div class="">
+                        <label>
+                            Khu vực làm việc <i class="text-danger">*</i>
+                        </label>
+                        <div class="">
 
-                    </div>
-                </div>*@
+                        </div>
+                    </div>*@
             </div>
         </div>
 
@@ -94,10 +89,10 @@
                             Loại công việc <i class="text-danger">*</i>
                         </label>
                         <select class="v-select">
-                            @for (int i = 0; i < 10; i++)
+                            @foreach (var item in Model.JobTypes)
                             {
-                                <option>
-                                    lựa chọn @i
+                                <option value="@item.Id">
+                                    @item.Name
                                 </option>
                             }
                         </select>
@@ -106,11 +101,11 @@
                         <label>
                             Cấp bậc <i class="text-danger">*</i>
                         </label>
-                        <select class="v-select">
-                            @for (int i = 0; i < 10; i++)
+                        <select class="v-select" name="RankId">
+                            @foreach (var item in Model.Ranks)
                             {
-                                <option value="@i">
-                                    lựa chọn @i
+                                <option value="@item.Id">
+                                    @item.Name
                                 </option>
                             }
                         </select>
@@ -201,12 +196,15 @@
                     Giới tính <i class="text-danger">*</i>
                 </label>
                 <select class="v-select">
-                    @for (int i = 0; i < 3; i++)
-                    {
-                        <option>
-                            lựa chọn @i
-                        </option>
-                    }
+                    <option value="nam">
+                        Nam
+                    </option>
+                    <option value="nữ">
+                        Nữ
+                    </option>
+                    <option value="khác">
+                        Khác
+                    </option>
                 </select>
             </div>
         </div>
@@ -300,5 +298,5 @@
 @section Scripts {
     <script type="text/javascript">
 
-    </script>    
+    </script>
 }

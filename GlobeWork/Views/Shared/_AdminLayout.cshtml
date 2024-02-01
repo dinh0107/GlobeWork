@@ -59,13 +59,6 @@
                         </div>
                     </li>
                     <li data-id="2">
-                        <a class="root"><span>Quản lý việc làm</span><i class="fas fa-caret-down"></i></a>
-                        <div class="sub hidden">
-                            <div>@Html.ActionLink("Danh sách việc làm", "ListJobPost", "JobPostVcms", null, new { @class = "text_link" })</div>
-                            <div>@Html.ActionLink("Danh sách đơn ứng tuyển", "ListApplyJob", "JobPostVcms", null, new { @class = "text_link" })</div>
-                        </div>
-                    </li>
-                    <li data-id="3">
                         <a class="root"><span>Quản lý người dùng</span><i class="fas fa-caret-down"></i></a>
                         <div class="sub hidden">
                             <div>@Html.ActionLink("Danh sách ứng viên", "ListUser", "UserVcms", null, new { @class = "text_link" })</div>
@@ -74,6 +67,25 @@
                             <div>@Html.ActionLink("Danh sách ứng viên", "ListCandidate", "UserVcms", null, new { @class = "text_link" })</div>
                         </div>
                     </li>
+                    <li data-id="3">
+                        <a class="root"><span>Quản lý chung</span><i class="fas fa-caret-down"></i></a>
+                        <div class="sub hidden">
+                            <div>@Html.ActionLink("Thêm mới ngành nghề", "CreateCareer", "Vcms", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Danh sách ngành nghề", "ListCareers", "Vcms", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Quản lý cấp bậc", "CreateRank", "Vcms", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Quản lý hình thức công việc ", "CreateJobType", "Vcms", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Thêm mới kỹ năng ", "CreateSkill", "Vcms", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Danh sách kỹ năng", "ListSkill", "Vcms", null, new { @class = "text_link" })</div>
+                        </div>
+                    </li>
+                    <li data-id="3">
+                        <a class="root"><span>Quản lý việc làm</span><i class="fas fa-caret-down"></i></a>
+                        <div class="sub hidden">
+                            <div>@Html.ActionLink("Danh sách việc làm", "ListJobPost", "JobPostVcms", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Danh sách đơn ứng tuyển", "ListApplyJob", "JobPostVcms", null, new { @class = "text_link" })</div>
+                        </div>
+                    </li>
+
                     <li data-id="4">
                         <a class="root"><span>Quản lý Đơn hàng</span><i class="fas fa-caret-down"></i></a>
                         <div class="sub hidden">

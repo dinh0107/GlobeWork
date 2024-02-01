@@ -1,0 +1,36 @@
+﻿@model GlobeWork.Models.Skill
+@{ ViewBag.Title = "Thêm kỹ năng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
+<h2>Thêm mới kỹ năng</h2>
+@if (ViewBag.Result == 0)
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Thêm mới kỹ năng thành công</strong></div>}
+@if (ViewBag.Result == 1)
+{
+    <div id="AlertBox" class="alert alert-danger"><strong>Chỉ chấp nhận định dạng xls|xlsx</strong></div>}
+@if (ViewBag.Result == 2)
+{
+    <div id="AlertBox" class="alert alert-danger"><strong>Dung lượng lớn hơn 4MB. Vui lòng thử lại</strong></div>}
+<a class="btn quick-link" id="create-skill" href="@Url.Action("ListSkill")"><i class="far fa-list mr-1"></i> Danh sách kỹ năng</a>
+<div class="box_content px-300">
+    @using (Html.BeginForm("CreateSkill", "Vcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+        <table class="form_table">
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.SkillName)</td>
+                <td class="form_text">@Html.TextBoxFor(model => model.SkillName, new { @class = "form_control", @required = "" })</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Code)</td>
+                <td class="form_text">@Html.TextBoxFor(model => model.Code, new { @class = "form_control", @required = "" })</td>
+            </tr>
+            <tr>
+                <td class="form_name"></td>
+                <td class="form_text">
+                    <input type="submit" class="btn quick-link" value="Thêm mới" />
+                </td>
+            </tr>
+        </table>}
+</div>

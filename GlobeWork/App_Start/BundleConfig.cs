@@ -39,7 +39,7 @@ namespace GlobeWork
                       "~/Content/all.css",
                       "~/Content/aos.css",
                       "~/Content/slick.css",
-                      "~/Content/jquery.toast.css",
+                      "~/Content/simple-notify.min.css",
                       "~/Content/owl.carousel.css",
                       "~/Content/jquery.fancybox.css",
                       "~/Content/style.css"));
@@ -47,7 +47,7 @@ namespace GlobeWork
             bundles.Add(new StyleBundle("~/Content/admincss").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/all.css",
-                      "~/Content/simple-notify.min.css",
+                       "~/Content/jquery.toast.css",
                       "~/Content/PagedList.css",
                       "~/Content/jquery.fancybox.css",
                       "~/Content/adminSite.css"));

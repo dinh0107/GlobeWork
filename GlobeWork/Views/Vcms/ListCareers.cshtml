@@ -1,0 +1,108 @@
+﻿@model GlobeWork.ViewModel.ListCareerViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Danh sách ngành nghề";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<h2>Danh sách nghề nghiệp</h2>
+@if (ViewBag.Result == "success")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Import file Excel thành công</strong></div>}
+@if (ViewBag.Result == "update")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật ngành nghề thành công</strong></div>
+}
+<a class="btn quick-link" href="@Url.Action("CreateCareer")"><i class="fal fa-plus-circle mr-1"></i>Thêm ngành nghề</a>
+<div class="box_content">
+    <form action="@Url.Action("ListCareer")" method="get">
+        <div class="row">
+            <div class="col-lg-3">
+                <label>Tên ngành nghề</label> @Html.TextBoxFor(a => a.Name, new { @class = "w300" })
+            </div>
+            <div class="col-lg-3 align-self-center">
+                <button type="submit" class="btn-search">Tìm kiếm</button>
+            </div>
+        </div>
+    </form>
+    <p>Có tổng số <strong>@Model.Careers.TotalItemCount</strong> ngành nghề</p>
+    <table class="list_table tablecenter table-striped" id="list-career">
+        <tbody>
+            <tr>
+                <th style="width: 50px">Hình ảnh</th>
+                <th style="width: 400px">Tên ngành nghề</th>
+                @*<th>CODE</th>*@
+                <th style="width: 100px">Hiện trang chủ</th>
+                <th style="width: 100px">Hoạt động</th>
+                <th style="width: 130px"></th>
+            </tr>
+            @foreach (var career in Model.Careers)
+            {
+                <tr data-id="@career.Id">
+                    <td>@Html.DisplayFor(model => career.Image)</td>
+                    <td class="left">@Html.DisplayFor(model => career.Name)</td>
+                    @*<td>@career.Code</td>*@
+                    <td>@Html.EditorFor(model => career.ShowHome)</td>
+                    <td>@Html.EditorFor(model => career.Active)</td>
+                    <td>
+                        <a href="javascript:;" onclick="updateCareer('@career.Id')">Cập nhật - </a>
+                        @Html.ActionLink("Sửa", "UpdateCareer", new { careerId = career.Id }) -
+                        <a href="javascript:;" onclick="deleteCareer('@career.Id')" style="color: red;">Xóa</a>
+                    </td>
+                </tr>
+            }
+            @if (Model.Careers.PageCount > 1)
+            {
+                <tr>
+                    <td colspan="6">@Html.PagedListPager(Model.Careers, page => Url.Action("ListCareers", new { page, name = Model.Name }))</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        function deleteCareer(id) {
+            if (confirm("Bạn có chắc chắn xóa ngành nghề này không?")) {
+                $.post("/Vcms/DeleteCareer", { careerId: id }, function (data) {
+                    if (data) {
+                        $.toast({
+                            text: 'Đang xóa ngành nghề',
+                            position: 'bottom-right',
+                            icon: 'success',
+                        })
+                        $("tr[data-id='" + id + "']").fadeOut();
+                    } else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            icon: 'error',
+                        })
+                    }
+                });
+            }
+        }
+
+        function updateCareer(id) {
+            var divId = $("tr[data-id='" + id + "']");
+            var active = divId.find("input#career_Active").prop("checked");
+            var home = divId.find("input#career_ShowHome").prop("checked");
+
+            $.post("/Vcms/QuickUpdateCareer", { careerId: id, active, home }, function (data) {
+                if (data) {
+                    console.log("ok")
+                    $.toast({
+                        text: 'Cập nhật thành công',
+                        position: 'bottom-right',
+                        icon: 'success',
+                    })
+                } else {
+                    $.toast({
+                        text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                        icon: 'error',
+                    })
+                }
+            });
+        }
+    </script>
+}

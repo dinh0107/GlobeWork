@@ -1,0 +1,105 @@
+﻿@model GlobeWork.ViewModel.ListSkillViewModel
+@using PagedList.Mvc
+@{ 
+    ViewBag.Title = "Danh sách kỹ năng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var i = 1;
+}
+<h2>Danh sách kỹ năng</h2>
+@if (ViewBag.Result == "success")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>ImportFile Excel thành công</strong></div>}
+@if (ViewBag.Result == "update")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật kỹ năng thành công</strong></div>}
+<a class="btn quick-link" href="@Url.Action("CreateSkill")"><i class="fal fa-plus-circle mr-1"></i>Thêm kỹ năng</a>
+<div class="box_content">
+
+    <form action="@Url.Action("ListCareer")" method="get">
+        <div class="row">
+            <div class="col-lg-3">
+                <label>Tên kỹ năng</label> @Html.TextBoxFor(a => a.Name, new { @class = "w300" })
+            </div>
+            <div class="col-lg-3 align-self-center">
+                <button type="submit" class="btn-search">Tìm kiếm</button>
+            </div>
+        </div>
+    </form>
+    <p>Có tổng số <strong>@Model.Skills.TotalItemCount</strong> kỹ năng</p>
+    <table class="list_table tablecenter table-striped" id="list-skill">
+        <tbody>
+            <tr>
+                <th style="width: 100px">STT</th>
+                <th>Tên cấp bậc</th>
+                <th>CODE</th>
+                <th style="width: 230px"></th>
+            </tr>
+            @foreach (var skill in Model.Skills)
+            {
+                <tr data-id="@skill.Id">
+                    <td>@i</td>
+                    <td class="left">@Html.DisplayFor(model => skill.SkillName)</td>
+                    <td>@skill.Code</td>
+                    <td>
+                        <a href="javascript:;" onclick="updateSkill('@skill.Id')">Cập nhật - </a>
+                        @Html.ActionLink("Sửa", "UpdateSkill", new { skillId = skill.Id }) -
+                        <a href="javascript:;" onclick="deleteSkill('@skill.Id')" style="color: red;">Xóa</a>
+                    </td>
+                </tr>
+                i++;
+            }
+            @if (Model.Skills.PageCount > 1)
+            {
+                <tr>
+                    <td colspan="5">@Html.PagedListPager(Model.Skills, page => Url.Action("ListSkill", new { page, name = Model.Name }))</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        function deleteSkill(id) {
+            if (confirm("Bạn có chắc chắn xóa kỹ năng này không?")) {
+                $.post("/Vcms/DeleteSkill", { skillId: id }, function (data) {
+                    if (data) {
+                        $.toast({
+                            text: 'Đang xóa kỹ năng',
+                            position: 'bottom-right',
+                            icon: 'success',
+                        })
+                        $("tr[data-id='" + id + "']").fadeOut();
+                    } else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            icon: 'error',
+                        })
+                    }
+                });
+            }
+        }
+        function updateSkill(id) {
+            var divId = $("tr[data-id='" + id + "']");
+            var home = divId.find("input#skill_ShowHome").prop("checked");
+            console.log(home);
+
+            $.post("/Vcms/QuickUpdateSkill", { skillId: id, home }, function (data) {
+                if (data) {
+                    $.toast({
+                        text: 'Cập nhật thành công',
+                        position: 'bottom-right',
+                        icon: 'success',
+                    })
+                } else {
+                    $.toast({
+                        text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                        icon: 'error',
+                    })
+                }
+            });
+        }
+
+    </script>
+}

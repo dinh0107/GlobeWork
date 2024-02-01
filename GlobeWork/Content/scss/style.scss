@@ -3204,7 +3204,9 @@ input, button {
 .checkbox-wrapper-18 .round input[type="radio"]:checked + label:after {
     opacity: 1;
 }
-.vscomp-ele {
+
+.control-user {
+    .vscomp-ele {
     display: inline-block;
      max-width: unset !important ; 
     width: 100%;
@@ -3216,4 +3218,5 @@ input, button {
 }
 .vscomp-wrapper.focused .vscomp-toggle-button, .vscomp-wrapper:focus .vscomp-toggle-button{
     box-shadow:none !important;
+}
 }

@@ -4,13 +4,17 @@ using GlobeWork.ViewModel;
 using Helpers;
 using PagedList;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Web.UI;
+using System.Xml.Linq;
 
 namespace GlobeWork.Controllers
 {
@@ -349,120 +353,406 @@ namespace GlobeWork.Controllers
         }
         #endregion
 
-        //#region City
-        //[ChildActionOnly]
-        //public PartialViewResult ListCity()
-        //{
-        //    var cities = _unitOfWork.CityRepository.Get(orderBy: q => q.OrderBy(c => c.Sort));
-        //    return PartialView("ListCity", cities);
-        //}
-        //public ActionResult City()
-        //{
-        //    var model = new InsertCityViewModel
-        //    {
-        //        City = new City { Sort = 1, Active = true }
-        //    };
-        //    return View(model);
-        //}
-        //[HttpPost]
-        //public ActionResult City(InsertCityViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (model.ShipFee != null)
-        //        {
-        //            model.City.ShipFee = Convert.ToInt32(model.ShipFee.Replace(",", ""));
-        //        }
+        #region Career
+        [HttpPost]
+        public ActionResult ListCareer(int? page, string name, string result = "")
+        {
+            ViewBag.Result = result;
+            var pageNumber = page ?? 1;
+            var pageSize = 15;
+            var careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+            if (!string.IsNullOrEmpty(name))
+            {
+                careers = careers.Where(a => a.Name.ToLower().Contains(name.ToLower()));
+            }
+            var model = new ListCareerViewModel
+            {
+                Careers = careers.ToPagedList(pageNumber, pageSize),
+                Name = name,
+            };
+            return View(model);
+        }
+        public ActionResult ListCareers(int? page, string name, string result = "")
+        {
+            ViewBag.Result = result;
+            var pageNumber = page ?? 1;
+            var pageSize = 15;
+            var careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+            if (!string.IsNullOrEmpty(name))
+            {
+                careers = careers.Where(a => a.Name.ToLower().Contains(name.ToLower()));
+            }
+            var model = new ListCareerViewModel
+            {
+                Careers = careers.ToPagedList(pageNumber, pageSize),
+                Name = name,
+            };
+            return View(model);
+        }
+        public ActionResult CreateCareer(int? result)
+        {
+            ViewBag.Result = result;
+            var careers = _unitOfWork.CareerRepository.Get(p => p.ParentId == null);
+            ViewBag.Careers = new SelectList(careers, "Id", "Name");
+            var career = new Career { Active = true };
+            return View(career);
+        }
+        [HttpPost]
+        public ActionResult CreateCareer(Career model)
+        {
+            if (ModelState.IsValid)
+            {
+                var isPost = true;
+                var file = Request.Files["Image"];
+                if (file != null && file.ContentLength > 0)
+                {
+                    if (file.ContentType != "image/jpeg" & file.ContentType != "image/png" && file.ContentType != "image/gif")
+                    {
+                        ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg");
+                        isPost = false;
+                    }
+                    else
+                    {
+                        if (file.ContentLength > 4000 * 1024)
+                        {
+                            ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
+                            isPost = false;
+                        }
+                        else
+                        {
+                            var imgPath = "/images/careers/" + DateTime.Now.ToString("yyyy/MM/dd");
+                            HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
+                            var imgFileName = DateTime.Now.ToFileTimeUtc() + Path.GetExtension(file.FileName);
 
-        //        _unitOfWork.CityRepository.Insert(model.City);
-        //        _unitOfWork.Save();
-        //        return RedirectToAction("City");
-        //    }
-        //    return View(model);
-        //}
-        //public ActionResult EditCity(int cityId = 0)
-        //{
-        //    var city = _unitOfWork.CityRepository.GetById(cityId);
-        //    if (city == null)
-        //    {
-        //        return RedirectToAction("City");
-        //    }
+                            model.Image = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
 
-        //    var model = new InsertCityViewModel
-        //    {
-        //        City = city,
-        //        ShipFee = city.ShipFee?.ToString("N0")
-        //    };
+                            var newImage = Image.FromStream(file.InputStream);
+                            var fixSizeImage = HtmlHelpers.FixedSize(newImage, 600, 600, false);
+                            HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
+                            file.SaveAs(Server.MapPath(Path.Combine(imgPath, imgFileName)));
+                        }
+                    }
+                }
 
-        //    return View(model);
-        //}
-        //[HttpPost]
-        //public ActionResult EditCity(InsertCityViewModel model)
-        //{
-        //    var city = _unitOfWork.CityRepository.GetById(model.City.Id);
-        //    if (city == null)
-        //    {
-        //        return RedirectToAction("City");
-        //    }
+                if (isPost)
+                {
+                    model.Url = HtmlHelpers.ConvertToUnSign(null, model.Url ?? model.Name);
+                    _unitOfWork.CareerRepository.Insert(model);
+                    _unitOfWork.Save();
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (model.ShipFee != null)
-        //        {
-        //            city.ShipFee = Convert.ToInt32(model.ShipFee.Replace(",", ""));
-        //        }
-        //        else
-        //        {
-        //            city.ShipFee = null;
-        //        }
+                    var count = _unitOfWork.CareerRepository.GetQuery(a => a.Url == model.Url).Count();
+                    if (count > 1)
+                    {
+                        model.Url += "-" + model.Id;
+                        _unitOfWork.Save();
+                    }
 
-        //        city.Name = model.City.Name;
-        //        city.Sort = model.City.Sort;
-        //        city.Active = model.City.Active;
+                    return RedirectToAction("CreateCareer", new { result = 0 });
+                }
+            }
+            var careers1 = _unitOfWork.CareerRepository.Get(p => p.ParentId == null);
+            ViewBag.Careers = new SelectList(careers1, "Id", "Name");
+            return View(model);
+        }
+        public ActionResult UpdateCareer(int careerId = 0)
+        {
+            var career = _unitOfWork.CareerRepository.GetById(careerId);
+            if (career == null)
+            {
+                return RedirectToAction("ListCareers", "Vcms", new { result = "update" });
+            }
+            var careers = _unitOfWork.CareerRepository.Get(p => p.ParentId == null);
+            ViewBag.Careers = new SelectList(careers, "Id", "Name");
+            return View(career);
+        }
+        [HttpPost]
+        public ActionResult UpdateCareer(Career model, FormCollection fc)
+        {
+            if (ModelState.IsValid)
+            {
+                var isPost = true;
+                var file = Request.Files["Image"];
+                if (file != null && file.ContentLength > 0)
+                {
+                    if (file.ContentType != "image/jpeg" & file.ContentType != "image/png" && file.ContentType != "image/gif")
+                    {
+                        ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg");
+                        isPost = false;
+                    }
+                    else
+                    {
+                        if (file.ContentLength > 4000 * 1024)
+                        {
+                            ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
+                            isPost = false;
+                        }
+                        else
+                        {
+                            var imgPath = "/images/careers/" + DateTime.Now.ToString("yyyy/MM/dd");
+                            HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
+                            var imgFileName = DateTime.Now.ToFileTimeUtc() + Path.GetExtension(file.FileName);
 
-        //        _unitOfWork.Save();
-        //        return RedirectToAction("City");
-        //    }
-        //    return View(model);
-        //}
-        //[HttpPost]
-        //public bool DeleteCity(int cityId = 0)
-        //{
-        //    var city = _unitOfWork.CityRepository.GetById(cityId);
-        //    if (city == null)
-        //    {
-        //        return false;
-        //    }
+                            model.Image = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
 
-        //    _unitOfWork.CityRepository.Delete(city);
-        //    _unitOfWork.Save();
-        //    return true;
-        //}
-        //public bool UpdateCity(int sort = 1, int cityId = 0, bool active = false, string shipFee = "")
-        //{
-        //    var city = _unitOfWork.CityRepository.GetById(cityId);
-        //    if (city == null)
-        //    {
-        //        return false;
-        //    }
+                            var newImage = Image.FromStream(file.InputStream);
+                            var fixSizeImage = HtmlHelpers.FixedSize(newImage, 600, 600, false);
+                            HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
+                            file.SaveAs(Server.MapPath(Path.Combine(imgPath, imgFileName)));
+                        }
+                    }
+                }
+                else
+                {
+                    model.Image = fc["CurrentFile"];
+                }
 
-        //    city.Sort = sort;
-        //    city.Active = active;
+                if (isPost)
+                {
+                    model.Url = HtmlHelpers.ConvertToUnSign(null, model.Url ?? model.Name);
+                    _unitOfWork.CareerRepository.Update(model);
+                    _unitOfWork.Save();
+                    var count = _unitOfWork.CareerRepository.GetQuery(a => a.Url == model.Url).Count();
+                    if (count > 1)
+                    {
+                        model.Url += "-" + model.Id;
+                        _unitOfWork.Save();
+                    }
 
-        //    if (shipFee != "")
-        //    {
-        //        city.ShipFee = Convert.ToInt32(shipFee.Replace(",", ""));
-        //    }
-        //    else
-        //    {
-        //        city.ShipFee = null;
-        //    }
+                    return RedirectToAction("ListCareers", new { result = "update" });
+                }
+            }
+            var careers1 = _unitOfWork.CareerRepository.Get(p => p.ParentId == null);
+            ViewBag.Careers = new SelectList(careers1, "Id", "Name");
+            return View(model);
+        }
+        [HttpPost]
+        public bool DeleteCareer(int careerId = 0)
+        {
+            var career = _unitOfWork.CareerRepository.GetById(careerId);
+            if (career == null)
+            {
+                return false;
+            }
+            _unitOfWork.CareerRepository.Delete(career);
+            _unitOfWork.Save();
+            return true;
+        }
+        [HttpPost]
+        public bool QuickUpdateCareer(bool active = false, bool home = false, int careerId = 0)
+        {
+            var career = _unitOfWork.CareerRepository.GetById(careerId);
+            if (career == null)
+            {
+                return false;
+            }
+            career.ShowHome = home;
+            career.Active = active;
+            _unitOfWork.Save();
+            return true;
+        }
+        #endregion
 
-        //    _unitOfWork.Save();
-        //    return true;
-        //}
-        //#endregion
+        #region Rank
+        [ChildActionOnly]
+        public ActionResult ListRank()
+        {
+            var ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Id));
+            return PartialView(ranks);
+        }
+        public ActionResult CreateRank(string result = "")
+        {
+            ViewBag.Result = result;
+            var ranks = new Rank { };
+            return View(ranks);
+        }
+        [HttpPost]
+        public ActionResult CreateRank(Rank model)
+        {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.RankRepository.Insert(model);
+                _unitOfWork.Save();
+                return RedirectToAction("CreateRank", new { result = "success" });
+            }
+            return View(model);
+        }
+        public ActionResult UpdateRank(int rankId = 0)
+        {
+            var rank = _unitOfWork.RankRepository.GetById(rankId);
+            if (rank == null)
+            {
+                return RedirectToAction("CreateRank", "Vcms");
+            }
+            return View(rank);
+        }
+        [HttpPost]
+        public ActionResult UpdateRank(Rank model)
+        {
 
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.RankRepository.Update(model);
+                _unitOfWork.Save();
+                return RedirectToAction("CreateRank", new { result = "success" });
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public bool DeleteRank(int rankId = 0)
+        {
+            var rank = _unitOfWork.RankRepository.GetById(rankId);
+            if (rank == null)
+            {
+                return false;
+            }
+            _unitOfWork.CareerRepository.Delete(rank);
+            _unitOfWork.Save();
+            return true;
+        }
+        #endregion
+
+        #region JobType
+        [ChildActionOnly]
+        public ActionResult ListJobType()
+        {
+            var jobType = _unitOfWork.JobTypeRepository.Get(orderBy: o => o.OrderBy(a => a.Id));
+            return PartialView(jobType);
+        }
+        public ActionResult CreateJobType(string result = "")
+        {
+            ViewBag.Result = result;
+            var jobType = new JobType { };
+            return View(jobType);
+        }
+        [HttpPost]
+        public ActionResult CreateJobType(JobType model)
+        {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.JobTypeRepository.Insert(model);
+                _unitOfWork.Save();
+                return RedirectToAction("CreateJobType", new { result = "success" });
+            }
+            return View(model);
+        }
+        public ActionResult UpdateJobType(int jobtypeId = 0)
+        {
+            var career = _unitOfWork.JobTypeRepository.GetById(jobtypeId);
+            if (career == null)
+            {
+                return RedirectToAction("CreateJobType", "Vcms");
+            }
+            return View(career);
+        }
+        [HttpPost]
+        public ActionResult UpdateJobType(JobType model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.JobTypeRepository.Update(model);
+                _unitOfWork.Save();
+                return RedirectToAction("CreateJobType", new { result = "success" });
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public bool DeleteJobType(int jobtypeId = 0)
+        {
+            var jobType = _unitOfWork.JobTypeRepository.GetById(jobtypeId);
+            if (jobType == null)
+            {
+                return false;
+            }
+            _unitOfWork.JobTypeRepository.Delete(jobType);
+            _unitOfWork.Save();
+            return true;
+        }
+        #endregion
+
+        #region Skill
+        public ActionResult ListSkill(int? page, string name, string result = "")
+        {
+            ViewBag.Result = result;
+            var pageNumber = page ?? 1;
+            var pageSize = 15;
+
+            var skills = _unitOfWork.SkillRepository.Get(orderBy: o => o.OrderBy(a => a.SkillName));
+            if (!string.IsNullOrEmpty(name))
+            {
+                skills = skills.Where(a => a.SkillName.ToLower().Contains(name.ToLower()));
+            }
+            var model = new ListSkillViewModel
+            {
+                Skills = skills.ToPagedList(pageNumber, pageSize),
+                Name = name
+            };
+            return View(model);
+
+        }
+        public ActionResult CreateSkill(int? result)
+        {
+            ViewBag.Result = result;
+            var skill = new Skill { CreateDate = DateTime.Now };
+            return View(skill);
+        }
+        [HttpPost]
+        public ActionResult CreateSkill(Skill model)
+        {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.SkillRepository.Insert(model);
+                _unitOfWork.Save();
+                return RedirectToAction("CreateSkill", new { result = 0 });
+            }
+            return View(model);
+        }
+        public ActionResult UpdateSkill(int skillId = 0)
+        {
+            var skill = _unitOfWork.SkillRepository.GetById(skillId);
+            if (skill == null)
+            {
+                return RedirectToAction("CreateSkill", "Vcms");
+            }
+            return View(skill);
+        }
+        [HttpPost]
+        public ActionResult UpdateSkill(Skill model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.SkillRepository.Update(model);
+                _unitOfWork.Save();
+                return RedirectToAction("ListSkill", new { result = "update" });
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public bool QuickUpdateSkill(bool home = false, int skillId = 0)
+        {
+            var skill = _unitOfWork.SkillRepository.GetById(skillId);
+            if (skill == null)
+            {
+                return false;
+            }
+            skill.ShowHome = home;
+            _unitOfWork.Save();
+            return true;
+        }
+        [HttpPost]
+        public bool DeleteSkill(int skillId = 0)
+        {
+            var skill = _unitOfWork.SkillRepository.GetById(skillId);
+            if (skill == null)
+            {
+                return false;
+            }
+            _unitOfWork.SkillRepository.Delete(skill);
+            _unitOfWork.Save();
+            return true;
+        }
+        #endregion
 
         protected override void Dispose(bool disposing)
         {

@@ -1,0 +1,30 @@
+﻿@model GlobeWork.Models.Rank
+@{ ViewBag.Title = "Cập nhật cấp bậc";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
+<h2>Cập nhật cấp bậc</h2>
+@if (ViewBag.Result == "success")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật cấp bậc thành công</strong></div>}
+@if (ViewBag.Result == "update")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật cấp bậc thành công</strong></div>}
+<a class="btn quick-link" id="create-rank" href="#list-rank"><i class="far fa-list mr-1"></i> Danh sách cấp bậc</a>
+<div class="box_content px-300">
+    @using (Html.BeginForm("UpdateRank", "Vcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+        <table class="form_table">
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Name)</td>
+                <td class="form_text">@Html.EditorFor(model => model.Name)</td>
+            </tr>
+            <tr>
+                <td class="form_name"></td>
+                <td class="form_text">
+                    <input type="submit" class="btn quick-link" value="Cập nhật" />
+                </td>
+            </tr>
+        </table>}
+</div>
+@Html.Action("ListRank", "Vcms")

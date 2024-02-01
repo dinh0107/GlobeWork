@@ -1,0 +1,30 @@
+﻿@model GlobeWork.Models.JobType
+@{ ViewBag.Title = "Cập nhật loại công việc";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
+<h2>Cập nhật loại công việc</h2>
+@if (ViewBag.Result == "success")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật loại công việc thành công</strong></div>}
+@if (ViewBag.Result == "update")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật loại công việc thành công</strong></div>}
+<a class="btn quick-link" id="create-jobtype" href="#list-jobtype"><i class="far fa-list mr-1"></i> Danh sách loại công việc</a>
+<div class="box_content px-300">
+    @using (Html.BeginForm("UpdateJobType", "Vcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+        <table class="form_table">
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Name)</td>
+                <td class="form_text">@Html.EditorFor(model => model.Name)</td>
+            </tr>
+            <tr>
+                <td class="form_name"></td>
+                <td class="form_text">
+                    <input type="submit" class="btn quick-link" value="Cập nhật" />
+                </td>
+            </tr>
+        </table>}
+</div>
+@Html.Action("ListJobType", "Vcms")

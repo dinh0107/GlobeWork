@@ -262,6 +262,12 @@
     <Content Include="Content\login.min.css" />
     <Content Include="Content\owl.carousel.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\scss\style2.css">
+      <DependentUpon>style2.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\scss\style2.min.css">
+      <DependentUpon>style2.css</DependentUpon>
+    </Content>
     <Content Include="Content\simple-notify.min.css" />
     <Content Include="Content\slick.css" />
     <Content Include="Content\style.css" />
@@ -1417,20 +1423,14 @@
     <Content Include="Views\Shared\_AdminIframeLayout.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\Vcms\ChangePassword.cshtml" />
-    <Content Include="Views\Vcms\City.cshtml" />
     <Content Include="Views\Vcms\ConfigSite.cshtml" />
     <Content Include="Views\Vcms\CreateAdmin.cshtml" />
     <Content Include="Views\Vcms\EditAdmin.cshtml" />
-    <Content Include="Views\Vcms\EditCity.cshtml" />
     <Content Include="Views\Vcms\EditUser.cshtml" />
     <Content Include="Views\Vcms\Index.cshtml" />
     <Content Include="Views\Vcms\ListAdmin.cshtml" />
-    <Content Include="Views\Vcms\ListCity.cshtml" />
-    <Content Include="Views\Vcms\ListShowroom.cshtml" />
     <Content Include="Views\Vcms\ListUser.cshtml" />
     <Content Include="Views\Vcms\Login.cshtml" />
-    <Content Include="Views\Vcms\Showroom.cshtml" />
-    <Content Include="Views\Vcms\UpdateShowroom.cshtml" />
     <Content Include="Views\Employer\Checkout.cshtml" />
     <Content Include="Views\Employer\PostNews.cshtml" />
     <Content Include="Views\Employer\OrderTracking.cshtml" />
@@ -1456,6 +1456,21 @@
     <Content Include="Views\UserVcms\PublicMoney.cshtml" />
     <Content Include="Views\Employer\Employer.cshtml" />
     <Content Include="Views\Employer\EmployerLogin.cshtml" />
+    <Content Include="Views\Employer\ListNews.cshtml" />
+    <Content Include="Views\Vcms\CreateCareer.cshtml" />
+    <Content Include="Views\Vcms\ListCareer.cshtml" />
+    <Content Include="Views\Vcms\UpdateCareer.cshtml" />
+    <Content Include="Views\Vcms\ListCareers.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\ImageCareer.cshtml" />
+    <Content Include="Views\Vcms\CreateRank.cshtml" />
+    <Content Include="Views\Vcms\CreateSkill.cshtml" />
+    <Content Include="Views\Vcms\ListRank.cshtml" />
+    <Content Include="Views\Vcms\ListSkill.cshtml" />
+    <Content Include="Views\Vcms\UpdateRank.cshtml" />
+    <Content Include="Views\Vcms\UpdateSkill.cshtml" />
+    <Content Include="Views\Vcms\ListJobType.cshtml" />
+    <Content Include="Views\Vcms\CreateJobType.cshtml" />
+    <Content Include="Views\Vcms\UpdateJobType.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

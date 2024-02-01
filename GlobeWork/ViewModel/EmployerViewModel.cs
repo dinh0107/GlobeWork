@@ -10,4 +10,13 @@ namespace GlobeWork.ViewModel
     {
         public Employer Employer { get; set; }
     }
+    public class InsertEmployerViewModel
+    {
+        public JobPost JobPost { get; set; }
+        public IEnumerable<Career> Careers { get; set; }
+        public IEnumerable<JobType> JobTypes { get; set; }
+        public IEnumerable<Rank>  Ranks { get; set; }
+        //public IEnumerable<Rank>  Ranks { get; set; }
+
+    }
 }

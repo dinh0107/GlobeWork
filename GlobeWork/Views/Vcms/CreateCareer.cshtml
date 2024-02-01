@@ -1,0 +1,62 @@
+﻿@model GlobeWork.Models.Career
+@{ ViewBag.Title = "Thêm ngành nghề";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+<h2>Thêm mới ngành nghề</h2>
+@if (ViewBag.Result == 0)
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Thêm mới kỹ năng thành công</strong></div>}
+@if (ViewBag.Result == 1)
+{
+    <div id="AlertBox" class="alert alert-danger"><strong>Chỉ chấp nhận định dạng xls|xlsx</strong></div>}
+@if (ViewBag.Result == 2)
+{
+    <div id="AlertBox" class="alert alert-danger"><strong>Dung lượng lớn hơn 4MB. Vui lòng thử lại</strong></div>}
+
+<a class="btn quick-link" id="create-career" href="@Url.Action("ListCareers")"><i class="far fa-list mr-1"></i> Danh sách ngành nghề</a>
+<div class="box_content">
+    @using (Html.BeginForm("CreateCareer", "Vcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+        <table class="form_table">
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.ParentId)</td>
+                <td class="form_text">
+                    @Html.DropDownListFor(m => Model.ParentId, (SelectList)ViewBag.Careers, "Danh mục cha", new { @class = "form_control w300" })
+                </td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Name)</td>
+                <td class="form_text">@Html.EditorFor(model => model.Name)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Code)</td>
+                <td class="form_text">@Html.EditorFor(model => model.Code)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Image)</td>
+                <td class="form_text">
+                    @Html.TextBoxFor(model => model.Image, new { type = "file" })<span class="red-warring">Chấp nhận ảnh jpg, png, gif, jpeg < 4MB</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.ShowHome)</td>
+                <td class="form_text">@Html.EditorFor(model => model.ShowHome)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Active)</td>
+                <td class="form_text">@Html.CheckBoxFor(model => model.Active, new { @checked = "checked" })</td>
+            </tr>
+            <tr>
+                    <td class="form_name">@Html.LabelFor(model => model.Url)</td>
+                    <td class="form_text">@Html.EditorFor(model => model.Url)</td>
+                </tr>
+            <tr>
+                <td class="form_name"></td>
+                <td class="form_text">
+                    <input type="submit" class="btn quick-link" value="Thêm mới" />
+                </td>
+            </tr>
+        </table>}
+</div>

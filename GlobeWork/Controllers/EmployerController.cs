@@ -24,6 +24,7 @@ namespace GlobeWork.Controllers
         public SelectList DistrictSelectList(int? cityId) => new SelectList(_unitOfWork.DistrictRepository.Get(a => a.Active && a.CityId == cityId, q => q.OrderBy(a => a.Sort)), "Id", "Name");
         public ConfigSite ConfigSite => (ConfigSite)HttpContext.Application["ConfigSite"];
 
+        #region Login 
         [Route("nha-tuyen-dung")]
         public ActionResult Employer()
         {
@@ -117,6 +118,9 @@ namespace GlobeWork.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+        #endregion
+      
+
         [ChildActionOnly]
         public PartialViewResult Header()
         {
@@ -136,7 +140,10 @@ namespace GlobeWork.Controllers
         {
             return PartialView();
         }
-
+        public ActionResult ListNews()
+        {
+            return View();
+        }
         public ActionResult Index()
         {
             var employer = _unitOfWork.EmployerRepository.GetById(User.Id);
@@ -173,9 +180,19 @@ namespace GlobeWork.Controllers
 
         public ActionResult PostNews()
         {
-            return View();
+            var model = new InsertEmployerViewModel
+            {
+                Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate)),
+                JobTypes = _unitOfWork.JobTypeRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate)),
+                Ranks = _unitOfWork.RankRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate))
+            };
+            return View(model);
         }
-
+        //[HttpPost]
+        //public ActionResult PostNews()
+        //{
+        //    return View();
+        //}
         public ActionResult OrderTracking()
         {
             return View();

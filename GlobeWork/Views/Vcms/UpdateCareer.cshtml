@@ -1,0 +1,71 @@
+﻿@model GlobeWork.Models.Career
+@{ ViewBag.Title = "Cập nhật ngành nghề";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
+<h2>Cập nhật ngành nghề</h2>
+@if (ViewBag.Result == "success")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật ngành nghề thành công</strong></div>}
+@if (ViewBag.Result == "update")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật ngành nghề thành công</strong></div>}
+<a class="btn quick-link" id="create-career" href="@Url.Action("CreateCareers")"><i class="far fa-list mr-1"></i> Danh sách ngành nghề</a>
+<div class="box_content">
+    @using (Html.BeginForm("UpdateCareer", "Vcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+        <table class="form_table">
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.ParentId)</td>
+                <td class="form_text">
+                    @Html.DropDownListFor(m => Model.ParentId, (SelectList)ViewBag.Careers, "Danh mục cha", new { @class = "form_control w300" })
+                </td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Name)</td>
+                <td class="form_text">@Html.EditorFor(model => model.Name)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Code)</td>
+                <td class="form_text">@Html.EditorFor(model => model.Code)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Image)</td>
+                <td class="form_text">
+                    @Html.TextBoxFor(model => model.Image, new { type = "file" })
+                </td>
+            </tr>
+            @if (Model.Image != null)
+            {
+                <tr id="ImgPreview">
+                    <td class="form_name"></td>
+                    <td class="form_text">
+                        @Html.DisplayFor(model => model.Image)
+                        <br />
+                        @if (!string.IsNullOrEmpty(Model.Image))
+                        {
+                            <br /><a href="javascript:;" onclick="$('#ImgPreview').hide(); $('#CurrentFile').val('');"><img src="/Content/admin/icon-delete-red.png" alt="" style="vertical-align: middle; margin-top: 0; height: 10px;" /> Xóa ảnh</a>
+                            <input type="hidden" name="CurrentFile" id="CurrentFile" value="@Model.Image" />}
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.ShowHome)</td>
+                <td class="form_text">@Html.EditorFor(model => model.ShowHome)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Active)</td>
+                <td class="form_text">@Html.CheckBoxFor(model => model.Active, new { @checked = "checked" })</td>
+            </tr>
+            <tr>
+                    <td class="form_name">@Html.LabelFor(model => model.Url)</td>
+                    <td class="form_text">@Html.EditorFor(model => model.Url)</td>
+                </tr>
+            <tr>
+                <td class="form_name"></td>
+                <td class="form_text">
+                    <input type="submit" class="btn quick-link" value="Cập nhật" />
+                </td>
+            </tr>
+        </table>}
+</div>

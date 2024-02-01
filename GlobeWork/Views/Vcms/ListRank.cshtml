@@ -1,0 +1,48 @@
+﻿@model IEnumerable<GlobeWork.Models.Rank>
+<h2>Danh sách cấp bậc</h2>
+<div class="box_content mt-0">
+    <table class="list_table tablecenter table-striped" id="list-rank">
+        <tbody>
+            <tr>
+                <th style="width: 100px">STT</th>
+                <th>Tên cấp bậc</th>
+                <th style="width: 130px"></th>
+            </tr>
+            @foreach (var rank in Model)
+            {
+                <tr data-id="@rank.Id">
+                    <td>@Html.DisplayFor(model => rank.Id)</td>
+                    <td class="left">
+                        @Html.DisplayFor(model => rank.Name)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Sửa", "UpdateRank", new { rankId = rank.Id }) -
+                        <a href="javascript:;" onclick="deleteRank('@rank.Id')" style="color: red;">Xóa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    function deleteRank(id) {
+        if (confirm("Bạn có chắc chắn xóa cập bậc này không?")) {
+            $.post("/Vcms/DeleteRank", { rankId: id }, function (data) {
+                if (data) {
+                    $.toast({
+                        text: 'Đang xóa cấp bậc',
+                        position: 'bottom-right',
+                        icon: 'success',
+                    })
+                    $("tr[data-id='" + id + "']").fadeOut();
+                } else {
+                    $.toast({
+                        text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                        icon: 'error',
+                    })
+                }
+            });
+        }
+    }
+
+</script>

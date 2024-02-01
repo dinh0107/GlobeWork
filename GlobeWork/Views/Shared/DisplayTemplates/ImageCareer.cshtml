@@ -1,0 +1,8 @@
+﻿@if (Model == null)
+{
+    <img src="~/Content/images/avatar-default.jpg" style="width: 60px; height: 60px; object-fit: contain;" alt="" />
+}
+else
+{
+    <img src="@Path.Combine("/images/careers/", Model)" style="width: 60px; height: 60px; object-fit: contain;" alt="" />
+}
