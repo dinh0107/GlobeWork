@@ -1,7 +1,7 @@
-﻿@*@using LogisticsNguyen.Models
-    @{
-        var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
-    }*@
+﻿@using GlobeWork.Models
+@{
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+}
 <!DOCTYPE html>
 <html lang="vi-VN">
 <head xmlns="http://www.w3.org/1999/xhtml" prefix="og:http://ogp.me/ns# fb:http://www.facebook.com/2008/fbml">
@@ -11,17 +11,17 @@
     <meta name="description" content="@Html.Raw(ViewBag.Description)" />
     <meta name="robots" content="@(ViewBag.Robots == null ? "index,follow" : ViewBag.Robots)" />
     <link rel="canonical" href="@ViewBag.Canonical" />
-    @*@if (config.Favicon != null)
-        {
-            <link rel="shortcut icon" href="@Path.Combine("/images/configs/", config.Favicon)?w=100&h=100">
-        }*@
+    @if (config.Favicon != null)
+    {
+        <link rel="shortcut icon" href="@Path.Combine("/images/configs/", config.Favicon)?w=100&h=100">
+    }
     <meta property="og:locale" content="vi_VN">
     <meta property="og:type" content="website">
     <meta property="og:title" content="@Html.Raw(ViewBag.Title)">
     <meta property="og:description" content="@Html.Raw(ViewBag.Description)">
     <meta property="og:url" content="@ViewBag.Canonical">
     <meta property="og:site_name" content="@Html.Raw(ViewBag.Title)">
-    @*<meta property="og:image" content="@(ViewBag.ImageShare ?? Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/configs/", config.ImageShare))" />*@
+    <meta property="og:image" content="@(ViewBag.ImageShare ?? Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/configs/", config.ImageShare))" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;700;800&display=swap" rel="stylesheet">
@@ -29,10 +29,10 @@
     <link href="~/Content/virtual-select.min.css" rel="stylesheet" />
     <link href="~/Content/tooltip.min.css" rel="stylesheet" />
     <link href="~/Content/style2.min.css" rel="stylesheet" />
-    @*@if (config.GoogleAnalytics != null)
-        {
-            @Html.Raw(config.GoogleAnalytics)
-        }*@
+    @if (config.GoogleAnalytics != null)
+    {
+        @Html.Raw(config.GoogleAnalytics)
+    }
 </head>
 <body>
     @Html.Action("Header", "Employer")
@@ -52,9 +52,9 @@
     @RenderSection("scripts", false)
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v18.0" nonce="di1pgAbX"></script>
-    @*@if (config.LiveChat != null)
-        {
-            @Html.Raw(config.LiveChat)
-        }*@
+    @if (config.LiveChat != null)
+    {
+        @Html.Raw(config.LiveChat)
+    }
 </body>
 </html>

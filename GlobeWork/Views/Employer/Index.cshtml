@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Index";
+﻿@model GlobeWork.ViewModel.EmployerViewModel
+@{
+    ViewBag.Title = "Tổng quan";
     Layout = "~/Views/Shared/_EmployerLayout.cshtml";
 }
 
@@ -68,17 +69,24 @@
                 </div>
                 <div class="box-body">
                     <div class="user-info media">
-                        <img src="~/Content/images/anhhocbong.png" alt="..." />
+                        @if (Model.Employer.Avatar != null)
+                        {
+                            <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/employer/", Model.Employer.Avatar)" alt="@Model.Employer.FullName" class="lazyload" />
+                        }
+                        else
+                        {
+                            <img src="~/Content/images/avatar-default.jpg" alt="@Model.Employer.FullName" />
+                        }
                         <ul class="media-body">
-                            <li>thằng định</li>
-                            <li>
+                            <li>@Model.Employer.FullName</li>
+                            @*<li>
                                 Mã NTD: <span>631903</span>
+                            </li>*@
+                            <li>
+                                Email: <span>@Model.Employer.Email</span>
                             </li>
                             <li>
-                                Email: <span>dinhdv@vico.vn</span>
-                            </li>
-                            <li>
-                                Số ĐT: <span>0877586111</span>
+                                Số ĐT: <span>@Model.Employer.PhoneNumber</span>
                             </li>
                         </ul>
                     </div>

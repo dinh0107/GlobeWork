@@ -117,7 +117,7 @@ namespace GlobeWork.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
-
+        [ChildActionOnly]
         public PartialViewResult Header()
         {
             return PartialView();
@@ -139,7 +139,16 @@ namespace GlobeWork.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            var employer = _unitOfWork.EmployerRepository.GetById(User.Id);
+            if (employer == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            var model = new EmployerViewModel
+            {
+                Employer = employer
+            };
+            return View(model);
         }
 
         public ActionResult Profile()
