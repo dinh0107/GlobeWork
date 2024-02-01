@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewBag.Title = "Quản lý tin tuyển dụng";
+    Layout = "~/Views/Shared/_EmployerLayout.cshtml";
+}
+
+<div class="contents-header">
+    <h1>@ViewBag.Title</h1>
+
+    <button class="btn btn-primary"><i class="fa-sharp fa-solid fa-pen-to-square mr-2"></i>Đăng tin</button>
+</div>
+
+<div class="container py-5">
+    <div class="box-content">
+        <div class="box-header form-row">
+            <div class="col">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fa-regular fa-magnifying-glass"></i></div>
+                    </div>
+                    <input class="form-control" placeholder="Tìm kiếm tin tuyển dụng theo tiêu đề hoặc mã tin" />
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group flex-nowrap">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Trạng thái hiển thị:</div>
+                    </div>
+                    <select class="v-select">
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            <option value="@i">
+                                Lựa chọn @i
+                            </option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group flex-nowrap">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Trạng thái duyệt tin:</div>
+                    </div>
+                    <select class="v-select">
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            <option value="@i">
+                                Lựa chọn @i
+                            </option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Tin tuyển dụng
+                        </th>
+                        <th class="text-center">
+                            <i class="fa-light fa-gear"></i>
+                        </th>
+                        <th class="text-center">
+                            Đợt hiển thị gần nhất
+                        </th>
+                        <th class="text-center">
+                            Toàn bộ thời gian hiển thị
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < 5; i++)
+                    {
+                        <tr>
+                            <td class="align-middle">
+                                <small class="text-muted mb-2">#1224491</small>
+                                <h6 class="mb-2">
+                                    Tin Nháp
+                                </h6>
+                                <span class="badge badge-secondary">Không hiển thị</span>
+                                <span class="badge badge-secondary">Chưa yêu cầu duyệt</span>
+                                <p class="my-2">
+                                    Chiến dịch tuyển dụng: <a href="">Tin Nháp</a>
+                                </p>
+                                <button class="btn btn-primary">Xem CV ứng tuyển</button>
+                                <button class="btn btn-secondary">Yêu cầu hiển thị</button>
+                            </td>
+                            <td class="text-center align-middle">
+                                <ul class="tools-group">
+                                    <li>
+                                        <a href=""><i class="fa-solid fa-pencil"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href=""><i class="fa-solid fa-pause"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href=""><i class="fa-solid fa-arrow-up"></i></a>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td class="text-center align-middle">
+                                Tin chưa hiển thị
+                            </td>
+                            <td class="text-center align-middle">
+                                Tin chưa hiển thị
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

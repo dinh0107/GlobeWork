@@ -382,6 +382,24 @@ header.header-employer {
         opacity: 1;
         visibility: visible;
     }
+
+    .input-group {
+        border: 1px solid #cdcdcd;
+        border-radius: 3px;
+    }
+
+    .input-group-text {
+        background-color: transparent;
+        color: $text-span;
+        font-weight: 500;
+        border: none;
+    }
+
+    .input-group .form-control, 
+    .vscomp-toggle-button
+    {
+        border: none;
+    }
 }
 
 .box-body {
@@ -744,7 +762,7 @@ header.header-employer {
 }
 
 .vscomp-toggle-button {
-    padding: .5rem .75rem;
+    padding: .563rem .75rem;
     border-radius: 3px;
 }
 
@@ -808,5 +826,26 @@ $timeColo: #2d7cf1;
         border-radius: 50%;
         background-color: lighten($timeColo, 36%);
         box-shadow: 0 0 0 5px #f5f8fa;
+    }
+}
+
+.tools-group {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: .75rem;
+
+    a{
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        background-color: $blur;
+        border-radius: 50%;
     }
 }

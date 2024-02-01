@@ -1446,6 +1446,7 @@
     <Content Include="Views\UserVcms\PreviewCanidate.cshtml" />
     <Content Include="Views\UserVcms\UploadJobs.cshtml" />
     <Content Include="Views\User\Employer.cshtml" />
+    <Content Include="Views\Employer\ListNews.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
