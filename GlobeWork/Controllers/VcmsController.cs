@@ -199,88 +199,77 @@ namespace GlobeWork.Controllers
         }
         #endregion
 
-        //#region ConfigSite
-        //public ActionResult ConfigSite(string result = "")
-        //{
-        //    ViewBag.Result = result;
-        //    var config = _unitOfWork.ConfigSiteRepository.Get().FirstOrDefault();
-        //    return View(config);
-        //}
-        //[HttpPost, ValidateInput(false)]
-        //public ActionResult ConfigSite(ConfigSite model, FormCollection fc)
-        //{
-        //    var config = _unitOfWork.ConfigSiteRepository.Get().FirstOrDefault();
-        //    if (config == null)
-        //    {
-        //        _unitOfWork.ConfigSiteRepository.Insert(model);
-        //    }
-        //    else
-        //    {
-        //        for (var i = 0; i < Request.Files.Count; i++)
-        //        {
-        //            if (Request.Files[i] == null || Request.Files[i].ContentLength <= 0) continue;
-        //            if (!HtmlHelpers.CheckFileExt(Request.Files[i].FileName, "jpg|jpeg|png|gif")) continue;
-        //            if (Request.Files[i].ContentLength > 1024 * 1024 * 4) continue;
+        #region ConfigSite
+        public ActionResult ConfigSite(string result = "")
+        {
+            ViewBag.Result = result;
+            var config = _unitOfWork.ConfigSiteRepository.Get().FirstOrDefault();
+            return View(config);
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult ConfigSite(ConfigSite model, FormCollection fc)
+        {
+            var config = _unitOfWork.ConfigSiteRepository.Get().FirstOrDefault();
+            if (config == null)
+            {
+                _unitOfWork.ConfigSiteRepository.Insert(model);
+            }
+            else
+            {
+                for (var i = 0; i < Request.Files.Count; i++)
+                {
+                    if (Request.Files[i] == null || Request.Files[i].ContentLength <= 0) continue;
+                    if (!HtmlHelpers.CheckFileExt(Request.Files[i].FileName, "jpg|jpeg|png|gif")) continue;
+                    if (Request.Files[i].ContentLength > 1024 * 1024 * 4) continue;
 
-        //            var imgFileName = HtmlHelpers.ConvertToUnSign(null, Path.GetFileNameWithoutExtension(Request.Files[i].FileName)) +
-        //                "-" + DateTime.Now.Millisecond + Path.GetExtension(Request.Files[i].FileName);
-        //            var imgPath = "/images/configs/" + DateTime.Now.ToString("yyyy/MM/dd");
-        //            HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
+                    var imgFileName = HtmlHelpers.ConvertToUnSign(null, Path.GetFileNameWithoutExtension(Request.Files[i].FileName)) +
+                        "-" + DateTime.Now.Millisecond + Path.GetExtension(Request.Files[i].FileName);
+                    var imgPath = "/images/configs/" + DateTime.Now.ToString("yyyy/MM/dd");
+                    HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
 
-        //            var imgFile = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
+                    var imgFile = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
 
-        //            var newImage = Image.FromStream(Request.Files[i].InputStream);
-        //            var fixSizeImage = HtmlHelpers.FixedSize(newImage, 1000, 1000, false);
-        //            HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
+                    var newImage = Image.FromStream(Request.Files[i].InputStream);
+                    var fixSizeImage = HtmlHelpers.FixedSize(newImage, 1000, 1000, false);
+                    HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
 
-        //            if (Request.Files.Keys[i] == "Image")
-        //            {
-        //                config.Image = imgFile;
-        //            }
-        //            else if (Request.Files.Keys[i] == "Favicon")
-        //            {
-        //                config.Favicon = imgFile;
-        //            }
-        //            else if (Request.Files.Keys[i] == "AboutImage")
-        //            {
-        //                config.AboutImage = imgFile;
-        //            }
-        //            else if (Request.Files.Keys[i] == "ImageShare")
-        //            {
-        //                config.ImageShare = imgFile;
-        //            }
-        //        }
+                    if (Request.Files.Keys[i] == "Image")
+                    {
+                        config.Image = imgFile;
+                    }
+                    else if (Request.Files.Keys[i] == "Favicon")
+                    {
+                        config.Favicon = imgFile;
+                    }
+                    else if (Request.Files.Keys[i] == "ImageShare")
+                    {
+                        config.ImageShare = imgFile;
+                    }
+                }
 
-        //        config.Facebook = model.Facebook;
-        //        config.GoogleMap = model.GoogleMap;
-        //        config.Youtube = model.Youtube;
-        //        config.Instagram = model.Instagram;
-        //        config.Twitter = model.Twitter;
-        //        config.Telegram = model.Telegram;
-        //        config.Title = model.Title;
-        //        config.Description = model.Description;
-        //        config.GoogleAnalytics = model.GoogleAnalytics;
-        //        config.Hotline = model.Hotline;
-        //        config.Email = model.Email;
-        //        config.LiveChat = model.LiveChat;
-        //        config.Place = model.Place;
-        //        config.AboutText = model.AboutText;
-        //        config.InfoFooter = model.InfoFooter;
-        //        config.InfoContact = model.InfoContact;
-        //        config.AboutUrl = model.AboutUrl;
-        //        config.BankInfo = model.BankInfo;
-
-        //        if (model.Zalo != null)
-        //        {
-        //            config.Zalo = model.Zalo.Replace(" ", string.Empty);
-        //        }
-        //        _unitOfWork.Save();
-        //        HttpContext.Application["ConfigSite"] = config;
-        //        return RedirectToAction("ConfigSite", "Vcms", new { result = "success" });
-        //    }
-        //    return View("ConfigSite", model);
-        //}
-        //#endregion
+                config.Facebook = model.Facebook;
+                config.GoogleMap = model.GoogleMap;
+                config.Youtube = model.Youtube;
+                config.Instagram = model.Instagram;
+                config.Twitter = model.Twitter;
+                config.Title = model.Title;
+                config.Description = model.Description;
+                config.GoogleAnalytics = model.GoogleAnalytics;
+                config.Hotline = model.Hotline;
+                config.Email = model.Email;
+                config.LiveChat = model.LiveChat;
+                config.Place = model.Place;
+                config.AboutText = model.AboutText;
+                config.InfoFooter = model.InfoFooter;
+                config.EmailConfigs = model.EmailConfigs;
+                config.PassWordMail = model.PassWordMail;
+                _unitOfWork.Save();
+                HttpContext.Application["ConfigSite"] = config;
+                return RedirectToAction("ConfigSite", "Vcms", new { result = "success" });
+            }
+            return View("ConfigSite", model);
+        }
+        #endregion
 
         #region User
         public ActionResult ListUser(int? page, string name, string result)

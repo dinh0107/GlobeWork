@@ -1,5 +1,7 @@
 ﻿@model GlobeWork.ViewModel.UserLoginModel
+@using GlobeWork.Models
 @{
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
     Layout = "~/Views/Shared/_UserLayout.cshtml";
     ViewBag.Title = "Đăng nhập";
     ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("Login");
@@ -9,7 +11,10 @@
     <div class="bg order-1 order-md-2"></div>
     <div class="contents order-2 order-md-1">
         <a href="/">
-            <img src="~/Content/images/z5108183533913_f5a32e9f0440e3b6d60d9c260e3e82c8.jpg" alt="Đăng nhập" class="logo-form" />
+            @if (config.Image != null)
+            {
+                <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/configs/", config.Image)" alt="@config.Title" class="logo-form lazyload" />
+            }
         </a>
         <div class="title-form">
             Chào mừng bạn đã quay trở lại
@@ -19,6 +24,8 @@
         </div>
         @using (Html.BeginForm("Login", "User", FormMethod.Post, new { @class = "user-form" }))
         {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
             @Html.LabelFor(a => a.Email)
             <div class="form-group form-control control-user">
                 <i class="fas fa-envelope"></i>

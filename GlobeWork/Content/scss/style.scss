@@ -3204,3 +3204,16 @@ input, button {
 .checkbox-wrapper-18 .round input[type="radio"]:checked + label:after {
     opacity: 1;
 }
+.vscomp-ele {
+    display: inline-block;
+     max-width: unset !important ; 
+    width: 100%;
+}
+.vscomp-toggle-button {
+    padding: .5rem .75rem;
+    border-radius: 3px;
+    border:0 !important;
+}
+.vscomp-wrapper.focused .vscomp-toggle-button, .vscomp-wrapper:focus .vscomp-toggle-button{
+    box-shadow:none !important;
+}

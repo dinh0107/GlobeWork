@@ -1,5 +1,7 @@
 ﻿@model GlobeWork.ViewModel.RegisterViewModel
+@using GlobeWork.Models
 @{
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
     ViewBag.Title = "Đăng ký tài khoản";
     ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("Register");
     Layout = "~/Views/Shared/_UserLayout.cshtml";
@@ -8,7 +10,10 @@
     <div class="bg order-1 order-md-2"></div>
     <div class="contents order-2 order-md-1">
         <a href="/">
-            <img src="~/Content/images/z5108183533913_f5a32e9f0440e3b6d60d9c260e3e82c8.jpg" alt="Đăng nhập" class="logo-form" />
+            @if (config.Image != null)
+            {
+                <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/configs/", config.Image)" alt="@config.Title" class="logo-form lazyload" />
+            }
         </a>
         <div class="title-form">
             Chào mừng bạn đến với GlobeWork
@@ -16,7 +21,7 @@
         <div class="title-form_sub">
             Cùng xây dựng một hồ sơ nổi bật và nhận được các cơ hội sự nghiệp lý tưởng
         </div>
-        @using (Html.BeginForm("Register", "User", FormMethod.Post , new {@class="user-form"}))
+        @using (Html.BeginForm("Register", "User", FormMethod.Post, new { @class = "user-form" }))
         {
             @Html.ValidationSummary(true)
             @Html.AntiForgeryToken()
@@ -79,7 +84,7 @@
         <div class="text-center">
             <strong> Bạn gặp khó khăn khi tạo tài khoản?</strong>
             <br />
-            Vui lòng gọi tới số <a href="tel" class="text-success">024 6660 5588</a> (giờ hành chính).
+            Vui lòng gọi tới số <a href="tel:@config.Hotline" class="text-success">@config.Hotline</a> (giờ hành chính).
         </div>
     </div>
 </div>
@@ -97,7 +102,7 @@
         <div class="row mt-4">
             <div class="col-6 text-center">
                 <img src="~/Content/images/bussiness.efbec2d.png" alt="Nhà tuyển dụng" class="img-fluid" />
-                <a href="@Url.Action("Employer" ,"User")" class="popupBtn">Tôi là nhà tuyển dụng</a>
+                <a href="@Url.Action("Employer" ,"Employer")" class="popupBtn">Tôi là nhà tuyển dụng</a>
             </div>
             <div class="col-6 text-center">
                 <img src="~/Content/images/student.c1c39ee.png" alt="Ứng viên" class="img-fluid" />

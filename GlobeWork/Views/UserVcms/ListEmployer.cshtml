@@ -1,0 +1,131 @@
+﻿@model GlobeWork.ViewModel.ListEmployerViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Danh sách nhà tuyển dụng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var i = 0;
+}
+<h2>Danh sách người dùng</h2>
+<div class="box_content mt-0">
+    <form action="@Url.Action("ListEmployer")" method="get">
+        <div class="row">
+            <div class="col-3">
+                <label>Họ và tên</label>
+                @Html.TextBoxFor(a => a.Name, new { @class = "form_control" })
+            </div>
+            <div class="col-3">
+                <label>Email</label>
+                @Html.TextBoxFor(a => a.Email, new { @class = "form_control" })
+            </div>
+            <div class="col-3">
+                <label>Trạng thái</label>
+                @Html.DropDownListFor(a => a.Status, Model.StatuSelectList, "Tất cả", new { @class = "form_control" })
+            </div>
+            <div class="col-lg-3 d-flex align-items-center">
+                <button type="submit" class="btn-search">Tìm kiếm</button>
+            </div>
+        </div>
+    </form>
+    <p>Có tổng số <strong>@Model.Employers.TotalItemCount</strong> nhà tuyển dụng</p>
+    <form id="productList">
+        <table class="list_table tablecenter table-striped mt-3">
+            <tbody>
+                <tr>
+                    <th style="width: 100px">STT</th>
+                    <th>Email đăng ký</th>
+                    <th>Ngày tạo</th>
+                    <th>Tên công ty</th>
+                    <th>Chức danh</th>
+                    <th>Kích hoạt</th>
+                    <th style="width: 140px;"></th>
+                </tr>
+                @foreach (var user in Model.Employers)
+                {
+                    i++;
+                    <tr data-id="@user.Id">
+                        <td>@i</td>
+                        <td>@user.Email</td>
+                        <td>@user.CreateDate.ToString("dd/MM/yyyy")</td>
+                        <td>@user.CompanyName</td>
+                        <td>@user.Rank.Name</td>
+                        <td>@Html.DisplayFor(a => user.Active)</td>
+                        <td>
+                            <a href="javascript:;" onclick="loadOrder(@user.Id)">Nạp tiền</a>
+                            -
+                            <a href="@Url.Action("EditEmployer", new{userId = user.Id})">Sửa</a>
+                            - <a href="javascript:;" onclick="deleteUser('@user.Id')" class="red-warring">Xóa</a>
+                        </td>
+                    </tr>
+                }
+                @if (Model.Employers.PageCount > 1)
+                {
+                    <tr>
+                        <td colspan="9">
+                            @Html.PagedListPager(Model.Employers, page => Url.Action("ListUser", new
+                            {
+                                page,
+                                name = Model.Name,
+                                status = Model.Status,
+                                startTime = Model.StartTime,
+                                endTime = Model.EndTime,
+                            }))
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
+</div>
+<div id="contactDetails"></div>
+@section scripts {
+    <script src="~/Scripts/jquery.maskMoney.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".input-number").maskMoney({
+                precision: 0,
+                thousands: ','
+            });
+        });
+        function loadOrder(id) {
+            $.get("/UserVcms/PublicMoney", { Id: id }, function (data) {
+                $("#contactDetails").html(data);
+                $("#contactDetails").dialog("open");
+            });
+        }
+        $(function () {
+            $("#contactDetails").dialog({
+                autoOpen: false,
+                modal: true,
+                width: 800,
+                show: {
+                    effect: "blind",
+                    duration: 1000
+                },
+                hide: {
+                    effect: "explode",
+                    duration: 1000
+                }
+            });
+        });
+        function deleteUser(id) {
+            if (confirm("Bạn có chắc chắn xóa tài khoản này không?")) {
+                $.post("/UserVcms/DeleteEmployer", { userId: id }, function (data) {
+                    if (data) {
+                        $.toast({
+                            text: 'Xóa tài khoản thành công',
+                            position: 'bottom-right',
+                            icon: 'success'
+                        });
+                        $("tr[data-id='" + id + "']").fadeOut();
+                    }
+                    else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            icon: 'error'
+                        });
+                    }
+                });
+            }
+        }
+    </script>
+}

@@ -1,5 +1,7 @@
 ﻿@model GlobeWork.ViewModel.EmployerRegisterViewModel
+@using GlobeWork.Models
 @{
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
     ViewBag.Title = "Đăng ký tài khoản nhà tuyển dụng";
     ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("Employer");
     Layout = "~/Views/Shared/_UserLayout.cshtml";
@@ -8,7 +10,10 @@
     <div class="bg order-1 order-md-2"></div>
     <div class="contents order-2 order-md-1">
         <a href="/">
-            <img src="~/Content/images/z5108183533913_f5a32e9f0440e3b6d60d9c260e3e82c8.jpg" alt="Đăng nhập" class="logo-form" />
+            @if (config.Image != null)
+            {
+                <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/configs/", config.Image)" alt="@config.Title" class="logo-form lazyload" />
+            }
         </a>
         <div class="title-form">
             Đăng ký tài khoản Nhà tuyển dụng
@@ -33,12 +38,6 @@
                 @Html.TextBoxFor(a => a.Password, new { @placeholder = "Nhập mật khẩu" })
             </div>
             @Html.ValidationMessageFor(a => a.Password)
-            @Html.LabelFor(a => a.ConfirmPassword)
-            <div class="form-group form-control control-user">
-                <i class="fas fa-user"></i>
-                @Html.TextBoxFor(a => a.ConfirmPassword, new { @placeholder = "Nhập lại mật khẩu" })
-            </div>
-            @Html.ValidationMessageFor(a => a.ConfirmPassword)
             @Html.LabelFor(a => a.ConfirmPassword)
             <div class="form-group form-control control-user">
                 <i class="fas fa-user"></i>
@@ -75,7 +74,6 @@
                             </div>
                         </div>
                     </div>
-                    @Html.ValidationMessageFor(a => a.FullName)
                 </div>
             </div>
             @Html.LabelFor(a => a.PhoneNumber)
@@ -88,7 +86,7 @@
                 <div class="col-6">
                     @Html.LabelFor(a => a.CompanyName)
                     <div class="form-group form-control control-user">
-                        <i class="fas fa-user"></i>
+                        <i class="fa-light fa-phone"></i>
                         @Html.TextBoxFor(a => a.CompanyName, new { @placeholder = "Nhập tên công ty" })
                     </div>
                     @Html.ValidationMessageFor(a => a.CompanyName)
@@ -96,7 +94,7 @@
                 <div class="col-6">
                     @Html.LabelFor(a => a.RankId)
                     <div class="form-group form-control control-user">
-                        <i class="fas fa-user"></i>
+                        <i class="fa-regular fa-user-tie"></i>
                         <select name="RankId">
                             @foreach (var item in Model.Ranks)
                             {
@@ -109,10 +107,26 @@
                     @Html.ValidationMessageFor(a => a.RankId)
                 </div>
                 <div class="col-6">
-
+                    <label>
+                        Địa điểm làm việc
+                    </label>
+                    <div class="form-group form-control control-user">
+                        <i class="fa-regular fa-user-tie"></i>
+                        @Html.DropDownListFor(a => a.CityId, Model.CitySelectList, "Chọn thành phố", new { @class = "v-select", @id = "city", data_item = "city" })
+                    </div>
+                    @Html.ValidationMessageFor(a => a.CityId)
                 </div>
                 <div class="col-6">
-
+                    <label>
+                        Quận/ huyện
+                    </label>
+                    <div class="form-group form-control control-user">
+                        <i class="fa-regular fa-user-tie"></i>
+                        <select data-item="district" name="districtId">
+                            <option>Chọn quận/huyện</option>
+                        </select>
+                    </div>
+                    @Html.ValidationMessageFor(a => a.DistrictId)
                 </div>
             </div>
             <button type="submit" class="submit-form btn btn-block form-group">
@@ -120,19 +134,55 @@
             </button>
         }
         <div class="text-center">
-            Bạn đã có tài khoản? <a href="@Url.Action("Login", "User")" class="text-success">Đăng nhập ngay</a>
+            Bạn đã có tài khoản? <a href="@Url.Action("EmployerLogin", "User")" class="text-success">Đăng nhập ngay</a>
         </div>
         <hr />
         <div class="text-center">
             <strong> Bạn gặp khó khăn khi tạo tài khoản?</strong>
             <br />
-            Vui lòng gọi tới số <a href="tel" class="text-success">024 6660 5588</a> (giờ hành chính).
+            Vui lòng gọi tới số <a href="tel:@config.Hotline" class="text-success">@config.Hotline</a> (giờ hành chính).
         </div>
     </div>
 </div>
+<link href="~/Content/virtual-select.min.css" rel="stylesheet" />
 @section scripts{
+    <script src="~/Scripts/virtual-select.min.js"></script>
     <script>
         User();
+        //$("[data-item=city]").on("change", function (data) {
+        //    const id = $(this).val();
+        //    var items = [];
+        //    items.push("<option value>Chọn quận huyện</option>");
+        //    if (id !== "") {
+        //        $.getJSON("/User/GetDistrict", { cityId: id }, function (data) {
+        //            $.each(data, function (key, val) {
+        //                items.push("<option value='" + val.Id + "'>" + val.Name + "</option>");
+        //            });
+        //            $("[data-item=district]").html(items.join(""));
+        //        });
+        //    } else {
+        //        $("[data-item=district]").html(items.join(""));
+        //    }
+        //});
+        VirtualSelect.init({
+            ele: '.v-select',
+            search: true,
+        });
+        document.querySelector('.v-select').addEventListener('change', function (data) {
+            const id = $(this).val();
+            var items = [];
+            items.push("<option value>Chọn quận huyện</option>");
+            if (id !== "") {
+                $.getJSON("/User/GetDistrict", { cityId: id }, function (data) {
+                    $.each(data, function (key, val) {
+                        items.push("<option value='" + val.Id + "'>" + val.Name + "</option>");
+                    });
+                    $("[data-item=district]").html(items.join(""));
+                });
+            } else {
+                $("[data-item=district]").html(items.join(""));
+            }
+        });
     </script>
 }
 

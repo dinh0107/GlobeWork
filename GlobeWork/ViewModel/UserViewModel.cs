@@ -63,6 +63,11 @@ namespace GlobeWork.ViewModel
         [Display(Name = "Email"), Required(ErrorMessage = "Vui lòng nhập Email"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự"), EmailAddress(ErrorMessage = "Email không hợp lệ"), UIHint("TextBox"), Remote("CheckEmail", "User")]
         public string Email { get; set; }
     }
+    public class ForgotPasswordViewModel
+    {
+        [Display(Name = "Email"), EmailAddress(ErrorMessage = "Địa chỉ email không hợp lệ"), Required(ErrorMessage = "Hãy nhập email của bạn")]
+        public string Email { get; set; }
+    }
     public class EmployerRegisterViewModel
     {
         [Display(Name = "Họ và tên"), Required(ErrorMessage = "Hãy nhập Họ và tên"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự"), UIHint("TextBox")]
@@ -74,7 +79,7 @@ namespace GlobeWork.ViewModel
         public string ConfirmPassword { get; set; }
         [Display(Name = "Email"), Required(ErrorMessage = "Vui lòng nhập Email"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự"), EmailAddress(ErrorMessage = "Email không hợp lệ"), UIHint("TextBox"), Remote("CheckEmail", "User")]
         public string Email { get; set; }
-        [Display(Name = "Tên công ty")]
+        [Display(Name = "Tên công ty") , Required(ErrorMessage ="Chưa nhập tên công ty")]
         public string CompanyName { get; set; }
         [Display(Name = "Giới tính")]
         public string Gender { get; set; }
@@ -98,11 +103,7 @@ namespace GlobeWork.ViewModel
         public User User { get; set; }
     }
 
-    public class ForgotPasswordViewModel
-    {
-        [Display(Name = "Email"), EmailAddress(ErrorMessage = "Địa chỉ email không hợp lệ"), Required(ErrorMessage = "Hãy nhập email của bạn")]
-        public string Email { get; set; }
-    }
+    
     public class ChangePasswordViewModel
     {
         [DisplayName("Mật khẩu hiện tại"), Required(ErrorMessage = "Bạn vui lòng nhập mật khẩu hiện tại"), StringLength(20, MinimumLength = 6, ErrorMessage = "Mật khẩu từ 6 - 20 ký tự")]
@@ -141,7 +142,6 @@ namespace GlobeWork.ViewModel
 
     public class SetNewPasswordViewModel
     {
-        public string Username { get; set; }
         public string Token { get; set; }
         [DisplayName("Mật khẩu"), StringLength(20, MinimumLength = 6, ErrorMessage = "Mật khẩu từ 6 - 20 ký tự")]
         public string Password { get; set; }

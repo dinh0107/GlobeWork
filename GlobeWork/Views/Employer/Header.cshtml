@@ -1,4 +1,11 @@
-﻿<header class="header-employer">
+﻿@{
+    var FullName = ViewContext.RouteData.Values["FullName"].ToString();
+    var id = ViewContext.RouteData.Values["Id"].ToString();
+    var avatar = ViewContext.RouteData.Values["Avatar"].ToString();
+    var email = ViewContext.RouteData.Values["Email"].ToString();
+}
+
+<header class="header-employer">
     <button type="button" class="hamburger" onclick="toggleSidebar()">
         <i class="fa-solid fa-bars"></i>
     </button>
@@ -21,11 +28,18 @@
         <li>
             <div class="dropdown dropdown-menu-lg-right">
                 <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-                    <img src="~/Content/images/anhhocbong.png" />
-                    thằng định
+                    @if (avatar == "")
+                    {
+                        <img src="~/Content/images/avatar-default.jpg" alt="@FullName" />
+                    }
+                    else
+                    {
+                        <img src="@Path.Combine("/images/employer/", avatar)" alt="@FullName" />
+                    }
+                    @FullName
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Đăng xuất</a>
+                    <a class="dropdown-item" href="@Url.Action("Logout")">Đăng xuất</a>
                 </div>
             </div>
         </li>

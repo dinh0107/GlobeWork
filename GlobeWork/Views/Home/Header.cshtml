@@ -7,7 +7,7 @@
 <header class="shadow">
     <div class="container">
         <div class="row">
-            <div class="col-lg-9 d-flex align-items-center justify-content-between">
+            <div class="col-lg-8 d-flex align-items-center justify-content-between">
                 <a href="/">
                     <img src="~/Content/images/z5108183533913_f5a32e9f0440e3b6d60d9c260e3e82c8.jpg" alt="Logo" class="logo" />
                 </a>
@@ -21,12 +21,13 @@
                     <li><a href="">Liên hệ</a></li>
                 </ul>
             </div>
-            <div class="col-lg-3 d-flex align-items-center justify-content-end position-relative">
+            <div class="col-lg-4 d-flex align-items-center justify-content-end position-relative">
                 @if (id == "")
                 {
                     <div class="d-flex align-items-center h-100 justify-content-end" style="gap:10px;">
                         <a href="@Url.Action("Register", "User")" class="user-action">Đăng ký</a>
                         <a href="@Url.Action("Login", "User")" class="user-action opacity-1">Đăng nhập</a>
+                        <a href="@Url.Action("EmployerLogin", "Employer")" class="user-action opacity-1 bg-dark text-white">Đăng tuyển</a>
                     </div>
                 }
                 else
@@ -38,7 +39,7 @@
                         }
                         else
                         {
-                            <img src="@Path.Combine("/images/users/", avatar)" alt="@FullName" />
+                            <img src="@Path.Combine("/images/user/", avatar)" alt="@FullName" />
                         }
                         <div class="media-body">
                             @FullName
@@ -51,7 +52,7 @@
                                 }
                                 else
                                 {
-                                    <img src="@Path.Combine("/images/users/", avatar)" alt="@FullName" />
+                                    <img src="@Path.Combine("/images/user/", avatar)" alt="@FullName" />
                                 }
                                 <div class="media-body">
                                     <span class="name">@FullName</span>

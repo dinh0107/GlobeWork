@@ -1,5 +1,5 @@
 ﻿@using GlobeWork.Models
-@*@{ var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"]; }*@
+@{ var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"]; }
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,10 +15,10 @@
     <div id="responsive">
         <div class="app-header">
             <div class="app-header__logo">
-                @*@if (config.Image != null)
+                @if (config.Image != null)
                 {
                     <a href="@Url.Action("Index","Home")" target="_blank"><img class="logo-admin" src="@Path.Combine("/images/configs/", config.Image)" alt="logo" /></a>
-                }*@
+                }
                 <a id="btn-show" onclick="myFunction()"><i class="fal fa-bars"></i><i class="fal fa-times"></i></a>
             </div>
             <div class="app-header__content">
@@ -68,7 +68,8 @@
                     <li data-id="3">
                         <a class="root"><span>Quản lý người dùng</span><i class="fas fa-caret-down"></i></a>
                         <div class="sub hidden">
-                            <div>@Html.ActionLink("Danh sách tài khoản", "ListUser", "UserVcms", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Danh sách ứng viên", "ListUser", "UserVcms", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Danh sách nhà tuyển dụng", "ListEmployer", "UserVcms", null, new { @class = "text_link" })</div>
                             <div>@Html.ActionLink("Danh sách công ty", "ListCompany", "UserVcms", null, new { @class = "text_link" })</div>
                             <div>@Html.ActionLink("Danh sách ứng viên", "ListCandidate", "UserVcms", null, new { @class = "text_link" })</div>
                         </div>

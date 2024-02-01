@@ -194,6 +194,7 @@ header.header-employer {
         width: 1.5rem;
         height: 1.5rem;
         border-radius: 50%;
+        object-fit:cover;
     }
 
     logo {
@@ -276,6 +277,7 @@ header.header-employer {
     img {
         width: 2.5rem;
         height: 2.5rem;
+        object-fit:cover;
         border-radius: 50%;
     }
 
@@ -438,6 +440,7 @@ header.header-employer {
         width: 3rem;
         height: 3rem;
         border-radius: 50%;
+        object-fit:cover;
     }
 
     .media-body {

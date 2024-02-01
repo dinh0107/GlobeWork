@@ -24,7 +24,7 @@ namespace GlobeWork.Controllers
             var pageNumber = page ?? 1;
             var pageSize = 30;
 
-            var users = _unitOfWork.UserRepository.GetQuery(a => a.Active, q => q.OrderByDescending(p => p.Id)).AsNoTracking();
+            var users = _unitOfWork.UserRepository.GetQuery(orderBy: q => q.OrderByDescending(p => p.Id)).AsNoTracking();
             if (!string.IsNullOrEmpty(name))
             {
                 users = users.Where(p => p.Username.ToLower().Contains(name.ToLower()));
@@ -161,6 +161,155 @@ namespace GlobeWork.Controllers
         }
         #endregion
 
+        #region  Employer
+        public ActionResult ListEmployer(int? page,  int? status, string email, string name)
+        {
+
+            var pageNumber = page ?? 1;
+            var pageSize = 30;
+
+            var users = _unitOfWork.EmployerRepository.GetQuery(orderBy: q => q.OrderByDescending(p => p.Id)).AsNoTracking();
+            if (!string.IsNullOrEmpty(email))
+            {
+                users = users.Where(a => a.Email.Contains(email));
+            }
+            if (status != null)
+            {
+                switch (status)
+                {
+                    case 1:
+                        users = users.Where(a => a.Active);
+                        break;
+                    case 2:
+                        users = users.Where(a => !a.Active);
+                        break;
+                }
+            }
+            var model = new ListEmployerViewModel
+            {
+                Employers = users.ToPagedList(pageNumber, pageSize),
+                Name = name,
+                Status = status,
+            };
+            return View(model);
+        }
+
+        public ActionResult EditEmployer(int userId = 0, int result = 0)
+        {
+            var user = _unitOfWork.EmployerRepository.GetById(userId);
+            if (user == null)
+            {
+                return RedirectToAction("ListUser");
+            }
+            var model = new EmployerEditUserViewModel
+            {
+                Id = userId,
+                Avatar = user.Avatar,
+                CreateDate = user.CreateDate,
+                EmailRegister = user.Email,
+                Phone = user.PhoneNumber,
+                Active = user.Active,
+            };
+            ViewBag.Result = result;
+            return View(model);
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult EditEmployer(EmployerEditUserViewModel model)
+        {
+            var user = _unitOfWork.EmployerRepository.GetById(model.Id);
+            if (user == null)
+            {
+                return RedirectToAction("ListEmployer");
+            }
+
+            if (ModelState.IsValid)
+            {
+                var isPost = true;
+                var file = Request.Files["Avatar"];
+                if (file != null && file.ContentLength > 0)
+                {
+                    if (file.ContentType != "image/jpeg" & file.ContentType != "image/png" && file.ContentType != "image/gif")
+                    {
+                        ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg");
+                    }
+                    else
+                    {
+                        if (file.ContentLength > 4000 * 1024)
+                        {
+                            ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
+                        }
+                        else
+                        {
+                            var imgPath = "/images/employer/" + DateTime.Now.ToString("yyyy/MM/dd");
+                            HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
+                            var imgFileName = DateTime.Now.ToFileTimeUtc() + Path.GetExtension(file.FileName);
+
+                            if (System.IO.File.Exists(Server.MapPath("/images/employer/" + model.Avatar)))
+                            {
+                                System.IO.File.Delete(Server.MapPath("/images/employer/" + model.Avatar));
+                            }
+                            model.Avatar = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
+
+                            var newImage = Image.FromStream(file.InputStream);
+                            var fixSizeImage = HtmlHelpers.FixedSize(newImage, 600, 600, false);
+                            HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
+                        }
+                    }
+                }
+                if (isPost)
+                {
+                    if (model.Password != null)
+                    {
+                        user.Password = HtmlHelpers.ComputeHash(model.Password, "SHA256", null);
+                    }
+                    user.PhoneNumber = model.Phone;
+                    user.Avatar = model.Avatar;
+                    user.Active = model.Active;
+                    _unitOfWork.Save();
+                    return RedirectToAction("ListEmployer", new { result = 1 });
+                }
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public bool DeleteEmployer(int userId = 0)
+        {
+            var user = _unitOfWork.EmployerRepository.GetById(userId);
+            if (user == null)
+            {
+                return false;
+            }
+            _unitOfWork.EmployerRepository.Delete(user);
+            _unitOfWork.Save();
+            return true;
+        }
+
+        public PartialViewResult PublicMoney(int id)
+        {
+            var user = _unitOfWork.EmployerRepository.GetById(id);
+            var model = new PublicMoneyViewModel
+            {
+                Id = user.Id,
+                Price = user.Amount?.ToString("N0"),
+            };
+            return PartialView(model);
+        }
+        [HttpPost]
+        public ActionResult PublicMoney(PublicMoneyViewModel model)
+        {
+            var user = _unitOfWork.EmployerRepository.GetById(model.Id);
+            if(user == null)
+            {
+                return PartialView(model);
+            }
+            if(model.Price != null)
+            {
+                user.Amount += Convert.ToDecimal(model.Price.Replace(",", ""));
+                _unitOfWork.Save();
+            }
+            return RedirectToAction("ListEmployer");
+        }
+        #endregion
         #region Company
         public ActionResult ListCompany(int? page, string startTime, string endTime, string name, string email, string[] careerIds, string[] cityIds, int? status)
         {

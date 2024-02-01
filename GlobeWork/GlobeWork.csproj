@@ -167,17 +167,14 @@
     <Compile Include="DAL\DataEntities.cs" />
     <Compile Include="DAL\GenericRepository.cs" />
     <Compile Include="DAL\UnitOfWork.cs" />
+    <Compile Include="Filters\EmployerFilter.cs" />
     <Compile Include="Filters\MemberFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202401311147506_add.cs" />
-    <Compile Include="Migrations\202401311147506_add.designer.cs">
-      <DependentUpon>202401311147506_add.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202401311218050_add1.cs" />
-    <Compile Include="Migrations\202401311218050_add1.designer.cs">
-      <DependentUpon>202401311218050_add1.cs</DependentUpon>
+    <Compile Include="Migrations\202402010709472_ad.cs" />
+    <Compile Include="Migrations\202402010709472_ad.designer.cs">
+      <DependentUpon>202402010709472_ad.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
@@ -186,6 +183,7 @@
     <Compile Include="Models\Career.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\Company.cs" />
+    <Compile Include="Models\ConfigSite.cs" />
     <Compile Include="Models\District.cs" />
     <Compile Include="Models\Employer.cs" />
     <Compile Include="Models\JobPost.cs" />
@@ -317,6 +315,7 @@
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Content\tooltip.min.css" />
     <Content Include="Content\virtual-select.min.css" />
+    <Content Include="EmailTemplates\ForgotPassword.html" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -1222,9 +1221,11 @@
     <Content Include="Scripts\jquery-migrate.min.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
+    <Content Include="Scripts\jquery-ui-timepicker-addon.js" />
     <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="Scripts\jquery.countup.js" />
     <Content Include="Scripts\jquery.countup.min.js" />
+    <Content Include="Scripts\jquery.daterangepicker.js" />
     <Content Include="Scripts\jquery.fancybox.js" />
     <Content Include="Scripts\jquery.maskMoney.min.js" />
     <Content Include="Scripts\jquery.nice-number.js" />
@@ -1235,6 +1236,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\lazysizes.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\multi-upload\jquery.fileupload-audio.js" />
     <Content Include="Scripts\multi-upload\jquery.fileupload-image.js" />
     <Content Include="Scripts\multi-upload\jquery.fileupload-process.js" />
@@ -1446,6 +1448,13 @@
     <Content Include="Views\UserVcms\PreviewCanidate.cshtml" />
     <Content Include="Views\UserVcms\UploadJobs.cshtml" />
     <Content Include="Views\User\Employer.cshtml" />
+    <Content Include="Views\UserVcms\ListEmployer.cshtml" />
+    <Content Include="Views\UserVcms\EditEmployer.cshtml" />
+    <Content Include="Views\User\EmployerLogin.cshtml" />
+    <Content Include="Views\User\SetNewPasswordUrl.cshtml" />
+    <Content Include="Views\UserVcms\PublicMoney.cshtml" />
+    <Content Include="Views\Employer\Employer.cshtml" />
+    <Content Include="Views\Employer\EmployerLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1462,11 +1471,8 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202401311147506_add.resx">
-      <DependentUpon>202401311147506_add.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202401311218050_add1.resx">
-      <DependentUpon>202401311218050_add1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202402010709472_ad.resx">
+      <DependentUpon>202402010709472_ad.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

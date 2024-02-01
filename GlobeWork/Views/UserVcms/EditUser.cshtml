@@ -21,10 +21,6 @@
         @Html.HiddenFor(a => a.Id)
         <table class="form_table">
             <tr>
-                <td class="form_name">Tên đăng nhập</td>
-                @*<td class="form_text">@Model.UserName</td>*@
-            </tr>
-            <tr>
                 <td class="form_name">Email</td>
                 <td class="form_text">@Html.TextBoxFor(a => a.EmailRegister)</td>
                 @Html.ValidationMessageFor(a => a.EmailRegister)
@@ -34,10 +30,6 @@
                 <td class="form_name">Điện thoại</td>
                 <td class="form_text">@Html.TextBoxFor(a => a.Phone)</td>
                 @Html.ValidationMessageFor(a => a.Phone)
-            </tr>
-            <tr>
-                <td class="form_name">Loại tài khoản</td>
-                <td class="form_text">@Html.DisplayFor(a => a.TypeUser)</td>
             </tr>
             <tr>
                 <td class="form_name">Ảnh</td>
@@ -51,6 +43,7 @@
                 <tr>
                     <td class="form_name"></td>
                     <td class="form_text">
+                        <input type="hidden" name="Avatar" value="@Model.Avatar" />
                         <img src="@Path.Combine("/images/user/", Model.Avatar)" width="150" />
                     </td>
                 </tr>

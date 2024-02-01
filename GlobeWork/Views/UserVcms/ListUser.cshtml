@@ -21,20 +21,8 @@
                 <label>Trạng thái</label>
                 @Html.DropDownListFor(a => a.Status, Model.StatuSelectList, "Tất cả", new { @class = "form_control" })
             </div>
-            <div class="col-3">
-                <label>Loại tài khoản</label>
-                @Html.DropDownListFor(a => a.TypeUser, Model.TypeUserSelectList, "Tất cả", new { @class = "form_control" })
-            </div>
-            <div class="col-lg-3 mb-lg-0 mb-2">
-                <label>Khoảng thời gian</label>
-                <div class="datepicker-to-from">
-                    <input autocomplete="off" id="date-range" value="@Model.StartTime @Model.EndTime" />
-                    <input type="hidden" id="startTime" name="startTime" class="date-picker" value="">
-                    <input type="hidden" id="endTime" name="endTime" class="date-picker" value="">
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <button type="submit" class="btn-search mb-3">Tìm kiếm</button>
+            <div class="col-lg-3 d-flex align-items-center">
+                <button type="submit" class="btn-search">Tìm kiếm</button>
             </div>
         </div>
     </form>
@@ -44,7 +32,6 @@
             <tbody>
                 <tr>
                     <th style="width: 100px">STT</th>
-                    <th>Tên đăng nhập</th>
                     <th>Email đăng ký</th>
                     <th>Ngày tạo</th>
                     <th>Kích hoạt</th>
@@ -56,11 +43,10 @@
                     i++;
                     <tr data-id="@user.Id">
                         <td>@i</td>
-                        <td>@user.Username</td>
                         <td>@user.Email</td>
                         <td>@user.CreateDate.ToString("dd/MM/yyyy")</td>
                         <td>@Html.DisplayFor(a => user.Active)</td>
-                        <td>@Html.DisplayFor(a => user.TypeUser)</td>
+                        <td>@Html.DisplayFor(a => user.TypeRegister)</td>
                         <td>
                             <a href="@Url.Action("EditUser", new{userId = user.Id})">Sửa</a>
                             - <a href="javascript:;" onclick="deleteUser('@user.Id')" class="red-warring">Xóa</a>

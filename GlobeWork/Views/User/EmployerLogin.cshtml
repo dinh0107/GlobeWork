@@ -1,0 +1,65 @@
+﻿@model GlobeWork.ViewModel.UserLoginModel
+@using GlobeWork.Models
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewBag.Title = "Đăng nhập";
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("EmployerLogin");
+    ViewBag.Robots = "noindex";
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+}
+<div class="d-lg-flex half">
+    <div class="bg order-1 order-md-2"></div>
+    <div class="contents order-2 order-md-1">
+        <a href="/">
+            @if (config.Image != null)
+            {
+                <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/configs/", config.Image)" alt="@config.Title" class="logo-form lazyload" />
+            }
+        </a>
+        <div class="title-form">
+            Chào mừng bạn đã quay trở lại
+        </div>
+        @using (Html.BeginForm("EmployerLogin", "User", FormMethod.Post, new { @class = "user-form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.LabelFor(a => a.Email)
+            <div class="form-group form-control control-user">
+                <i class="fas fa-envelope"></i>
+                @Html.TextBoxFor(a => a.Email, new { @placeholder = "Nhập email " })
+            </div>
+            @Html.ValidationMessageFor(a => a.Email)
+            @Html.LabelFor(a => a.Password)
+            <div class="form-group form-control control-user">
+                <i class="fa-solid fa-shield-keyhole"></i>
+                @Html.PasswordFor(a => a.Password, new { @placeholder = "Nhập mật khẩu" })
+                <div class="type-input">
+                    <i class="fas fa-eye"></i>
+                </div>
+            </div>
+            <button type="submit" class="submit-form btn btn-block form-group">
+                Đăng nhập
+            </button>
+            <label class="checkbox-wrapper-42 agreement-login mt-3 align-items-start">
+                <input id="cbx-43" type="checkbox" checked />
+                <label class="cbx" for="cbx-43"></label>
+                <label class="lbl" for="cbx-43">Bằng việc đăng nhập bằng tài khoản mạng xã hội, tôi đã đọc và đồng ý với <a href="">Điều khoản dịch vụ</a> và <a href="#">Chính sách bảo mật</a> của Globework</label>
+            </label>
+        }
+        <div class="d-flex align-items-center justify-content-between">
+            <span>Bạn đã có tài khoản? <a href="@Url.Action("Employer", "User")" class="text-success">Đăng ký ngay</a></span>
+            @*<a href="@Url.Action("ForgotPassword", "User")" class="text-success">Quên mật khẩu</a>*@
+        </div>
+        <hr />
+        <div class="text-center">
+            <strong> Bạn gặp khó khăn khi tạo tài khoản?</strong>
+            <br />
+            Vui lòng gọi tới số <a href="tel:@config.Hotline" class="text-success">@config.Hotline</a> (giờ hành chính).
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        User();
+    </script>
+}

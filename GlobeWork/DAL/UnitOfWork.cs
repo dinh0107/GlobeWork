@@ -11,6 +11,7 @@ namespace GlobeWork.DAL
     public class UnitOfWork : IDisposable
     {
         private readonly DataEntities _context = new DataEntities();
+        private GenericRepository<ConfigSite> _configSiteRepository;
         private GenericRepository<Admin> _adminRepository;
         private GenericRepository<User> _userRepository;
         private GenericRepository<Rank> _rankRepository;
@@ -24,8 +25,10 @@ namespace GlobeWork.DAL
         private GenericRepository<JobPost> _jobPostRepository;
         private GenericRepository<Skill> _skillRepository;
         private GenericRepository<Employer> _employerRepository;
+        private GenericRepository<EmployerLog> _employerLogRepository;
 
-
+        public GenericRepository<ConfigSite> ConfigSiteRepository =>
+          _configSiteRepository ?? (_configSiteRepository = new GenericRepository<ConfigSite>(_context));
         public GenericRepository<Employer> EmployerRepository =>
            _employerRepository ?? (_employerRepository = new GenericRepository<Employer>(_context));
         public GenericRepository<Admin> AdminRepository =>
@@ -52,6 +55,8 @@ namespace GlobeWork.DAL
             _jobPostRepository ?? (_jobPostRepository = new GenericRepository<JobPost>(_context));
         public GenericRepository<Skill> SkillRepository =>
             _skillRepository ?? (_skillRepository = new GenericRepository<Skill>(_context));
+        public GenericRepository<EmployerLog> EmployerLogRepository =>
+    _employerLogRepository ?? (_employerLogRepository = new GenericRepository<EmployerLog>(_context));
         public void Save()
         {
             _context.SaveChanges();

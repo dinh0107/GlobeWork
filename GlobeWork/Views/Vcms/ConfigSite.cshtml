@@ -31,64 +31,50 @@
         <td class="form_text">@Html.TextBoxFor(model => model.Image, new { type = "file" }) <span class="red-warring">Kích thươc: 180px - 50px</span></td>
     </tr>
     @if (Model.Image != null)
-    {
-        <tr>
-            <td class="form_name"></td>
-            <td class="form_text"><img class="img-border" src="@Path.Combine("/images/configs/", Model.Image)?w=150" /></td>
-        </tr>
-    }
+        {
+            <tr>
+                <td class="form_name"></td>
+                <td class="form_text"><img class="img-border" src="@Path.Combine("/images/configs/", Model.Image)?w=150" /></td>
+            </tr>
+        }
     <tr>
         <td class="form_name">@Html.LabelFor(model => model.Favicon)</td>
         <td class="form_text">@Html.TextBoxFor(model => model.Favicon, new { type = "file" }) <span class="red-warring">Kích thươc: 64px - 64px</span></td>
     </tr>
     @if (Model.Favicon != null)
-    {
-        <tr>
-            <td class="form_name"></td>
-            <td class="form_text"><img class="img-border" src="@Path.Combine("/images/configs/", Model.Favicon)?w=150" /></td>
-        </tr>
-    }
+        {
+            <tr>
+                <td class="form_name"></td>
+                <td class="form_text"><img class="img-border" src="@Path.Combine("/images/configs/", Model.Favicon)?w=150" /></td>
+            </tr>
+        }
     <tr>
         <td class="form_name">@Html.LabelFor(model => model.ImageShare)</td>
         <td class="form_text">@Html.TextBoxFor(model => model.ImageShare, new { type = "file" })</td>
     </tr>
     @if (Model.ImageShare != null)
-    {
-        <tr>
-            <td class="form_name"></td>
-            <td class="form_text"><img class="img-border" src="@Path.Combine("/images/configs/", Model.ImageShare)?w=150" /></td>
-        </tr>
-    }
-    @*<tr>
-            <td class="form_name">@Html.LabelFor(model => model.AboutImage)</td>
-            <td class="form_text">@Html.TextBoxFor(model => model.AboutImage, new { type = "file" }) <span class="red-warring">Kích thươc: 470px - 600px</span></td>
-        </tr>
-        @if (Model.AboutImage != null)
         {
             <tr>
                 <td class="form_name"></td>
-                <td class="form_text"><img class="img-border" src="@Path.Combine("/images/configs/", Model.AboutImage)?w=150" /></td>
+                <td class="form_text"><img class="img-border" src="@Path.Combine("/images/configs/", Model.ImageShare)?w=150" /></td>
             </tr>
         }
-        <tr>
-            <td class="form_name">@Html.LabelFor(model => model.AboutText)</td>
-            <td class="form_text">@Html.EditorFor(model => model.AboutText)</td>
-        </tr>
-        <tr>
-            <td class="form_name">@Html.LabelFor(model => model.AboutUrl)</td>
-            <td class="form_text">@Html.EditorFor(model => model.AboutUrl)</td>
-        </tr>*@
-    <tr>
-        <td class="form_name">@Html.LabelFor(model => model.InfoContact)</td>
-        <td class="form_text">@Html.EditorFor(model => model.InfoContact)</td>
-    </tr>
+
     <tr>
         <td class="form_name">@Html.LabelFor(model => model.InfoFooter)</td>
         <td class="form_text">@Html.EditorFor(model => model.InfoFooter)</td>
     </tr>
     <tr>
-        <td class="form_name">@Html.LabelFor(model => model.BankInfo)</td>
-        <td class="form_text">@Html.EditorFor(model => model.BankInfo)</td>
+        <td class="form_name"></td>
+        <td class="form_text">Cấu hình Mail tự động</td>
+    </tr>
+    <tr>
+        <td class="form_name">@Html.LabelFor(model => model.EmailConfigs)</td>
+        <td class="form_text">@Html.EditorFor(model => model.EmailConfigs)</td>
+    </tr>
+    <tr>
+        <td class="form_name">@Html.LabelFor(model => model.PassWordMail)</td>
+        <td class="form_text">@Html.EditorFor(model => model.PassWordMail)</td>
     </tr>
     <tr>
         <td class="form_name">@Html.LabelFor(model => model.Place)</td>
@@ -119,13 +105,9 @@
         <td class="form_text">@Html.EditorFor(model => model.Twitter)</td>
     </tr>
     @*<tr>
-        <td class="form_name">@Html.LabelFor(model => model.Instagram)</td>
-        <td class="form_text">@Html.EditorFor(model => model.Instagram)</td>
-    </tr>*@
-    <tr>
-        <td class="form_name">@Html.LabelFor(model => model.Telegram)</td>
-        <td class="form_text">@Html.EditorFor(model => model.Telegram)</td>
-    </tr>
+            <td class="form_name">@Html.LabelFor(model => model.Instagram)</td>
+            <td class="form_text">@Html.EditorFor(model => model.Instagram)</td>
+        </tr>*@
     <tr>
         <td class="form_name">@Html.LabelFor(model => model.GoogleMap)</td>
         <td class="form_text">@Html.EditorFor(model => model.GoogleMap)</td>

@@ -1,0 +1,33 @@
+﻿@model GlobeWork.ViewModel.PublicMoneyViewModel
+<style>
+    .form_name {
+        width: 130px;
+    }
+</style>
+<h2 class="mb-5">Nạp tiền</h2>
+<div class="box_content">
+    @using (Html.BeginForm("PublicMoney", "UserVcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(a => a.Id)
+        <table class="form_table">
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Price)</td>
+                <td class="form_text">@Html.EditorFor(model => model.Price)</td>
+            </tr>
+            <tr>
+                <td class="form_name"></td>
+                <td class="form_text"><input type="submit" class="btn quick-link" value="Cập nhật" /></td>
+            </tr>
+        </table>
+    }
+</div>
+<script src="~/Scripts/jquery.maskMoney.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".input-number").maskMoney({
+            precision: 0,
+            thousands: ','
+        });
+    });
+</script>

@@ -187,6 +187,7 @@ header.header-employer .dropdown-toggle > img {
   width: 1.5rem;
   height: 1.5rem;
   border-radius: 50%;
+  object-fit: cover;
 }
 header.header-employer logo {
   display: block;
@@ -261,6 +262,7 @@ header.header-employer logo {
 .user-sidebar img {
   width: 2.5rem;
   height: 2.5rem;
+  object-fit: cover;
   border-radius: 50%;
 }
 .user-sidebar .w-hidden {
@@ -419,6 +421,7 @@ header.header-employer logo {
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
+  object-fit: cover;
 }
 .user-info.media .media-body {
   list-style-type: none;
