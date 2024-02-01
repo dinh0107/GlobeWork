@@ -6,11 +6,28 @@
         <img src="~/Content/images/logo.png" />
     </a>
     <ul>
-        <li>
+        <li class="li-notification">
             <a href="">
                 <i class="fa-solid fa-bell"></i>
                 <span>99+</span>
             </a>
+            <ul class="notification">
+                <li class="header">
+                    <h5>Thông báo</h5>
+                    <a href="javascript:;">Xoá tất cả</a>
+                </li>
+                @for(int i = 0; i < 10; i++)
+                {
+                    <li class="media">
+                        <i class="fa-duotone fa-circle-info mr-3"></i>
+                        <div class="media-body">
+                            <h6 class="mt-0">Media heading</h6>
+                            <p>Will you do the same for me? It's time to face the music I'm no longer your muse. Heard it's beautiful, be the judge and my girls gonna take a vote. I can feel a phoenix inside of me. Heaven is jealous of our love, angels are crying from up above. Yeah, you take me to utopia.</p>
+                            <i>2 ngày trước</i>
+                        </div>
+                    </li>
+                }
+            </ul>
         </li>
         <li>
             <a href="@Url.Action("PostNews", "Employer")">

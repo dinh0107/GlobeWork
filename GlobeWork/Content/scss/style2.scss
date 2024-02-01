@@ -849,3 +849,73 @@ $timeColo: #2d7cf1;
         border-radius: 50%;
     }
 }
+
+.li-notification {
+    position: relative;
+
+    &:hover .notification {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+.notification {
+    position: absolute;
+    top: 120%;
+    right: 0;
+    width: 20rem;
+    max-height: 26rem;
+    padding: 0;
+    margin: 0;
+    overflow: auto;
+    opacity: 0;
+    visibility: hidden;
+    transition: .4s;
+    background-color: $white;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+
+    li.header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: .5rem 1rem;
+        background-color: $white;
+    }
+
+    li.header h5 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+
+    li.header a {
+        color: $red;
+        font-size: .85rem;
+        text-decoration: underline;
+        background-color: transparent;
+    }
+
+    li.media {
+        padding: 1rem;
+        border-bottom: 1px solid #cdcdcd;
+    }
+
+    li.media > i {
+        color: $green;
+        font-size: 1.5rem;
+    }
+
+    p {
+        font-size: .85rem;
+        @include truncate(2);
+        margin-bottom: 0;
+    }
+
+    .media-body > i {
+        font-size: .65rem;
+    }
+}
