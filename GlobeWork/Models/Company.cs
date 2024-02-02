@@ -8,7 +8,7 @@ namespace GlobeWork.Models
     public class Company
     {
         [Key]
-        [ForeignKey("User")]
+        [ForeignKey("Employer")]
         public int UserId { get; set; }
         [Display(Name = "Tên công ty"), Required(ErrorMessage = "Hãy nhập tên công ty"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự"), UIHint("TextBox")]
         public string Name { get; set; }
@@ -16,8 +16,8 @@ namespace GlobeWork.Models
         public string WebsiteUrl { get; set; }
         [Display(Name = "Mô tả"), UIHint("EditorBox")]
         public string Body { get; set; }
-        [Display(Name = "Ngày thành lập"), UIHint("DateTimePicker"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime? EstablishmentDate { get; set; }
+        [Display(Name = "Ngày thành lập")]
+        public DateTime EstablishmentDate { get; set; }
         [Display(Name = "Hiện trang chủ")]
         public bool ShowHome { get; set; }
         [Display(Name = "Email nhận tin ứng tuyển"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự"), EmailAddress(ErrorMessage = "Email không hợp lệ"), UIHint("TextBox")]
@@ -29,11 +29,26 @@ namespace GlobeWork.Models
         [Display(Name = "Đường dẫn"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextBox")]
         public string Url { get; set; }
         public DateTime Vipdate { get; set; }
+        public string Cover { get; set; }
+        public string Avatar { get; set; }
+        // Info
+        [Display(Name = "Giới thiệu"), UIHint("EditorBox")]
+        public string Introduct { get; set; }
+        [Display(Name = "Mã nhúng Youtube")]
+        public string VideoYoutube { get; set; }
+        [Display(Name = "Mã nhúng Google Map")]
+        public string GoogleMap { get; set; }
+        [Display(Name = "Sản phẩm dịch vụ"), UIHint("EditorBox")]
+        public string Product { get; set; }
+        [Display(Name = "Số điện thoại"), RegularExpression(@"^\(?(09|03|07|08|05)\)?[-. ]?([0-9]{8})$", ErrorMessage = "Số điện thoại không đúng định dạng!"),
+         Required(ErrorMessage = "Hãy nhập số điện thoại"), StringLength(10, ErrorMessage = "Tối đa 20 ký tự"), UIHint("TextBox")]
+        public string Phone { get; set; }
+
         [ForeignKey("City")]
         public int? CityId { get; set; }
         public virtual City City { get; set; }
         public virtual ICollection<Career> Careers { get; set; }
-        public virtual User User { get; set; }
+        public virtual Employer Employer { get; set; }
         public virtual ICollection<JobPost> JobPosts { get; set; }
         public virtual ICollection<Candidate> Candidates { get; set; }
         public Company()

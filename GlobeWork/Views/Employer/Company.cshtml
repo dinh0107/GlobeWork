@@ -1,0 +1,171 @@
+﻿@model GlobeWork.ViewModel.InserCompanyEmployerViewModel
+@{
+    ViewBag.Title = "Công ty";
+    Layout = "~/Views/Shared/_EmployerLayout.cshtml";
+}
+<div class="container">
+    <div class="box-content">
+        <div class="box-header">
+            <h3>
+                Thông tin công ty
+            </h3>
+        </div>
+        <div class="box-body profile-tabs" id="tabs">
+            @Html.Action("NavProfile")
+            <div class="form-content">
+                @using (Html.BeginForm("Company", "Employer", FormMethod.Post, new { enctype = "multipart/form-data", @class = "bg-white p-3" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    if (Model.Company != null)
+                    {
+                        @Html.HiddenFor(a => a.Company.UserId)
+                        <div class="company-cover-inner">
+                            <label for="Cover" class="cover-wrapper d-block">
+                                @if (Model.Company.Cover != null)
+                                {
+                                    <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", Model.Company.Cover)" class="lazyload">
+                                }
+                                else
+                                {
+                                    <img src="~/Content/images/banner-com.jpg" class="lazyload">
+                                }
+                                @Html.TextBoxFor(a => a.Company.Cover, new { type = "file", @class = "d-none", @id = "Cover" })
+                            </label>
+                            <div class="company-logo">
+                                <label for="Avatar" class="company-image-logo shadow d-block">
+                                    @if (Model.Company.Avatar != null)
+                                    {
+                                        <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", Model.Company.Avatar)" class="img-responsive lazyload">
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Content/images/avatar-default.jpg" class="img-responsive">
+                                    }
+                                    @Html.TextBoxFor(a => a.Company.Avatar, new { type = "file", @class = "d-none", @id = "Avatar" })
+                                </label>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="company-cover-inner mb-5">
+                            <label id="Cover" class="cover-wrapper d-block">
+                                <img src="~/Content/images/banner-com.jpg" class="lazyload">
+                                @Html.TextBoxFor(a => a.Company.Cover, new { type = "file", @class = "d-none", @id = "Cover" })
+                            </label>
+                            <div class="company-logo d-block">
+                                <label for="Avatar" class="company-image-logo shadow" style="width:150px ; height:150px;">
+                                    <img src="~/Content/images/avatar-default.jpg" class="img-responsive">
+                                    @Html.TextBoxFor(a => a.Company.Avatar, new { type = "file", @class = "d-none", @id = "Avatar" })
+                                </label>
+                            </div>
+                        </div>
+                    }
+                    <div class="row" style="margin-top:120px;">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                @Html.LabelFor(a => a.Company.Name)
+                                @Html.TextBoxFor(a => a.Company.Name, new { @class = "form-control", @placeholder = "Tên công ty" })
+                                @Html.ValidationMessageFor(a => a.Company.Name)
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Ngành nghề</label>
+                                <select class="career" name="career" multiple>
+                                    @foreach (var item in Model.Careers)
+                                    {
+                                        var isSelected = Model.Company.Careers.Any(a => a.Id == item.Id);
+                                        <option @(isSelected ? "selected" : "") value="@item.Id">@item.Name</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                @Html.LabelFor(a => a.Company.WebsiteUrl)
+                                @Html.TextBoxFor(a => a.Company.WebsiteUrl, new { @class = "form-control", @placeholder = "Website công ty" })
+                                @Html.ValidationMessageFor(a => a.Company.WebsiteUrl)
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                @Html.LabelFor(a => a.Company.CompanySize)
+                                @Html.TextBoxFor(a => a.Company.CompanySize, new { @class = "form-control", @placeholder = "Quy mô" })
+                                @Html.ValidationMessageFor(a => a.Company.CompanySize)
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                @Html.LabelFor(a => a.Company.EstablishmentDate)
+                                @Html.TextBoxFor(model => model.Company.EstablishmentDate, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker" })
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                @Html.LabelFor(a => a.Company.Phone)
+                                @Html.TextBoxFor(a => a.Company.Phone, new { @class = "form-control", @placeholder = "Hotline công ty" })
+                                @Html.ValidationMessageFor(a => a.Company.Phone)
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                @Html.LabelFor(a => a.Company.Address)
+                                @Html.TextBoxFor(a => a.Company.Address, new { @class = "form-control", @placeholder = "Địa chỉ" })
+                                @Html.ValidationMessageFor(a => a.Company.Address)
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                @Html.LabelFor(a => a.Company.Introduct)
+                                @Html.EditorFor(a => a.Company.Introduct)
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                @Html.LabelFor(a => a.Company.Product)
+                                @Html.EditorFor(a => a.Company.Product)
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                @Html.LabelFor(a => a.Company.GoogleMap)
+                                @Html.TextAreaFor(a => a.Company.GoogleMap, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                @Html.LabelFor(a => a.Company.VideoYoutube)
+                                @Html.TextAreaFor(a => a.Company.VideoYoutube, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary">
+                            Lưu lại
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link href="~/Content/datepicker.css" rel="stylesheet" />
+@section scripts{
+    <script>
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true
+        });
+        VirtualSelect.init({
+            ele: 'select.career',
+            required: true,
+            multiple: true,
+            search: true,
+            maxValues: 4,
+        });
+    </script>
+}

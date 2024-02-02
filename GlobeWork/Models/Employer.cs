@@ -33,7 +33,7 @@ namespace GlobeWork.Models
         public decimal? Amount { get; set; }
         public virtual City City { get; set; }
         public virtual District District { get; set; }
-
+        public virtual ICollection<EmployerLog> EmployerLogs { get; set; }
         public Employer()
         {
             CreateDate = DateTime.Now;
@@ -61,5 +61,11 @@ namespace GlobeWork.Models
         PublicMoney,
         [Display(Name = "Trừ tiền")]
         Deduction,
+        [Display(Name = "Đã duyệt")]
+        Succsess,
+        [Display(Name = "Từ chối")]
+        Refuse,
+        [Display(Name = "Hết hạn")]
+        Expired,
     }
 }

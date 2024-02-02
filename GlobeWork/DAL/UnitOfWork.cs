@@ -26,9 +26,12 @@ namespace GlobeWork.DAL
         private GenericRepository<Skill> _skillRepository;
         private GenericRepository<Employer> _employerRepository;
         private GenericRepository<EmployerLog> _employerLogRepository;
+        private GenericRepository<Country> _countryLogRepository;
 
         public GenericRepository<ConfigSite> ConfigSiteRepository =>
           _configSiteRepository ?? (_configSiteRepository = new GenericRepository<ConfigSite>(_context));
+        public GenericRepository<Country> CountryRepository =>
+         _countryLogRepository ?? (_countryLogRepository = new GenericRepository<Country>(_context));
         public GenericRepository<Employer> EmployerRepository =>
            _employerRepository ?? (_employerRepository = new GenericRepository<Employer>(_context));
         public GenericRepository<Admin> AdminRepository =>

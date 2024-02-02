@@ -25,6 +25,7 @@ namespace GlobeWork.DAL
         public DbSet<ApplyJob> ApplyJobs { get; set; }
         public DbSet<Employer> Employers { get; set; }
         public DbSet<EmployerLog> EmployerLogs { get; set; }
+        public DbSet<Country> Countries { get; set; }
 
     }
 }

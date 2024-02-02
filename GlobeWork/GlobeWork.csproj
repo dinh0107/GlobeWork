@@ -47,7 +47,7 @@
   <ItemGroup>
     <Reference Include="CKFinder, Version=2.5.0.2768, Culture=neutral, PublicKeyToken=579e7adc719a1423, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\sonng\OneDrive\Desktop\CKFinder.dll</HintPath>
+      <HintPath>..\..\..\..\.NET Library\CKFinder.dll</HintPath>
     </Reference>
     <Reference Include="CloudrailSI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\LinkedIn.Api.1.0.6\lib\CloudrailSI.dll</HintPath>
@@ -66,7 +66,7 @@
     </Reference>
     <Reference Include="Helpers, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\sonng\OneDrive\Desktop\Helpers.dll</HintPath>
+      <HintPath>..\..\..\..\.NET Library\Helpers.dll</HintPath>
     </Reference>
     <Reference Include="ImageResizer, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ImageResizer.4.2.8\lib\net45\ImageResizer.dll</HintPath>
@@ -172,9 +172,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202402010709472_ad.cs" />
-    <Compile Include="Migrations\202402010709472_ad.designer.cs">
-      <DependentUpon>202402010709472_ad.cs</DependentUpon>
+    <Compile Include="Migrations\202402021005097_ad.cs" />
+    <Compile Include="Migrations\202402021005097_ad.designer.cs">
+      <DependentUpon>202402021005097_ad.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
@@ -184,6 +184,7 @@
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\ConfigSite.cs" />
+    <Compile Include="Models\Country.cs" />
     <Compile Include="Models\District.cs" />
     <Compile Include="Models\Employer.cs" />
     <Compile Include="Models\JobPost.cs" />
@@ -192,6 +193,7 @@
     <Compile Include="Models\Skill.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\Utils.cs" />
     <Compile Include="ViewModel\AdminViewModel.cs" />
     <Compile Include="ViewModel\DashboardViewModel.cs" />
     <Compile Include="ViewModel\EmployerViewModel.cs" />
@@ -1398,7 +1400,7 @@
     <Content Include="Views\User\UserProfile.cshtml" />
     <Content Include="Views\User\ForgotPassword.cshtml" />
     <Content Include="Views\User\InfoUser.cshtml" />
-    <Content Include="Views\Employer\Profile.cshtml" />
+    <Content Include="Views\Employer\NavProfile.cshtml" />
     <Content Include="Views\Employer\Personal.cshtml" />
     <Content Include="Views\Employer\ChangePassword.cshtml" />
     <Content Include="Views\Employer\Service.cshtml" />
@@ -1471,6 +1473,7 @@
     <Content Include="Views\Vcms\ListJobType.cshtml" />
     <Content Include="Views\Vcms\CreateJobType.cshtml" />
     <Content Include="Views\Vcms\UpdateJobType.cshtml" />
+    <Content Include="Views\Employer\Company.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1487,8 +1490,8 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202402010709472_ad.resx">
-      <DependentUpon>202402010709472_ad.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202402021005097_ad.resx">
+      <DependentUpon>202402021005097_ad.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

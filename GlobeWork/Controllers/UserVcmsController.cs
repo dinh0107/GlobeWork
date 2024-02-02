@@ -1,6 +1,7 @@
 ﻿using Helpers;
 using GlobeWork.Filters;
 using GlobeWork.Models;
+using GlobeWork.Utils;
 using GlobeWork.ViewModel;
 using PagedList;
 using System;
@@ -305,11 +306,13 @@ namespace GlobeWork.Controllers
             if(model.Price != null)
             {
                 user.Amount += Convert.ToDecimal(model.Price.Replace(",", ""));
+                Utils.Utils.EmployerLog("Nạp tiền thành công" , EmployerLogType.PublicMoney , user.Id, Convert.ToDecimal(model.Price.Replace(",", "")));
                 _unitOfWork.Save();
             }
             return RedirectToAction("ListEmployer");
         }
         #endregion
+
         #region Company
         public ActionResult ListCompany(int? page, string startTime, string endTime, string name, string email, string[] careerIds, string[] cityIds, int? status)
         {
@@ -341,11 +344,11 @@ namespace GlobeWork.Controllers
 
                 if (DateTime.TryParse(startTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var start))
                 {
-                    companies = companies.Where(a => DbFunctions.TruncateTime(a.User.CreateDate) >= DbFunctions.TruncateTime(start));
+                    companies = companies.Where(a => DbFunctions.TruncateTime(a.Employer.CreateDate) >= DbFunctions.TruncateTime(start));
                 }
                 if (DateTime.TryParse(endTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var end))
                 {
-                    companies = companies.Where(a => DbFunctions.TruncateTime(a.User.CreateDate) <= DbFunctions.TruncateTime(end));
+                    companies = companies.Where(a => DbFunctions.TruncateTime(a.Employer.CreateDate) <= DbFunctions.TruncateTime(end));
                 }
             }
 
@@ -394,8 +397,8 @@ namespace GlobeWork.Controllers
             var model = new AdminEditCompanyViewModel
             {
                 Id = companyId,
-                Avatar = company.User.Avatar,
-                Phone = company.User.Phone,
+                Avatar = company.Employer.Avatar,
+                Phone = company.Employer.PhoneNumber,
                 CompanySize = company.CompanySize,
                 Address = company.Address,
                 WebsiteUrl = company.WebsiteUrl,
@@ -410,8 +413,7 @@ namespace GlobeWork.Controllers
                 CareerSelectList = CareerSelectList,
                 RankSelectList = RankSelectList,
                 CitySelectList = CitySelectList,
-                EmailRegister = company.User.Email,
-                UserName = company.User.Username
+                EmailRegister = company.Employer.Email,
             };
             return View(model);
 
@@ -429,21 +431,7 @@ namespace GlobeWork.Controllers
             {
                 var isPost = true;
 
-                if (company.User.Username != model.UserName)
-                {
-                    var checkExits = _unitOfWork.UserRepository.GetQuery(a => a.Username == model.UserName).FirstOrDefault();
-
-                    if (checkExits != null)
-                    {
-                        ModelState.AddModelError("", @"Tên đăng nhập đã sử dụng rồi.");
-                        isPost = false;
-                    }
-                    else
-                    {
-                        company.User.Username = model.UserName;
-                    }
-                }
-                if (company.User.Email != model.EmailRegister)
+                if (company.Employer.Email != model.EmailRegister)
                 {
                     var checkExits = _unitOfWork.UserRepository.GetQuery(a => a.Email == model.EmailRegister).FirstOrDefault();
 
@@ -454,7 +442,7 @@ namespace GlobeWork.Controllers
                     }
                     else
                     {
-                        company.User.Email = model.EmailRegister;
+                        company.Employer.Email = model.EmailRegister;
                     }
                 }
 
@@ -481,7 +469,7 @@ namespace GlobeWork.Controllers
                                 HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
                                 var imgFileName = DateTime.Now.ToFileTimeUtc() + Path.GetExtension(file.FileName);
 
-                                company.User.Avatar = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
+                                company.Employer.Avatar = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
 
                                 var newImage = Image.FromStream(file.InputStream);
                                 var fixSizeImage = HtmlHelpers.FixedSize(newImage, 600, 600, false);
@@ -494,7 +482,7 @@ namespace GlobeWork.Controllers
                     {
                         if (model.Password != null)
                         {
-                            company.User.Password = HtmlHelpers.ComputeHash(model.Password, "SHA256", null);
+                            company.Employer.Password = HtmlHelpers.ComputeHash(model.Password, "SHA256", null);
                         }
                         company.Address = model.Address;
                         company.Name = model.NameCompany;
@@ -508,7 +496,7 @@ namespace GlobeWork.Controllers
                         company.Body = model.Body;
                         company.CompanySize = model.CompanySize;
                         company.Email = model.Email;
-                        company.User.Phone = model.Phone;
+                        company.Employer.PhoneNumber = model.Phone;
                         company.Vipdate = DateTime.Now.AddDays(Convert.ToInt32(model.TimeVip));
                         company.Careers.Clear();
                         var careers = fc["career"];
@@ -533,7 +521,7 @@ namespace GlobeWork.Controllers
             }
             model.CareersCompany = company.Careers;
             model.CityId = company.CityId;
-            model.Avatar = company.User.Avatar;
+            model.Avatar = company.Employer.Avatar;
             model.CitySelectList = CitySelectList;
             model.CareerSelectList = CareerSelectList;
             model.RankSelectList = RankSelectList;
@@ -549,7 +537,7 @@ namespace GlobeWork.Controllers
                 return false;
             }
             company.ShowHome = home;
-            company.User.Active = active;
+            company.Employer.Active = active;
             _unitOfWork.Save();
             return true;
 

@@ -1,6 +1,8 @@
-﻿@using GlobeWork.Models
-@{
+﻿
+@using GlobeWork.Models
+@{ 
     var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+
 }
 <!DOCTYPE html>
 <html lang="vi-VN">
@@ -9,7 +11,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
     <meta name="description" content="@Html.Raw(ViewBag.Description)" />
-    <meta name="robots" content="@(ViewBag.Robots == null ? "index,follow" : ViewBag.Robots)" />
     <link rel="canonical" href="@ViewBag.Canonical" />
     @if (config.Favicon != null)
     {

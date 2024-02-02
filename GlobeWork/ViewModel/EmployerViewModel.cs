@@ -16,7 +16,18 @@ namespace GlobeWork.ViewModel
         public IEnumerable<Career> Careers { get; set; }
         public IEnumerable<JobType> JobTypes { get; set; }
         public IEnumerable<Rank>  Ranks { get; set; }
-        //public IEnumerable<Rank>  Ranks { get; set; }
-
+    }
+    public class InserCompanyEmployerViewModel
+    {
+        public Company Company { get; set; }
+        public IEnumerable<Career> Careers { get; set; }
+        public IEnumerable<JobType> JobTypes { get; set; }
+        public IEnumerable<Rank> Ranks { get; set; }
+        public DateTime DateTime { get; set; }
+    }
+    public class ChangeInfoViewModel
+    {
+        public Employer Employer { get; set;}
+        public IEnumerable<Rank> Ranks { get; set; }
     }
 }
