@@ -85,22 +85,11 @@
                             <div>@Html.ActionLink("Danh sách đơn ứng tuyển", "ListApplyJob", "JobPostVcms", null, new { @class = "text_link" })</div>
                         </div>
                     </li>
-
                     <li data-id="4">
-                        <a class="root"><span>Quản lý Đơn hàng</span><i class="fas fa-caret-down"></i></a>
+                        <a class="root"><span>Quản lý quốc gia</span><i class="fas fa-caret-down"></i></a>
                         <div class="sub hidden">
-                            <div><a href="@Url.Action("ListOrder", "Order")" class="text_link">Tất cả Đơn hàng</a></div>
-                            <div><a href="@Url.Action("ReportProduct", "Order")" class="text_link">Thống kê theo sản phẩm</a></div>
-                        </div>
-                    </li>
-                    <li data-id="5">
-                        <a class="root"><span>Quản lý Sản phẩm</span><i class="fas fa-caret-down"></i></a>
-                        <div class="sub hidden">
-                            <div>@Html.ActionLink("Danh mục sản phẩm", "ProductCategory", "ProductVcms", null, new { @class = "text_link" })</div>
-                            @*<div>@Html.ActionLink("Quản lý thuộc tính", "GroupPropertyOfProduct", "ProductVcms", null, new { @class = "text_link" })</div>*@
-                            <div>@Html.ActionLink("Thêm mới sản phẩm", "Product", "ProductVcms", null, new { @class = "text_link" })</div>
-                            <div>@Html.ActionLink("Danh sách sản phẩm", "ListProduct", "ProductVcms", null, new { @class = "text_link" })</div>
-                            @*<div>@Html.ActionLink("Danh sách đánh giá", "ListReview", "ProductVcms", null, new { @class = "text_link" })</div>*@
+                            <div><a href="@Url.Action("ListCountruy", "Vcms")" class="text_link">Danh sách quốc gia</a></div>
+                            <div>@Html.ActionLink("Quản lý địa danh", "City", "Vcms", null, new { @class = "text_link" })</div>
                         </div>
                     </li>
                     <li data-id="6">
@@ -109,12 +98,6 @@
                             <div>@Html.ActionLink("Danh mục bài viết", "ArticleCategory", "Article", null, new { @class = "text_link" })</div>
                             <div>@Html.ActionLink("Thêm mới bài viết", "Article", "Article", null, new { @class = "text_link" })</div>
                             <div>@Html.ActionLink("Danh sách bài viết", "ListArticle", "Article", null, new { @class = "text_link" })</div>
-                        </div>
-                    </li>
-                    <li data-id="7">
-                        <a class="root"><span>Quản lý Showroom</span><i class="fas fa-caret-down"></i></a>
-                        <div class="sub hidden">
-                            <div>@Html.ActionLink("Thêm mới Showroom", "Showroom", "Vcms", null, new { @class = "text_link" })</div>
                         </div>
                     </li>
                     <li data-id="8">

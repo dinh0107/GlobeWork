@@ -12,10 +12,7 @@ namespace GlobeWork.Models
          Required(ErrorMessage = "Hãy nhập tiêu đề"), StringLength(150, ErrorMessage = "Tối đa 150 ký tự"),
          UIHint("TextBox")]
         public string Name { get; set; }
-        [Display(Name = "Mô tả công việc"), UIHint("EditorBox")]
-        public string Body { get; set; }
-        [Display(Name = "Yêu cầu công việc"), UIHint("EditorBox")]
-        public string Requirement { get; set; }
+        
         [Display(Name = "Đường dẫn"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextBox")]
         public string Url { get; set; }
         [ForeignKey("Company")]
@@ -29,14 +26,12 @@ namespace GlobeWork.Models
         public bool Active { get; set; }
         [Display(Name = "WebSite nhận thông tin"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự"), UIHint("TextBox")]
         public string WebsiteUrl { get; set; }
-        [Display(Name = "Nổi bật")]
-        public bool Special { get; set; }
-        [Display(Name = "Hiện trang chủ")]
-        public bool ShowHome { get; set; }
-        [Display(Name = "Mức lương tối thiểu"), DisplayFormat(DataFormatString = "{0:N0}đ")]
-        public decimal? SalalyMin { get; set; }
-        [Display(Name = "Mức lương tối đa"), DisplayFormat(DataFormatString = "{0:N0}đ")]
-        public decimal? SalalyMax { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm}")]
+        public DateTime? Hot { get; set; }
+        [Display(Name = "Mức lương tối thiểu")]
+        public string SalalyMin { get; set; }
+        [Display(Name = "Mức lương tối đa")]
+        public string SalalyMax { get; set; }
         public int View { get; set; }
         [Display(Name = "Ngày đăng"), UIHint("DateTimePicker"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime CreateDate { get; set; }
@@ -44,19 +39,45 @@ namespace GlobeWork.Models
         public DateTime LastEditDate { get; set; }
         [Display(Name = "Ngày hết hạn"), UIHint("DateTimePicker"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? ExpirationDate { get; set; }
+        //Yêu cầu 
+
+        [Display(Name="Yêu cầu kinh nghiệm")]
+        public string Experience { get; set; }
+        [Display(Name = "Giới tính")]
+        public string Gender { get; set; }
+        [Display(Name = "Địa điểm làm việc") , Required(ErrorMessage ="Chưa nhập địa chỉ cụ thể")]
+        public string Address { get; set; }
+        [Display(Name = "Mô tả công việc"), UIHint("EditorBox")]
+        public string Body { get; set; }
+        [Display(Name = "Yêu cầu ứng viên"), UIHint("EditorBox")]
+        public string Requirement { get; set; }
+        [Display(Name = "Quyền lợi"), UIHint("EditorBox")]
+        public string Benefits { get; set; }
+        [Display(Name = "Địa điểm làm việc"), UIHint("EditorBox")]
+        public string WorkLocation { get; set; }
+        [Display(Name = "Số lượng"), Required(ErrorMessage = "Hãy nhập thứ tự"), RegularExpression(@"\d+", ErrorMessage = "Chỉ nhập số nguyên")]
+        public int Quantity { get; set; }
+        [Display(Name = "Yêu cầu")]
+        public string Request { get; set; }
+        [Display(Name = "Mã")]
+        public string Code { get; set; }
+        //Hết yêu cầu
         public int? CityId { get; set; }
         [ForeignKey("Rank")]
         public int RankId { get; set; }
         [ForeignKey("JobType")]
         public int JobTypeId { get; set; }
+        [ForeignKey("Career")]
+        public int CareerId { get; set; }
         public virtual Company Company { get; set; }
         public virtual ICollection<City> Cities { get; set; }
         public virtual JobType JobType { get; set; }
         public virtual Rank Rank { get; set; }
+        public virtual Career  Career { get; set; }
         public virtual ICollection<Candidate> Candidates { get; set; }
         //public virtual ICollection<Tag> Tags { get; set; }
         public virtual ICollection<Skill> Skills { get; set; }
-        public virtual ICollection<Career> Careers { get; set; }
+        //public virtual ICollection<Career> Careers { get; set; }
         public virtual ICollection<ApplyJob> ApplyJobs { get; set; }
         public JobPost()
         {

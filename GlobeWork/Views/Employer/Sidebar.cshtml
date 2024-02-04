@@ -3,6 +3,7 @@
     var id = ViewContext.RouteData.Values["Id"].ToString();
     var avatar = ViewContext.RouteData.Values["Avatar"].ToString();
     var email = ViewContext.RouteData.Values["Email"].ToString();
+    var amount = string.Format("{0:N0}" + " VNĐ", Convert.ToDecimal(ViewContext.RouteData.Values["Amount"]));
 }
 <div class="sidebar">
     <div class="media user-sidebar">
@@ -19,6 +20,7 @@
         <div class="w-hidden media-body">
             <h5 class="mt-0">@FullName</h5>
             <p>Nhà tuyển dụng</p>
+            <p>Tài khoản: <strong class="text-success">@amount</strong></p>
         </div>
     </div>
     <div class="vw"></div>

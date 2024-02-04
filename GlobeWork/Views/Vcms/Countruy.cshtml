@@ -1,0 +1,41 @@
+﻿@model GlobeWork.Models.Country
+@{
+    ViewBag.Title = "Thêm mới đất nước";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    .form_name {
+        width: 200px;
+    }
+</style>
+<h2>Thêm mới quốc gia</h2>
+<div class="box_content mt-0">
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+        <div class="row">
+            <div class="col-lg-8">
+                <table class="form_table">
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(model => model.Name)</td>
+                        <td class="form_text">@Html.EditorFor(model => model.Name)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(model => model.Sort)</td>
+                        <td class="form_text">@Html.EditorFor(model => model.Sort)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(model => model.Active)</td>
+                        <td class="form_text">@Html.CheckBoxFor(model => model.Active, new { @checked = "checked" }) Có/Không</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name"></td>
+                        <td class="form_text">
+                            <input type="submit" value="Thêm mới" class="btn quick-link" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    }
+</div>

@@ -30,7 +30,7 @@ namespace GlobeWork.Models
         public int? CityId { get; set; }
         public int? DistrictId { get; set; }
         [Display(Name = "Tài khoản"), DisplayFormat(DataFormatString = "{0:N0}đ")]
-        public decimal? Amount { get; set; }
+        public decimal Amount { get; set; }
         public virtual City City { get; set; }
         public virtual District District { get; set; }
         public virtual ICollection<EmployerLog> EmployerLogs { get; set; }
@@ -45,6 +45,7 @@ namespace GlobeWork.Models
     {
         public int Id { get; set; }
         public int UserId { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N0}đ")]
         public decimal Amount { get; set; }
         public string Content { get; set; }
         public DateTime CreateDate { get; set; }
@@ -61,11 +62,7 @@ namespace GlobeWork.Models
         PublicMoney,
         [Display(Name = "Trừ tiền")]
         Deduction,
-        [Display(Name = "Đã duyệt")]
-        Succsess,
-        [Display(Name = "Từ chối")]
-        Refuse,
-        [Display(Name = "Hết hạn")]
-        Expired,
+        [Display(Name = "Đổi mật khẩu")]
+        ChangePassword,
     }
 }

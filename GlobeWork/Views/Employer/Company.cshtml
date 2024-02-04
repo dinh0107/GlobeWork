@@ -76,8 +76,15 @@
                                 <select class="career" name="career" multiple>
                                     @foreach (var item in Model.Careers)
                                     {
-                                        var isSelected = Model.Company.Careers.Any(a => a.Id == item.Id);
-                                        <option @(isSelected ? "selected" : "") value="@item.Id">@item.Name</option>
+                                        if (Model.Company != null)
+                                        {
+                                            var isSelected = Model.Company.Careers.Any(a => a.Id == item.Id);
+                                            <option @(isSelected ? "selected" : "") value="@item.Id">@item.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
                                     }
                                 </select>
                             </div>
@@ -167,5 +174,45 @@
             search: true,
             maxValues: 4,
         });
+        @if (ViewBag.Result == "success")
+        {
+            <Text>
+                new Notify({
+                    status: 'success',
+                    title: 'Thành công',
+                    text: 'Thêm thông tin thành công',
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 70,
+                    distance: 20,
+                    type: 3,
+                    position: 'right top'
+                })
+            </Text>
+           }
+        @if (ViewBag.Result == "update")
+        {
+            <Text>
+                new Notify({
+                    status: 'success',
+                    title: 'Thành công',
+                    text: 'Cập nhật thông tin thành công',
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 70,
+                    distance: 20,
+                    type: 3,
+                    position: 'right top'
+                })
+            </Text>
+        }
     </script>
 }

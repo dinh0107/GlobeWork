@@ -1,32 +1,49 @@
-﻿
+﻿@model IEnumerable<GlobeWork.Models.EmployerLog>
+@using Helpers
 @{
     ViewBag.Title = "Lịch sử hoạt dộng";
     Layout = "~/Views/Shared/_EmployerLayout.cshtml";
 }
-
 <div class="contents-header">
-    <h1>@ViewBag.Title</h1>
+    <h2>@ViewBag.Title</h2>
 </div>
-
 <div class="container py-5">
     <div class="box-content">
         <div class="box-body profile-tabs" id="tabs">
             <ul>
                 <li><a href="#allHistory"><i class="fa-regular fa-clock-rotate-left"></i>Tất cả lịch sử</a></li>
-                <li><a href="#temporary"><i class="fa-sharp fa-regular fa-timeline-arrow"></i>Test</a></li>
+                <li><a href="#temporary"><i class="far fa-coins"></i>Nạp tiền</a></li>
+                <li><a href="#minus"><i class="fas fa-user-minus"></i>Trừ tiền</a></li>
             </ul>
             <div id="allHistory" class="pl-5">
                 <ul class="time-line">
-                    @for (int i = 0; i < 5; i++)
+                    @foreach (var item in Model)
                     {
                         <li>
-                            <span class="time">16:49</span>Bỏ theo dõi ứng viên <strong class="text-green">Bùi Hữu Nghĩa</strong>
+                            <span class="time @if (item.EmployerLogType == GlobeWork.Models.EmployerLogType.Deduction) { @Html.Raw("text-danger") } ">@item.CreateDate.ToString("hh:mm dd/MM/yyyy")</span>@Html.Raw(item.Content)
                         </li>
                     }
                 </ul>
             </div>
             <div id="temporary">
-
+                <ul class="time-line">
+                    @foreach (var item in Model.Where(a => a.EmployerLogType == GlobeWork.Models.EmployerLogType.PublicMoney))
+                    {
+                        <li>
+                            <span class="time ">@item.CreateDate.ToString("hh:mm dd/MM/yyyy")</span>@Html.Raw(item.Content)
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div id="minus">
+                <ul class="time-line">
+                    @foreach (var item in Model.Where(a => a.EmployerLogType == GlobeWork.Models.EmployerLogType.Deduction))
+                    {
+                        <li>
+                            <span class="time text-danger ">@item.CreateDate.ToString("hh:mm dd/MM/yyyy")</span>@Html.Raw(item.Content)
+                        </li>
+                    }
+                </ul>
             </div>
         </div>
     </div>

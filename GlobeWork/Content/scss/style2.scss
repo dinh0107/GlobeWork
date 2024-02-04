@@ -157,7 +157,7 @@ header.header-employer {
         margin-bottom: auto;
         list-style-type: none;
         @include flex-item(end, center);
-        gap: 10px;
+        gap: 30px;
     }
 
     li > a, li button {
@@ -228,7 +228,7 @@ header.header-employer {
         background-color: $white;
         border-bottom: 1px solid #cdcdcd;
 
-        h1 {
+        h2 {
             font-size: 1rem;
             font-weight: 600;
             line-height: 2.25rem;
@@ -455,10 +455,10 @@ header.header-employer {
     gap: 10px;
 
     img {
-        width: 3rem;
-        height: 3rem;
+        width: 5rem;
+        height: 5rem;
         border-radius: 50%;
-        object-fit:cover;
+        object-fit: cover;
     }
 
     .media-body {
@@ -479,7 +479,7 @@ header.header-employer {
     li:first-child {
         font-size: 1rem;
         color: $green;
-        font-weight: bold;
+        font-weight: 600;
     }
 }
 
@@ -867,7 +867,7 @@ $timeColo: #2d7cf1;
     position: absolute;
     top: 120%;
     right: 0;
-    width: 20rem;
+    width: 30rem;
     max-height: 26rem;
     padding: 0;
     margin: 0;
@@ -890,7 +890,7 @@ $timeColo: #2d7cf1;
         background-color: $white;
     }
 
-    li.header h5 {
+    li.header .title-notification {
         font-size: 1rem;
         font-weight: 600;
         margin-bottom: 0;
@@ -921,5 +921,38 @@ $timeColo: #2d7cf1;
 
     .media-body > i {
         font-size: .65rem;
+    }
+}
+.ui-datepicker-title {
+    display: flex;
+    gap: 20px;
+    select{
+        border:0;
+    }
+}
+.draft{
+    font-size:.9rem;
+    font-style:italic;
+}
+.font-size-12{
+    font-size:.8rem;
+}
+.custom-input{
+    width:100% !important;
+    input{
+        flex:1;
+    }
+}
+.input-group-prepend {
+    input {
+        &::placeholder{
+            font-size:.6rem;
+        }
+    }
+}
+.alert-message{
+
+    ul{
+        margin-bottom:0;
     }
 }

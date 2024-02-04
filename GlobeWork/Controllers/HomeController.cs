@@ -1,8 +1,12 @@
-﻿using GlobeWork.Filters;
+﻿using Helpers;
+using GlobeWork.DAL;
+using GlobeWork.Filters;
+using GlobeWork.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace GlobeWork.Controllers
@@ -10,6 +14,11 @@ namespace GlobeWork.Controllers
     [MemberLoginFilter]
     public class HomeController : Controller
     {
+        private readonly UnitOfWork _unitOfWork = new UnitOfWork();
+        private static string Email => WebConfigurationManager.AppSettings["email"];
+        private static string Password => WebConfigurationManager.AppSettings["password"];
+        public ConfigSite ConfigSite => (ConfigSite)HttpContext.Application["ConfigSite"];
+
         public PartialViewResult Header()
         {
             return PartialView();

@@ -35,13 +35,13 @@
             @Html.LabelFor(a => a.Password)
             <div class="form-group form-control control-user">
                 <i class="fas fa-user"></i>
-                @Html.TextBoxFor(a => a.Password, new { @placeholder = "Nhập mật khẩu" })
+                @Html.PasswordFor(a => a.Password, new { @placeholder = "Nhập mật khẩu" })
             </div>
             @Html.ValidationMessageFor(a => a.Password)
             @Html.LabelFor(a => a.ConfirmPassword)
             <div class="form-group form-control control-user">
                 <i class="fas fa-user"></i>
-                @Html.TextBoxFor(a => a.ConfirmPassword, new { @placeholder = "Nhập lại mật khẩu" })
+                @Html.PasswordFor(a => a.ConfirmPassword, new { @placeholder = "Nhập lại mật khẩu" })
             </div>
             @Html.ValidationMessageFor(a => a.ConfirmPassword)
             <div class="title-form">
@@ -134,7 +134,7 @@
             </button>
         }
         <div class="text-center">
-            Bạn đã có tài khoản? <a href="@Url.Action("EmployerLogin", "User")" class="text-success">Đăng nhập ngay</a>
+            Bạn đã có tài khoản? <a href="@Url.Action("EmployerLogin", "Employer")" class="text-success">Đăng nhập ngay</a>
         </div>
         <hr />
         <div class="text-center">

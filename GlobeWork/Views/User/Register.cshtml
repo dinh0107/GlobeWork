@@ -115,7 +115,7 @@
     <script>
         User();
         var popup = $(".Popup");
-        if (localStorage.getItem("popupClosed") == null || localStorage.getItem("popupClosed") == false) {
+        if (sessionStorage.getItem("popupClosed") == null || sessionStorage.getItem("popupClosed") == false) {
             popup.addClass("active");
         } else {
             popup.removeClass("active");
@@ -124,7 +124,7 @@
 
         function ClosePopUp() {
             $(".Popup").removeClass("active");
-            localStorage.setItem("popupClosed", true);
+            sessionStorage.setItem("popupClosed", true);
         }
     </script>
 }

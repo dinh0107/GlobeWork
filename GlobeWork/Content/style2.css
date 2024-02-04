@@ -150,7 +150,7 @@ header.header-employer > ul {
   display: flex;
   justify-content: end;
   align-items: center;
-  gap: 10px;
+  gap: 30px;
 }
 header.header-employer li > a, header.header-employer li button {
   position: relative;
@@ -219,7 +219,7 @@ header.header-employer logo {
   background-color: #fff;
   border-bottom: 1px solid #cdcdcd;
 }
-.wrapper .contents-header h1 {
+.wrapper .contents-header h2 {
   font-size: 1rem;
   font-weight: 600;
   line-height: 2.25rem;
@@ -432,8 +432,8 @@ header.header-employer logo {
   gap: 10px;
 }
 .user-info.media img {
-  width: 3rem;
-  height: 3rem;
+  width: 5rem;
+  height: 5rem;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -452,7 +452,7 @@ header.header-employer logo {
 .user-info.media li:first-child {
   font-size: 1rem;
   color: #66BC46;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .use-package.media {
@@ -793,7 +793,7 @@ header.header-employer logo {
   position: absolute;
   top: 120%;
   right: 0;
-  width: 20rem;
+  width: 30rem;
   max-height: 26rem;
   padding: 0;
   margin: 0;
@@ -815,7 +815,7 @@ header.header-employer logo {
   padding: 0.5rem 1rem;
   background-color: #fff;
 }
-.notification li.header h5 {
+.notification li.header .title-notification {
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 0;
@@ -844,4 +844,36 @@ header.header-employer logo {
 }
 .notification .media-body > i {
   font-size: 0.65rem;
+}
+
+.ui-datepicker-title {
+  display: flex;
+  gap: 20px;
+}
+.ui-datepicker-title select {
+  border: 0;
+}
+
+.draft {
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.font-size-12 {
+  font-size: 0.8rem;
+}
+
+.custom-input {
+  width: 100% !important;
+}
+.custom-input input {
+  flex: 1;
+}
+
+.input-group-prepend input::placeholder {
+  font-size: 0.6rem;
+}
+
+.alert-message ul {
+  margin-bottom: 0;
 }

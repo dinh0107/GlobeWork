@@ -1,0 +1,99 @@
+﻿@model GlobeWork.ViewModel.ListCountruyViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Danh sách quốc gia";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<h2>Danh sách quốc gia</h2>
+@if (ViewBag.Result == "success")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Thêm mới thành công</strong></div>
+}
+@if (ViewBag.Result == "update")
+{
+    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật thành công</strong></div>
+}
+<a class="btn quick-link" href="@Url.Action("Countruy")"><i class="fal fa-plus-circle mr-1"></i>Thêm đất nước</a>
+<div class="box_content">
+    <form action="@Url.Action("ListCountruy")" method="get">
+        <div class="row">
+            <div class="col-lg-3">
+                <label>Từ khóa</label> @Html.TextBoxFor(a => a.Name, new { @class = "w300" })
+            </div>
+            <div class="col-lg-3 align-self-center">
+                <button type="submit" class="btn-search">Tìm kiếm</button>
+            </div>
+        </div>
+    </form>
+    <p>Có tổng số <strong>@Model.Countries.TotalItemCount</strong> đất nước</p>
+    <table class="list_table tablecenter table-striped">
+        <tbody>
+            <tr>
+                <th style="width: 100px">STT</th>
+                <th style="width: 700px">Tên</th>
+                <th>Hoạt động</th>
+                <th style="width: 130px"></th>
+            </tr>
+            @foreach (var country in Model.Countries)
+            {
+                <tr data-id="@country.Id">
+                    <td style="width: 120px;">
+                        <input type="number" name="Sort" value="@country.Sort" class="form_control" />
+                    </td>
+                    <td class="left">
+                        <strong>@country.Name</strong>
+                    </td>
+                    <td>@Html.DisplayFor(model => country.Active)</td>
+                    <td>
+                        @Html.ActionLink("Sửa", "EditCountruy", new { id = country.Id }) -
+                        <a href="javascript:;" onclick="deleteCountruy('@country.Id')" style="color: red;">Xóa</a>
+                    </td>
+                </tr>
+            }
+            @if (Model.Countries.PageCount > 1)
+            {
+                <tr>
+                    <td colspan="8">@Html.PagedListPager(Model.Countries, page => Url.Action("ListCountruy", new { page, name = Model.Name }))</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    function deleteCountruy(id) {
+        if (confirm("Bạn có chắc chắn xóa đất nước này không?")) {
+            $.post("/Vcms/DeleteCountruy", { id: id }, function (data) {
+                if (data) {
+                    alert("Bạn xóa thành công ");
+                    $("tr[data-id='" + id + "']").fadeOut();
+                } else {
+                    alert("Quá trình thực hiện xảy ra lỗi. Hãy thử lại.");
+                }
+            });
+        }
+    }
+
+    function updateCity(id) {
+        var divId = $("tr[data-id='" + id + "']");
+        var sort = divId.find("input[name=Sort]").val();
+        var active = divId.find("input#Active").prop("checked");
+
+        if (sort == "") {
+            alert("Bạn hãy nhập số thứ tự");
+        }
+        $.post("/Vcms/UpdateCountruy", { id: id, sort, active }, function (data) {
+            if (data) {
+                $.toast({
+                    text: 'Cập nhật thành công',
+                    position: 'bottom-right',
+                    icon: 'success',
+                })
+            } else {
+                $.toast({
+                    text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                    icon: 'error',
+                })
+            }
+        });
+    }
+</script>

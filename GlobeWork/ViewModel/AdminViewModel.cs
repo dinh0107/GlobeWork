@@ -139,4 +139,14 @@ namespace GlobeWork.ViewModel
         [Display(Name = "Số tiền"), UIHint("MoneyBox"), DisplayFormat(DataFormatString = "{0:N0}đ")]
         public string Price { get; set; }
     }
+    public class ListCountruyViewModel
+    {
+        public IPagedList<Country> Countries { get; set; }
+        public string Name { get; set; }
+    }
+    public class InsertCityViewModel
+    {
+        public City City { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
+    }
 }

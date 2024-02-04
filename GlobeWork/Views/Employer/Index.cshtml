@@ -22,10 +22,10 @@
 
                 <div class="box-body">
                     <div class="dashboard">
-                        <a href="" class="media item-dashboard blue">
+                        <a href="@Url.Action("ListNews")" class="media item-dashboard blue">
                             <div class="media-body">
-                                <h5 class="mt-0">0</h5>
-                                <p>Chiến dịch tuyển dụng</p>
+                                <h5 class="mt-0">@Model.JobPost</h5>
+                                <p>Tin tuyển dụng</p>
                             </div>
                             <i class="fal fa-bullhorn"></i>
                         </a>
@@ -45,10 +45,10 @@
                         </a>
                         <a href="" class="media item-dashboard red">
                             <div class="media-body">
-                                <h5 class="mt-0">0</h5>
-                                <p>CV ứng tuyển mới</p>
+                                <h5 class="mt-0">@Html.DisplayFor(a => a.Amount)</h5>
+                                <p>Số tiền đã tiêu</p>
                             </div>
-                            <i class="fal fa-bullhorn"></i>
+                            <i class="fas fa-coins"></i>
                         </a>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
             <div class="box-content">
                 <div class="box-header">
                     <h3>
-                        Thông tin người tuyển dụng
+                        Thông tin nhà tuyển dụng
                     </h3>
                     <a href="javascript:;">
                         <i class="fa-solid fa-circle-info"></i>
@@ -69,7 +69,7 @@
                 </div>
                 <div class="box-body">
                     <div class="user-info media">
-                        @if (Model.Employer.Avatar != null)
+                        @if (Model.Employer.Avatar != "")
                         {
                             <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/employer/", Model.Employer.Avatar)" alt="@Model.Employer.FullName" class="lazyload" />
                         }
@@ -79,14 +79,14 @@
                         }
                         <ul class="media-body">
                             <li>@Model.Employer.FullName</li>
-                            @*<li>
-                                Mã NTD: <span>631903</span>
-                            </li>*@
                             <li>
                                 Email: <span>@Model.Employer.Email</span>
                             </li>
                             <li>
                                 Số ĐT: <span>@Model.Employer.PhoneNumber</span>
+                            </li>
+                            <li>
+                                Tài khoản: <span class="@if(Model.Employer.Amount == 0) {@Html.Raw("text-danger")}">@Html.DisplayFor(a => Model.Employer.Amount)</span>
                             </li>
                         </ul>
                     </div>
@@ -106,5 +106,27 @@
             </div>
         </div>
     </div>
-    
 </div>
+@section scripts{
+    <script>
+        @if (ViewBag.Result == "success")
+        {
+            <Text>
+                new Notify({
+                    status: 'success',
+                    text: 'Đăng nhập thành công',
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 77,
+                    distance: 20,
+                    type: 3,
+                    position: 'right top'
+                })
+            </Text>
+        }
+    </script>
+}

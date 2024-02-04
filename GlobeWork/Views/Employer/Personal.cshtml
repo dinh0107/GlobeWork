@@ -13,12 +13,7 @@
         <div class="box-body profile-tabs" id="tabs">
             @Html.Action("NavProfile")
             <div class="form-content">
-                @if (ViewBag.Result == "success")
-                {
-                    <div class="alert-message message-success mx-3 mx-md-0">
-                        <i class="fas fa-check-circle mr-2"></i>Cập nhật thông tin cá nhân thành công !!!
-                    </div>
-                }
+
 
                 @using (Html.BeginForm("Personal", "Employer", FormMethod.Post, new { enctype = "multipart/form-data", @class = "bg-white p-3" }))
                 {
@@ -28,7 +23,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <label for="Avatar" class="form-group form-avartar">
-                                @if (Model.Employer.Avatar != null)
+                                @if (Model.Employer.Avatar != "")
                                 {
                                     <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/employer/", Model.Employer.Avatar)" class="lazyload" />
                                 }
@@ -97,3 +92,27 @@
         </div>
     </div>
 </div>
+@section scripts{
+    <script>
+    @if (ViewBag.Result == "success")
+    {
+        <Text>
+            new Notify({
+                status: 'success',
+                title: 'Thành công',
+                text: 'Cập nhật thông tin thành công',
+                effect: 'slide',
+                speed: 600,
+                showIcon: true,
+                showCloseButton: true,
+                autoclose: true,
+                autotimeout: 3000,
+                gap: 70,
+                distance: 20,
+                type: 3,
+                position: 'right top'
+            })
+        </Text>
+    }
+    </script>
+}

@@ -79,15 +79,14 @@ $(document).ready(function () {
     $(".input-number").niceNumber({
         autoSize: true,
         autoSizeBuffer: 1,
-        //onDecrement: function (input, number, object) {
-        //    UpdateToCart($(input));
-        //    return false;
-        //},
-        //onIncrement: function (input, number, object) {
-        //    UpdateToCart($(input));
-        //    return false;
-        //}
+        maxValue: 1000, 
     })
+    $(".input-number").on('input', function () {
+        var value = parseInt($(this).val().replace(/\D/g, '')); 
+        if (value > 100) {
+            $(this).val('1000'); 
+        }
+    });
 
     VirtualSelect.init({
         ele: '.v-select',
@@ -106,4 +105,88 @@ $(document).ready(function () {
 
 function toggleSidebar() {
     $(".sidebar").toggleClass("collapsed");
+}
+$('.message-success').delay(2000).fadeOut('slow');
+
+function ListJob() {
+
+}
+function UpdateStatus(id, status) {
+    $.post("/Employer/UpdateStatusJob", { id: id, type: status }, function (data) {
+        if (data) {
+            new Notify({
+                status: 'success',
+                text: 'Cập nhật trạng thái thành công',
+                effect: 'slide',
+                speed: 600,
+                showIcon: true,
+                showCloseButton: true,
+                autoclose: true,
+                autotimeout: 2000,
+                gap: 77,
+                distance: 20,
+                type: 3,
+                position: 'right top'
+            })
+            setTimeout(function () {
+                window.location.reload();
+            }, 1500);
+        }
+        else {
+            new Notify({
+                status: 'error',
+                text: 'Thực hiện không thành công vui lòng thử lại',
+                effect: 'slide',
+                speed: 600,
+                showIcon: true,
+                showCloseButton: true,
+                autoclose: true,
+                autotimeout: 3000,
+                gap: 77,
+                distance: 20,
+                type: 3,
+                position: 'right top'
+            })
+        }
+    });
+}
+
+function deleteJob(id) {
+    if (confirm("Bạn có chắc chắn xóa tin này không?")) {
+        $.post("/Employer/DeleteJob", { id: id }, function (data) {
+            if (data) {
+                new Notify({
+                    status: 'success',
+                    text: 'Cập nhật trạng thái thành công',
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 77,
+                    distance: 20,
+                    type: 3,
+                    position: 'right top'
+                })
+                $("tr[data-id='" + id + "']").fadeOut();
+            }
+            else {
+                new Notify({
+                    status: 'error',
+                    text: 'Thực hiện không thành công vui lòng thử lại',
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 77,
+                    distance: 20,
+                    type: 3,
+                    position: 'right top'
+                })
+            }
+        });
+    }
 }

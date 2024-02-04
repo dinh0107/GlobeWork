@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using System.Web.Security;
 
 namespace GlobeWork.Filters
@@ -32,7 +33,16 @@ namespace GlobeWork.Filters
                     {
                         filterContext.RouteData.Values["FullName"] = arrData[3];
                     }
+                    if (arrData.Length > 4)
+                    {
+                        filterContext.RouteData.Values["Amount"] = arrData[4];
+                    }
                 }
+            }
+            else
+            {
+                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary
+                    {{"action", "EmployerLogin"}, {"controller", "Employer"}});
             }
             base.OnActionExecuting(filterContext);
         }
@@ -48,6 +58,7 @@ namespace GlobeWork.Filters
                 filterContext.RouteData.Values["Id"] = "";
                 filterContext.RouteData.Values["Email"] = "";
                 filterContext.RouteData.Values["FullName"] = "";
+                filterContext.RouteData.Values["Amount"] = 0;
             }
             else
             {
@@ -69,9 +80,12 @@ namespace GlobeWork.Filters
                     {
                         filterContext.RouteData.Values["FullName"] = arrData[3];
                     }
+                    if (arrData.Length > 4)
+                    {
+                        filterContext.RouteData.Values["Amount"] = arrData[4];
+                    }
                 }
             }
-
             base.OnActionExecuting(filterContext);
         }
     }

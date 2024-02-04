@@ -1,12 +1,12 @@
 ﻿@model GlobeWork.ViewModel.InsertEmployerViewModel
 @{
-    ViewBag.Title = "Đăng tin tuyển dụng";
+    ViewBag.Title = "Cập nhật tin tuyển dụng";
     Layout = "~/Views/Shared/_EmployerLayout.cshtml";
 }
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+    @Html.HiddenFor(a => a.JobPost.Id)
     <div class="contents-header">
         <h2>@ViewBag.Title</h2>
         <div class="btn-group d-dl">
@@ -16,12 +16,13 @@
                 </label>
                 @Html.CheckBoxFor(a => a.JobPost.Active, new { @checked = "checked" })
             </div>
-            <button type="submit" class="btn btn-primary">Lưu lại</button>
+            <button class="btn btn-primary">Lưu lại</button>
             <button class="btn btn-danger">Huỷ bỏ</button>
         </div>
     </div>
-    <div class="container py-5">
+    <div class="container py-3">
         <div class="box-content mb-4">
+            @Html.ValidationSummary(true)
             <div class="box-header">
                 <h3>
                     Thông tin chung
@@ -43,7 +44,7 @@
                         <select class="v-select" name="CareerId">
                             @foreach (var item in Model.Careers)
                             {
-                                <option value="@item.Id">
+                                <option @if (item.Id == Model.JobPost.CareerId) { @Html.Raw("selected") } value="@item.Id">
                                     @item.Name
                                 </option>
                             }
@@ -56,7 +57,7 @@
                         <select class="v-select" name="JobTypeId">
                             @foreach (var item in Model.JobTypes)
                             {
-                                <option value="@item.Id">
+                                <option @if (item.Id == Model.JobPost.JobTypeId) { @Html.Raw("selected") } value="@item.Id">
                                     @item.Name
                                 </option>
                             }
@@ -69,7 +70,7 @@
                         <select class="v-select" name="RankId">
                             @foreach (var item in Model.Ranks)
                             {
-                                <option value="@item.Id">
+                                <option @if (item.Id == Model.JobPost.RankId) { @Html.Raw("selected") } value="@item.Id">
                                     @item.Name
                                 </option>
                             }
@@ -91,7 +92,7 @@
                     </div>
                     <div class="form-group col-2">
                         <label>
-                           Số ngày hiện thị nổi bật
+                            Số ngày hiện thị nổi bật
                         </label>
                         @Html.TextBoxFor(a => a.DateHot, new { @class = "input-number custom-input" })
                     </div>
@@ -100,13 +101,13 @@
                             Giới tính <i class="text-danger">*</i>
                         </label>
                         <select class="v-select" name="JobPost.Gender">
-                            <option value="nam">
+                            <option value="nam" @if (Model.JobPost.Gender == "nam") { @Html.Raw("selected") }>
                                 Nam
                             </option>
-                            <option value="nữ">
+                            <option value="nữ" @if (Model.JobPost.Gender == "nữ") { @Html.Raw("selected") }>
                                 Nữ
                             </option>
-                            <option value="Không yêu cầu">
+                            <option value="Không yêu cầu" @if (Model.JobPost.Gender == "Không yêu cầu") { @Html.Raw("selected") }>
                                 Không yêu cầu
                             </option>
                         </select>
@@ -134,7 +135,7 @@
                         </label>
                         <div class="input-group">
                             @Html.TextBoxFor(a => a.JobPost.SalalyMin, new { @class = "form-control input-money", @placeholder = "Từ" })
-                            @Html.TextBoxFor(a => a.JobPost.SalalyMax, new { @class = "form-control input-money", @placeholder = "Đến" })
+                            @Html.TextBoxFor(a => a.JobPost.SalalyMax, new { @class = "form-control input-money", @placeholder = "Đến" } )
                         </div>
                     </div>
                     <div class="form-group col-6">
@@ -144,7 +145,7 @@
                         <select class="v-select" name="CityId">
                             @foreach (var item in Model.Citys)
                             {
-                                <option value="@item.Id">
+                                <option @if (Model.JobPost.CityId == item.Id) { @Html.Raw("selected") } value="@item.Id">
                                     @item.Name
                                 </option>
                             }
@@ -195,34 +196,34 @@
             </div>
         </div>
         @*<div class="box-content">
-            <div class="box-header">
-                <h3>
-                    Thông tin nhận CV
-                </h3>
-            </div>
-            <div class="box-body">
-                <div class="row">
-                    <div class="form-group col-6">
-                        <label>
-                            Họ và tên người nhận <i class="text-danger">*</i>
-                        </label>
-                        <input class="form-control" />
+                <div class="box-header">
+                    <h3>
+                        Thông tin nhận CV
+                    </h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label>
+                                Họ và tên người nhận <i class="text-danger">*</i>
+                            </label>
+                            <input class="form-control" />
+                        </div>
+                        <div class="form-group col-6">
+                            <label>
+                                Số điện thoại <i class="text-danger">*</i>
+                            </label>
+                            <input class="form-control" />
+                        </div>
                     </div>
-                    <div class="form-group col-6">
+                    <div class="form-group">
                         <label>
-                            Số điện thoại <i class="text-danger">*</i>
+                            Email nhận hồ sơ <i class="text-danger">*</i>
                         </label>
                         <input class="form-control" />
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>
-                        Email nhận hồ sơ <i class="text-danger">*</i>
-                    </label>
-                    <input class="form-control" />
-                </div>
-            </div>
-        </div>*@
+            </div>*@
     </div>
 }
 
@@ -239,7 +240,7 @@
             dateFormat: 'dd/mm/yy',
             changeMonth: true,
             changeYear: true,
-            minDate: 1, // Chỉ cho phép chọn từ ngày hiện tại trở đi
+            minDate: 1, 
             monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
             monthNamesShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
         });

@@ -85,11 +85,11 @@ namespace GlobeWork.Controllers
                     break;
             }
 
-            if (!string.IsNullOrEmpty(careerIds))
-            {
-                var tmp = careerIds.Split(',').Select(int.Parse).Cast<int?>().ToList();
-                jobPosts = jobPosts.Where(a => a.Careers.Any(c => tmp.Contains(c.Id)));
-            }
+            //if (!string.IsNullOrEmpty(careerIds))
+            //{
+            //    var tmp = careerIds.Split(',').Select(int.Parse).Cast<int?>().ToList();
+            //    jobPosts = jobPosts.Where(a => a.Careers.Any(c => tmp.Contains(c.Id)));
+            //}
 
             if (!string.IsNullOrEmpty(skillIds))
             {
@@ -206,18 +206,18 @@ namespace GlobeWork.Controllers
                     jobPost.ExpirationDate = null;
 
                 }
-                jobPost.Careers.Clear();
-                jobPost.Skills.Clear();
-                var careers = fc["career"];
-                var listCareer = careers.Split((',')).Select(int.Parse).ToList();
-                if (!string.IsNullOrEmpty(careers))
-                {
-                    foreach (var item in listCareer)
-                    {
-                        var careerItem = _unitOfWork.CareerRepository.GetById(item);
-                        jobPost.Careers.Add(careerItem);
-                    }
-                }
+                //jobPost.Careers.Clear();
+                //jobPost.Skills.Clear();
+                //var careers = fc["career"];
+                //var listCareer = careers.Split((',')).Select(int.Parse).ToList();
+                //if (!string.IsNullOrEmpty(careers))
+                //{
+                //    foreach (var item in listCareer)
+                //    {
+                //        var careerItem = _unitOfWork.CareerRepository.GetById(item);
+                //        jobPost.Careers.Add(careerItem);
+                //    }
+                //}
                 var skills = fc["skill"];
                 if (!string.IsNullOrEmpty(skills))
                 {
@@ -287,8 +287,8 @@ namespace GlobeWork.Controllers
                 return false;
             }
             jobPost.Active = active;
-            jobPost.Special = special;
-            jobPost.ShowHome = home;
+            //jobPost.Special = special;
+            //jobPost.ShowHome = home;
             _unitOfWork.Save();
             return true;
         }

@@ -172,10 +172,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202402021005097_ad.cs" />
-    <Compile Include="Migrations\202402021005097_ad.designer.cs">
-      <DependentUpon>202402021005097_ad.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\ApplyJob.cs" />
@@ -1474,6 +1470,14 @@
     <Content Include="Views\Vcms\CreateJobType.cshtml" />
     <Content Include="Views\Vcms\UpdateJobType.cshtml" />
     <Content Include="Views\Employer\Company.cshtml" />
+    <Content Include="Views\Vcms\ListCountruy.cshtml" />
+    <Content Include="Views\Vcms\Countruy.cshtml" />
+    <Content Include="Views\Vcms\EditCountruy.cshtml" />
+    <Content Include="Views\Employer\Notify.cshtml" />
+    <Content Include="Views\Vcms\City.cshtml" />
+    <Content Include="Views\Vcms\EditCity.cshtml" />
+    <Content Include="Views\Vcms\ListCity.cshtml" />
+    <Content Include="Views\Employer\EditJob.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1488,11 +1492,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202402021005097_ad.resx">
-      <DependentUpon>202402021005097_ad.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

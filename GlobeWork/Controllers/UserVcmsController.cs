@@ -291,7 +291,7 @@ namespace GlobeWork.Controllers
             var model = new PublicMoneyViewModel
             {
                 Id = user.Id,
-                Price = user.Amount?.ToString("N0"),
+                Price = user.Amount.ToString("N0"),
             };
             return PartialView(model);
         }
@@ -306,7 +306,7 @@ namespace GlobeWork.Controllers
             if(model.Price != null)
             {
                 user.Amount += Convert.ToDecimal(model.Price.Replace(",", ""));
-                Utils.Utils.EmployerLog("Nạp tiền thành công" , EmployerLogType.PublicMoney , user.Id, Convert.ToDecimal(model.Price.Replace(",", "")));
+                Utils.Utils.EmployerLog("Nạp tiền thành công <strong>" + model.Price + "đ" + " </strong> vào tài khoản" , EmployerLogType.PublicMoney , user.Id, Convert.ToDecimal(model.Price.Replace(",", "")));
                 _unitOfWork.Save();
             }
             return RedirectToAction("ListEmployer");

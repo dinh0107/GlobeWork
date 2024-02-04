@@ -3,6 +3,7 @@ using GlobeWork.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 
 namespace GlobeWork.Utils
@@ -22,6 +23,18 @@ namespace GlobeWork.Utils
                 });
                 unitOfwork.Save();
             }
+        }
+        public static string GenerateRandomCode()
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            StringBuilder builder = new StringBuilder();
+            Random random = new Random();
+            for (int i = 0; i < 5; i++)
+            {
+                int index = random.Next(chars.Length);
+                builder.Append(chars[index]);
+            }
+            return builder.ToString();
         }
     }
 }

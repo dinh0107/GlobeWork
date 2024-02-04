@@ -1,20 +1,15 @@
-﻿using GlobeWork.DAL;
+﻿using Helpers;
+using GlobeWork.DAL;
 using GlobeWork.Models;
 using GlobeWork.ViewModel;
-using Helpers;
 using PagedList;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-using System.Web.UI;
-using System.Xml.Linq;
 
 namespace GlobeWork.Controllers
 {
@@ -754,9 +749,172 @@ namespace GlobeWork.Controllers
         }
         #endregion
 
-
         #region Countruy
+        public ActionResult  ListCountruy(int? page , string name , string result ="")
+        {
+            ViewBag.Result = result;
+            var pageNumber  = page ?? 1;
+            var pageSize = 10;
+            var countruy = _unitOfWork.CountryRepository.Get(orderBy: a => a.OrderBy(l => l.Sort));
+            if (!string.IsNullOrEmpty(name))
+            {
+                countruy = countruy.Where(a => a.Name.ToLower().Contains(name.ToLower()));
+            }
+            var model = new ListCountruyViewModel   
+            {
+                Countries = countruy.ToPagedList(pageNumber, pageSize),
+                Name = name
+            };
+            return View(model);
+        }
+        public ActionResult Countruy()
+        {
+            var countruy = new Country
+            {
+                Sort = 1,
+            };
+           return View(countruy);
 
+        }
+        [HttpPost]
+        public ActionResult Countruy(Country country)
+        {
+            if(ModelState.IsValid)
+            {
+                _unitOfWork.CountryRepository.Insert(country);
+                _unitOfWork.Save();
+                return RedirectToAction("ListCountruy", new { result  = "success" } );
+            }
+            return View(country);
+        }
+        public ActionResult EditCountruy(int id = 0)
+        {
+            var countruy = _unitOfWork.CountryRepository.GetById(id);
+            if(countruy == null)
+            {
+                return RedirectToAction("ListCountruy");
+            }
+            return View(countruy);
+        }
+        [HttpPost]
+        public ActionResult EditCountruy(Country model)
+        {
+            var countruy = _unitOfWork.CountryRepository.GetById(model.Id);
+            if (countruy == null)
+            {
+                return RedirectToAction("ListCountruy");
+            }
+            countruy.Name = model.Name;
+            countruy.Sort = model.Sort;
+            countruy.Active = model.Active;
+            _unitOfWork.Save();
+            return RedirectToAction("ListCountruy", new { result = "update" });
+        }
+        public bool DeleteCountruy(int id)
+        {
+            var countruy = _unitOfWork.CountryRepository.GetById(id);
+            if (countruy == null)
+            {
+                return false;
+            }
+            _unitOfWork.CountryRepository.Delete(countruy);
+            _unitOfWork.Save();
+            return true;
+        }
+        [HttpPost]
+        public bool UpdateCountruy(int id , bool active, int sort)
+        {
+            var countruy = _unitOfWork.CountryRepository.GetById(id);
+            if (countruy == null)
+            {
+                return false;
+            }
+            countruy.Active = active;
+            countruy.Sort = sort;
+            _unitOfWork.Save();
+            return true;
+        }
+        #endregion
+
+        #region City
+        [ChildActionOnly]
+        public PartialViewResult ListCity()
+        {
+            var cities = _unitOfWork.CityRepository.Get(orderBy: q => q.OrderBy(c => c.CounId));
+            return PartialView("ListCity", cities);
+        }
+        public ActionResult City()
+        {
+            var model = new InsertCityViewModel
+            {
+                City = new City { Sort = 1, Active = true },
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active , o => o.OrderBy(c => c.Sort)),
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult City(InsertCityViewModel model , FormCollection fc)
+        {
+            if (ModelState.IsValid)
+            {
+                model.City.CounId = Convert.ToInt32(fc["CountruyId"]);
+                model.City.Country = _unitOfWork.CountryRepository.GetById(Convert.ToInt32(fc["CountruyId"]));
+                _unitOfWork.CityRepository.Insert(model.City);
+                _unitOfWork.Save();
+                return RedirectToAction("City");
+            }
+            model.Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(c => c.Sort));
+            return View(model);
+        }
+        public ActionResult EditCity(int cityId = 0)
+        {
+            var city = _unitOfWork.CityRepository.GetById(cityId);
+            if (city == null)
+            {
+                return RedirectToAction("City");
+            }
+
+            var model = new InsertCityViewModel
+            {
+                City = city,
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(c => c.Sort)),
+            };
+
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult EditCity(InsertCityViewModel model , FormCollection fc)
+        {
+            var city = _unitOfWork.CityRepository.GetById(model.City.Id);
+            if (city == null)
+            {
+                return RedirectToAction("City");
+            }
+            if (ModelState.IsValid)
+            {
+                city.Name = model.City.Name;
+                city.Sort = model.City.Sort;
+                city.Active = model.City.Active;
+                city.CounId = Convert.ToInt32(fc["CountruyId"]);
+                city.Country = _unitOfWork.CountryRepository.GetById(Convert.ToInt32(fc["CountruyId"]));
+                _unitOfWork.Save();
+                return RedirectToAction("City");
+            }
+            return View(model);
+        }
+        [HttpPost]
+        public bool DeleteCity(int cityId = 0)
+        {
+            var city = _unitOfWork.CityRepository.GetById(cityId);
+            if (city == null)
+            {
+                return false;
+            }
+
+            _unitOfWork.CityRepository.Delete(city);
+            _unitOfWork.Save();
+            return true;
+        }
         #endregion
         protected override void Dispose(bool disposing)
         {

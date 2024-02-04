@@ -1,0 +1,45 @@
+﻿@model IEnumerable<GlobeWork.Models.EmployerLog>
+@using Helpers
+@{
+    var count = Model.Count();
+}
+<li class="li-notification">
+    <a href="">
+        <i class="fa-solid fa-bell"></i>
+        <span>
+            @if (count > 99)
+            {
+                @:99+
+            }
+            else
+            {
+                @count;
+            }
+        </span>
+    </a>
+    <ul class="notification">
+        <li class="header">
+            <div class="title-notification">Thông báo</div>
+            @*<a href="javascript:;">Xoá tất cả</a>*@
+        </li>
+        @foreach (var item in Model)
+        {
+            <li class="media">
+                @if (item.EmployerLogType == GlobeWork.Models.EmployerLogType.PublicMoney)
+                {
+                    <i class="fa-duotone fa-circle-check mr-3"></i>
+                }
+                @if (item.EmployerLogType == GlobeWork.Models.EmployerLogType.Deduction)
+                {
+                    <i class="fas fa-minus-circle mr-3 text-danger"></i>
+                }
+                <div class="media-body">
+                    <p>
+                        @Html.Raw(item.Content)
+                    </p>
+                    <i>@Html.DateVn(item.CreateDate, 2)</i>
+                </div>
+            </li>
+        }
+    </ul>
+</li>

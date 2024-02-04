@@ -15,5 +15,6 @@ namespace GlobeWork.Models
         public int Sort { get; set; }
         [Display(Name ="Hoạt động")]
         public bool Active { get; set; }
+        public virtual ICollection<City> Cities { get; set; }
     }
 }
