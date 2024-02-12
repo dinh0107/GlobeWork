@@ -79,6 +79,7 @@ namespace GlobeWork.Controllers
                     return RedirectToAction("Index", "Employer");
                 }
             }
+            model.CitySelectList = CitySelectList;
             model.Ranks = _unitOfWork.RankRepository.Get();
             return View(model);
         }
