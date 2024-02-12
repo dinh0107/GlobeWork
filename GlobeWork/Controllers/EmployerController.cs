@@ -506,6 +506,11 @@ namespace GlobeWork.Controllers
             return View();
         }
 
+        public ActionResult ListCV()
+        {
+            return View();
+        }
+
         #region Job
         [Route("danh-sach-tin-tuyen-dung")]
         public ActionResult ListNews(int? page, string name, int type = 0)

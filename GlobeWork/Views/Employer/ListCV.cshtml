@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewBag.Title = "Quản lý CV ứng viên";
+    Layout = "~/Views/Shared/_EmployerLayout.cshtml";
+}
+
+<div class="contents-header">
+    <h2>@ViewBag.Title</h2>
+</div>
+<div class="container py-5">
+    <div class="box-content">
+        <form class="box-header form-row mb-3" action="@Url.Action("ListStudyAbroad")" method="get">
+            <div class="col">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fa-regular fa-magnifying-glass"></i></div>
+                    </div>
+                    <input class="form-control" placeholder="Tìm kiếm theo tiêu đề hoặc mã tin" />
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group flex-nowrap">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Trạng thái hiển thị:</div>
+                    </div>
+                    <select class="v-select" name="status">
+                        <option>CV tiếp nhận</option>
+                        <option>Phù hợp</option>
+                        <option>Hẹn phỏng vấn</option>
+                        <option>Nhận việc</option>
+                        <option>Từ chối</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-success">
+                    Tìm kiếm
+                </button>
+            </div>
+        </form>
+        @for (int i = 0; i < 10; i++)
+        {
+            <div class="vitae media">
+                <img src="~/Content/images/avatar-default.jpg" />
+                <div class="media-body">
+                    <h3><a href="">N.V.A</a></h3>
+                    <ul>
+                        <li>
+                            <i class="fa-solid fa-briefcase"></i>
+                            Nhân viên marketing
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-location-dot"></i>
+                            Hà Nội
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-clock"></i>
+                            Cập nhật: 25 giây trước
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-circle-dollar"></i>
+                            7 - 10 triệu
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-eye"></i>
+                            59 lượt xem
+                        </li>
+                    </ul>
+                </div>
+                <div class="media-body des">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ultricies integer quis auctor elit sed. Nisl nisi scelerisque eu ultrices vitae auctor eu. Nulla aliquet enim tortor at auctor urna nunc id. Sed adipiscing diam donec adipiscing. In cursus turpis massa tincidunt dui ut ornare lectus sit. Convallis a cras semper auctor. Egestas maecenas pharetra convallis posuere morbi leo urna molestie. Pellentesque diam volutpat commodo sed egestas. Tempus urna et pharetra pharetra. Tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula. Vitae suscipit tellus mauris a diam maecenas sed enim ut. Sit amet nisl suscipit adipiscing bibendum est. Tincidunt tortor aliquam nulla facilisi cras fermentum odio. Felis eget nunc lobortis mattis aliquam faucibus. Tellus orci ac auctor augue mauris augue neque gravida in. Id volutpat lacus laoreet non. Egestas maecenas pharetra convallis posuere morbi leo urna.
+                </div>
+                <div class="tool">
+                    <a href="javascript:;" class="bg-success" data-tooltip="Phù hợp" data-tooltip-position="top right">
+                        <i class="fa-solid fa-check"></i>
+                    </a>
+                    <a href="javascript:;" class="bg-info" data-tooltip="Hẹn phỏng vấn" data-tooltip-position="top right">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </a>
+                    <a href="javascript:;" class="bg-warning" data-tooltip="Nhận việc" data-tooltip-position="top right">
+                        <i class="fa-solid fa-file-check"></i>
+                    </a>
+                    <a href="javascript:;" class="bg-danger" data-tooltip="Từ chối" data-tooltip-position="top right">
+                        <i class="fa-solid fa-xmark"></i>
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -917,3 +917,59 @@ header.header-employer logo {
   cursor: pointer;
   color: #fff;
 }
+
+.vitae {
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.vitae > img {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+}
+.vitae h3 {
+  font-size: 1.25rem;
+}
+.vitae ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+  width: max-content;
+  height: 10rem;
+  padding: 20px;
+  margin: 0;
+  border-radius: 3px;
+  background-color: #f5f8fa;
+  list-style-type: none;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #212F3F;
+}
+.vitae li {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.vitae .media-body.des {
+  height: 12rem;
+  flex: auto;
+  overflow-y: auto;
+}
+.vitae .tool {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+}
+.vitae .tool > a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  color: #fff;
+  font-size: 0.75rem;
+  border-radius: 50%;
+}

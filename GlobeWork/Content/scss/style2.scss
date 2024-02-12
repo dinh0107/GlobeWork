@@ -992,3 +992,64 @@ $timeColo: #2d7cf1;
     cursor: pointer;
     color:$white;
 }
+
+.vitae {
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    > img {
+        width: 5rem;
+        height: 5rem;
+        border-radius: 50%;
+    }
+
+    h3{
+        font-size: 1.25rem;
+    }
+
+    ul {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 6px;
+        width: max-content;
+        height: 10rem;
+        padding: 20px;
+        margin: 0;
+        border-radius: 3px;
+        background-color: #f5f8fa;
+        list-style-type: none;
+        font-size: .75rem;
+        font-weight: 500;
+        color: $text-title;
+    }
+
+    li {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+    }
+
+    .media-body.des {
+        height: 12rem;
+        flex: auto;
+        overflow-y: auto;
+    }
+
+    .tool {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .tool > a {
+        @include flex-center;
+        width: 2.25rem;
+        height: 2.25rem;
+        color: $white;
+        font-size: .75rem;
+        border-radius: 50%;
+    }
+}
