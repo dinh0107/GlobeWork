@@ -3,7 +3,7 @@
     ViewBag.Title = "Đăng tin tuyển dụng";
     Layout = "~/Views/Shared/_EmployerLayout.cshtml";
 }
-@using (Html.BeginForm())
+@using (Html.BeginForm("PostNews", "Employer", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
@@ -20,7 +20,7 @@
             <button class="btn btn-danger">Huỷ bỏ</button>
         </div>
     </div>
-    <div class="container py-5">
+    <div class="container py-3">
         <div class="box-content mb-4">
             <div class="box-header">
                 <h3>
@@ -51,7 +51,7 @@
                     </div>
                     <div class="form-group col-4">
                         <label>
-                            Loại <i class="text-danger">*</i>
+                            Hình thức <i class="text-danger">*</i>
                         </label>
                         <select class="v-select" name="JobTypeId">
                             @foreach (var item in Model.JobTypes)
@@ -79,7 +79,7 @@
                 <div class="row">
                     <div class="form-group col-4">
                         <label>
-                            Hạn nhận hồ sơ <i class="text-danger">*</i>
+                            Hạn nhận hồ sơ
                         </label>
                         @Html.TextBoxFor(a => a.JobPost.ExpirationDate, new { @class = "form-control datepicker", @placeholder = "Chọn ngày hết hạn nhận hồ sơ" })
                     </div>
@@ -91,7 +91,7 @@
                     </div>
                     <div class="form-group col-2">
                         <label>
-                           Số ngày hiện thị nổi bật
+                            Số ngày hiện thị nổi bật
                         </label>
                         @Html.TextBoxFor(a => a.DateHot, new { @class = "input-number custom-input" })
                     </div>
@@ -122,26 +122,43 @@
             </div>
             <div class="box-body">
                 <div class="row">
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                         <label>
                             Kinh nghiệm <i class="text-danger">*</i>
                         </label>
-                        @Html.TextBoxFor(a => a.JobPost.Experience, new { @class = "form-control", @placeholder = "Yêu cầu kình nghiệm (Bỏ qua nếu không yêu cầu)" })
+                        @Html.EnumDropDownListFor(model => model.JobPost.Experiences, new { @class = "v-select" })
                     </div>
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
+                        <label>
+                            Kỹ năng cần có <i class="text-danger">*</i>
+                        </label>
+                        <select class="v-select-multiple" multiple name="skill">
+                            @foreach (var item in Model.Skills)
+                            {
+                                <option value="@item.Id">@item.SkillName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
                         <label>
                             Mức lương <i class="text-danger">*</i>
+                        </label>
+                        @Html.EnumDropDownListFor(model => model.JobPost.Wages, new { @class = "v-select" })
+                    </div>
+                    @*<div class="form-group col-3">
+                        <label>
+                            Khoảng lương <i class="text-danger">*</i>
                         </label>
                         <div class="input-group">
                             @Html.TextBoxFor(a => a.JobPost.SalalyMin, new { @class = "form-control input-money", @placeholder = "Từ" })
                             @Html.TextBoxFor(a => a.JobPost.SalalyMax, new { @class = "form-control input-money", @placeholder = "Đến" })
                         </div>
-                    </div>
+                    </div>*@
                     <div class="form-group col-6">
                         <label>
                             Thành phố <i class="text-danger">*</i>
                         </label>
-                        <select class="v-select" name="CityId">
+                        <select class="v-select-multiple" name="city" multiple>
                             @foreach (var item in Model.Citys)
                             {
                                 <option value="@item.Id">
@@ -156,6 +173,16 @@
                         </label>
                         @Html.TextBoxFor(a => a.JobPost.Address, new { @class = "form-control", @placeholder = "Địa chỉ cụ thể" })
                         @Html.ValidationMessageFor(a => a.JobPost.Address)
+                    </div>
+                    <div class="form-group col">
+                        <label>
+                            Ảnh
+                        </label>
+                        <input type="file" id="fileupload" name="files[]" accept="image/*" multiple="" style="flex:none !important;" />
+                        <ul id="ListImages" class="ul-reset"></ul>
+                        <div id="progress" class="progress">
+                            <div class="progress-bar progress-bar-success"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -195,46 +222,92 @@
             </div>
         </div>
         @*<div class="box-content">
-            <div class="box-header">
-                <h3>
-                    Thông tin nhận CV
-                </h3>
-            </div>
-            <div class="box-body">
-                <div class="row">
-                    <div class="form-group col-6">
-                        <label>
-                            Họ và tên người nhận <i class="text-danger">*</i>
-                        </label>
-                        <input class="form-control" />
+                <div class="box-header">
+                    <h3>
+                        Thông tin nhận CV
+                    </h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label>
+                                Họ và tên người nhận <i class="text-danger">*</i>
+                            </label>
+                            <input class="form-control" />
+                        </div>
+                        <div class="form-group col-6">
+                            <label>
+                                Số điện thoại <i class="text-danger">*</i>
+                            </label>
+                            <input class="form-control" />
+                        </div>
                     </div>
-                    <div class="form-group col-6">
+                    <div class="form-group">
                         <label>
-                            Số điện thoại <i class="text-danger">*</i>
+                            Email nhận hồ sơ <i class="text-danger">*</i>
                         </label>
                         <input class="form-control" />
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>
-                        Email nhận hồ sơ <i class="text-danger">*</i>
-                    </label>
-                    <input class="form-control" />
-                </div>
-            </div>
-        </div>*@
+            </div>*@
     </div>
 }
 
-<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<link href="~/Content/datepicker.css" rel="stylesheet" />
 @section scripts{
-    <script src="~/Scripts/jquery.maskMoney.min.js"></script>
     <script>
-        //$(".input-money").maskMoney({
-        //    precision: 0,
-        //    thousands: ','
-        //});
+        $(function () {
+            $("#ListImages").sortable();
+            $("#ListImages").disableSelection();
+        });
+        var i = 1;
+        $("#fileupload").fileupload({
+            add: function (e, data) {
+                var uploadErrors = [];
+                var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+                if (data.originalFiles[0]["type"].length && !acceptFileTypes.test(data.originalFiles[0]["type"])) {
+                    uploadErrors.push("Chỉ chấp nhận định dạng jpeg, jpg, png, gif");
+                }
+                if (data.originalFiles[0]["size"] > 4000000) {
+                    uploadErrors.push("Dung lượng ảnh lớn hơn 4MB");
+                }
+                var totalImg = $("#ListImages .thumb-img-box").length;
+                console.log(totalImg)
+                if (totalImg >= 10) {
+                    uploadErrors.push("Chỉ đăng tối đa 10 ảnh");
+                }
+                if (uploadErrors.length > 0) {
+                    alert(uploadErrors.join("\n"));
+                    return false;
+                } else {
+                    data.submit();
+                }
+                return true;
+            },
+            url: "/Uploader/Upload?folder=job&r=" + Math.random(),
+            dataType: "json",
+            done: function (e, data) {
+                console.log(data)
+                $.each(data.result.files, function (index, file) {
+                    $('#ListImages').append('<li><input type="hidden" name="Pictures" value ="' + file.name + '" /><img src="/images/job/' + file.name + '?w=80&h=80"/><a href="javascript:;" id="' + i + '" onclick="delfile(' + i + ')"><img src="/content/admin/icon-delete.png" alt="" style="vertical-align:middle" /></a></li>');
+                });
+                i = i + 1;
+                $("#progress").fadeOut(2000);
+            },
+            start: function () {
+                $("#progress .progress-bar").css("width", "0");
+                $("#progress").show();
+            },
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $("#progress .progress-bar").css("width", progress + "%");
+            }
+        }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+        function delfile(divid) {
+            if (confirm('Bạn có chắc xóa ảnh này?')) {
+                $('#' + divid).parent().fadeOut().remove();
+            }
+        }
         $(".datepicker").datepicker({
             dateFormat: 'dd/mm/yy',
             changeMonth: true,

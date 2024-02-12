@@ -26,6 +26,10 @@ namespace GlobeWork.DAL
         public DbSet<Employer> Employers { get; set; }
         public DbSet<EmployerLog> EmployerLogs { get; set; }
         public DbSet<Country> Countries { get; set; }
+        public DbSet<StudyAbroadCategory>  StudyAbroadCategories { get; set; }
+        public DbSet<StudyAbroad>  StudyAbroads { get; set; }
+        public DbSet<Follow> Follows { get; set; }
+        public DbSet<Like> Likes { get; set; }
 
     }
 }

@@ -1,0 +1,130 @@
+﻿@model GlobeWork.ViewModel.ListMyJobStudyAbroadViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Quản lý tin du học";
+    Layout = "~/Views/Shared/_EmployerLayout.cshtml";
+    var now = DateTime.Now;
+}
+<div class="contents-header">
+    <h2>@ViewBag.Title</h2>
+    <a href="@Url.Action("StudyAbroad")" class="btn btn-primary"><i class="fa-sharp fa-solid fa-pen-to-square mr-2"></i>Đăng tin</a>
+</div>
+<div class="container py-4">
+    <div class="box-content">
+        <form class="box-header form-row" action="@Url.Action("ListStudyAbroad")" method="get">
+            <div class="col">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text"><i class="fa-regular fa-magnifying-glass"></i></div>
+                    </div>
+                    @Html.TextBoxFor(a => a.Name, new { @class = "form-control", @placeholder = "Tìm kiếm theo tiêu đề hoặc mã tin" })
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group flex-nowrap">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">Trạng thái hiển thị:</div>
+                    </div>
+                    <select class="v-select" name="type">
+                        <option value="1" @if (Model.Type == 1) { @Html.Raw("selected") }>
+                            Hoạt động
+                        </option>
+                        <option value="2" @if (Model.Type == 2) { @Html.Raw("selected") }>
+                            Nháp
+                        </option>
+                        <option value="3" @if (Model.Type == 3) { @Html.Raw("selected") }>
+                            Nổi bật
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-success">
+                    Tìm kiếm
+                </button>
+            </div>
+        </form>
+        <div class="box-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width:50%">
+                            Tin tuyển dụng
+                        </th>
+                        <th class="text-center">
+                            <i class="fa-light fa-gear"></i>
+                        </th>
+                        @*<th class="text-center">
+                            Lần chỉnh sửa gần nhất
+                        </th>*@
+                        <th class="text-center">
+                            Thời gian hiển thị nổi bật
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.StudyAbroads)
+                    {
+                        <tr data-id="@item.Id">
+                            <td class="align-middle">
+                                <small class="text-muted mb-2">#@item.Code</small>
+                                @if (!item.Active)
+                                {
+                                    <div class="draft mb-2">
+                                        Tin Nháp
+                                    </div>
+                                    <span class="badge badge-secondary">Không hiển thị</span>
+                                }
+                                <p class="my-2">
+                                    Tiêu đề tuyển dụng: <strong>@item.Name</strong>
+                                </p>
+                                <button class="btn btn-primary">Xem CV ứng tuyển</button>
+                            </td>
+                            <td class="text-center align-middle">
+                                <ul class="tools-group">
+                                    <li>
+                                        <a href="@Url.Action("EditJob", new {id = item.Id})"><i class="fa-solid fa-pencil"></i></a>
+                                    </li>
+                                    <li class="job-action">
+                                        @if (item.Active)
+                                        {
+                                            <a href="#" onclick="UpdateStatus(@item.Id , 1)"><i class="fa-solid fa-pause"></i></a>
+                                        }
+                                        else
+                                        {
+                                            <a href="#" onclick="UpdateStatus(@item.Id , 2)"><i class="fa-solid fa-play"></i></a>
+                                        }
+                                    </li>
+                                    <li>
+                                        <a href="#" onclick="deleteJob(@item.Id)"><i class="fas fa-trash"></i></a>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td class="text-center align-middle">
+                                @if (now > item.Hot)
+                                {
+                                    <span class="text-danger"> Hết thời gian hiển thị</span>
+                                    <div class="text-secondary font-size-12">
+                                        @Html.DisplayFor(a => item.Hot)
+                                    </div>
+                                }
+                                else
+                                {
+                                    <strong>
+                                        @Html.DisplayFor(a => item.Hot)
+                                    </strong>
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        ListJob()
+    </script>
+}

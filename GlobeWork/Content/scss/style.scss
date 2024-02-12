@@ -22,7 +22,7 @@ body {
 }
 
 a:not([href]):not([class]) {
-    color: #333;
+    color: $white;
     text-decoration: none;
 }
 
@@ -534,9 +534,14 @@ header {
 }
 
 .list-contruy {
+    display: none;
     @include letterSpacing(.625rem, -.625rem);
     width: 50%;
     margin-right: 3.125rem;
+
+    &.active {
+        display: block;
+    }
 
     .slick-arrow {
         @include vertical-center;
@@ -794,7 +799,7 @@ header {
     top: .625rem;
     left: .625rem;
     color: $white;
-    background: url(./images/tag.png);
+    background: url(../images/tag.png);
     background-size: contain;
     background-repeat: no-repeat;
     font-weight: 700;
@@ -1027,14 +1032,15 @@ footer {
     font-weight: 700;
     display: flex;
     gap: .625rem;
+    text-transform:uppercase;
 }
 
 .tag-name {
     display: block;
-    width: 4.75rem;
+    width: 5rem;
     height: 1.5625rem;
     color: #fff;
-    background: url(images/tag.png);
+    background-image: url(../images/tag.png);
     background-size: contain;
     background-repeat: no-repeat;
     font-weight: 700;
@@ -1042,8 +1048,8 @@ footer {
     padding-left: 0.313rem;
     text-transform: capitalize;
     line-height: 1.5rem;
+    @include truncate(1);
 }
-
 .box-follow {
     display: flex;
     align-items: center;
@@ -1168,6 +1174,11 @@ footer {
 
 .button3 {
     grid-area: 1 / 6 / 2 / 7;
+    &.active{
+        i{
+            color:$red;
+        }
+    }
 }
 
 .job-detail__information-detail--title {
@@ -1242,6 +1253,8 @@ footer {
     margin-top: 1rem;
 
     div {
+        width:max-content;
+        cursor:pointer;
         color: $black;
         height: 2rem;
         padding: 0.25rem 0.25rem;
@@ -1258,6 +1271,7 @@ footer {
 
 .info-job-company2 {
     grid-area: 1 / 2 / 2 / 3;
+    @include truncate(1);
 }
 
 .info-job-company3 {
@@ -1269,6 +1283,7 @@ footer {
     justify-content: flex-start !important;
     color: #757579 !important;
     font-size: 0.875rem !important;
+    width:max-content;
 }
 
 .company-avata {
@@ -1387,7 +1402,7 @@ footer {
 
     img {
         width: 100%;
-        object-fit: contain;
+        object-fit: cover;
         aspect-ratio: 1.5;
     }
 
@@ -1456,6 +1471,7 @@ footer {
     img {
         width: 100%;
         object-fit: contain;
+        border-radius: 50%;
         aspect-ratio: 1;
     }
 }
@@ -1561,6 +1577,7 @@ footer {
 
     &.active {
         max-height: unset;
+        height:auto;
     }
 
     &:before {
@@ -1707,7 +1724,7 @@ footer {
         color: $black;
         font-size: 1rem;
         font-weight: 700;
-        width: 20rem;
+        width: 28rem;
     }
 
     .company-name {
@@ -2101,7 +2118,8 @@ footer {
         font-size: 0.875rem;
         font-weight: 400;
         line-height: normal;
-        outline:none;
+        outline: none;
+
         &::placeholder {
             font-size: 0.875rem;
             font-weight: 400;
@@ -3128,7 +3146,8 @@ input, button {
     border-radius: .5rem;
     margin: .7rem 0;
     font-size: .9rem;
-    overflow:hidden;
+    overflow: hidden;
+
     i {
         margin-right: .7rem;
         color: $green;
@@ -3147,15 +3166,16 @@ input, button {
         font-family: "Font Awesome 6 Pro";
         margin-left: auto;
         right: -100%;
-        transition:all .5s;
+        transition: all .5s;
     }
 
     &:hover {
         &:before {
-            right:1rem;
+            right: 1rem;
         }
     }
 }
+
 .checkbox-wrapper-18 .round {
     position: relative;
 }
@@ -3170,10 +3190,11 @@ input, button {
     display: block;
     margin-bottom: 0;
 }
-.round{
-    display:flex;
-    align-items:center;
-    gap:.8rem;
+
+.round {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
 }
 
 .checkbox-wrapper-18 .round label:after {
@@ -3207,16 +3228,38 @@ input, button {
 
 .control-user {
     .vscomp-ele {
-    display: inline-block;
-     max-width: unset !important ; 
-    width: 100%;
+        display: inline-block;
+        max-width: unset !important;
+        width: 100%;
+    }
+
+    .vscomp-toggle-button {
+        padding: .5rem .75rem;
+        border-radius: 3px;
+        border: 0 !important;
+    }
+
+    .vscomp-wrapper.focused .vscomp-toggle-button, .vscomp-wrapper:focus .vscomp-toggle-button {
+        box-shadow: none !important;
+    }
 }
-.vscomp-toggle-button {
-    padding: .5rem .75rem;
-    border-radius: 3px;
-    border:0 !important;
-}
-.vscomp-wrapper.focused .vscomp-toggle-button, .vscomp-wrapper:focus .vscomp-toggle-button{
-    box-shadow:none !important;
-}
+#ListImages {
+    display: flex;
+    gap: 1.25rem;
+    margin-top:2.25rem;
+    li{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+    }
+    img {
+        width: 82px;
+        height: 82px;
+        object-fit: cover;
+    }
+
+    a img {
+        width: 10px;
+        height: 10px;
+    }
 }

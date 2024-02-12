@@ -155,7 +155,6 @@
                         <th width="80px">Lượt xem</th>
                         <th width="80px">Đã đăng</th>
                         <th width="80px">Hiện trang chủ</th>
-                        <th width="80px">Nổi bật</th>
                         <th width="120px"></th>
                     </tr>
                     @foreach (var item in Model.JobPosts)
@@ -164,7 +163,7 @@
                             <td class="left">
                                 <a href="@Url.Action("JobPostDetail", "Home", new{url = item.Url, jobId = item.Id})" target="_blank">@item.Name</a>
                             </td>
-                            <td class="left">@item.Company.Name (@item.Company.User.Username)</td>
+                            <td class="left">@item.Company.Name (@item.Company.Employer.FullName)</td>
                             <td>
                                 @if (item.ApplyJobs.Any())
                                 {
@@ -189,8 +188,7 @@
                             </td>
                             <td>@item.View</td>
                             <td>@Html.EditorFor(a => item.Active)</td>
-                            <td>@Html.EditorFor(a => item.ShowHome)</td>
-                            <td>@Html.EditorFor(a => item.Special)</td>
+                            <td>@Html.DisplayFor(a => item.Hot)</td>
                             <td>
                                 <a href="javascript:;" onclick="updateJobPost('@item.Id')">Cập nhật - </a>
                                 <a href="@Url.Action("UpdateJobPostVcms", new{jobPostId = item.Id})">Sửa</a>

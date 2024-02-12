@@ -53,7 +53,7 @@ namespace GlobeWork.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteFile(string name, string folder = "products")
+        public ActionResult DeleteFile(string name, string folder = "projects")
         {
             GetFileInfo(name, folder).Delete();
             return Json($"{name} was deleted");
@@ -96,7 +96,7 @@ namespace GlobeWork.Controllers
         }
 
         [HttpPost]
-        public JsonResult Upload(string folder = "products")
+        public JsonResult Upload(string folder = "projects")
         {
             var array = Request.Files.Cast<string>().Select(k => Request.Files[k]).ToArray();
             var stringList = new List<string>();
@@ -117,9 +117,7 @@ namespace GlobeWork.Controllers
                 HtmlHelpers.CheckFileExt(Path.GetExtension(fileData.FileName), "jpg|png|gif|jpeg"))
             {
                 HtmlHelpers.CreateFolder(Server.MapPath(folder));
-
-                var randomName = HtmlHelpers.ConvertToUnSign(null, Path.GetFileNameWithoutExtension(fileData.FileName)) + "-" + DateTime.Now.Millisecond + Path.GetExtension(fileData.FileName);
-
+                var randomName = HtmlHelpers.ConvertToUnSign(null, Path.GetFileNameWithoutExtension(fileData.FileName)) + Path.GetExtension(fileData.FileName);
                 var fileName = Server.MapPath(Path.Combine(folder, randomName));
 
                 Resize(fileData, 1200, 900, Path.Combine(folder, fileName));
@@ -136,7 +134,7 @@ namespace GlobeWork.Controllers
             return directoryInfo;
         }
 
-        private static FileInfo GetFileInfo(string name, string folder = "products")
+        private static FileInfo GetFileInfo(string name, string folder = "projects")
         {
             return GetUploadFolder(folder).GetFiles(name).Single();
         }
@@ -320,13 +318,10 @@ namespace GlobeWork.Controllers
             //var jgpEncoder = GetEncoder(ImageFormat.Jpeg);
             var mimeType = HtmlHelpers.GetMimeType(originalImage.FileName);
             var jgpEncoder = HtmlHelpers.GetEncoderInfo(mimeType);
-
             var myEncoder = Encoder.Quality;
             var myEncoderParameters = new EncoderParameters(1);
-
             var myEncoderParameter = new EncoderParameter(myEncoder, 90L);
             myEncoderParameters.Param[0] = myEncoderParameter;
-
             originalBmp.Save(path, jgpEncoder, myEncoderParameters);
             //originalBmp.Save(path, ImageFormat.Jpeg);
 

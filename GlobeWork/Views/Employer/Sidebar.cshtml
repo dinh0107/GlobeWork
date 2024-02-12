@@ -8,7 +8,7 @@
 <div class="sidebar">
     <div class="media user-sidebar">
         <div class="w-show">
-            @if (avatar == "")
+            @if (avatar == "" || avatar == null)
             {
                 <img src="~/Content/images/avatar-default.jpg" alt="@FullName" />
             }
@@ -42,6 +42,16 @@
                 </div>
                 <div class="w-hidden">
                     Tin tuyển dụng
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("ListStudyAbroad", "Employer")">
+                <div class="w-show">
+                    <i class="fa-regular fa-file-invoice"></i>
+                </div>
+                <div class="w-hidden">
+                   Du học
                 </div>
             </a>
         </li>

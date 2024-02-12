@@ -149,4 +149,9 @@ namespace GlobeWork.ViewModel
         public City City { get; set; }
         public IEnumerable<Country> Countries { get; set; }
     }
+    public class InsertStudyAbroadCategoryViewModel
+    {
+        public StudyAbroadCategory StudyAbroadCategory { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
+    }
 }

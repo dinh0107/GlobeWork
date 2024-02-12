@@ -1,10 +1,15 @@
 ﻿//var leftMenuProfile = $.cookie("left_menu_profile");
 //if (leftMenuProfile == null) leftMenuProfile = "";
-//var arrMenu = leftMenuProfile.split('|');   
+//var arrMenu = leftMenuProfile.split('|');
 //for (var i = 0; i < arrMenu.length; i++) {
 //    $("#left_menu_profile li[data-id='" + arrMenu[i] + "'] a.root").addClass("expand");
 //    $("#left_menu_profile li[data-id='" + arrMenu[i] + "'] div").show();
 //}
+$(".datepicker").datepicker({
+    dateFormat: 'dd/mm/yy',
+    changeMonth: true,
+    changeYear: true
+});
 $(".left_menu_profile li .root").click(function () {
     $(this).parent().find(".sub").slideToggle(400);
     $(this).parent().find(".root").toggleClass("expand");
@@ -202,3 +207,45 @@ $("[data-action=update]").on("blur", function () {
         });
     }
 })
+function VitualSelect() {
+    $(document).ready(function () {
+        /*Multiselect */
+        VirtualSelect.init({
+            ele: 'select.career',
+            required: true,
+            multiple: true,
+            search: true,
+            maxValues: 4,
+        });
+
+        VirtualSelect.init({
+            ele: 'select.type',
+            required: true,
+            multiple: false,
+            search: true,
+            hideClearButton: true,
+        });
+
+        VirtualSelect.init({
+            ele: 'select.city',
+            required: true,
+            multiple: false,
+            search: true,
+            hideClearButton: true,
+        });
+
+        VirtualSelect.init({
+            ele: 'select.rank',
+            required: true,
+            multiple: false,
+            search: true,
+            hideClearButton: true,
+        });
+        VirtualSelect.init({
+            ele: 'select.skill',
+            multiple: true,
+            search: true,
+            showValueAsTags: true,
+        });
+    });
+}

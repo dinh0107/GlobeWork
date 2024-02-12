@@ -32,143 +32,142 @@
         display: none !important;
     }
 </style>
-
-<div class="create-post bg-white bg-grey p-lg-5 p-3">
-    @using (Html.BeginForm("UpdateJobPostVcms", "JobPostVcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
-    {
-        @Html.ValidationSummary(true)
-        @Html.HiddenFor(model => model.JobPost.Id)
-        @Html.HiddenFor(model => model.JobPost.CompanyId)
-        @Html.HiddenFor(model => model.JobPost.CityId)
-        @Html.HiddenFor(model => model.JobPost.RankId)
-        @Html.HiddenFor(model => model.JobPost.JobTypeId)
-        <div class="box_content">
-            <div class="item">
-                @Html.LabelFor(model => model.JobPost.Name)
-                @Html.EditorFor(model => model.JobPost.Name)
-                @Html.ValidationMessageFor(model => model.JobPost.Name)
-            </div>
-            <div class="item">
-                @Html.LabelFor(model => model.JobPost.Body)
-                @Html.EditorFor(model => model.JobPost.Body)
-                @Html.ValidationMessageFor(model => model.JobPost.Body)
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="item w-100">
-                        <label>Ngành nghề*</label>
-                        <select multiple class="career" name="career" placeholder="Chọn ngành nghề">
-                            @foreach (var item in Model.Careers)
-                            {
-                                <option value="@item.Id" @if (Model.JobPost.Careers.Any(a => a.Id == item.Id)) { @Html.Raw("selected") }>@item.Name</option>
-                            }
-                        </select>
-                    </div>
-
-                </div>
-                <div class="col-lg-4">
-                    <div class="item w-100">
-                        <label>Hình thức công việc*</label>
-                        <select class="type" required name="type" placeholder="Chọn hình thức">
-                            <option value="" selected disabled>Chọn hình thức</option>
-                            @foreach (var item in Model.JobTypeSelectList)
-                            {
-                                <option value="@item.Value" @if (Model.JobPost.JobTypeId == Convert.ToInt32(item.Value)) { @Html.Raw("selected") }>@item.Text</option>
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="item w-100">
-                        <label>Cấp bậc*</label>
-                        <select class="rank" required name="rank" placeholder="Chọn cấp bậc">
-                            <option value="" selected disabled>Chọn cấp bậc</option>
-                            @foreach (var item in Model.RankSelectList)
-                            {
-                                <option name="rank" value="@item.Value" @if (Model.JobPost.RankId == Convert.ToInt32(item.Value)) { @Html.Raw("selected") }>@item.Text</option>
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="item">
-                        @Html.LabelFor(model => model.JobPost.SalalyMin)
-                        @Html.TextBoxFor(model => model.JobPost.SalalyMin, new { @class = "input-number form_control" })
-                        @Html.ValidationMessageFor(model => model.JobPost.SalalyMin)
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="item">
-                        @Html.LabelFor(model => model.JobPost.SalalyMax)
-                        @Html.TextBoxFor(model => model.JobPost.SalalyMax, new { @class = "input-number form_control" })
-                        @Html.ValidationMessageFor(model => model.JobPost.SalalyMax)
-                    </div>
-                </div>
-            </div>
-
-            <div class="box">
-                <h3 class="title">
-                    Cách thức nộp hồ sơ
-                </h3>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div class="item">
-                            @Html.LabelFor(model => model.JobPost.ExpirationDate)
-                            <input class="form_control expiration-date" type="text" name="ExpirationDate" value="@Html.DisplayFor(model => model.JobPost.ExpirationDate)" />
-                            @Html.ValidationMessageFor(model => model.JobPost.ExpirationDate)
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="item">
-                            @Html.LabelFor(model => model.JobPost.Email)
-                            @Html.EditorFor(model => model.JobPost.Email)
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="item">
-                            @Html.LabelFor(model => model.JobPost.WebsiteUrl)
-                            @Html.EditorFor(model => model.JobPost.WebsiteUrl)
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="box">
-                <h3 class="title">Kỹ năng yêu cầu</h3>
-                <div class="item">
-                    <label>Kỹ năng yêu cầu</label>
-                    <select multiple class="skill" name="skill" placeholder="Chọn kỹ năng">
-                        <option value="" selected disabled>Chọn kỹ năng</option>
-                        @foreach (var item in Model.SkillSelectList)
+<h2 class="mb-5">Cập nhât</h2>
+@using (Html.BeginForm("UpdateJobPostVcms", "JobPostVcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.JobPost.Id)
+    @Html.HiddenFor(model => model.JobPost.CompanyId)
+    @Html.HiddenFor(model => model.JobPost.CityId)
+    @Html.HiddenFor(model => model.JobPost.RankId)
+    @Html.HiddenFor(model => model.JobPost.JobTypeId)
+    <div class="box_content">
+        <div class="item">
+            @Html.LabelFor(model => model.JobPost.Name)
+            @Html.EditorFor(model => model.JobPost.Name)
+            @Html.ValidationMessageFor(model => model.JobPost.Name)
+        </div>
+        <div class="item">
+            @Html.LabelFor(model => model.JobPost.Body)
+            @Html.EditorFor(model => model.JobPost.Body)
+            @Html.ValidationMessageFor(model => model.JobPost.Body)
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="item w-100">
+                    <label>Ngành nghề*</label>
+                    <select multiple class="career" name="career" placeholder="Chọn ngành nghề">
+                        @foreach (var item in Model.Careers)
                         {
-                            <option name="skill" value="@item.Text" @if (Model.JobPost.Skills.Any(a => a.Id == Convert.ToInt32(item.Value))) { @Html.Raw("selected") }>@item.Text</option>
+                            <option value="@item.Id" @if (Model.JobPost.CareerId == item.Id) { @Html.Raw("selected") }>@item.Name</option>
+                        }
+                    </select>
+                </div>
+
+            </div>
+            <div class="col-lg-4">
+                <div class="item w-100">
+                    <label>Hình thức công việc*</label>
+                    <select class="type" required name="type" placeholder="Chọn hình thức">
+                        <option value="" selected disabled>Chọn hình thức</option>
+                        @foreach (var item in Model.JobTypeSelectList)
+                        {
+                            <option value="@item.Value" @if (Model.JobPost.JobTypeId == Convert.ToInt32(item.Value)) { @Html.Raw("selected") }>@item.Text</option>
                         }
                     </select>
                 </div>
             </div>
-            <div class="box">
-                <h3 class="title">Địa chỉ</h3>
-                <div class="item">
-                    <label>Địa điểm làm việc*</label>
-                    <select class="city" name="city" placeholder="Chọn thành phố" multiple>
-                        <option value="" selected disabled>Chọn chọn thành phố</option>
-                        @foreach (var item in Model.CitySelectList)
+            <div class="col-lg-4">
+                <div class="item w-100">
+                    <label>Cấp bậc*</label>
+                    <select class="rank" required name="rank" placeholder="Chọn cấp bậc">
+                        <option value="" selected disabled>Chọn cấp bậc</option>
+                        @foreach (var item in Model.RankSelectList)
                         {
-                            var cId = Convert.ToInt32(item.Value);
-                            <option value="@item.Value" @if (Model.JobPost.Cities.Any(c => c.Id == cId)) { @Html.Raw("selected") }>@item.Text</option>
+                            <option name="rank" value="@item.Value" @if (Model.JobPost.RankId == Convert.ToInt32(item.Value)) { @Html.Raw("selected") }>@item.Text</option>
                         }
                     </select>
                 </div>
             </div>
-            <div class="text-right mt-3">
-                <button type="submit" class="btn quick-link">
-                    <i class="far fa-paper-plane mr-2"></i>
-                    Cập nhật
-                </button>
-
+            <div class="col-lg-4">
+                <div class="item">
+                    @Html.LabelFor(model => model.JobPost.SalalyMin)
+                    @Html.TextBoxFor(model => model.JobPost.SalalyMin, new { @class = "input-number form_control" })
+                    @Html.ValidationMessageFor(model => model.JobPost.SalalyMin)
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="item">
+                    @Html.LabelFor(model => model.JobPost.SalalyMax)
+                    @Html.TextBoxFor(model => model.JobPost.SalalyMax, new { @class = "input-number form_control" })
+                    @Html.ValidationMessageFor(model => model.JobPost.SalalyMax)
+                </div>
             </div>
         </div>
-    }
-</div>
+
+        <div class="box">
+            <h3 class="title">
+                Cách thức nộp hồ sơ
+            </h3>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="item">
+                        @Html.LabelFor(model => model.JobPost.ExpirationDate)
+                        <input class="form_control expiration-date" type="text" name="ExpirationDate" value="@Html.DisplayFor(model => model.JobPost.ExpirationDate)" />
+                        @Html.ValidationMessageFor(model => model.JobPost.ExpirationDate)
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="item">
+                        @Html.LabelFor(model => model.JobPost.Email)
+                        @Html.EditorFor(model => model.JobPost.Email)
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="item">
+                        @Html.LabelFor(model => model.JobPost.WebsiteUrl)
+                        @Html.EditorFor(model => model.JobPost.WebsiteUrl)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box">
+            <h3 class="title">Kỹ năng yêu cầu</h3>
+            <div class="item">
+                <label>Kỹ năng yêu cầu</label>
+                <select multiple class="skill" name="skill" placeholder="Chọn kỹ năng">
+                    <option value="" selected disabled>Chọn kỹ năng</option>
+                    @foreach (var item in Model.SkillSelectList)
+                    {
+                        <option name="skill" value="@item.Text" @if (Model.JobPost.Skills.Any(a => a.Id == Convert.ToInt32(item.Value))) { @Html.Raw("selected") }>@item.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="box">
+            <h3 class="title">Địa chỉ</h3>
+            <div class="item">
+                <label>Địa điểm làm việc*</label>
+                <select class="city" name="city" placeholder="Chọn thành phố" multiple>
+                    <option value="" selected disabled>Chọn chọn thành phố</option>
+                    @foreach (var item in Model.CitySelectList)
+                    {
+                        var cId = Convert.ToInt32(item.Value);
+                        <option value="@item.Value" @if (Model.JobPost.Cities.Any(c => c.Id == cId)) { @Html.Raw("selected") }>@item.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="text-right mt-3">
+            <button type="submit" class="btn quick-link">
+                <i class="far fa-paper-plane mr-2"></i>
+                Cập nhật
+            </button>
+
+        </div>
+    </div>
+}
+
 @section scripts {
     <script src="~/Scripts/jquery.masknumber.min.js"></script>
     <script>

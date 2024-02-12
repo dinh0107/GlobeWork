@@ -1,0 +1,215 @@
+﻿@model GlobeWork.ViewModel.InsertStudyAbroadViewModel
+@{
+    ViewBag.Title = "Đăng tin tuyển dụng";
+    Layout = "~/Views/Shared/_EmployerLayout.cshtml";
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="contents-header">
+        <h2>@ViewBag.Title</h2>
+        <div class="btn-group d-dl">
+            <div class="d-flex align-items-center mr-3">
+                <label class="mb-0 mr-2">
+                    Hiển thị
+                </label>
+                @Html.CheckBoxFor(a => a.StudyAbroad.Active, new { @checked = "checked" })
+            </div>
+            <button type="submit" class="btn btn-primary">Lưu lại</button>
+            <button class="btn btn-danger">Huỷ bỏ</button>
+        </div>
+    </div>
+    <div class="container py-5">
+        <div class="box-content mb-4">
+            <div class="box-header">
+                <h3>
+                    Thông tin chung
+                </h3>
+            </div>
+            <div class="box-body">
+
+                <div class="row">
+                    <div class="form-group col-12">
+                        <label>
+                            Tiêu đề tuyển dụng <i class="text-danger">*</i>
+                        </label>
+                        @Html.TextBoxFor(a => a.StudyAbroad.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.StudyAbroad.Name)
+                    </div>
+
+                    <div class="form-group col-4">
+                        <label>
+                            Ngành nghề <i class="text-danger">*</i>
+                        </label>
+                        <select class="v-select" name="CareerId">
+                            @foreach (var item in Model.Careers)
+                            {
+                                <option value="@item.Id">
+                                    @item.Name
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label>
+                            Loại <i class="text-danger">*</i>
+                        </label>
+                        <select class="v-select" name="JobTypeId">
+                            @foreach (var item in Model.StudyAbroadCategories.Where(a => a.ParentId == null))
+                            {
+                                <option value="@item.Id">
+                                    @item.CategoryName
+                                </option>
+                                foreach (var child in Model.StudyAbroadCategories.Where(a => a.ParentId == item.Id))
+                                {
+                                    <option value="@child.Id">
+                                        -- @child.CategoryName
+                                    </option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label>
+                            Sức khỏe <i class="text-danger">*</i>
+                        </label>
+                        @Html.TextBoxFor(a => a.StudyAbroad.Health, new { @class = "form-control ", @placeholder = "Yêu cầu sức khỏe" })
+                    </div>
+                    <div class="form-group col-6">
+                        <label>
+                            Hạn nhận hồ sơ <i class="text-danger">*</i>
+                        </label>
+                        @Html.TextBoxFor(a => a.StudyAbroad.ExpirationDate, new { @class = "form-control datepicker", @placeholder = "Chọn ngày hết hạn nhận hồ sơ" })
+                    </div>
+                    <div class="form-group col-6">
+                        <label>
+                            Trình độ học vấn, bằng cấp <i class="text-danger">*</i>
+                        </label>
+                        @Html.TextBoxFor(a => a.StudyAbroad.LearningProblems, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.StudyAbroad.LearningProblems)
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="box-content mb-4">
+            <div class="box-header">
+                <h3>
+                    Yêu cầu chung
+                </h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="form-group col-2">
+                        <label>
+                            Số lượng <i class="text-danger">*</i>
+                        </label>
+                        @Html.TextBoxFor(a => a.StudyAbroad.Quantity, new { @class = "input-number custom-input" })
+                    </div>
+                    <div class="form-group col-2">
+                        <label>
+                            Số ngày hiện thị nổi bật
+                        </label>
+                        @Html.TextBoxFor(a => a.DateHot, new { @class = "input-number custom-input" })
+                    </div>
+                    <div class="form-group col-4">
+                        <label>
+                            Giới tính <i class="text-danger">*</i>
+                        </label>
+                        <select class="v-select" name="JobPost.Gender">
+                            <option value="nam">
+                                Nam
+                            </option>
+                            <option value="nữ">
+                                Nữ
+                            </option>
+                            <option value="Không yêu cầu">
+                                Không yêu cầu
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
+                        <label>
+                            Khoảng lương <i class="text-danger">*</i>
+                        </label>
+                        <div class="input-group">
+                            @Html.TextBoxFor(a => a.StudyAbroad.Min, new { @class = "form-control input-money", @placeholder = "Từ" })
+                            @Html.TextBoxFor(a => a.StudyAbroad.Max, new { @class = "form-control input-money", @placeholder = "Đến" })
+                        </div>
+                    </div>
+                    <div class="form-group col-6">
+                        <label>
+                            Thành phố <i class="text-danger">*</i>
+                        </label>
+                        <select class="v-select" name="city">
+                            @foreach (var item in Model.Citys)
+                            {
+                                <option value="@item.Id">
+                                    @item.Name
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label>
+                            Địa chỉ cụ thể <i class="text-danger">*</i>
+                        </label>
+                        @Html.TextBoxFor(a => a.StudyAbroad.Address, new { @class = "form-control", @placeholder = "Địa chỉ cụ thể" })
+                        @Html.ValidationMessageFor(a => a.StudyAbroad.Address)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="box-content mb-4">
+            <div class="box-header">
+                <h3>
+                    Thông tin chi tiết
+                </h3>
+            </div>
+            <div class="box-body">
+                <div class="form-group">
+                    <label>
+                        Mô tả <i class="text-danger">*</i>
+                    </label>
+                    @Html.EditorFor(a => a.StudyAbroad.Body)
+                </div>
+                <div class="form-group">
+                    <label>
+                        Yêu cầu học viên <i class="text-danger">*</i>
+                    </label>
+                    @Html.EditorFor(a => a.StudyAbroad.Requirements)
+                </div>
+                <div class="form-group">
+                    <label>
+                        Yêu đãi được hưởng <i class="text-danger">*</i>
+                    </label>
+                    @Html.EditorFor(a => a.StudyAbroad.Incentives)
+                </div>
+                @*<div class="form-group">
+                    <label>
+                        Địa điểm làm việc <i class="text-danger">*</i>
+                    </label>
+                    @Html.EditorFor(a => a.StudyAbroad.WorkLocation)
+                </div>*@
+            </div>
+        </div>
+    </div>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link href="~/Content/datepicker.css" rel="stylesheet" />
+@section scripts{
+    <script src="~/Scripts/jquery.maskMoney.min.js"></script>
+    <script>
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
+            minDate: 1, 
+            monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+            monthNamesShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+        });
+    </script>
+}

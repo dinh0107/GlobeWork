@@ -16,5 +16,6 @@ namespace GlobeWork.Models
         [Display(Name ="Hoạt động")]
         public bool Active { get; set; }
         public virtual ICollection<City> Cities { get; set; }
+        public virtual ICollection<StudyAbroadCategory> StudyAbroadCategories { get; set; }
     }
 }

@@ -21,7 +21,7 @@
                     {
                         @Html.HiddenFor(a => a.Company.UserId)
                         <div class="company-cover-inner">
-                            <label for="Cover" class="cover-wrapper d-block">
+                            <div class="cover-wrapper d-block position-relative">
                                 @if (Model.Company.Cover != null)
                                 {
                                     <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", Model.Company.Cover)" class="lazyload">
@@ -30,10 +30,13 @@
                                 {
                                     <img src="~/Content/images/banner-com.jpg" class="lazyload">
                                 }
-                                @Html.TextBoxFor(a => a.Company.Cover, new { type = "file", @class = "d-none", @id = "Cover" })
+                            <label for="Cover" class="change-cover">
+                                <i class="fa-solid fa-camera"></i> Chỉnh sửa ảnh bìa
                             </label>
-                            <div class="company-logo">
-                                <label for="Avatar" class="company-image-logo shadow d-block">
+                                @Html.TextBoxFor(a => a.Company.Cover, new { type = "file", @class = "d-none", @id = "Cover" })
+                            </div>
+                            <div class="company-logo custom-h">
+                                <div class="company-image-logo shadow d-block position-relative overflow-hidden">
                                     @if (Model.Company.Avatar != null)
                                     {
                                         <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", Model.Company.Avatar)" class="img-responsive lazyload">
@@ -42,27 +45,36 @@
                                     {
                                         <img src="~/Content/images/avatar-default.jpg" class="img-responsive">
                                     }
+                                    <label for="Avatar" class="change-avater">
+                                        <i class="fa-solid fa-camera"></i>
+                                    </label>
                                     @Html.TextBoxFor(a => a.Company.Avatar, new { type = "file", @class = "d-none", @id = "Avatar" })
-                                </label>
+                                </div>
                             </div>
                         </div>
                     }
                     else
                     {
                         <div class="company-cover-inner mb-5">
-                            <label id="Cover" class="cover-wrapper d-block">
+                            <div class="cover-wrapper d-block position-relative">
                                 <img src="~/Content/images/banner-com.jpg" class="lazyload">
-                                @Html.TextBoxFor(a => a.Company.Cover, new { type = "file", @class = "d-none", @id = "Cover" })
-                            </label>
-                            <div class="company-logo d-block">
-                                <label for="Avatar" class="company-image-logo shadow" style="width:150px ; height:150px;">
-                                    <img src="~/Content/images/avatar-default.jpg" class="img-responsive">
-                                    @Html.TextBoxFor(a => a.Company.Avatar, new { type = "file", @class = "d-none", @id = "Avatar" })
+                                <label for="Cover" class="change-cover">
+                                    <i class="fa-solid fa-camera"></i> Chỉnh sửa ảnh bìa
                                 </label>
+                                @Html.TextBoxFor(a => a.Company.Cover, new { type = "file", @class = "d-none", @id = "Cover" })
+                            </div>
+                            <div class="company-logo custom-h d-block">
+                                <div class="company-image-logo shadow position-relative" style="width:150px ; height:150px;">
+                                    <img src="~/Content/images/avatar-default.jpg" class="img-responsive">
+                                    <label for="Avatar" class="change-avater">
+                                        <i class="fa-solid fa-camera"></i>
+                                    </label>
+                                    @Html.TextBoxFor(a => a.Company.Avatar, new { type = "file", @class = "d-none", @id = "Avatar" })
+                                </div>
                             </div>
                         </div>
                     }
-                    <div class="row" style="margin-top:120px;">
+                    <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
                                 @Html.LabelFor(a => a.Company.Name)
@@ -109,11 +121,34 @@
                                 @Html.TextBoxFor(model => model.Company.EstablishmentDate, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker" })
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <div class="form-group">
                                 @Html.LabelFor(a => a.Company.Phone)
                                 @Html.TextBoxFor(a => a.Company.Phone, new { @class = "form-control", @placeholder = "Hotline công ty" })
                                 @Html.ValidationMessageFor(a => a.Company.Phone)
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Thành phố</label>
+                                <select class="v-select" name="city">
+                                    @foreach (var item in Model.Cities)
+                                    {
+                                        if (Model.Company != null)
+                                        {
+                                            var isSelected = Model.Company.CityId == item.Id;
+                                            <option @(isSelected ? "selected" : "") value="@item.Id">
+                                                @item.Name
+                                            </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.Id">
+                                                @item.Name
+                                            </option>
+                                        }
+                                    }
+                                </select>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -193,7 +228,7 @@
                     position: 'right top'
                 })
             </Text>
-           }
+         }
         @if (ViewBag.Result == "update")
         {
             <Text>

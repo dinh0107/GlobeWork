@@ -17,7 +17,7 @@ body {
 }
 
 a:not([href]):not([class]) {
-  color: #333;
+  color: #fff;
   text-decoration: none;
 }
 
@@ -508,6 +508,7 @@ header {
 }
 
 .list-contruy {
+  display: none;
   width: 50%;
   margin-right: 3.125rem;
 }
@@ -516,6 +517,9 @@ header {
 }
 .list-contruy .slick-list {
   margin: 0 -0.625rem;
+}
+.list-contruy.active {
+  display: block;
 }
 .list-contruy .slick-arrow {
   top: 50%;
@@ -773,7 +777,7 @@ header {
   top: 0.625rem;
   left: 0.625rem;
   color: #fff;
-  background: url(scss/images/tag.png);
+  background: url(images/tag.png);
   background-size: contain;
   background-repeat: no-repeat;
   font-weight: 700;
@@ -993,14 +997,15 @@ footer {
   font-weight: 700;
   display: flex;
   gap: 0.625rem;
+  text-transform: uppercase;
 }
 
 .tag-name {
   display: block;
-  width: 4.75rem;
+  width: 5rem;
   height: 1.5625rem;
   color: #fff;
-  background: url(scss/images/tag.png);
+  background-image: url(images/tag.png);
   background-size: contain;
   background-repeat: no-repeat;
   font-weight: 700;
@@ -1008,6 +1013,10 @@ footer {
   padding-left: 0.313rem;
   text-transform: capitalize;
   line-height: 1.5rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
 }
 
 .box-follow {
@@ -1134,6 +1143,9 @@ footer {
 .button3 {
   grid-area: 1/6/2/7;
 }
+.button3.active i {
+  color: #D92027;
+}
 
 .job-detail__information-detail--title {
   color: #000;
@@ -1202,6 +1214,8 @@ footer {
   margin-top: 1rem;
 }
 .info-job-company div {
+  width: max-content;
+  cursor: pointer;
   color: #000;
   height: 2rem;
   padding: 0.25rem 0.25rem;
@@ -1219,6 +1233,10 @@ footer {
 
 .info-job-company2 {
   grid-area: 1/2/2/3;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
 }
 
 .info-job-company3 {
@@ -1230,6 +1248,7 @@ footer {
   justify-content: flex-start !important;
   color: #757579 !important;
   font-size: 0.875rem !important;
+  width: max-content;
 }
 
 .company-avata {
@@ -1359,7 +1378,7 @@ footer {
 }
 .list-img img {
   width: 100%;
-  object-fit: contain;
+  object-fit: cover;
   aspect-ratio: 1.5;
 }
 .list-img .slick-arrow {
@@ -1418,6 +1437,7 @@ footer {
 .samefield-thuml img {
   width: 100%;
   object-fit: contain;
+  border-radius: 50%;
   aspect-ratio: 1;
 }
 
@@ -1518,6 +1538,7 @@ footer {
 }
 .intro.active {
   max-height: unset;
+  height: auto;
 }
 .intro:before {
   content: "";
@@ -1657,7 +1678,7 @@ footer {
   color: #000;
   font-size: 1rem;
   font-weight: 700;
-  width: 20rem;
+  width: 28rem;
 }
 .detail-job .company-name {
   font-size: 0.8125rem;
@@ -3096,4 +3117,24 @@ input, button {
 }
 .control-user .vscomp-wrapper.focused .vscomp-toggle-button, .control-user .vscomp-wrapper:focus .vscomp-toggle-button {
   box-shadow: none !important;
+}
+
+#ListImages {
+  display: flex;
+  gap: 1.25rem;
+  margin-top: 2.25rem;
+}
+#ListImages li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#ListImages img {
+  width: 82px;
+  height: 82px;
+  object-fit: cover;
+}
+#ListImages a img {
+  width: 10px;
+  height: 10px;
 }

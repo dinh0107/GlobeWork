@@ -43,6 +43,8 @@ namespace GlobeWork.Models
 
         public DateTime CreateDate { get; set; }
         public TypeRegister TypeRegister { get; set; }
+        public ICollection<Follow> Followers { get; set; }
+        public ICollection<Like> Likes { get; set; }
         public User()
         {
             CreateDate = DateTime.Now;

@@ -121,6 +121,12 @@
                             </td>
                         </tr>
                     }
+                    @if (Model.JobPosts.PageCount > 1)
+                    {
+                        <tr>
+                            <td colspan="8">@Html.PagedListPager(Model.JobPosts, page => Url.Action("ListNews", new { page, name = Model.Name, type = Model.Type }))</td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>

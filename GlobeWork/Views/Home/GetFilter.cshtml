@@ -1,0 +1,16 @@
+﻿@model GlobeWork.ViewModel.GetFilterViewModel
+<div class="list-contruy active" >
+    <div>
+        <div class="contruy-name active" data-id="">
+            Ngẫu nhiên
+        </div>
+    </div>
+    @foreach (var item in Model.Cities)
+    {
+        <div>
+            <div class="contruy-name" data-id="@item.Id">
+                @item.Name
+            </div>
+        </div>
+    }
+</div>

@@ -69,7 +69,7 @@
                 </div>
                 <div class="box-body">
                     <div class="user-info media">
-                        @if (Model.Employer.Avatar != "")
+                        @if (Model.Employer.Avatar != null)
                         {
                             <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/employer/", Model.Employer.Avatar)" alt="@Model.Employer.FullName" class="lazyload" />
                         }

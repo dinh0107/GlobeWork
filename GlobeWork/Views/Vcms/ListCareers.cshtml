@@ -14,7 +14,7 @@
 }
 <a class="btn quick-link" href="@Url.Action("CreateCareer")"><i class="fal fa-plus-circle mr-1"></i>Thêm ngành nghề</a>
 <div class="box_content">
-    <form action="@Url.Action("ListCareer")" method="get">
+    <form action="@Url.Action("ListCareers")" method="get">
         <div class="row">
             <div class="col-lg-3">
                 <label>Tên ngành nghề</label> @Html.TextBoxFor(a => a.Name, new { @class = "w300" })
@@ -30,8 +30,9 @@
             <tr>
                 <th style="width: 50px">Hình ảnh</th>
                 <th style="width: 400px">Tên ngành nghề</th>
-                @*<th>CODE</th>*@
+                <th>CODE</th>
                 <th style="width: 100px">Hiện trang chủ</th>
+                <th style="width: 100px">Nổi bật</th>
                 <th style="width: 100px">Hoạt động</th>
                 <th style="width: 130px"></th>
             </tr>
@@ -40,8 +41,9 @@
                 <tr data-id="@career.Id">
                     <td>@Html.DisplayFor(model => career.Image)</td>
                     <td class="left">@Html.DisplayFor(model => career.Name)</td>
-                    @*<td>@career.Code</td>*@
+                    <td>@career.Code</td>
                     <td>@Html.EditorFor(model => career.ShowHome)</td>
+                    <td>@Html.EditorFor(model => career.Hot)</td>
                     <td>@Html.EditorFor(model => career.Active)</td>
                     <td>
                         <a href="javascript:;" onclick="updateCareer('@career.Id')">Cập nhật - </a>
@@ -82,15 +84,14 @@
                 });
             }
         }
-
         function updateCareer(id) {
             var divId = $("tr[data-id='" + id + "']");
             var active = divId.find("input#career_Active").prop("checked");
             var home = divId.find("input#career_ShowHome").prop("checked");
+            var hot = divId.find("input#career_Hot").prop("checked");
 
-            $.post("/Vcms/QuickUpdateCareer", { careerId: id, active, home }, function (data) {
+            $.post("/Vcms/QuickUpdateCareer", { careerId: id, active: active, home: home, hot: hot }, function (data) {
                 if (data) {
-                    console.log("ok")
                     $.toast({
                         text: 'Cập nhật thành công',
                         position: 'bottom-right',

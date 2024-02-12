@@ -30,7 +30,7 @@
         <li>
             <div class="dropdown dropdown-menu-lg-right">
                 <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-                    @if (avatar == "")
+                    @if (avatar == "" || avatar == null)
                     {
                         <img src="~/Content/images/avatar-default.jpg" alt="@FullName" />
                     }

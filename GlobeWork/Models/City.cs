@@ -16,6 +16,8 @@ namespace GlobeWork.Models
         public string Prefix { get; set; }
         [Display(Name = "Phí Ship"), UIHint("MoneyBox")]
         public int? ShipFee { get; set; }
+        [Display(Name ="Hiện trang chủ")]
+        public bool Home { get; set; }
         public int CounId { get; set; }
         public virtual Country Country { get; set; }
         public virtual ICollection<District> Districts { get; set; }

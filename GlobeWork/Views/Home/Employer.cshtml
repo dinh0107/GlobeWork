@@ -1,4 +1,16 @@
-﻿
+﻿@model GlobeWork.ViewModel.DetailCompanyViewModel
+@using Helpers
+@{
+    ViewBag.Title = Model.Company.Name;
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("JobDetail", new { url = Model.Company.Url });
+    if (Model.Company.Avatar != null)
+    {
+        ViewBag.ImageShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/company/", Model.Company.Avatar);
+    }
+    var id = ViewContext.RouteData.Values["Id"].ToString();
+    var email = ViewContext.RouteData.Values["Email"].ToString();
+}
+
 @functions {
     public string IsLinkActive(string path)
     {
@@ -10,26 +22,68 @@
     <div class="container">
         <div class="company-cover-inner">
             <div class="cover-wrapper">
-                <img src="~/Content/images/banner-com.jpg" class="lazyload">
+                @if (Model.Company.Cover != null)
+                {
+                    <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", Model.Company.Cover)" alt="@Model.Company.Name" class="lazyload">
+                }
+                else
+                {
+                    <img src="~/Content/images/cover-null.png" alt="@Model.Company.Name" class="lazyload">
+                }
             </div>
             <div class="company-logo">
                 <div class="company-image-logo shadow">
-                    <img src="~/Content/images/logo.png" alt="" class="img-responsive">
+                    @if (Model.Company.Avatar != null)
+                    {
+                        <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", Model.Company.Avatar)" alt="@Model.Company.Name" class="img-responsive lazyload">
+                    }
+                    else
+                    {
+                        <img src="~/Content/images/avatar-default.jpg" alt="@Model.Company.Name" class="img-responsive lazyload">
+                    }
                 </div>
             </div>
             <div class="company-detail-overview employer-detail">
                 <div class="box-detail">
-                    <h1 class="company-detail-name text-dark">CÔNG TY CỔ PHẦN SYSTEMATIC FUNCTIONS <span class="tag-name">Hà Nội</span></h1>
+                    <h1 class="company-detail-name text-dark">@Model.Company.Name <span class="tag-name">@Model.Company.City.Name</span></h1>
                     <div class="company-subdetail">
-                        <a href="#" target="_blank"><i class="fa-sharp fa-solid fa-globe"></i>https://www.fis.com.vn/</a>
-                        <a href="javascripts:;"><i class="fa-solid fa-buildings"></i>5000+ nhân viên</a>
-                        <a href="javascripts:;"><i class="fa-solid fa-users"></i>30+ công việc đang tuyển</a>
+                        <a href="@Model.Company.WebsiteUrl" target="_blank">
+                            <i class="fa-sharp fa-solid fa-globe"></i>
+                            @if (Model.Company.WebsiteUrl != null)
+                            {
+                                @Model.Company.WebsiteUrl
+                            }
+                            else
+                            {
+                                @:Đang cập nhật
+                            }
+                        </a>
+                        <a href="javascripts:;"><i class="fa-solid fa-buildings"></i>@Model.Company.CompanySize</a>
+                        <a href="javascripts:;"><i class="fa-solid fa-users"></i>@Model.Company.JobPosts.Count() công việc đang tuyển</a>
                     </div>
                 </div>
                 <div class="box-follow">
-                    <a href="" class="btn btn-follow">
-                        <i class="fa-light fa-plus"></i> Theo dõi công ty
-                    </a>
+                    @if (email == "")
+                    {
+                        <a href="@Url.Action("Login","User")" class="btn btn-follow">
+                            <i class="fa-light fa-plus"></i> Theo dõi công ty
+                        </a>
+                    }
+                    else
+                    {
+                        if (Model.Follows.Any())
+                        {
+                            <a href="javascripts:;" class="btn btn-follow unfollow" data-company-id="@Model.Company.UserId">
+                                Bỏ theo dõi công ty
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="javascripts:;" class="btn btn-follow follow" data-company-id="@Model.Company.UserId">
+                                Theo dõi công ty
+                            </a>
+                        }
+                    }
                 </div>
                 <div class="navs-employer">
                     <a href="@Url.Action("Employer")" class="@(IsLinkActive(Url.Action("Employer")))">Trang chủ</a>
@@ -43,11 +97,7 @@
                     <div class="employer-title">Giới thiệu</div>
                     <div class="intro">
                         <div class="employer-intro">
-                            Systematic Functions là một startup trong lĩnh vực công nghệ, với sứ mệnh cung cấp, phát triển các nền tảng kinh doanh phục vụ chất lượng cuộc sống. Chúng tôi hiện đang có các công ty con nổi bật về Giáo dục (Authentic Education Hub) và Ô tô (Car Doctor)
-                            Về Giáo Dục: Authentic Education Hub được sáng lập bởi các chuyên gia giáo dục và kỹ sư công nghệ thông tin đầy đam mê, có chung mục tiêu là nâng cao chất lượng giáo dục. Chúng tôi tin rằng công nghệ trí tuệ nhân tạo tiên tiến có khả năng cách mạng hóa lĩnh vực giáo dục.
-                            Về Giáo Dục: Authentic Education Hub được sáng lập bởi các chuyên gia giáo dục và kỹ sư công nghệ thông tin đầy đam mê, có chung mục tiêu là nâng cao chất lượng giáo dục. Chúng tôi tin rằng công nghệ trí tuệ nhân tạo tiên tiến có khả năng cách mạng hóa lĩnh vực giáo dục.
-                            Về Giáo Dục: Authentic Education Hub được sáng lập bởi các chuyên gia giáo dục và kỹ sư công nghệ thông tin đầy đam mê, có chung mục tiêu là nâng cao chất lượng giáo dục. Chúng tôi tin rằng công nghệ trí tuệ nhân tạo tiên tiến có khả năng cách mạng hóa lĩnh vực giáo dục.
-                            Về Giáo Dục: Authentic Education Hub được sáng lập bởi các chuyên gia giáo dục và kỹ sư công nghệ thông tin đầy đam mê, có chung mục tiêu là nâng cao chất lượng giáo dục. Chúng tôi tin rằng công nghệ trí tuệ nhân tạo tiên tiến có khả năng cách mạng hóa lĩnh vực giáo dục.
+                            @Html.Raw(Model.Company.Body)
                         </div>
                         <div class="show-more">
                             <span class="icon">Xem thêm</span> <i class="fa-sharp fa-light fa-chevron-down"></i>
@@ -60,7 +110,7 @@
                         </div>
                         <div class="media-body ml-3">
                             <div class="year">
-                                Năm 2013
+                                @Html.DisplayFor(a => Model.Company.EstablishmentDate)
                             </div>
                             <div class="info-employ-sub">
                                 Năm thành lập công ty
@@ -73,7 +123,7 @@
                         </div>
                         <div class="media-body ml-3">
                             <div class="year">
-                                500 - 1000
+                                @Model.Company.CompanySize
                             </div>
                             <div class="info-employ-sub">
                                 Quy mô công ty
@@ -96,36 +146,77 @@
                     <hr />
                     <div class="employer-title">Video giới thiệu</div>
                     <div class="video">
-                        <iframe width="560" height="215" src="https://www.youtube.com/embed/eMW9ZxXxCHI?si=aBewSS2mjjR8kyRA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                        @if (Model.Company.VideoYoutube != null)
+                        {
+                            @Html.Raw(Model.Company.VideoYoutube)
+                        }
+                    </div>
+                    
+                </div>
+                <div class="employer-left mt-3">
+                    <div class="employer-title">Liên hệ</div>
+                    <div class="media align-items-center">
+                        <div class="contact-img overflow-hidden">
+                            @if (Model.Company.Avatar != null)
+                            {
+                                <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", Model.Company.Avatar)" alt="@Model.Company.Name" class="lazyload" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/images/avatar-default.jpg" alt="@Model.Company.Name" class="lazyload" />
+                            }
+                        </div>
+                        <div class="media-body company-contact-name">
+                            @Model.Company.Name
+                        </div>
+                    </div>
+                    <hr />
+                    <ul class="ul-reset company-contact">
+                        <li><a href="tel:@Model.Company.Phone"><i class="fa-solid fa-phone"></i>@Model.Company.Phone</a></li>
+                        <li><a href="@Model.Company.WebsiteUrl" target="_blank"><i class="fa-sharp fa-solid fa-globe"></i>@Model.Company.WebsiteUrl</a></li>
+                        <li><a href="" class="d-flex"><i class="fa-solid fa-location-dot"></i>@Model.Company.Address</a></li>
+                    </ul>
+                    <div class="employer-title">Địa chỉ trụ sở chính </div>
+                    <div class="embed-responsive embed-responsive-21by9 mt-3">
+                        @if (Model.Company.GoogleMap != null)
+                        {
+                            @Html.Raw(Model.Company.GoogleMap)
+                        }
                     </div>
                 </div>
-
             </div>
             <div class="col-lg-8">
                 <div class="employer-right">
                     <div class="employer-title">Tin tuyển dụng</div>
                     <div class="form-row employ-form">
-                        <input type="text" name="name" value="" placeholder="Nhập từ khóa" />
+                        <input type="text" name="name" value="" placeholder="Nhập từ khóa" class="bg-white" />
                         <button type="submit">
                             <i class="far fa-search"></i>
                             TÌM KIẾM
                         </button>
                     </div>
                     <div class="job-q mb-3">
-                        Hiện tại đang tuyển dụng <span>14</span> vị trí
+                        Hiện tại đang tuyển dụng <span>@Model.Company.JobPosts.Count()</span> vị trí
                     </div>
-                    @for (var i = 0; i < 6; i++)
+                    @foreach (var item in Model.JobPosts)
                     {
-                        <div class="job bg-white detail-job active @(i == 1 ? "active" : "")">
+                        <div class="job bg-white detail-job @if (item.Hot != null && item.Hot > DateTime.Now) { @Html.Raw("active") } ">
                             <div class="media ">
                                 <div>
-                                    <a href="" class="job-name">Middle/Senior UX Designer</a>
+                                    <a href="@Url.Action("JobDetail", new {url = item.Url})" class="job-name">@item.Name</a>
                                     <div class="company-name">
-                                        Công Ty TNHH Hóa Chất Toàn Hữu
+                                        @item.Company.Name
                                     </div>
                                 </div>
                                 <div class="media-body time-deadline text-right">
-                                    Còn <strong>8</strong> ngày để ứng tuyển
+                                    @if (item.ExpirationDate > DateTime.Now)
+                                    {
+                                        @:Hết thời gian ứng tuyển
+                                    }
+                                    else
+                                    {
+                                       @:Còn <strong>@Html.DateCountDown(item.ExpirationDate)</strong> để ứng tuyển
+                                    }
                                 </div>
                             </div>
                             <div class="d-flex align-items-center justify-content-between mt-1">
@@ -138,36 +229,8 @@
                         </div>
                     }
                     <a href="" class="view-more-job">Xem thêm công việc<i class="fal fa-long-arrow-right ml-2"></i></a>
-                </div>
 
-            </div>
-        </div>
-        <div class="row custom-row">
-            <div class="col-lg-4">
-                <div class="employer-left mt-3">
-                    <div class="employer-title">Liên hệ</div>
-                    <hr />
-                    <div class="media align-items-center">
-                        <div class="contact-img">
-                            <img src="~/Content/images/logo.png" alt="Alternate Text" class="lazyload" />
-                        </div>
-                        <div class="media-body company-contact-name">
-                            CÔNG TY CỔ PHẦN SYSTEMATIC FUNCTIONS
-                        </div>
-                    </div>
-                    <hr />
-                    <ul class="ul-reset company-contact">
-                        <li><a href="tel:"><i class="fa-solid fa-phone"></i>0123 456 789</a></li>
-                        <li><a href="" target="_blank"><i class="fa-sharp fa-solid fa-globe"></i>https://www.fis.com.vn/</a></li>
-                        <li><a href="" class="d-flex"><i class="fa-solid fa-location-dot"></i>29 BT1, Khu đô thị Mễ Trì Hạ, Phường Mễ Trì, Quận Nam Từ Liêm, Thành phố Hà Nội, Việt Nam</a></li>
-                    </ul>
-                    <div class="employer-title">Địa chỉ trụ sở chính </div>
-                    <div class="embed-responsive embed-responsive-21by9 mt-3">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3725.0354763630266!2d105.8456530747134!3d20.991214989068116!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac6c5d793ffb%3A0x8ef3e0fff0602d4c!2zQ8O0bmcgdHkgQ1AgdOG6rXAgxJFvw6BuIGPDtG5nIG5naOG7hyBWSUNP!5e0!3m2!1svi!2s!4v1706343356647!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    </div>
                 </div>
-            </div>
-            <div class="col-lg-8">
                 <div class="employer-right mt-3">
                     <div class="employer-title">Sản phẩm và dịch vụ</div>
                     <div class="content-detail">
@@ -199,6 +262,7 @@
 </div>
 @section scripts{
     <script>
-        Details()
+        Details();
+        ActionDetail();
     </script>
 } 

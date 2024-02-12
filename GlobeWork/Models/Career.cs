@@ -25,6 +25,10 @@ namespace GlobeWork.Models
         public int? ParentId { get; set; }
         [Display(Name = "Hiện trang chủ")]
         public bool ShowHome { get; set; }
+        [Display(Name = "Nổi bật")]
+        public bool Hot { get; set; }
+        [Display(Name = "Thứ tự"), Required(ErrorMessage = "Hãy nhập thứ tự"), RegularExpression(@"\d+", ErrorMessage = "Chỉ nhập số nguyên")]
+        public int Sort { get; set; }
         [Display(Name = "Ngày tạo"), UIHint("DateTimePicker"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime CreateDate { get; set; }
         public virtual ICollection<JobPost> Posts { get; set; }

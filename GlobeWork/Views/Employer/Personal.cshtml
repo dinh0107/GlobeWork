@@ -13,8 +13,6 @@
         <div class="box-body profile-tabs" id="tabs">
             @Html.Action("NavProfile")
             <div class="form-content">
-
-
                 @using (Html.BeginForm("Personal", "Employer", FormMethod.Post, new { enctype = "multipart/form-data", @class = "bg-white p-3" }))
                 {
                     @Html.AntiForgeryToken()
@@ -23,7 +21,7 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <label for="Avatar" class="form-group form-avartar">
-                                @if (Model.Employer.Avatar != "")
+                                @if (Model.Employer.Avatar != null)
                                 {
                                     <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/employer/", Model.Employer.Avatar)" class="lazyload" />
                                 }

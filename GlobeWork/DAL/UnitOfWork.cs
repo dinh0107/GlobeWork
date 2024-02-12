@@ -27,7 +27,19 @@ namespace GlobeWork.DAL
         private GenericRepository<Employer> _employerRepository;
         private GenericRepository<EmployerLog> _employerLogRepository;
         private GenericRepository<Country> _countryLogRepository;
+        private GenericRepository<StudyAbroadCategory> _studyAbroadCategoryRepository;
+        private GenericRepository<StudyAbroad> _studyAbroadRepository;
+        private GenericRepository<Follow> _followRepository;
+        private GenericRepository<Like> _likeRepository;
 
+        public GenericRepository<Follow> FollowRepository =>
+        _followRepository ?? (_followRepository = new GenericRepository<Follow>(_context));
+        public GenericRepository<Like> LikeRepository =>
+        _likeRepository ?? (_likeRepository = new GenericRepository<Like>(_context));
+        public GenericRepository<StudyAbroadCategory> StudyAbroadCategoryRepository =>
+         _studyAbroadCategoryRepository ?? (_studyAbroadCategoryRepository = new GenericRepository<StudyAbroadCategory>(_context));
+        public GenericRepository<StudyAbroad> StudyAbroadRepository =>
+         _studyAbroadRepository ?? (_studyAbroadRepository = new GenericRepository<StudyAbroad>(_context));
         public GenericRepository<ConfigSite> ConfigSiteRepository =>
           _configSiteRepository ?? (_configSiteRepository = new GenericRepository<ConfigSite>(_context));
         public GenericRepository<Country> CountryRepository =>

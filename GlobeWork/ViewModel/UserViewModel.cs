@@ -198,41 +198,11 @@ namespace GlobeWork.ViewModel
 
     public class AdminEditCompanyViewModel
     {
-        public int Id { get; set; }
-        [Display(Name = "Tên đăng nhập", Description = "Tên đăng nhập"), Required(ErrorMessage = "Bạn chưa nhập tên đăng nhập"), UIHint("TextBox")]
-        public string UserName { get; set; }
-        [Display(Name = "Email"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự"), Required(ErrorMessage = "Bạn chưa nhập Email"), EmailAddress(ErrorMessage = "Email không hợp lệ"), UIHint("TextBox")]
-        public string EmailRegister { get; set; }
-        public string Avatar { get; set; }
-        [Display(Name = "Tên công ty"), Required(ErrorMessage = "Vui lòng nhập tên công ty"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự"), UIHint("TextBox")]
-        public string NameCompany { get; set; }
-        [Display(Name = "Số điện thoại"), RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Số điện thoại không đúng !!!."), StringLength(20, ErrorMessage = "Tối đa 20 ký tự"), UIHint("TextBox")]
-        public string Phone { get; set; }
-        [Display(Name = "WebSite"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự"), UIHint("TextBox")]
-        public string WebsiteUrl { get; set; }
-        [Display(Name = "Địa chỉ"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự"), UIHint("TextBox")]
-        public string Address { get; set; }
-        [Display(Name = "Mô tả"), UIHint("EditorBox")]
-        public string Body { get; set; }
-        [Display(Name = "Quy mô công ty"), StringLength(10, ErrorMessage = "Tối đa 10 ký tự"), UIHint("NumberBox")]
-        public string CompanySize { get; set; }
-        [Display(Name = "Đường dẫn"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextBox")]
-        public string Url { get; set; }
-        [Display(Name = "Ngày thành lập"), UIHint("DateTimePicker"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime? EstablishmentDate { get; set; }
-        [Display(Name = "Email nhận thông tin"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự"), EmailAddress(ErrorMessage = "Email không hợp lệ"), UIHint("TextBox")]
-        public string Email { get; set; }
-        [Display(Name = "Mật khẩu"), UIHint("Password"), StringLength(20, MinimumLength = 6, ErrorMessage = "Mật khẩu từ 6 - 20 ký tự")]
-        public string Password { get; set; }
-        [Display(Name = "Thời gian Vip"), StringLength(10, ErrorMessage = "Tối đa 10 ký tự"), RegularExpression(@"^\(?([0-9]{1,10})$", ErrorMessage = "Chỉ nhập số nguyên dương và tối đa 10 ký tự!!!")]
-        public string TimeVip { get; set; }
-        public DateTime Vipdate { get; set; }
-        public int? CityId { get; set; }
-        public virtual ICollection<Career> CareersCompany { get; set; }
-        public SelectList CareerSelectList { get; set; }
-        public SelectList RankSelectList { get; set; }
-        public SelectList JobTypeSelectList { get; set; }
-        public SelectList CitySelectList { get; set; }
+        public Company Company { get; set; }
+        public IEnumerable<Career> Careers { get; set; }
+        public IEnumerable<JobType> JobTypes { get; set; }
+        public IEnumerable<Rank> Ranks { get; set; }
+        public DateTime DateTime { get; set; }
     }
     public class AdminEditCandidateViewModel
     {

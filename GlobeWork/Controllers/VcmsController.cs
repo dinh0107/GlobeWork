@@ -533,7 +533,7 @@ namespace GlobeWork.Controllers
             return true;
         }
         [HttpPost]
-        public bool QuickUpdateCareer(bool active = false, bool home = false, int careerId = 0)
+        public bool QuickUpdateCareer(bool active = false, bool home = false, bool hot = false ,int careerId = 0)
         {
             var career = _unitOfWork.CareerRepository.GetById(careerId);
             if (career == null)
@@ -542,6 +542,7 @@ namespace GlobeWork.Controllers
             }
             career.ShowHome = home;
             career.Active = active;
+            career.Hot = hot;
             _unitOfWork.Save();
             return true;
         }
@@ -895,6 +896,7 @@ namespace GlobeWork.Controllers
                 city.Name = model.City.Name;
                 city.Sort = model.City.Sort;
                 city.Active = model.City.Active;
+                city.Home = model.City.Home;
                 city.CounId = Convert.ToInt32(fc["CountruyId"]);
                 city.Country = _unitOfWork.CountryRepository.GetById(Convert.ToInt32(fc["CountruyId"]));
                 _unitOfWork.Save();
@@ -916,6 +918,160 @@ namespace GlobeWork.Controllers
             return true;
         }
         #endregion
+
+        #region StudyAbroad
+        public PartialViewResult ListCat()
+        {
+            var cate = _unitOfWork.StudyAbroadCategoryRepository.Get(orderBy: a => a.OrderBy( l => l.Sort)) ;
+            return PartialView(cate);
+        }
+        public ActionResult StudyAbroadCategory()
+        {
+            var model = new InsertStudyAbroadCategoryViewModel
+            {
+                Countries = _unitOfWork.CountryRepository.Get(orderBy: a => a.OrderBy(l => l.Sort)),
+                StudyAbroadCategory = new StudyAbroadCategory
+                {
+                    Active = true,
+                    Sort = 1
+                }
+            };
+            ViewBag.RootCats = new SelectList(
+                    _unitOfWork.StudyAbroadCategoryRepository.Get(a => a.ParentId == null, q => q.OrderBy(a => a.Sort)), "Id", "CategoryName");
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult StudyAbroadCategory(InsertStudyAbroadCategoryViewModel model , FormCollection fc)
+        {
+            if(ModelState.IsValid)
+            {
+                for (var i = 0; i < Request.Files.Count; i++)
+                {
+                    if (Request.Files[i] == null || Request.Files[i].ContentLength <= 0) continue;
+                    if (!HtmlHelpers.CheckFileExt(Request.Files[i].FileName, "jpg|jpeg|png|gif")) continue;
+                    if (Request.Files[i].ContentLength > 1024 * 1024 * 4) continue;
+                    var imgFileName = HtmlHelpers.ConvertToUnSign(null, Path.GetFileNameWithoutExtension(Request.Files[i].FileName)) +
+                        "-" + DateTime.Now.Millisecond + Path.GetExtension(Request.Files[i].FileName);
+                    var imgPath = "/images/category/" + DateTime.Now.ToString("yyyy/MM/dd");
+                    HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
+                    var imgFile = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
+                    var newImage = Image.FromStream(Request.Files[i].InputStream);
+                    var fixSizeImage = HtmlHelpers.FixedSize(newImage, 1000, 1000, false);
+                    HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
+                    if (Request.Files.Keys[i] == "StudyAbroadCategory.Image")
+                    {
+                        model.StudyAbroadCategory.Image = imgFile;
+                    }
+                }
+                model.StudyAbroadCategory.Url = HtmlHelpers.ConvertToUnSign(null, model.StudyAbroadCategory.Url ?? model.StudyAbroadCategory.CategoryName);
+                model.StudyAbroadCategory.CountryId = Convert.ToInt32(fc["CounId"]);
+                model.StudyAbroadCategory.Country = _unitOfWork.CountryRepository.GetById(model.StudyAbroadCategory.CountryId);
+                _unitOfWork.StudyAbroadCategoryRepository.Insert(model.StudyAbroadCategory);
+                _unitOfWork.Save();
+                var cat = _unitOfWork.StudyAbroadCategoryRepository.GetQuery(a => a.Url == model.StudyAbroadCategory.Url).Count();
+                if(cat > 1)
+                {
+                    model.StudyAbroadCategory.Url += "-" + model.StudyAbroadCategory.Id;
+                    _unitOfWork.Save();
+                }
+                return RedirectToAction("StudyAbroadCategory", new {result = "success"});
+            }
+            return View(model);
+        }
+        public ActionResult EditCategory(int id = 0)
+        {
+            var cat = _unitOfWork.StudyAbroadCategoryRepository.GetById(id);
+            if(cat == null)
+            {
+                return RedirectToAction("StudyAbroadCategory");
+            }
+            var model = new InsertStudyAbroadCategoryViewModel
+            {
+                StudyAbroadCategory = cat,
+                Countries = _unitOfWork.CountryRepository.Get(orderBy: a => a.OrderBy(l => l.Sort)),
+            };
+            ViewBag.RootCats = new SelectList(_unitOfWork.StudyAbroadCategoryRepository.Get(l => l.ParentId == null, a => a.OrderBy(c => c.Sort)), "Id", "CategoryName");
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult EditCategory(InsertStudyAbroadCategoryViewModel category, FormCollection fc)
+        {
+            if(ModelState.IsValid)
+            {
+                for (var i = 0; i < Request.Files.Count; i++)
+                {
+                    if (Request.Files[i] == null || Request.Files[i].ContentLength <= 0) continue;
+                    if (!HtmlHelpers.CheckFileExt(Request.Files[i].FileName, "jpg|jpeg|png|gif")) continue;
+                    if (Request.Files[i].ContentLength > 1024 * 1024 * 4) continue;
+
+                    var imgFileName = HtmlHelpers.ConvertToUnSign(null, Path.GetFileNameWithoutExtension(Request.Files[i].FileName)) +
+                        "-" + DateTime.Now.Millisecond + Path.GetExtension(Request.Files[i].FileName);
+                    var imgPath = "/images/category/" + DateTime.Now.ToString("yyyy/MM/dd");
+                    HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
+
+                    var imgFile = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
+
+                    var newImage = Image.FromStream(Request.Files[i].InputStream);
+                    var fixSizeImage = HtmlHelpers.FixedSize(newImage, 1000, 1000, false);
+                    HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
+
+                    if (Request.Files.Keys[i] == "StudyAbroadCategory.Image")
+                    {
+                        category.StudyAbroadCategory.Image = imgFile;
+                    }
+                }
+
+                var file = Request.Files["StudyAbroadCategory.Image"];
+
+                if (file != null && file.ContentLength == 0)
+                {
+                    category.StudyAbroadCategory.Image = fc["CurrentFile"] == "" ? null : fc["CurrentFile"];
+                }
+                category.StudyAbroadCategory.Url = HtmlHelpers.ConvertToUnSign(null, category.StudyAbroadCategory.Url ?? category.StudyAbroadCategory.CategoryName);
+                category.StudyAbroadCategory.CountryId = Convert.ToInt32(fc["CounId"]);
+                category.StudyAbroadCategory.Country = _unitOfWork.CountryRepository.GetById(category.StudyAbroadCategory.CountryId);
+                _unitOfWork.StudyAbroadCategoryRepository.Update(category.StudyAbroadCategory);
+                var cat = _unitOfWork.StudyAbroadCategoryRepository.GetQuery(a => a.Url == category.StudyAbroadCategory.Url).Count();
+                if (cat > 1)
+                {
+                    category.StudyAbroadCategory.Url += "-" + category.StudyAbroadCategory.Id;
+                    _unitOfWork.Save();
+                }
+                _unitOfWork.Save();
+                return RedirectToAction("StudyAbroadCategory", new { result = "update" });
+            }
+            category.Countries = _unitOfWork.CountryRepository.Get(orderBy: a => a.OrderBy(l => l.Sort));
+            ViewBag.RootCats = new SelectList(_unitOfWork.StudyAbroadCategoryRepository.Get(l => l.ParentId == null, a => a.OrderBy(c => c.Sort)), "Id", "CategoryName");
+            return View(category);
+        }
+        [HttpPost]
+        public bool DeleteCategory(int id)
+        {
+            var cat = _unitOfWork.StudyAbroadCategoryRepository.GetById(id);
+            if(cat == null)
+            {
+                return false;
+            }
+            _unitOfWork.StudyAbroadCategoryRepository.Delete(cat);
+            _unitOfWork.Save();
+            return true;
+        }
+        [HttpPost]
+        public bool UpdateCategory(int id = 0 , bool active = false, bool menu = false , int sort = 0)
+        {
+            var cat = _unitOfWork.StudyAbroadCategoryRepository.GetById(id);
+            if (cat == null)
+            {
+                return false;
+            }
+            cat.Active = active;
+            cat.Sort = sort;
+            cat.ShowMenu = menu;
+            _unitOfWork.Save();
+            return true;
+        }
+        #endregion
+
         protected override void Dispose(bool disposing)
         {
             _unitOfWork.Dispose();

@@ -21,6 +21,7 @@ namespace GlobeWork.ViewModel
     {
         public JobPost JobPost { get; set; }
         public IEnumerable<Career> Careers { get; set; }
+        public IEnumerable<Skill> Skills { get; set; }
         public IEnumerable<JobType> JobTypes { get; set; }
         public IEnumerable<Rank>  Ranks { get; set; }
         [Display(Name = "Mức lương tối thiểu"),  DisplayFormat(DataFormatString = "{0:N0}đ")]
@@ -40,6 +41,7 @@ namespace GlobeWork.ViewModel
         public IEnumerable<Career> Careers { get; set; }
         public IEnumerable<JobType> JobTypes { get; set; }
         public IEnumerable<Rank> Ranks { get; set; }
+        public IEnumerable<City> Cities { get; set; }
         public DateTime DateTime { get; set; }
     }
     public class ChangeInfoViewModel
@@ -61,5 +63,20 @@ namespace GlobeWork.ViewModel
         public IPagedList<JobPost> JobPosts { get; set; }
         public string Name { get; set; }
         public int Type {  get; set; }
+    }
+    public class ListMyJobStudyAbroadViewModel
+    {
+        public IPagedList<StudyAbroad> StudyAbroads { get; set; }
+        public string Name { get; set; }
+        public int Type { get; set; }
+    }
+    public class InsertStudyAbroadViewModel
+    {
+        public StudyAbroad StudyAbroad { get; set; }
+        public IEnumerable<Career> Careers { get; set; }
+        public IEnumerable<StudyAbroadCategory> StudyAbroadCategories { get; set; }
+        public IEnumerable<City> Citys { get; set; }
+        [Display(Name = "Số ngày"), Required(ErrorMessage = "Hãy nhập thứ tự"), RegularExpression(@"\d+", ErrorMessage = "Chỉ nhập số nguyên")]
+        public int DateHot { get; set; }
     }
 }

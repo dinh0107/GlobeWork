@@ -70,11 +70,11 @@
                 <tr>
                     <th style="width: 100px">STT</th>
                     <th>Tên đăng nhập</th>
-                    <th>Tên công ty</th>
+                    <th style="width: 400px;">Tên công ty</th>
                     <th>Email nhận tin</th>
                     <th>Website</th>
-                    <th>Quy mô</th>
-                    <th>Hiện trang chủ</th>
+                    <th style="width: 200px;">Quy mô</th>
+                    <th style="width: 200px;">Hiện trang chủ</th>
                     <th>Xác thực</th>
                     <th style="width: 200px;"></th>
                 </tr>
@@ -86,7 +86,7 @@
                             @Html.HiddenFor(a => company.UserId)
                             @i
                         </td>
-                        <td>@company.User.Username</td>
+                        <td>@company.Employer.Email</td>
                         <td>
                             <div class="position-relative">
                                 @company.Name
@@ -105,16 +105,16 @@
                             }
                             else
                             {
-                                @company.User.Username
+                                @company.Employer.Email
                             }
 
                         </td>
                         <td>@company.WebsiteUrl</td>
                         <td>@company.CompanySize</td>
                         <td>@Html.EditorFor(a => company.ShowHome)</td>
-                        <td>@Html.CheckBoxFor(a => company.User.Active, new{id = "active"})</td>
+                        <td>@Html.CheckBoxFor(a => company.Employer.Active, new{id = "active"})</td>
                         <td>
-                            @if (company.User.Active)
+                            @if (company.Employer.Active)
                             {
                                 <a href="javascript:;" onclick="deleteCompany('@company.UserId')" class="red-warring">Xóa vĩnh viễn</a>
                                 @:- <a href="javascript:;" onclick="restoreCompany('@company.UserId')" class="text-success">Khôi phục</a>

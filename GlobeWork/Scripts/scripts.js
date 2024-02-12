@@ -52,7 +52,7 @@ function HomeJs() {
         ]
     });
     $('.list-contruy').slick({
-        infinite: true,
+        infinite: false,
         speed: 300,
         slidesToShow: 4,
         slidesToScroll: 1,
@@ -165,6 +165,22 @@ function HomeJs() {
         arrows: false,
         autoplaySpeed: 3000,
     });
+    $(".filter-select").change(function () {
+        var value = $(this).val();
+        $.post("/Home/GetJob", { type: value }, function (data) {
+            $("#filter").empty();
+            $("#filter").html(data);
+        })
+    })
+    $(".contruy-name").click(function () {
+        $(".contruy-name").removeClass("active");
+        $(this).addClass("active");
+        var dataId = $(this).data("id");
+        $.post("/Home/GetJob", { cityId: dataId }, function (data) {
+            $("#filter").empty();
+            $("#filter").html(data);
+        })
+    });
 }
 
 function Details() {
@@ -239,15 +255,126 @@ function Details() {
         var iconClass = $(".intro").hasClass("active") ? "fa-chevron-up" : "fa-chevron-down";
         $(".show-more i").removeClass("fa-chevron-up fa-chevron-down").addClass(iconClass);
     });
-
-
-}
-function Lesson() {
     $('.stepItem_title').click(function () {
         var contentId = $(this).data('toggle');
         $('#' + contentId).slideToggle();
     });
+        
 }
+
+// Theo dõi , Lưu tin
+function ActionDetail() {
+    function handleFollowButtonClick(button, companyId, isFollow) {
+        var actionUrl = isFollow ? "/Home/Follow" : "/Home/UnFollow";
+        var buttonText = isFollow ? "Bỏ theo dõi công ty" : "Theo dõi công ty";
+        var buttonClassToRemove = isFollow ? "follow" : "unfollow";
+        var buttonClassToAdd = isFollow ? "unfollow" : "follow";
+
+        $.post(actionUrl, { id: companyId }, function (data) {
+            if (data.success) {
+                button.text(buttonText);
+                button.removeClass(buttonClassToRemove).addClass(buttonClassToAdd);
+                new Notify({
+                    status: 'success',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            } else {
+                new Notify({
+                    status: 'error',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            }
+        });
+    }
+
+    function handleLikeJob(button, jobId, isLike) {
+        var actionUrl = isLike ? "/Home/Likejob" : "/Home/UnLike";
+        var buttonText = isLike ? "Bỏ lưu" : "Lưu tin";
+        var buttonClassToRemove = isLike ? "like" : "unlike";
+        var buttonClassToAdd = isLike ? "unlike" : "like";
+        $.post(actionUrl, { id: jobId }, function (data) {
+            if (data.success) {
+                button.text(buttonText);
+                button.removeClass(buttonClassToRemove).addClass(buttonClassToAdd);
+                new Notify({
+                    status: 'success',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            } else {
+                new Notify({
+                    status: 'error',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            }
+        });
+    }
+    //Theo dõi công ty
+    $(document).on("click", ".follow", function () {
+        var button = $(this);
+        var companyId = button.data("company-id");
+        handleFollowButtonClick(button, companyId, true);
+    });
+
+    $(document).on("click", ".unfollow", function () {
+        var button = $(this);
+        var companyId = button.data("company-id");
+        handleFollowButtonClick(button, companyId, false);
+    });
+
+    //Like Job
+    $(document).on("click", ".like", function () {
+        var button = $(this);
+        var jobId = button.data("job");
+        handleLikeJob(button, jobId, true);
+    });
+    $(document).on("click", ".unlike", function () {
+        var button = $(this);
+        var jobId = button.data("job");
+        handleLikeJob(button, jobId, false);
+    });
+}
+//Hết
+
 function CompanyJs() {
     $('.lits-com').slick({
         rows: 2,

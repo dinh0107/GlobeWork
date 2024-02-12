@@ -16,7 +16,7 @@ namespace GlobeWork.Controllers
         public decimal tenM = 10000000;
         public decimal fifteenM = 15000000;
 
-        public SelectList CitySelectList => new SelectList(_unitOfWork.CityRepository.Get(orderBy: a => a.OrderBy(o => o.Name)), "Id", "CityName");
+        public SelectList CitySelectList => new SelectList(_unitOfWork.CityRepository.Get(orderBy: a => a.OrderBy(o => o.Name)), "Id", "Name");
         public SelectList RankSelectList => new SelectList(_unitOfWork.RankRepository.Get(orderBy: a => a.OrderBy(o => o.Name)), "Id", "Name");
         public SelectList JobTypeSelectList => new SelectList(_unitOfWork.JobTypeRepository.Get(orderBy: a => a.OrderBy(o => o.Name)), "Id", "Name");
         public SelectList CareerSelectList => new SelectList(_unitOfWork.CareerRepository.Get(orderBy: a => a.OrderBy(o => o.Name)), "Id", "Name");

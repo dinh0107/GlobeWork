@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Net.NetworkInformation;
 
 namespace GlobeWork.Models
 {
@@ -75,10 +76,12 @@ namespace GlobeWork.Models
         public virtual Rank Rank { get; set; }
         public virtual Career  Career { get; set; }
         public virtual ICollection<Candidate> Candidates { get; set; }
-        //public virtual ICollection<Tag> Tags { get; set; }
         public virtual ICollection<Skill> Skills { get; set; }
-        //public virtual ICollection<Career> Careers { get; set; }
         public virtual ICollection<ApplyJob> ApplyJobs { get; set; }
+        public ICollection<Like> Likes { get; set; }
+        [Display(Name = "Mức lương")]
+        public Wage Wages { get; set; }
+        public Experience Experiences { get; set; }
         public JobPost()
         {
             CreateDate = DateTime.Now;
@@ -92,5 +95,40 @@ namespace GlobeWork.Models
             USD,
             VND
         }
+        
+    }
+    public enum Wage
+    {
+        [Display(Name = "Dưới 10 triệu")]
+        Duoi10,
+        [Display(Name = "Từ 10 - 15 triệu")]
+        Tu10den15,
+        [Display(Name = "Từ 15 - 20 triệu")]
+        Tu15den20,
+        [Display(Name = "Từ 20 - 25 triệu")]
+        Tu20den25,
+        [Display(Name = "Từ 25 - 30 triệu")]
+        Tu25den30,
+        [Display(Name = "Từ 30 - 50 triệu")]
+        Tu30den50,
+        [Display(Name = "Trên 50 triệu")]
+        Tren50,
+        [Display(Name = "Thỏa thuận")]
+        ThoaThuan,
+    }
+    public enum Experience
+    {
+        [Display(Name = "Chưa có kinh nghiệm")]
+        Chuaco,
+        [Display(Name = "1 năm trở xuống")]
+        Motnamtroxuong,
+        [Display(Name = "2 năm")]
+        Hainam,
+        [Display(Name = "3 năm")]
+        Banam,
+        [Display(Name = "Từ 4 - 5 năm")]
+        tu4den5,
+        [Display(Name = "Trên 5 năm")]
+        tren5,
     }
 }

@@ -396,136 +396,52 @@ namespace GlobeWork.Controllers
             }
             var model = new AdminEditCompanyViewModel
             {
-                Id = companyId,
-                Avatar = company.Employer.Avatar,
-                Phone = company.Employer.PhoneNumber,
-                CompanySize = company.CompanySize,
-                Address = company.Address,
-                WebsiteUrl = company.WebsiteUrl,
-                Body = company.Body,
-                Url = company.Url,
-                Email = company.Email,
-                EstablishmentDate = company.EstablishmentDate,
-                NameCompany = company.Name,
-                Vipdate = company.Vipdate,
-                CareersCompany = company.Careers,
-                CityId = company.CityId,
-                CareerSelectList = CareerSelectList,
-                RankSelectList = RankSelectList,
-                CitySelectList = CitySelectList,
-                EmailRegister = company.Employer.Email,
+                Company = company,
+                Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name)),
+                Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name)),
             };
             return View(model);
-
         }
 
         [HttpPost, ValidateInput(false)]
         public ActionResult EditCompany(AdminEditCompanyViewModel model, FormCollection fc)
         {
-            var company = _unitOfWork.CompanyRepository.GetById(model.Id);
+            var company = _unitOfWork.CompanyRepository.GetById(model.Company.UserId);
             if (company == null)
             {
                 return RedirectToAction("ListCompany");
             }
             if (ModelState.IsValid)
             {
-                var isPost = true;
-
-                if (company.Employer.Email != model.EmailRegister)
+                company.Name = model.Company.Name;
+                company.WebsiteUrl = model.Company.Url;
+                company.Address = model.Company.Address;
+                company.CompanySize = model.Company.CompanySize;
+                company.EstablishmentDate = model.Company.EstablishmentDate;
+                company.Phone = model.Company.Phone;
+                company.Introduct = model.Company.Introduct;
+                company.Product = model.Company.Product;
+                company.GoogleMap = model.Company.GoogleMap;
+                company.VideoYoutube = model.Company.VideoYoutube;
+                company.Email = model.Company.Email;
+                company.Body = model.Company.Body;
+                company.Url = HtmlHelpers.ConvertToUnSign(null, company.Url ?? company.Name);
+                _unitOfWork.CompanyRepository.Update(company);
+                company.Careers.Clear();
+                var careers = fc["career"];
+                if (!string.IsNullOrEmpty(careers))
                 {
-                    var checkExits = _unitOfWork.UserRepository.GetQuery(a => a.Email == model.EmailRegister).FirstOrDefault();
-
-                    if (checkExits != null)
+                    var listCareer = careers.Split((',')).Select(int.Parse).ToList();
+                    foreach (var item in listCareer)
                     {
-                        ModelState.AddModelError("", @"Email đã sử dụng rồi.");
-                        isPost = false;
-                    }
-                    else
-                    {
-                        company.Employer.Email = model.EmailRegister;
+                        var careerItem = _unitOfWork.CareerRepository.GetById(item);
+                        company.Careers.Add(careerItem);
                     }
                 }
-
-                if (isPost)
-                {
-                    var file = Request.Files["Avatar"];
-                    if (file != null && file.ContentLength > 0)
-                    {
-                        if (file.ContentType != "image/jpeg" && file.ContentType != "image/png" && file.ContentType != "image/gif")
-                        {
-                            isPost = false;
-                            ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg");
-                        }
-                        else
-                        {
-                            if (file.ContentLength > 4000 * 1024)
-                            {
-                                isPost = false;
-                                ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
-                            }
-                            else
-                            {
-                                var imgPath = "/images/user/" + DateTime.Now.ToString("yyyy/MM/dd");
-                                HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
-                                var imgFileName = DateTime.Now.ToFileTimeUtc() + Path.GetExtension(file.FileName);
-
-                                company.Employer.Avatar = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
-
-                                var newImage = Image.FromStream(file.InputStream);
-                                var fixSizeImage = HtmlHelpers.FixedSize(newImage, 600, 600, false);
-                                HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
-                                file.SaveAs(Server.MapPath(Path.Combine(imgPath, imgFileName)));
-                            }
-                        }
-                    }
-                    if (isPost)
-                    {
-                        if (model.Password != null)
-                        {
-                            company.Employer.Password = HtmlHelpers.ComputeHash(model.Password, "SHA256", null);
-                        }
-                        company.Address = model.Address;
-                        company.Name = model.NameCompany;
-                        var fcEstablishmentDate = fc["EstablishmentDate"];
-                        if (!string.IsNullOrEmpty(fcEstablishmentDate))
-                        {
-                            var establishmentDate = DateTime.ParseExact(fcEstablishmentDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                            company.EstablishmentDate = establishmentDate;
-                        }
-                        company.WebsiteUrl = model.WebsiteUrl;
-                        company.Body = model.Body;
-                        company.CompanySize = model.CompanySize;
-                        company.Email = model.Email;
-                        company.Employer.PhoneNumber = model.Phone;
-                        company.Vipdate = DateTime.Now.AddDays(Convert.ToInt32(model.TimeVip));
-                        company.Careers.Clear();
-                        var careers = fc["career"];
-                        if (!string.IsNullOrEmpty(careers))
-                        {
-                            var listCareer = careers.Split((',')).Select(int.Parse).ToList();
-                            foreach (var item in listCareer)
-                            {
-                                var careerItem = _unitOfWork.CareerRepository.GetById(item);
-                                company.Careers.Add(careerItem);
-                            }
-                        }
-                        var city = Convert.ToInt32(fc["city"]);
-                        if (city != 0)
-                        {
-                            company.CityId = city;
-                        }
-                        _unitOfWork.Save();
-                        return RedirectToAction("ListCompany", "UserVcms", new { result = "success" });
-                    }
-                }
+                _unitOfWork.Save();
+                return RedirectToAction("ListCompany");
             }
-            model.CareersCompany = company.Careers;
-            model.CityId = company.CityId;
-            model.Avatar = company.Employer.Avatar;
-            model.CitySelectList = CitySelectList;
-            model.CareerSelectList = CareerSelectList;
-            model.RankSelectList = RankSelectList;
-
+            model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
             return View(model);
         }
         [HttpPost]
@@ -555,19 +471,6 @@ namespace GlobeWork.Controllers
             _unitOfWork.Save();
             return true;
         }
-        //[HttpPost]
-        //public bool RestoreCompany(int companyId = 0)
-        //{
-        //    var company = _unitOfWork.CompanyRepository.GetById(companyId);
-        //    if (company == null)
-        //    {
-        //        return false;
-        //    }
-        //    company.User.Active = false;
-        //    _unitOfWork.Save();
-        //    return true;
-        //}
-
         public ActionResult UploadJobs(int? count, int result = 0)
         {
             var companies = _unitOfWork.CompanyRepository.Get();

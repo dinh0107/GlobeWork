@@ -82,7 +82,7 @@
                         <label>
                             Hạn nhận hồ sơ <i class="text-danger">*</i>
                         </label>
-                        @Html.TextBoxFor(a => a.JobPost.ExpirationDate, new { @class = "form-control datepicker", @placeholder = "Chọn ngày hết hạn nhận hồ sơ" })
+                        @Html.TextBoxFor(a => a.JobPost.ExpirationDate, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker", @placeholder = "Chọn ngày hết hạn nhận hồ sơ" })
                     </div>
                     <div class="form-group col-2">
                         <label>
@@ -123,29 +123,48 @@
             </div>
             <div class="box-body">
                 <div class="row">
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                         <label>
                             Kinh nghiệm <i class="text-danger">*</i>
                         </label>
-                        @Html.TextBoxFor(a => a.JobPost.Experience, new { @class = "form-control", @placeholder = "Yêu cầu kình nghiệm (Bỏ qua nếu không yêu cầu)" })
+                        @Html.EnumDropDownListFor(model => model.JobPost.Experiences, new { @class = "v-select" })
                     </div>
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
+                        <label>
+                            Kỹ năng cần có <i class="text-danger">*</i>
+                        </label>
+                        <select class="v-select-multiple" multiple name="skill">
+                            @foreach (var item in Model.Skills)
+                            {
+                                var isSelected = Model.JobPost.Skills.Any(a => a.Id == item.Id);
+                                <option @(isSelected ? "selected" : "") value="@item.Id">@item.SkillName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-4">
                         <label>
                             Mức lương <i class="text-danger">*</i>
                         </label>
+                        @Html.EnumDropDownListFor(model => model.JobPost.Wages, new { @class = "v-select" })
+                    </div>
+                    @*<div class="form-group col-3">
+                        <label>
+                            Khoảng lương <i class="text-danger">*</i>
+                        </label>
                         <div class="input-group">
                             @Html.TextBoxFor(a => a.JobPost.SalalyMin, new { @class = "form-control input-money", @placeholder = "Từ" })
-                            @Html.TextBoxFor(a => a.JobPost.SalalyMax, new { @class = "form-control input-money", @placeholder = "Đến" } )
+                            @Html.TextBoxFor(a => a.JobPost.SalalyMax, new { @class = "form-control input-money", @placeholder = "Đến" })
                         </div>
-                    </div>
+                    </div>*@
                     <div class="form-group col-6">
                         <label>
                             Thành phố <i class="text-danger">*</i>
                         </label>
-                        <select class="v-select" name="CityId">
+                        <select class="v-select-multiple" name="city" multiple>
                             @foreach (var item in Model.Citys)
                             {
-                                <option @if (Model.JobPost.CityId == item.Id) { @Html.Raw("selected") } value="@item.Id">
+                                var isSelected = Model.JobPost.Cities.Any(a => a.Id == item.Id);
+                                <option @(isSelected ? "selected" : "") value="@item.Id">
                                     @item.Name
                                 </option>
                             }
@@ -158,8 +177,30 @@
                         @Html.TextBoxFor(a => a.JobPost.Address, new { @class = "form-control", @placeholder = "Địa chỉ cụ thể" })
                         @Html.ValidationMessageFor(a => a.JobPost.Address)
                     </div>
+                    <div class="col-6 form-group">
+                        <label>
+                            Ảnh
+                        </label>
+                        <input type="file" id="fileupload" name="files[]" accept="image/*" multiple="" style="flex:none !important;" />
+                        <ul id="ListImages">
+                            @if (Model.JobPost.Image != null)
+                            {
+                                var i = 1;
+                                var arrPic = Model.JobPost.Image.Split(',');
+                                foreach (var item in arrPic)
+                                {
+                                    <li>
+                                        <input type="hidden" name="Pictures" value="@item" />
+                                        <img src="@Path.Combine("/images/job/",item)?w=80&h=80&mode=crop" alt="" />
+                                        <a href="javascript:;" id="@i" onclick="delfile( '@i')"><img src="/content/admin/icon-delete.png" alt="" /></a>
+                                    </li>
+                                    i = i + 1;
+                                }
+                            }
+                        </ul>
+                    </div>
                 </div>
-            </div>
+                </div>
         </div>
 
         <div class="box-content mb-4">
@@ -226,21 +267,76 @@
             </div>*@
     </div>
 }
-
-<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<link href="~/Content/datepicker.css" rel="stylesheet" />
 @section scripts{
-    <script src="~/Scripts/jquery.maskMoney.min.js"></script>
     <script>
-        //$(".input-money").maskMoney({
-        //    precision: 0,
-        //    thousands: ','
-        //});
+        $(function () {
+            $("#ListImages").sortable();
+            $("#ListImages").disableSelection();
+
+            $(".input-number").maskMoney({
+                precision: 0,
+                thousands: ','
+            });
+        });
+        var i = 1;
+        $("#fileupload").fileupload({
+            add: function (e, data) {
+                var uploadErrors = [];
+                var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+                if (data.originalFiles[0]["type"].length && !acceptFileTypes.test(data.originalFiles[0]["type"])) {
+                    uploadErrors.push("Chỉ chấp nhận định dạng jpeg, jpg, png, gif");
+                }
+                if (data.originalFiles[0]["size"] > 4000000) {
+                    uploadErrors.push("Dung lượng ảnh lớn hơn 4MB");
+                }
+                var totalImg = $("#ListImages .thumb-img-box").length;
+                if (totalImg >= 10) {
+                    uploadErrors.push("Chỉ đăng tối đa 10 ảnh");
+                }
+                if (uploadErrors.length > 0) {
+                    alert(uploadErrors.join("\n"));
+                    return false;
+                } else {
+                    data.submit();
+                }
+                return true;
+            },
+            url: "/Uploader/Upload?folder=job&r=" + Math.random(),
+            dataType: "json",
+            done: function (e, data) {
+                $.each(data.result.files, function (index, file) {
+                    $('#ListImages').append('<li><input type="hidden" name="Pictures" value ="' + file.name + '" /><img src="/images/job/' + file.name + '?w=80&h=80"/><a href="javascript:;" id="' + i + '" onclick="delfile(' + i + ')"><img src="/content/admin/icon-delete.png" alt="" style="vertical-align:middle" /></a></li>');
+                });
+                i = i + 1;
+                $("#progress").fadeOut(2000);
+            },
+            start: function () {
+                $("#progress .progress-bar").css("width", "0");
+                $("#progress").show();
+            },
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $("#progress .progress-bar").css("width", progress + "%");
+            }
+        }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+        function delfile(divid) {
+            if (confirm('Bạn có chắc xóa ảnh này?')) {
+                $('#' + divid).parent().fadeOut().remove();
+            }
+        }
+        VirtualSelect.init({
+            ele: 'select.city',
+            required: true,
+            multiple: true,
+            search: true,
+            maxValues: 4,
+        });
         $(".datepicker").datepicker({
             dateFormat: 'dd/mm/yy',
             changeMonth: true,
             changeYear: true,
-            minDate: 1, 
+            minDate: 1,
             monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
             monthNamesShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
         });

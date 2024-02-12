@@ -172,6 +172,22 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202402060846276_ad.cs" />
+    <Compile Include="Migrations\202402060846276_ad.designer.cs">
+      <DependentUpon>202402060846276_ad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202402061625515_ad1.cs" />
+    <Compile Include="Migrations\202402061625515_ad1.designer.cs">
+      <DependentUpon>202402061625515_ad1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202402081138349_ad2.cs" />
+    <Compile Include="Migrations\202402081138349_ad2.designer.cs">
+      <DependentUpon>202402081138349_ad2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202402081357106_ad3.cs" />
+    <Compile Include="Migrations\202402081357106_ad3.designer.cs">
+      <DependentUpon>202402081357106_ad3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\ApplyJob.cs" />
@@ -183,16 +199,20 @@
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\District.cs" />
     <Compile Include="Models\Employer.cs" />
+    <Compile Include="Models\Follow.cs" />
     <Compile Include="Models\JobPost.cs" />
     <Compile Include="Models\JobType.cs" />
     <Compile Include="Models\Rank.cs" />
     <Compile Include="Models\Skill.cs" />
+    <Compile Include="Models\StudyAbroad.cs" />
+    <Compile Include="Models\StudyAbroadCategory.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\Utils.cs" />
     <Compile Include="ViewModel\AdminViewModel.cs" />
     <Compile Include="ViewModel\DashboardViewModel.cs" />
     <Compile Include="ViewModel\EmployerViewModel.cs" />
+    <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\JobViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
   </ItemGroup>
@@ -240,6 +260,7 @@
     <Content Include="Content\images\bct.png" />
     <Content Include="Content\images\bussiness.efbec2d.png" />
     <Content Include="Content\images\company-banner.jpg" />
+    <Content Include="Content\images\cover-null.png" />
     <Content Include="Content\images\cty.png" />
     <Content Include="Content\images\duhoc.jpg" />
     <Content Include="Content\images\facebook.png" />
@@ -1204,6 +1225,7 @@
     <Content Include="Scripts\ckfinder\plugins\fileeditor\codemirror\LICENSE" />
     <Content Include="Scripts\jquery-3.6.0.min.map" />
     <Content Include="Scripts\jquery-3.6.0.slim.min.map" />
+    <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
@@ -1262,6 +1284,9 @@
     <Content Include="Scripts\scripts.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\simple-notify.min.js" />
+    <Content Include="Scripts\simple-notify.min.min.js">
+      <DependentUpon>simple-notify.min.js</DependentUpon>
+    </Content>
     <Content Include="Scripts\slick.min.js" />
     <Content Include="Scripts\src\index.js" />
     <Content Include="Scripts\src\methods\defaults.js" />
@@ -1478,6 +1503,13 @@
     <Content Include="Views\Vcms\EditCity.cshtml" />
     <Content Include="Views\Vcms\ListCity.cshtml" />
     <Content Include="Views\Employer\EditJob.cshtml" />
+    <Content Include="Views\Home\GetJob.cshtml" />
+    <Content Include="Views\Home\GetFilter.cshtml" />
+    <Content Include="Views\Vcms\ListCat.cshtml" />
+    <Content Include="Views\Vcms\StudyAbroadCategory.cshtml" />
+    <Content Include="Views\Vcms\EditCategory.cshtml" />
+    <Content Include="Views\Employer\ListStudyAbroad.cshtml" />
+    <Content Include="Views\Employer\StudyAbroad.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1492,6 +1524,20 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202402060846276_ad.resx">
+      <DependentUpon>202402060846276_ad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402061625515_ad1.resx">
+      <DependentUpon>202402061625515_ad1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402081138349_ad2.resx">
+      <DependentUpon>202402081138349_ad2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202402081357106_ad3.resx">
+      <DependentUpon>202402081357106_ad3.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

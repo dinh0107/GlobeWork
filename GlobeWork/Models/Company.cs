@@ -17,6 +17,7 @@ namespace GlobeWork.Models
         [Display(Name = "Mô tả"), UIHint("EditorBox")]
         public string Body { get; set; }
         [Display(Name = "Ngày thành lập")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime EstablishmentDate { get; set; }
         [Display(Name = "Hiện trang chủ")]
         public bool ShowHome { get; set; }
@@ -24,7 +25,7 @@ namespace GlobeWork.Models
         public string Email { get; set; }
         [Display(Name = "Địa chỉ"), UIHint("TextBox")]
         public string Address { get; set; }
-        [Display(Name = "Quy mô công ty"), StringLength(10, ErrorMessage = "Tối đa 10 ký tự"), UIHint("NumberBox")]
+        [Display(Name = "Quy mô công ty"), StringLength(50, ErrorMessage = "Tối đa 50 ký tự"), UIHint("NumberBox")]
         public string CompanySize { get; set; }
         [Display(Name = "Đường dẫn"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextBox")]
         public string Url { get; set; }
@@ -51,6 +52,7 @@ namespace GlobeWork.Models
         public virtual Employer Employer { get; set; }
         public virtual ICollection<JobPost> JobPosts { get; set; }
         public virtual ICollection<Candidate> Candidates { get; set; }
+        public ICollection<Follow> Followers { get; set; }
         public Company()
         {
             ShowHome = false;
