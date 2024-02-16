@@ -1546,6 +1546,7 @@
     <Content Include="Views\User\ListApply.cshtml" />
     <Content Include="Views\Vcms\EditTitle.cshtml" />
     <Content Include="Views\Vcms\ListTitle.cshtml" />
+    <Content Include="Views\Employer\ListCV.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
