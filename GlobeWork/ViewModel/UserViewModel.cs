@@ -79,7 +79,7 @@ namespace GlobeWork.ViewModel
         public string ConfirmPassword { get; set; }
         [Display(Name = "Email"), Required(ErrorMessage = "Vui lòng nhập Email"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự"), EmailAddress(ErrorMessage = "Email không hợp lệ"), UIHint("TextBox"), Remote("CheckEmail", "User")]
         public string Email { get; set; }
-        [Display(Name = "Tên công ty") , Required(ErrorMessage ="Chưa nhập tên công ty")]
+        [Display(Name = "Tên công ty"), Required(ErrorMessage = "Chưa nhập tên công ty")]
         public string CompanyName { get; set; }
         [Display(Name = "Giới tính")]
         public string Gender { get; set; }
@@ -103,7 +103,7 @@ namespace GlobeWork.ViewModel
         public User User { get; set; }
     }
 
-    
+
     public class ChangePasswordViewModel
     {
         [DisplayName("Mật khẩu hiện tại"), Required(ErrorMessage = "Bạn vui lòng nhập mật khẩu hiện tại"), StringLength(20, MinimumLength = 6, ErrorMessage = "Mật khẩu từ 6 - 20 ký tự")]
@@ -217,5 +217,70 @@ namespace GlobeWork.ViewModel
     public class UserInfoViewModel
     {
         public User User { get; set; }
+        public IEnumerable<Education> Educations { get; set; }
+        public IEnumerable<Experiences> Experiences { get; set; }
+    }
+    public class ChangeInfoUserViewModel
+    {
+        //public User User { get; set; }
+        //public EducationViewModel Education { get; set; }
+        //public ExperiencesViewModel Experience { get; set; }
+        public IEnumerable<Education> ListEducations { get; set; }
+        public IEnumerable<Experiences> ListExperiences { get; set; }
+        public List<EducationViewModel> Educations { get; set; }
+        public List<ExperiencesViewModel> Experiences { get; set; }
+
+        //user
+        [Display(Name = "Họ và tên"), Required(ErrorMessage = "Họ và tên không được để trống")]
+        public string FullName { get; set; }
+        [Display(Name = "Chức vụ")]
+        public string Classtify { get; set; }
+        [Display(Name = "Giới tính")]
+        public string Gender { get; set; }
+        public int Date { get; set; }
+        public int Month { get; set; }
+        public int Year { get; set; }
+        [Display(Name = "Địa chỉ")]
+        public string Address { get; set; }
+        [StringLength(100), Required(ErrorMessage = "Bạn chưa nhập Email"), UIHint("TextBox"), Display(Name = "Email")]
+        public string Email { get; set; }
+        public string Url { get; set; }
+        [Display(Name = "Giới thiệu bản thân")]
+        public string Description { get; set; }
+        [StringLength(20), Display(Name = "Số điện thoại")]
+        public string Phone { get; set; }
+
+    }
+    public class EducationViewModel
+    {
+        public int? Id { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
+        public string Majors { get; set; }
+        public string School { get; set; }
+        public string Description { get; set; }
+    }
+    public class ExperiencesViewModel
+    {
+        public int? Id { get; set; }
+        public string Position { get; set; }
+        public string Company { get; set; }
+        public string Description { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
+    }
+    public class UserCompanyViewModel
+    {
+        public IPagedList<Follow> Follows { get; set; }
+    }
+    public class UserLikeViewModel
+    {
+        public IPagedList<Like> Likes { get; set; }
+    }
+    public class UserApplyViewModel
+    {
+        public IPagedList<ApplyJob> ApplyJobs { get; set; }
+        public User User { get; set; }
+        public int? Status { get; set; }
     }
 }

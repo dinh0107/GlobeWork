@@ -1,0 +1,29 @@
+﻿@using GlobeWork.Models;
+@model List<Item>
+@{
+    ViewBag.Title = "Danh sách tiêu đề";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="box_content mt-3">
+    <table class="list_table tablecenter" id="list-cat">
+        <tr>
+            <th>STT</th>
+            <th>Tên</th>
+            <th style="max-width:300px;">Mô tả</th>
+            <th style="width:200px;"></th>
+        </tr>
+        @foreach (var cat in Model)
+        {
+            <tr>
+                <td>@cat.Sort</td>
+                <td>@Html.ActionLink(cat.Title, "EditTitle", new { sort = cat.Sort })</td>
+                <td>
+                    @cat.Description
+                </td>
+                <td>
+                    @Html.ActionLink("Sửa", "EditTitle", new { sort = cat.Sort })
+                </td>
+            </tr>
+        }
+    </table>
+</div>

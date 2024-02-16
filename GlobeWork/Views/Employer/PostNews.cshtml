@@ -81,7 +81,7 @@
                         <label>
                             Hạn nhận hồ sơ
                         </label>
-                        @Html.TextBoxFor(a => a.JobPost.ExpirationDate, new { @class = "form-control datepicker", @placeholder = "Chọn ngày hết hạn nhận hồ sơ" })
+                        @Html.TextBoxFor(a => a.JobPost.ExpirationDate, new { @class = "form-control datetimepicker", @placeholder = "Chọn ngày hết hạn nhận hồ sơ" })
                     </div>
                     <div class="form-group col-2">
                         <label>
@@ -132,7 +132,7 @@
                         <label>
                             Kỹ năng cần có <i class="text-danger">*</i>
                         </label>
-                        <select class="v-select-multiple" multiple name="skill">
+                        <select class="v-select-multiple"  name="skill">
                             @foreach (var item in Model.Skills)
                             {
                                 <option value="@item.Id">@item.SkillName</option>
@@ -158,7 +158,7 @@
                         <label>
                             Thành phố <i class="text-danger">*</i>
                         </label>
-                        <select class="v-select-multiple" name="city" multiple>
+                        <select class="v-select-multiple" name="city">
                             @foreach (var item in Model.Citys)
                             {
                                 <option value="@item.Id">

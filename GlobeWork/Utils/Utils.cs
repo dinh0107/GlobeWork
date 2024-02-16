@@ -36,5 +36,24 @@ namespace GlobeWork.Utils
             }
             return builder.ToString();
         }
+        public static string DateCountDown(DateTime? sdate)
+        {
+            if (!sdate.HasValue)
+            {
+                return null;
+            }
+
+            TimeSpan timeSpan = sdate.Value - DateTime.Now;
+            if (timeSpan.Days >= 1)
+            {
+                return $"{timeSpan.Days} ngày";
+            }
+
+            if (timeSpan.Days < 1 && timeSpan.Hours > 0)
+            {
+                return $"{timeSpan.Hours} giờ {timeSpan.Minutes} phút";
+            }
+            return $"{timeSpan.Minutes} phút";
+        }
     }
 }

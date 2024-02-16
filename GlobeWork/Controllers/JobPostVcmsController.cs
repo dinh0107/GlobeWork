@@ -307,182 +307,182 @@ namespace GlobeWork.Controllers
         }
         #endregion
 
-        #region AppLyJob
-        public ActionResult ListApplyJob(int? page, string startTime, string endTime, string keyword, string sort, int? status, string submit)
-        {
-            var pageNumber = page ?? 1;
-            var pageSize = 30;
-            var applyJobs = _unitOfWork.ApplyJobRepository.GetQuery().AsNoTracking();
+        //#region AppLyJob
+        //public ActionResult ListApplyJob(int? page, string startTime, string endTime, string keyword, string sort, int? status, string submit)
+        //{
+        //    var pageNumber = page ?? 1;
+        //    var pageSize = 30;
+        //    var applyJobs = _unitOfWork.ApplyJobRepository.GetQuery().AsNoTracking();
 
-            if (!string.IsNullOrEmpty(keyword))
-            {
-                applyJobs = applyJobs.Where(a => a.FullName.ToLower().Trim().Contains(keyword.ToLower().Trim()));
-            }
-            if (DateTime.TryParse(startTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var start))
-            {
-                applyJobs = applyJobs.Where(a => DbFunctions.TruncateTime(a.CreateDate) >= DbFunctions.TruncateTime(start));
-            }
-            if (DateTime.TryParse(endTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var end))
-            {
-                applyJobs = applyJobs.Where(a => DbFunctions.TruncateTime(a.CreateDate) <= DbFunctions.TruncateTime(end));
-            }
-            switch (status)
-            {
-                case 0:
-                    applyJobs = applyJobs.Where(a => a.Status == ApplyJob.ApplyJobStatus.Waiting);
-                    break;
-                case 1:
+        //    if (!string.IsNullOrEmpty(keyword))
+        //    {
+        //        applyJobs = applyJobs.Where(a => a.FullName.ToLower().Trim().Contains(keyword.ToLower().Trim()));
+        //    }
+        //    if (DateTime.TryParse(startTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var start))
+        //    {
+        //        applyJobs = applyJobs.Where(a => DbFunctions.TruncateTime(a.CreateDate) >= DbFunctions.TruncateTime(start));
+        //    }
+        //    if (DateTime.TryParse(endTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var end))
+        //    {
+        //        applyJobs = applyJobs.Where(a => DbFunctions.TruncateTime(a.CreateDate) <= DbFunctions.TruncateTime(end));
+        //    }
+        //    switch (status)
+        //    {
+        //        case 0:
+        //            applyJobs = applyJobs.Where(a => a.Status == ApplyJob.ApplyJobStatus.Waiting);
+        //            break;
+        //        case 1:
 
-                    applyJobs = applyJobs.Where(a => a.Status == ApplyJob.ApplyJobStatus.Active);
-                    break;
-                case 2:
-                    applyJobs = applyJobs.Where(a => a.Status == ApplyJob.ApplyJobStatus.NoActive);
-                    break;
-            }
+        //            applyJobs = applyJobs.Where(a => a.Status == ApplyJob.ApplyJobStatus.Active);
+        //            break;
+        //        case 2:
+        //            applyJobs = applyJobs.Where(a => a.Status == ApplyJob.ApplyJobStatus.NoActive);
+        //            break;
+        //    }
 
-            if (submit == "delete")
-            {
-                _unitOfWork.ApplyJobRepository.Delete(applyJobs);
-                return RedirectToAction("ListApplyJob");
-            }
+        //    if (submit == "delete")
+        //    {
+        //        _unitOfWork.ApplyJobRepository.Delete(applyJobs);
+        //        return RedirectToAction("ListApplyJob");
+        //    }
 
-            switch (sort)
-            {
-                case "sort-asc":
-                    applyJobs = applyJobs.OrderBy(a => a.Id);
-                    break;
-                case "sort-desc":
-                    applyJobs = applyJobs.OrderByDescending(a => a.Id);
-                    break;
-                case "date-asc":
-                    applyJobs = applyJobs.OrderBy(a => a.CreateDate);
-                    break;
-                case "date-desc":
-                    applyJobs = applyJobs.OrderByDescending(a => a.CreateDate);
-                    break;
-                case "name":
-                    applyJobs = applyJobs.OrderBy(a => a.FullName);
-                    break;
-                default:
-                    applyJobs = applyJobs.OrderByDescending(a => a.CreateDate);
-                    break;
-            }
+        //    switch (sort)
+        //    {
+        //        case "sort-asc":
+        //            applyJobs = applyJobs.OrderBy(a => a.Id);
+        //            break;
+        //        case "sort-desc":
+        //            applyJobs = applyJobs.OrderByDescending(a => a.Id);
+        //            break;
+        //        case "date-asc":
+        //            applyJobs = applyJobs.OrderBy(a => a.CreateDate);
+        //            break;
+        //        case "date-desc":
+        //            applyJobs = applyJobs.OrderByDescending(a => a.CreateDate);
+        //            break;
+        //        case "name":
+        //            applyJobs = applyJobs.OrderBy(a => a.FullName);
+        //            break;
+        //        default:
+        //            applyJobs = applyJobs.OrderByDescending(a => a.CreateDate);
+        //            break;
+        //    }
 
-            var model = new ListApplyJobViewModel
-            {
-                ApplyJobs = applyJobs.ToPagedList(pageNumber, pageSize),
-                Keyword = keyword,
-                Sort = sort,
-                Status = status,
-                StartTime = startTime,
-                EndTime = endTime,
-            };
-            return View(model);
-        }
+        //    var model = new ListApplyJobViewModel
+        //    {
+        //        ApplyJobs = applyJobs.ToPagedList(pageNumber, pageSize),
+        //        Keyword = keyword,
+        //        Sort = sort,
+        //        Status = status,
+        //        StartTime = startTime,
+        //        EndTime = endTime,
+        //    };
+        //    return View(model);
+        //}
 
-        public ActionResult ListApplyByJobPost(int jobPostId, int? page, string startTime, string endTime, string keyword, string sort, int? status)
-        {
-            var pageNumber = page ?? 1;
-            var pageSize = 15;
-            var applyJobs = _unitOfWork.ApplyJobRepository.GetQuery(a => a.JobPostId == jobPostId, o => o.OrderByDescending(a => a.CreateDate));
-            if (!string.IsNullOrEmpty(keyword))
-            {
-                applyJobs = applyJobs.Where(a => a.FullName.ToLower().Trim().Contains(keyword.ToLower().Trim()));
-            }
+        //public ActionResult ListApplyByJobPost(int jobPostId, int? page, string startTime, string endTime, string keyword, string sort, int? status)
+        //{
+        //    var pageNumber = page ?? 1;
+        //    var pageSize = 15;
+        //    var applyJobs = _unitOfWork.ApplyJobRepository.GetQuery(a => a.JobPostId == jobPostId, o => o.OrderByDescending(a => a.CreateDate));
+        //    if (!string.IsNullOrEmpty(keyword))
+        //    {
+        //        applyJobs = applyJobs.Where(a => a.FullName.ToLower().Trim().Contains(keyword.ToLower().Trim()));
+        //    }
 
-            if (endTime != null && startTime != null)
-            {
-                if (DateTime.TryParse(startTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var start))
-                {
-                    applyJobs = applyJobs.Where(a => DbFunctions.TruncateTime(a.CreateDate) >= DbFunctions.TruncateTime(start));
-                }
-                if (DateTime.TryParse(endTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var end))
-                {
-                    applyJobs = applyJobs.Where(a => DbFunctions.TruncateTime(a.CreateDate) <= DbFunctions.TruncateTime(end));
-                }
-            }
-            switch (sort)
-            {
-                case "sort-asc":
-                    applyJobs = applyJobs.OrderBy(a => a.Id);
-                    break;
-                case "sort-desc":
-                    applyJobs = applyJobs.OrderByDescending(a => a.Id);
-                    break;
-                case "date-asc":
-                    applyJobs = applyJobs.OrderBy(a => a.CreateDate);
-                    break;
-                case "date-desc":
-                    applyJobs = applyJobs.OrderByDescending(a => a.CreateDate);
-                    break;
-                case "name":
-                    applyJobs = applyJobs.OrderBy(a => a.FullName);
-                    break;
-                default:
-                    applyJobs = applyJobs.OrderByDescending(a => a.CreateDate);
-                    break;
-            }
+        //    if (endTime != null && startTime != null)
+        //    {
+        //        if (DateTime.TryParse(startTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var start))
+        //        {
+        //            applyJobs = applyJobs.Where(a => DbFunctions.TruncateTime(a.CreateDate) >= DbFunctions.TruncateTime(start));
+        //        }
+        //        if (DateTime.TryParse(endTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var end))
+        //        {
+        //            applyJobs = applyJobs.Where(a => DbFunctions.TruncateTime(a.CreateDate) <= DbFunctions.TruncateTime(end));
+        //        }
+        //    }
+        //    switch (sort)
+        //    {
+        //        case "sort-asc":
+        //            applyJobs = applyJobs.OrderBy(a => a.Id);
+        //            break;
+        //        case "sort-desc":
+        //            applyJobs = applyJobs.OrderByDescending(a => a.Id);
+        //            break;
+        //        case "date-asc":
+        //            applyJobs = applyJobs.OrderBy(a => a.CreateDate);
+        //            break;
+        //        case "date-desc":
+        //            applyJobs = applyJobs.OrderByDescending(a => a.CreateDate);
+        //            break;
+        //        case "name":
+        //            applyJobs = applyJobs.OrderBy(a => a.FullName);
+        //            break;
+        //        default:
+        //            applyJobs = applyJobs.OrderByDescending(a => a.CreateDate);
+        //            break;
+        //    }
 
-            switch (status)
-            {
-                case 0:
-                    {
-                        applyJobs = applyJobs.Where(a => a.Status == ApplyJob.ApplyJobStatus.Waiting);
-                        break;
-                    }
-                case 1:
-                    {
-                        applyJobs = applyJobs.Where(a => a.Status == ApplyJob.ApplyJobStatus.Active);
-                        break;
-                    }
-                case 2:
-                    {
-                        applyJobs = applyJobs.Where(a => a.Status == ApplyJob.ApplyJobStatus.NoActive);
-                        break;
-                    }
-                default:
-                    {
-                        applyJobs = applyJobs.OrderByDescending(a => a.CreateDate);
-                        break;
-                    }
-            }
-            var model = new ListApplyJobViewModel
-            {
-                ApplyJobs = applyJobs.ToPagedList(pageNumber, pageSize),
-                Keyword = keyword,
-                Sort = sort,
-                Status = status,
-                StartTime = startTime,
-                EndTime = endTime,
-                jobPostId = jobPostId,
+        //    switch (status)
+        //    {
+        //        case 0:
+        //            {
+        //                applyJobs = applyJobs.Where(a => a.Status == ApplyJob.ApplyJobStatus.Waiting);
+        //                break;
+        //            }
+        //        case 1:
+        //            {
+        //                applyJobs = applyJobs.Where(a => a.Status == ApplyJob.ApplyJobStatus.Active);
+        //                break;
+        //            }
+        //        case 2:
+        //            {
+        //                applyJobs = applyJobs.Where(a => a.Status == ApplyJob.ApplyJobStatus.NoActive);
+        //                break;
+        //            }
+        //        default:
+        //            {
+        //                applyJobs = applyJobs.OrderByDescending(a => a.CreateDate);
+        //                break;
+        //            }
+        //    }
+        //    var model = new ListApplyJobViewModel
+        //    {
+        //        ApplyJobs = applyJobs.ToPagedList(pageNumber, pageSize),
+        //        Keyword = keyword,
+        //        Sort = sort,
+        //        Status = status,
+        //        StartTime = startTime,
+        //        EndTime = endTime,
+        //        jobPostId = jobPostId,
 
-            };
-            return View(model);
-        }
+        //    };
+        //    return View(model);
+        //}
 
-        public ActionResult PreviewCanidate(int candidateId = 0)
-        {
-            var candidate = _unitOfWork.CandidateRepository.GetById(candidateId);
-            if (candidate == null)
-            {
-                return RedirectToAction("ListCandidate", "UserVcms");
-            }
-            return View(candidate);
-        }
-        [HttpPost]
-        public bool DeleteApplyJob(int applyJobId = 0)
-        {
+        //public ActionResult PreviewCanidate(int candidateId = 0)
+        //{
+        //    var candidate = _unitOfWork.CandidateRepository.GetById(candidateId);
+        //    if (candidate == null)
+        //    {
+        //        return RedirectToAction("ListCandidate", "UserVcms");
+        //    }
+        //    return View(candidate);
+        //}
+        //[HttpPost]
+        //public bool DeleteApplyJob(int applyJobId = 0)
+        //{
 
-            var applyJob = _unitOfWork.ApplyJobRepository.GetById(applyJobId);
-            if (applyJob == null)
-            {
-                return false;
-            }
-            _unitOfWork.ApplyJobRepository.Delete(applyJob);
-            _unitOfWork.Save();
-            return true;
-        }
-        #endregion
+        //    var applyJob = _unitOfWork.ApplyJobRepository.GetById(applyJobId);
+        //    if (applyJob == null)
+        //    {
+        //        return false;
+        //    }
+        //    _unitOfWork.ApplyJobRepository.Delete(applyJob);
+        //    _unitOfWork.Save();
+        //    return true;
+        //}
+        //#endregion
 
         protected override void Dispose(bool disposing)
         {

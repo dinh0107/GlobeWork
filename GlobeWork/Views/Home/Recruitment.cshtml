@@ -1,4 +1,16 @@
-﻿@functions {
+﻿@model GlobeWork.ViewModel.CompanyRecruitmentViewModel
+@using GlobeWork.Utils
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Tin tuyển dụng";
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("Recruitment", new { url = Model.Company.Url });
+    if (Model.Company.Avatar != null)
+    {
+        ViewBag.ImageShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/company/", Model.Company.Avatar);
+    }
+    var email = ViewContext.RouteData.Values["Email"].ToString();
+}
+@functions {
     public string IsLinkActive(string path)
     {
         string currentPath = Context.Request.Path;
@@ -9,82 +21,191 @@
     <div class="container">
         <div class="company-cover-inner">
             <div class="cover-wrapper">
-                <img src="~/Content/images/banner-com.jpg" class="lazyload">
+                @if (Model.Company.Cover != null)
+                {
+                    <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", Model.Company.Cover)" alt="@Model.Company.Name" class="lazyload">
+                }
+                else
+                {
+                    <img src="~/Content/images/cover-null.png" alt="@Model.Company.Name" class="lazyload">
+                }
             </div>
             <div class="company-logo">
                 <div class="company-image-logo shadow">
-                    <img src="~/Content/images/logo.png" alt="" class="img-responsive">
+                    @if (Model.Company.Avatar != null)
+                    {
+                        <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", Model.Company.Avatar)" alt="@Model.Company.Name" class="img-responsive lazyload">
+                    }
+                    else
+                    {
+                        <img src="~/Content/images/avatar-default.jpg" alt="@Model.Company.Name" class="img-responsive lazyload">
+                    }
                 </div>
             </div>
             <div class="company-detail-overview employer-detail">
                 <div class="box-detail">
-                    <h1 class="company-detail-name text-dark">CÔNG TY CỔ PHẦN SYSTEMATIC FUNCTIONS <span class="tag-name">Hà Nội</span></h1>
+                    <h1 class="company-detail-name text-dark">@Model.Company.Name <span class="tag-name">@Model.Company.City.Name</span></h1>
                     <div class="company-subdetail">
-                        <a href="#" target="_blank"><i class="fa-sharp fa-solid fa-globe"></i>https://www.fis.com.vn/</a>
-                        <a href="javascripts:;"><i class="fa-solid fa-buildings"></i>5000+ nhân viên</a>
-                        <a href="javascripts:;"><i class="fa-solid fa-users"></i>30+ công việc đang tuyển</a>
+                        <a href="@Model.Company.WebsiteUrl" target="_blank">
+                            <i class="fa-sharp fa-solid fa-globe"></i>
+                            @if (Model.Company.WebsiteUrl != null)
+                            {
+                                @Model.Company.WebsiteUrl
+                            }
+                            else
+                            {
+                                @:Đang cập nhật
+                            }
+                        </a>
+                        <a href="javascripts:;"><i class="fa-solid fa-buildings"></i>@Model.Company.CompanySize</a>
+                        <a href="javascripts:;"><i class="fa-solid fa-users"></i>@Model.Company.JobPosts.Count() công việc đang tuyển</a>
                     </div>
                 </div>
                 <div class="box-follow">
-                    <a href="" class="btn btn-follow">
-                        <i class="fa-light fa-plus"></i> Theo dõi công ty
-                    </a>
+                    @if (email == "")
+                    {
+                        <a href="@Url.Action("Login","User")" class="btn btn-follow">
+                            <i class="fa-light fa-plus"></i> Theo dõi công ty
+                        </a>
+                    }
+                    else
+                    {
+                        if (Model.Follows.Any())
+                        {
+                            <a href="javascripts:;" class="btn btn-follow unfollow" data-company-id="@Model.Company.EmployerId">
+                                Bỏ theo dõi công ty
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="javascripts:;" class="btn btn-follow follow" data-company-id="@Model.Company.EmployerId">
+                                Theo dõi công ty
+                            </a>
+                        }
+                    }
                 </div>
                 <div class="navs-employer">
-                    <a href="@Url.Action("Employer")" class="@(IsLinkActive(Url.Action("Employer")))">Trang chủ</a>
-                    <a href="@Url.Action("Recruitment")" class="@(IsLinkActive(Url.Action("Recruitment")))">Tin tuyển dụng</a>
+                    <a href="@Url.Action("Employer" , new {url = Model.Company.Url})" class="@(IsLinkActive(Url.Action("Employer")))">Trang chủ</a>
+                    <a href="@Url.Action("Recruitment" , new {url = Model.Company.Url})" class="@(IsLinkActive(Url.Action("Recruitment")))">Tin tuyển dụng</a>
                 </div>
             </div>
         </div>
         <div class="recruitment">
             <div class="job-q mb-3">
-                Hiện tại đang tuyển dụng <span>14</span> vị trí
+                Hiện tại đang tuyển dụng <span>@Model.JobPosts.Count()</span> vị trí
             </div>
-            <form class="grid-form mb-4">
-                <input type="text" name="name" value="" class="grid-form1 form-control" placeholder="Tên công việc, ví trí bạn muốn ứng tuyển..." />
+            <form class="grid-form mb-4" action="@Url.Action("Recruitment")">
+                @Html.HiddenFor(a => a.Url)
+                @Html.TextBoxFor(a => a.Name, new { @class = "grid-form1 form-control", @placeholder = "Tên công việc, ví trí bạn muốn ứng tuyển..." })
                 <div class="grid-form2 form-control">
-                    <select class="select2 form-control">
+                    <select class="v-select custom-slected" name="cityId">
                         <option value="">Khu vực</option>
+                        @foreach (var item in Model.Cities)
+                        {
+                            <option @if (Model.CityId == item.Id) { @Html.Raw("selected") } value="@item.Id">@item.Name</option>
+                        }
                     </select>
                     <i class="far fa-location mx-2"></i>
                 </div>
                 <div class="grid-form3 form-control">
-                    <select class="select2 form-control">
+                    <select class="v-select  custom-slected" name="careerId">
                         <option value="">Ngành nghề</option>
+                        @foreach (var item in Model.Careers)
+                        {
+                            <option @if (Model.CareerId == item.Id) { @Html.Raw("selected") } value="@item.Id">@item.Name</option>
+                        }
                     </select>
                 </div>
                 <button type="submit" class="btn btn-block filter-btn grid-form4"><i class="far fa-search"></i>Tìm kiếm</button>
             </form>
-            @for (var i = 0; i < 6; i++)
+            @foreach (var item in Model.JobPosts)
             {
-                <div class="job bg-white detail-job active @(i == 1 ? "active" : "")">
+                <div class="job bg-white detail-job @if (item.Hot != null && item.Hot > DateTime.Now) { @Html.Raw("active") } ">
                     <div class="media ">
                         <div>
-                            <a href="" class="job-name">Middle/Senior UX Designer</a>
+                            <a href="@Url.Action("JobDetail", new {url = item.Url})" class="job-name custom-w" data-tooltip="@item.Name" data-tooltip-position="top">@item.Name</a>
                             <div class="company-name">
-                                Công Ty TNHH Hóa Chất Toàn Hữu
+                                @item.Company.Name
                             </div>
                         </div>
                         <div class="media-body time-deadline text-right">
-                            Còn <strong>8</strong> ngày để ứng tuyển
+                            @if (item.ExpirationDate != null)
+                            {
+                                if (item.ExpirationDate > DateTime.Now)
+                                {
+                                    @:Còn <strong>@Utils.DateCountDown(item.ExpirationDate)</strong> để ứng tuyển
+                                }
+                                else
+                                {
+                                    @:Hết thời gian ứng tuyển
+                                }
+                            }
+                            else
+                            {
+                                @:Luôn tuyển
+                            }
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-between mt-1">
                         <div class="w-75">
-                            <span class="info-job">12 - 20 triệu</span>
-                            <span class="info-job">Trung Quốc</span>
+                            <span class="info-job price">@Html.DisplayFor(a => item.Wages)</span>
+                            <span class="info-job">
+                                @if (item.Cities.Any())
+                                {
+                                    if (item.Cities.Count > 1)
+                                    {
+
+                                        <span data-tooltip="@string.Join(" , ", item.Cities.Select(city => city.Name))" data-tooltip-position="top">
+                                            @item.Cities.Count Thành phố
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        foreach (var city in item.Cities.Take(1))
+                                        {
+                                            <span data-tooltip="@city.Name" data-tooltip-position="top">
+                                                @city.Name
+                                            </span>
+                                        }
+                                    }
+                                }
+                            </span>
                         </div>
-                        <a href="#" class="heart active"><i class="fas fa-heart"></i></a>
+                        @if (email == "")
+                        {
+                            <a href="@Url.Action("Login", "User")" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                        }
+                        else
+                        {
+                            if (Model.Likes.Any(a => a.JobId == item.Id))
+                            {
+                                <a href="javascripts:;" class="heart active unlikejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                            }
+                            else
+                            {
+                                <a href="javascripts:;" class="heart likejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                            }
+                        }
                     </div>
+                </div>
+            }
+            @if (Model.JobPosts.PageCount > 1)
+            {
+                <div class="text-center">
+                    @Html.PagedListPager(Model.JobPosts, page => Url.Action("Recruitment", new { page, url = Model.Url, name = Model.Name, careerId = Model.CareerId, cityId = Model.CityId }))
                 </div>
             }
         </div>
     </div>
 </div>
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @section scripts{
-    <script src="~/Scripts/select2.js"></script>
     <script>
-        $('.select2').select2();
+        VirtualSelect.init({
+            ele: '.v-select',
+            search: true,
+        });
+        Details();
+        ActionDetail();
+        QickLike();
     </script>
 }

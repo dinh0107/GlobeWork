@@ -82,7 +82,7 @@
                         <label>
                             Hạn nhận hồ sơ <i class="text-danger">*</i>
                         </label>
-                        @Html.TextBoxFor(a => a.JobPost.ExpirationDate, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker", @placeholder = "Chọn ngày hết hạn nhận hồ sơ" })
+                        @Html.TextBoxFor(a => a.JobPost.ExpirationDate, "{0:dd/MM/yyyy HH:mm}",  new { @class = "form-control datetimepicker", @placeholder = "Chọn ngày hết hạn nhận hồ sơ" })
                     </div>
                     <div class="form-group col-2">
                         <label>

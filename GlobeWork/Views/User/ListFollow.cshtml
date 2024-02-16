@@ -1,0 +1,64 @@
+﻿@model GlobeWork.ViewModel.UserCompanyViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Danh sách công ty đã theo dõi";
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ListFollow");
+}
+<div class="py-3 bg-light">
+    <div class="container">
+        <div class="row">
+            @if (Model.Follows.Any())
+            {
+                foreach (var item in Model.Follows)
+                {
+                    <div class="col-lg-4 col-6">
+                        <a href="@Url.Action("Employer", "Home", new {url = item.Company.Url})" class="card card-company border-0">
+                            @if (item.Company.Cover != null)
+                            {
+                                <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Company.Cover)" alt="@item.Company.Name" class="lazyload" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/images/cover-null.png" alt="@item.Company.Name" class="lazyload" />
+                            }
+                            <div class="com-avatar">
+                                @if (item.Company.Avatar != null)
+                                {
+                                    <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Company.Avatar)" alt="@item.Company.Name" class="lazyload" />
+                                }
+                                else
+                                {
+                                    <img src="~/Content/images/cover-null.png" alt="@item.Company.Name" class="lazyload" />
+                                }
+                            </div>
+                            @*<div class="parter-i">
+                                <i class="fas fa-shield-check mr-1"></i>  Đối tác
+                            </div>*@
+                            <div class="card-body mt-3">
+                                <div class="com-name mt-2">
+                                    @item.Company.Name
+                                </div>
+                                <div class="com-des mt-2">
+                                    @Html.Raw(item.Company.Introduct)
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+                if (Model.Follows.PageCount > 1)
+                {
+                    <div class="text-center">
+                        @Html.PagedListPager(Model.Follows, page => Url.Action("ListFollow", new { page }))
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="none-suitable-job__content col-12 shadow-none">
+                    <img src="https://static.topcv.vn/v4/image/job-list/none-result.png" alt="None suitable job">
+                    <span>Bạn chưa theo dõi công ty nào</span>
+                </div>
+            }
+        </div>
+    </div>
+</div>

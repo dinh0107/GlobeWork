@@ -1,0 +1,43 @@
+﻿@model IEnumerable<GlobeWork.Models.UserLog>
+@using Helpers
+<div class="box-notification">
+    <a href="javascripts:;">
+        <i class="fa-solid fa-bell"></i>
+        <span>
+            @*@if (Model.Count() > 99)
+                {
+                    @:99+
+                }
+                else
+                {
+                    @Model.Count();
+                }*@
+        </span>
+    </a>
+    <ul class="notification">
+        <li class="header">
+            <div class="title-notification">Thông báo</div>
+            @*<a href="javascript:;">Xoá tất cả</a>*@
+        </li>
+        @if (Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <li class="media">
+                    <div class="media-body">
+                        <p>
+                            @Html.Raw(item.Content)
+                        </p>
+                        <i>@Html.DateVn(item.CreateDate, 2)</i>
+                    </div>
+                </li>
+            }
+        }
+        else
+        {
+            <li class="none-suitable-job__content">
+                <span>Bạn chưa có thông báo nào</span>
+            </li>
+        }
+    </ul>
+</div>

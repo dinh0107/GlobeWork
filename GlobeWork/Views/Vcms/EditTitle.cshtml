@@ -1,0 +1,28 @@
+﻿@model GlobeWork.Models.Item
+@{
+    ViewBag.Title = "Cập nhật tiêu đề";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="box_content mt-3">
+    @using (Html.BeginForm("EditTitle", "Vcms", FormMethod.Post))
+    {
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Sort)
+    <table class="form_table form-table-cat">
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Title)</td>
+            <td class="form_text">@Html.EditorFor(model => model.Title)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Description)</td>
+            <td class="form_text">@Html.EditorFor(model => model.Description)</td>
+        </tr>
+        <tr>
+            <td class="form_name"></td>
+            <td class="form_text">
+                <input type="submit" class="btn quick-link" value="Cập nhật" />
+            </td>
+        </tr>
+    </table>
+    }
+</div>

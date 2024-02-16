@@ -12,6 +12,7 @@ namespace GlobeWork.DAL
         public DataEntities() : base("name=DataEntities") { }
         public DbSet<ConfigSite> ConfigSites { get; set; }
         public DbSet<Admin> Admins { get; set; }
+        public DbSet<Banner> Banners { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Candidate> Candidates { get; set; }
         public DbSet<Career> Careers { get; set; }
@@ -30,6 +31,11 @@ namespace GlobeWork.DAL
         public DbSet<StudyAbroad>  StudyAbroads { get; set; }
         public DbSet<Follow> Follows { get; set; }
         public DbSet<Like> Likes { get; set; }
+        public DbSet<UserLog> UserLogs { get; set; }
+        public DbSet<Education> Educations { get; set; }
+        public DbSet<Experiences> Experiences { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<Certificate> Certificates { get; set; }
 
     }
 }

@@ -1,42 +1,55 @@
-﻿@{
+﻿@model GlobeWork.ViewModel.JobHotViewModel
+@using PagedList.Mvc
+@using GlobeWork.Utils
+@{
+    ViewBag.Title = "Việc làm tốt nhất";
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("JobHot");
     var date = DateTime.Now;
+    var email = ViewContext.RouteData.Values["Email"].ToString();
 }
 <section class="banner-job pb-0">
     <div class="container">
-        <div class="job-title">
-            Tìm việc làm nhanh 24h, việc làm mới nhất trên toàn quốc.
-        </div>
-        <div class="job-sub">
-            Tiếp cận 40,000+ tin tuyển dụng việc làm mỗi ngày từ hàng nghìn doanh nghiệp uy tín tại Việt Nam
-        </div>
-        <form id="frm-search-job">
+        @foreach (var item in Model.Items.Where(a => a.Sort == 2))
+        {
+            <div class="job-title">
+               @item.Title
+            </div>
+            <div class="job-sub">
+               @item.Description
+            </div>
+        }
+        <form id="frm-search-job" action="@Url.Action("Search")">
             <div class="group-search">
                 <div class=" item-search">
-                    <input class="w-100 form-controlui-autocomplete-input" value="" placeholder="Vị trí tuyển dụng" id="keyword" autocomplete="off">
+                    <input type="text" name="keyword" class="w-100 form-controlui-autocomplete-input" placeholder="Vị trí tuyển dụng" autocomplete="off" required />
                 </div>
                 <div class="search-city border-left">
-                    <select class="select2">
+                    <select class="select2" name="cityId">
                         <option value="">Khu vực Tỉnh / Thành phố</option>
+                        @foreach (var item in Model.Cities)
+                        {
+                            <option @if (item.Id == Model.CityId) { @Html.Raw("selected") } value="@item.Id">@item.Name</option>
+                        }
                     </select>
                     <i class="far fa-location mx-2"></i>
                 </div>
             </div>
             <div class="group-search">
-                <select class="select2 select-nn">
+                <select class="select2 select-nn" name="careerId">
                     <option value="">Ngành nghề</option>
+                    @foreach (var item in Model.Careers)
+                    {
+                        <option @if (item.Id == Model.CareerId) { @Html.Raw("selected") } value="@item.Id">@item.Name</option>
+                    }
                 </select>
             </div>
             <div class="group-search">
-                <select class="select2 select-nn">
+                <select class="select2 select-nn" name="wage">
                     <option value="">Tất cả mức lương</option>
-                    <option value="">Dưới 10 triệu</option>
-                    <option value="">10 - 15 triệu</option>
-                    <option value="">15 - 20 triệu</option>
-                    <option value="">20 - 25 triệu</option>
-                    <option value="">25 - 30 triệu</option>
-                    <option value="">30 - 50 triệu</option>
-                    <option value="">Trên 50 triệu</option>
-                    <option value="">Thoả thuận</option>
+                    @foreach (var item in Model.Wages)
+                    {
+                        <option @if (item.Key == Model.Wage) { @Html.Raw("selected") } value="@item.Key">@item.Value</option>
+                    }
                 </select>
             </div>
             <button type="submit" class="btn btn-block filter-btn"><i class="far fa-search"></i>Tìm kiếm</button>
@@ -58,8 +71,12 @@
             </div>
         </div>
         <div class="list-bannerjob mt-3">
-            <img src="~/Content/images/banner.jpg" alt="Alternate Text" class="lazyload" />
-            <img src="~/Content/images/banner.jpg" alt="Alternate Text" class="lazyload" />
+            @foreach (var item in Model.Banners)
+            {
+                <a href="@item.Url">
+                    <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/banners/", item.Image)" alt="@item.BannerName" class="lazyload" />
+                </a>
+            }
         </div>
     </div>
 </section>
@@ -69,7 +86,7 @@
             <h2 class="title">
                 Việc làm tốt nhất
             </h2>
-            <a href="" class="view-all">Xem tất cả</a>
+            <a href="@Url.Action("JobHot")" class="view-all">Xem tất cả</a>
         </div>
         <div class="d-flex align-items-center justify-content-between mt-3">
             <div class="sort-contruy w-25 form-control border">
@@ -77,56 +94,17 @@
                     <i class="fa-solid fa-bars-filter"></i>
                     Lọc theo :
                 </span>
-                <select class="form-control ouline-none">
-                    <option value="">Quốc gia</option>
+                <select class="form-control ouline-none filter-select">
+                    <option value="1">Địa điểm</option>
+                    <option value="2">Mức lương</option>
+                    <option value="3">Kinh nghiệm</option>
+                    <option value="4">Ngành nghề</option>
                 </select>
             </div>
-            <div class="list-contruy">
-                <div>
-                    <div class="contruy-name active">
-                        Ngẫu nhiên
-                    </div>
-                </div>
-                @for (var i = 0; i < 10; i++)
-                {
-                    <div>
-                        <div class="contruy-name">
-                            Việt Nam
-                        </div>
-                    </div>
-                }
-            </div>
+            @Html.Action("GetFilter")
         </div>
-        <div class="list-hotjob">
-            @for (var i = 0; i < 20; i++)
-            {
-                <div class="job border bg-white hot">
-                    <div class="hot-job" data-toggle="tooltip" data-placement="top" title="Việc làm tốt nhất">
-                        <i class="fab fa-hotjar mr-1"></i> Hot
-                    </div>
-                    <div class="media">
-                        <div class="rounded-circle border thuml-job">
-                            <img src="~/Content/images/logo.png" alt="Alternate Text" class="lazyload job-avt " />
-                        </div>
-                        <div class="media-body ml-2">
-                            <a href="" class="job-name">Kế Toán Nội Bộ - Senior Staff - Tại Hà ... Kế Toán Nội Bộ - Senior Staff - Tại Hà ...</a>
-                            <div class="company-name">
-                                Công Ty TNHH Hóa Chất Toàn Hữu
-                            </div>
-                            <div class="discount-job">
-                                Đơn hàng giảm phí 25 triệu
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-center justify-content-between mt-3">
-                        <div class="w-75">
-                            <span class="info-job">12 - 20 triệu</span>
-                            <span class="info-job">Trung Quốc</span>
-                        </div>
-                        <a href="#" class="heart active"><i class="fas fa-heart"></i></a>
-                    </div>
-                </div>
-            }
+        <div id="filter">
+            @Html.Action("GetJob")
         </div>
     </div>
 </section>
@@ -135,22 +113,22 @@
         <h2 class="title">
             Top ngành nghề nổi bật
         </h2>
-        <div class="title-sub">
-            Bạn muốn tìm việc mới? Xem danh sách việc làm <a href="#">tại đây</a>
-        </div>
         <div class="list-career">
-            @for (var i = 0; i < 16; i++)
+            @foreach (var item in Model.CareerHot)
             {
-                <a href="" class="card card-career border-0">
+                <a href="@Url.Action("JobCategory" , new {url = item.Code})" class="card card-career border-0">
                     <div class="thuml-img">
-                        <img src="~/Content/images/nganh-nghe.png" alt="Alternate Text" class="lazyload" />
+                        @if (item.Image != null)
+                        {
+                            <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/careers/", item.Image)" alt="@item.Name" class="lazyload" />
+                        }
                     </div>
                     <div class="card-body text-center">
                         <div class="career-name">
-                            Kinh doanh / Bán hàng
+                            @item.Name
                         </div>
                         <div class="career-quantity">
-                            8.417 việc làm
+                            @item.Posts.Count() việc làm
                         </div>
                     </div>
                 </a>

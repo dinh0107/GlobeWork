@@ -319,7 +319,7 @@ namespace GlobeWork.Controllers
             var pageNumber = page ?? 1;
             var pageSize = 30;
             //Khóa tài khoản
-            var companies = _unitOfWork.CompanyRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.UserId));
+            var companies = _unitOfWork.CompanyRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.EmployerId));
 
             //switch (status)
             //{
@@ -406,7 +406,7 @@ namespace GlobeWork.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult EditCompany(AdminEditCompanyViewModel model, FormCollection fc)
         {
-            var company = _unitOfWork.CompanyRepository.GetById(model.Company.UserId);
+            var company = _unitOfWork.CompanyRepository.GetById(model.Company.EmployerId);
             if (company == null)
             {
                 return RedirectToAction("ListCompany");

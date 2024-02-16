@@ -13,6 +13,7 @@ namespace GlobeWork.DAL
         private readonly DataEntities _context = new DataEntities();
         private GenericRepository<ConfigSite> _configSiteRepository;
         private GenericRepository<Admin> _adminRepository;
+        private GenericRepository<Banner> _bannerRepository;
         private GenericRepository<User> _userRepository;
         private GenericRepository<Rank> _rankRepository;
         private GenericRepository<JobType> _jobTypeRepository;
@@ -30,8 +31,26 @@ namespace GlobeWork.DAL
         private GenericRepository<StudyAbroadCategory> _studyAbroadCategoryRepository;
         private GenericRepository<StudyAbroad> _studyAbroadRepository;
         private GenericRepository<Follow> _followRepository;
+        private GenericRepository<UserLog> _userLogRepository;
         private GenericRepository<Like> _likeRepository;
+        private GenericRepository<Education> _educationRepository;
+        private GenericRepository<Experiences> _experienceRepository;
+        private GenericRepository<Project> _projectRepository;
+        private GenericRepository<Certificate> _certificateRepository;
 
+        public GenericRepository<Project> ProjectRepository =>
+        _projectRepository ?? (_projectRepository = new GenericRepository<Project>(_context));
+        public GenericRepository<Certificate> CertificateRepository =>
+        _certificateRepository ?? (_certificateRepository = new GenericRepository<Certificate>(_context));
+
+        public GenericRepository<Education> EducationRepository =>
+       _educationRepository ?? (_educationRepository = new GenericRepository<Education>(_context));
+        public GenericRepository<Experiences> ExperienceRepository =>
+        _experienceRepository ?? (_experienceRepository = new GenericRepository<Experiences>(_context));
+        public GenericRepository<UserLog> UserLogRepository =>
+        _userLogRepository ?? (_userLogRepository = new GenericRepository<UserLog>(_context));
+        public GenericRepository<Banner> BannerRepository =>
+        _bannerRepository ?? (_bannerRepository = new GenericRepository<Banner>(_context));
         public GenericRepository<Follow> FollowRepository =>
         _followRepository ?? (_followRepository = new GenericRepository<Follow>(_context));
         public GenericRepository<Like> LikeRepository =>

@@ -42,7 +42,7 @@ namespace GlobeWork.Models
         public virtual ICollection<Skill> Skills { get; set; }
         public virtual ICollection<JobType> JobTypes { get; set; }
         public virtual ICollection<Rank> Ranks { get; set; }
-        public virtual ICollection<ApplyJob> ApplyJobs { get; set; }
+        //public virtual ICollection<ApplyJob> ApplyJobs { get; set; }
         public virtual ICollection<Company> Companys { get; set; }
         public virtual User User { get; set; }
 

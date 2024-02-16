@@ -181,6 +181,10 @@ function HomeJs() {
             $("#filter").html(data);
         })
     });
+
+    $(".setting-filter").click(function () {
+        $(".group-filter").toggleClass("active")
+    })
 }
 
 function Details() {
@@ -489,3 +493,61 @@ $(".close-course").click(function () {
 $(".btn-scroll").click(function () {
     $("html, body").animate({ scrollTop: 0 }, "");
 });
+function QickLike() {
+    function handleLikeJob(button, jobId, isLike) {
+        var actionUrl = isLike ? "/Home/Likejob" : "/Home/UnLike";
+        var buttonClassToRemove = isLike ? "likejob" : "unlikejob";
+        var removeactive = isLike ? "" : "active";
+        var buttonClassToAdd = isLike ? "unlikejob" : "likejob";
+        var active = isLike ? "active" : "";
+        $.post(actionUrl, { id: jobId }, function (data) {
+            if (data.success) {
+                button.removeClass(buttonClassToRemove).addClass(buttonClassToAdd);
+                button.removeClass(removeactive).addClass(active);
+                new Notify({
+                    status: 'success',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            } else {
+                new Notify({
+                    status: 'error',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            }
+        });
+    }
+
+    $(document).on("click", ".likejob", function () {
+        var button = $(this);
+        var jobId = button.data("id");
+        handleLikeJob(button, jobId, true);
+    });
+    $(document).on("click", ".unlikejob", function () {
+        var button = $(this);
+        var jobId = button.data("id");
+        handleLikeJob(button, jobId, false);
+    });
+}
+$(".box-notification").click(function () {
+    $(".notification").toggleClass("active")
+})

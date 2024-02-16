@@ -81,9 +81,9 @@
                 @foreach (var company in Model.Companies)
                 {
                     i++;
-                    <tr data-id="@company.UserId">
+                    <tr data-id="@company.EmployerId">
                         <td>
-                            @Html.HiddenFor(a => company.UserId)
+                            @Html.HiddenFor(a => company.EmployerId)
                             @i
                         </td>
                         <td>@company.Employer.Email</td>
@@ -116,14 +116,14 @@
                         <td>
                             @if (company.Employer.Active)
                             {
-                                <a href="javascript:;" onclick="deleteCompany('@company.UserId')" class="red-warring">Xóa vĩnh viễn</a>
-                                @:- <a href="javascript:;" onclick="restoreCompany('@company.UserId')" class="text-success">Khôi phục</a>
+                                <a href="javascript:;" onclick="deleteCompany('@company.EmployerId')" class="red-warring">Xóa vĩnh viễn</a>
+                                @:- <a href="javascript:;" onclick="restoreCompany('@company.EmployerId')" class="text-success">Khôi phục</a>
                             }
                             else
                             {
-                                <a href="javascript:;" onclick="updateCompany('@company.UserId')">Cập nhật</a>
-                                @:- <a href="@Url.Action("EditCompany", new{companyId = company.UserId})">Sửa</a>
-                                @:- <a href="javascript:;" onclick="deleteCompany('@company.UserId')" class="red-warring">Xóa</a>
+                                <a href="javascript:;" onclick="updateCompany('@company.EmployerId')">Cập nhật</a>
+                                @:- <a href="@Url.Action("EditCompany", new{companyId = company.EmployerId})">Sửa</a>
+                                @:- <a href="javascript:;" onclick="deleteCompany('@company.EmployerId')" class="red-warring">Xóa</a>
                             }
                         </td>
                     </tr>

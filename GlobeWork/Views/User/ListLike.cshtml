@@ -1,0 +1,82 @@
+﻿@model GlobeWork.ViewModel.UserLikeViewModel
+@using PagedList.Mvc
+@using GlobeWork.Utils
+@{
+    ViewBag.Title = "Tin tuyển dụng";
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ListLike");
+
+
+}
+<div class="container">
+    <div class="recruitment">
+        @if (Model.Likes.Any())
+        {
+            <div class="job-q mb-3">
+                Hiện tại đang tuyển dụng <span>@Model.Likes.Count()</span> vị trí
+            </div>
+            foreach (var item in Model.Likes)
+            {
+                <div class="job bg-white detail-job @if (item.JobPost.Hot != null && item.JobPost.Hot > DateTime.Now) { @Html.Raw("active") } ">
+                    <div class="media ">
+                        <div>
+                            <a href="@Url.Action("JobDetail", new {url = item.JobPost.Url})" class="job-name custom-w" data-tooltip="@item.JobPost.Name" data-tooltip-position="top">@item.JobPost.Name</a>
+                            <div class="company-name">
+                                @item.JobPost.Company.Name
+                            </div>
+                        </div>
+                        <div class="media-body time-deadline text-right">
+                            @if (item.JobPost.ExpirationDate != null)
+                            {
+                                if (item.JobPost.ExpirationDate > DateTime.Now)
+                                {
+                                    @:Còn <strong>@Utils.DateCountDown(item.JobPost.ExpirationDate)</strong> để ứng tuyển
+                                }
+                                else
+                                {
+                                    @:Hết thời gian ứng tuyển
+                                }
+                            }
+                            else
+                            {
+                                @:Luôn tuyển
+                            }
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between mt-1">
+                        <div class="w-75">
+                            <span class="info-job price">@Html.DisplayFor(a => item.JobPost.Wages)</span>
+                            <span class="info-job">
+                                @if (item.JobPost.Cities.Any())
+                                {
+                                    if (item.JobPost.Cities.Count > 1)
+                                    {
+
+                                        <span data-tooltip="@string.Join(" , ", item.JobPost.Cities.Select(city => city.Name))" data-tooltip-position="top">
+                                            @item.JobPost.Cities.Count Thành phố
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        foreach (var city in item.JobPost.Cities.Take(1))
+                                        {
+                                            <span data-tooltip="@city.Name" data-tooltip-position="top">
+                                                @city.Name
+                                            </span>
+                                        }
+                                    }
+                                }
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            }
+            if (Model.Likes.PageCount > 1)
+            {
+                <div class="text-center">
+                    @Html.PagedListPager(Model.Likes, page => Url.Action("ListLike", new { page }))
+                </div>
+            }
+        }
+
+    </div>
+</div>

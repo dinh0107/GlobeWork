@@ -17,6 +17,8 @@ namespace GlobeWork.Models
         public DateTime CreateDate { get; set; }
         public virtual ICollection<Candidate> Candidates { get; set; }
         public virtual ICollection<JobPost> Posts { get; set; }
+        public virtual ICollection<User> Users { get; set; }
+
         public Skill()
         {
             CreateDate = DateTime.Now;

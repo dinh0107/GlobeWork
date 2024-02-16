@@ -29,7 +29,16 @@ namespace GlobeWork.Filters
                     {
                         filterContext.RouteData.Values["FullName"] = arrData[3];
                     }
+                    if (arrData.Length > 4)
+                    {
+                        filterContext.RouteData.Values["Url"] = arrData[4];
+                    }
                 }
+            }
+            else
+            {
+                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary
+                    {{"action", "Login"}, {"controller", "User"}});
             }
             base.OnActionExecuting(filterContext);
         }
@@ -46,6 +55,7 @@ namespace GlobeWork.Filters
                 filterContext.RouteData.Values["Id"] = "";
                 filterContext.RouteData.Values["Email"] = "";
                 filterContext.RouteData.Values["FullName"] = "";
+                filterContext.RouteData.Values["Url"] = "";
             }
             else
             {
@@ -66,6 +76,10 @@ namespace GlobeWork.Filters
                     if (arrData.Length > 3)
                     {
                         filterContext.RouteData.Values["FullName"] = arrData[3];
+                    }
+                    if (arrData.Length > 4)
+                    {
+                        filterContext.RouteData.Values["Url"] = arrData[4];
                     }
                 }
             }

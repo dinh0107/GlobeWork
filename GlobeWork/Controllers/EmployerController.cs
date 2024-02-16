@@ -127,7 +127,7 @@ namespace GlobeWork.Controllers
                 cookie.Expires = DateTime.Now.AddDays(-1);
                 Response.Cookies.Add(cookie);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("EmployerLogin", "Employer");
         }
         #endregion
 
@@ -242,12 +242,12 @@ namespace GlobeWork.Controllers
         public ActionResult Company(string result = "")
         {
             ViewBag.Result = result;
-            var company = _unitOfWork.CompanyRepository.Get(a => a.UserId == User.Id).FirstOrDefault();
+            var company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
             var model = new InserCompanyEmployerViewModel
             {
                 Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name)),
                 Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name)),
-                Company = _unitOfWork.CompanyRepository.Get(a => a.UserId == User.Id).FirstOrDefault(),
+                Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault(),
                 Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)),
             };
             return View(model);
@@ -256,7 +256,7 @@ namespace GlobeWork.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult Company(InserCompanyEmployerViewModel model, FormCollection fc)
         {
-            var company = _unitOfWork.CompanyRepository.GetQuery(a => a.UserId == User.Id).FirstOrDefault();
+            var company = _unitOfWork.CompanyRepository.GetQuery(a => a.EmployerId == User.Id).FirstOrDefault();
             if (company == null)
             {
                 if (ModelState.IsValid)
@@ -320,7 +320,7 @@ namespace GlobeWork.Controllers
                     }
                     if (isPost)
                     {
-                        model.Company.UserId = User.Id;
+                        model.Company.EmployerId = User.Id;
                         model.Company.Url = HtmlHelpers.ConvertToUnSign(null, model.Company.Url ?? model.Company.Name);
                         model.Company.CityId = Convert.ToInt32(fc["city"]);
                         _unitOfWork.CompanyRepository.Insert(model.Company);
@@ -343,7 +343,7 @@ namespace GlobeWork.Controllers
                         var urlCount = _unitOfWork.CompanyRepository.GetQuery(a => a.Url == model.Company.Url ).Count();
                         if(urlCount > 1)
                         {
-                            model.Company.Url += "-" + model.Company.UserId;
+                            model.Company.Url += "-" + model.Company.EmployerId;
                             _unitOfWork.Save();
                         }
                         return RedirectToAction("Company", new { result = "success" });
@@ -442,7 +442,7 @@ namespace GlobeWork.Controllers
                 var urlCount = _unitOfWork.CompanyRepository.GetQuery(a => a.Url == company.Url).Count();
                 if (urlCount > 1)
                 {
-                    company.Url += "-" + company.UserId;
+                    company.Url += "-" + company.EmployerId;
                     _unitOfWork.Save();
                 }
                 return RedirectToAction("Company", new { result = "update" });
@@ -573,12 +573,12 @@ namespace GlobeWork.Controllers
                 model.JobPost.JobTypeId = Convert.ToInt32(fc["JobTypeId"]);
                 //model.JobPost.CityId = Convert.ToInt32(fc["CityId"]);
                 model.JobPost.Image = fc["Pictures"];
-                var company = _unitOfWork.CompanyRepository.GetQuery(a => a.UserId == User.Id).FirstOrDefault();
+                var company = _unitOfWork.CompanyRepository.GetQuery(a => a.EmployerId == User.Id).FirstOrDefault();
                 if(company == null)
                 {
                     return RedirectToAction("Company");
                 }
-                model.JobPost.CompanyId = company.UserId;
+                model.JobPost.CompanyId = company.EmployerId;
                 model.JobPost.Code = Utils.Utils.GenerateRandomCode();
                 if (model.DateHot > 0)
                 {
@@ -742,7 +742,14 @@ namespace GlobeWork.Controllers
                             Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + "</strong> để hiển thị tin <strong>" + jobs.Code + " </strong>" + "<strong class='text-danger'>" + model.DateHot + "</strong> ngày ở mục nổi bật", EmployerLogType.Deduction, User.Id, amountToSubtract);
                             if (jobs.Hot != null)
                             {
-                                jobs.Hot = jobs.Hot?.AddDays(model.DateHot);
+                                if(jobs.Hot < DateTime.Now)
+                                {
+                                    jobs.Hot = DateTime.Now.AddDays(model.DateHot);
+                                }
+                                else
+                                {
+                                    jobs.Hot = jobs.Hot?.AddDays(model.DateHot);
+                                }
                             }
                             else
                             {

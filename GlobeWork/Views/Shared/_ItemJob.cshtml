@@ -1,0 +1,74 @@
+﻿@model GlobeWork.Models.JobPost
+@using GlobeWork.Utils
+@{
+    var email = ViewContext.RouteData.Values["Email"].ToString();
+    var id = ViewContext.RouteData.Values["Id"].ToString();
+}
+<div class="job bg-white detail-job active ">
+    <div class="media ">
+        <div>
+            <a href="@Url.Action("JobDetail", new {url = Model.Url})" class="job-name custom-w" data-tooltip="@Model.Name" data-tooltip-position="top">@Model.Name</a>
+            <div class="company-name">
+                @Model.Company.Name
+            </div>
+        </div>
+        <div class="media-body time-deadline text-right">
+            @if (Model.ExpirationDate != null)
+            {
+                if (Model.ExpirationDate > DateTime.Now)
+                {
+                    @:Còn <strong>@Utils.DateCountDown(Model.ExpirationDate)</strong> để ứng tuyển
+                }
+                else
+                {
+                    @:Hết thời gian ứng tuyển
+                }
+            }
+            else
+            {
+                @:Luôn tuyển
+            }
+        </div>
+    </div>
+    <div class="d-flex align-items-center justify-content-between mt-1">
+        <div class="w-75">
+            <span class="info-job price">@Html.DisplayFor(a => Model.Wages)</span>
+            <span class="info-job">
+                @if (Model.Cities.Any())
+                {
+                    if (Model.Cities.Count > 1)
+                    {
+
+                        <span data-tooltip="@string.Join(" , ", Model.Cities.Select(city => city.Name))" data-tooltip-position="top">
+                            @Model.Cities.Count Thành phố
+                        </span>
+                    }
+                    else
+                    {
+                        foreach (var city in Model.Cities.Take(1))
+                        {
+                            <span data-tooltip="@city.Name" data-tooltip-position="top">
+                                @city.Name
+                            </span>
+                        }
+                    }
+                }
+            </span>
+        </div>
+        @if (email == "")
+        {
+            <a href="@Url.Action("Login", "User" , new {returnUrl = Url.Action("JobHot")})" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+        }
+        else
+        {
+            if (Model.Likes.Any(a => a.JobId == Model.Id && a.UserID == Convert.ToInt32(id)))
+            {
+                <a href="javascripts:;" class="heart active unlikejob" data-id="@Model.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+            }
+            else
+            {
+                <a href="javascripts:;" class="heart likejob" data-id="@Model.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+            }
+        }
+    </div>
+</div>
