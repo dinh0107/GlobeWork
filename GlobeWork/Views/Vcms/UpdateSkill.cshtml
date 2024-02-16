@@ -14,22 +14,26 @@
     {
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.Id)
-        <table class="form_table">
-            <tr>
-                <td class="form_name">@Html.LabelFor(model => model.SkillName)</td>
-                <td class="form_text">@Html.EditorFor(model => model.SkillName)</td>
-            </tr>
-            <tr>
-                <td class="form_name">@Html.LabelFor(model => model.Code)</td>
-                <td class="form_text">@Html.EditorFor(model => model.Code)</td>
-            </tr>
-            <tr>
-                <td class="form_name"></td>
-                <td class="form_text">
-                    <input type="submit" class="btn quick-link" value="Cập nhật" />
-                </td>
-            </tr>
-        </table>
+    <table class="form_table">
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.SkillName)</td>
+            <td class="form_text">@Html.EditorFor(model => model.SkillName)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Code)</td>
+            <td class="form_text">@Html.EditorFor(model => model.Code)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.ShowHome)</td>
+            <td class="form_text">@Html.CheckBoxFor(model => model.ShowHome)</td>
+        </tr>
+        <tr>
+            <td class="form_name"></td>
+            <td class="form_text">
+                <input type="submit" class="btn quick-link" value="Cập nhật" />
+            </td>
+        </tr>
+    </table>
     }
 </div>
 @*@Html.Action("ListSkill", "Vcms")*@

@@ -1,5 +1,5 @@
 ﻿@model GlobeWork.ViewModel.DetailCompanyViewModel
-@using Helpers
+@using GlobeWork.Utils
 @{
     ViewBag.Title = Model.Company.Name;
     ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("JobDetail", new { url = Model.Company.Url });
@@ -7,7 +7,6 @@
     {
         ViewBag.ImageShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/company/", Model.Company.Avatar);
     }
-    var id = ViewContext.RouteData.Values["Id"].ToString();
     var email = ViewContext.RouteData.Values["Email"].ToString();
 }
 
@@ -73,21 +72,21 @@
                     {
                         if (Model.Follows.Any())
                         {
-                            <a href="javascripts:;" class="btn btn-follow unfollow" data-company-id="@Model.Company.UserId">
+                            <a href="#" class="btn btn-follow unfollow" data-company-id="@Model.Company.EmployerId">
                                 Bỏ theo dõi công ty
                             </a>
                         }
                         else
                         {
-                            <a href="javascripts:;" class="btn btn-follow follow" data-company-id="@Model.Company.UserId">
+                            <a href="#" class="btn btn-follow follow" data-company-id="@Model.Company.EmployerId">
                                 Theo dõi công ty
                             </a>
                         }
                     }
                 </div>
                 <div class="navs-employer">
-                    <a href="@Url.Action("Employer")" class="@(IsLinkActive(Url.Action("Employer")))">Trang chủ</a>
-                    <a href="@Url.Action("Recruitment")" class="@(IsLinkActive(Url.Action("Recruitment")))">Tin tuyển dụng</a>
+                    <a href="@Url.Action("Employer" ,new {url = Model.Company.Url})" class="@(IsLinkActive(Url.Action("Employer")))">Trang chủ</a>
+                    <a href="@Url.Action("Recruitment" , new {url = Model.Company.Url})" class="@(IsLinkActive(Url.Action("Recruitment")))">Tin tuyển dụng</a>
                 </div>
             </div>
         </div>
@@ -97,7 +96,7 @@
                     <div class="employer-title">Giới thiệu</div>
                     <div class="intro">
                         <div class="employer-intro">
-                            @Html.Raw(Model.Company.Body)
+                            @Html.Raw(Model.Company.Introduct)
                         </div>
                         <div class="show-more">
                             <span class="icon">Xem thêm</span> <i class="fa-sharp fa-light fa-chevron-down"></i>
@@ -151,7 +150,7 @@
                             @Html.Raw(Model.Company.VideoYoutube)
                         }
                     </div>
-                    
+
                 </div>
                 <div class="employer-left mt-3">
                     <div class="employer-title">Liên hệ</div>
@@ -188,81 +187,134 @@
             <div class="col-lg-8">
                 <div class="employer-right">
                     <div class="employer-title">Tin tuyển dụng</div>
-                    <div class="form-row employ-form">
-                        <input type="text" name="name" value="" placeholder="Nhập từ khóa" class="bg-white" />
+                    <form action="@Url.Action("Employer")" class="form-row employ-form">
+                        @Html.HiddenFor(a => a.Url)
+                        @Html.TextBoxFor(a => a.Name, new { @placeholder = "Nhập từ khóa", @class = "bg-white" })
                         <button type="submit">
                             <i class="far fa-search"></i>
                             TÌM KIẾM
                         </button>
-                    </div>
-                    <div class="job-q mb-3">
-                        Hiện tại đang tuyển dụng <span>@Model.Company.JobPosts.Count()</span> vị trí
-                    </div>
-                    @foreach (var item in Model.JobPosts)
+                    </form>
+                    @if (Model.JobPosts.Any())
                     {
-                        <div class="job bg-white detail-job @if (item.Hot != null && item.Hot > DateTime.Now) { @Html.Raw("active") } ">
-                            <div class="media ">
-                                <div>
-                                    <a href="@Url.Action("JobDetail", new {url = item.Url})" class="job-name">@item.Name</a>
-                                    <div class="company-name">
-                                        @item.Company.Name
+                        <div class="job-q mb-3">
+                            Hiện tại đang tuyển dụng <span>@Model.Company.JobPosts.Count()</span> vị trí
+                        </div>
+                        foreach (var item in Model.JobPosts)
+                        {
+                            <div class="job bg-white detail-job @if (item.Hot != null && item.Hot > DateTime.Now) { @Html.Raw("active") } ">
+                                <div class="media ">
+                                    <div>
+                                        <a href="@Url.Action("JobDetail", new {url = item.Url})" class="job-name" data-tooltip="@item.Name" data-tooltip-position="top">@item.Name</a>
+                                        <div class="company-name">
+                                            @item.Company.Name
+                                        </div>
+                                    </div>
+                                    <div class="media-body time-deadline text-right">
+                                        @if (item.ExpirationDate != null)
+                                        {
+                                            if (item.ExpirationDate > DateTime.Now)
+                                            {
+                                                @:Còn <strong>@Utils.DateCountDown(item.ExpirationDate)</strong> để ứng tuyển
+                                            }
+                                            else
+                                            {
+                                                @:Hết thời gian ứng tuyển
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @:Luôn tuyển
+                                        }
                                     </div>
                                 </div>
-                                <div class="media-body time-deadline text-right">
-                                    @if (item.ExpirationDate > DateTime.Now)
+                                <div class="d-flex align-items-center justify-content-between mt-1">
+                                    <div class="w-75">
+                                        <span class="info-job price">@Html.DisplayFor(a => item.Wages)</span>
+                                        <span class="info-job">
+                                            @if (item.Cities.Any())
+                                            {
+                                                if (item.Cities.Count > 1)
+                                                {
+
+                                                    <span data-tooltip="@string.Join(" , ", item.Cities.Select(city => city.Name))" data-tooltip-position="top">
+                                                        @item.Cities.Count Thành phố
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    foreach (var city in item.Cities.Take(1))
+                                                    {
+                                                        <span data-tooltip="@city.Name" data-tooltip-position="top">
+                                                            @city.Name
+                                                        </span>
+                                                    }
+                                                }
+                                            }
+                                        </span>
+                                    </div>
+                                    @if (email == "")
                                     {
-                                        @:Hết thời gian ứng tuyển
+                                        <a href="@Url.Action("Login", "User")" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
                                     }
                                     else
                                     {
-                                       @:Còn <strong>@Html.DateCountDown(item.ExpirationDate)</strong> để ứng tuyển
+                                        if (Model.Likes.Any(a => a.JobId == item.Id))
+                                        {
+                                            <a href="javascripts:;" class="heart active unlikejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                                        }
+                                        else
+                                        {
+                                            <a href="javascripts:;" class="heart likejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                                        }
                                     }
                                 </div>
                             </div>
-                            <div class="d-flex align-items-center justify-content-between mt-1">
-                                <div class="w-75">
-                                    <span class="info-job">12 - 20 triệu</span>
-                                    <span class="info-job">Trung Quốc</span>
-                                </div>
-                                <a href="#" class="heart active"><i class="fas fa-heart"></i></a>
-                            </div>
+                        }
+                        <a href="@Url.Action("Recruitment", new {url = Model.Company.Url})" class="view-more-job">Xem thêm công việc<i class="fal fa-long-arrow-right ml-2"></i></a>
+
+                    }
+                    else
+                    {
+                        <div class="none-suitable-job__content shadow-none">
+                            <img src="https://static.topcv.vn/v4/image/job-list/none-result.png" alt="None suitable job">
+                            <span>Chưa tìm thấy việc làm phù hợp với yêu cầu của bạn</span>
                         </div>
                     }
-                    <a href="" class="view-more-job">Xem thêm công việc<i class="fal fa-long-arrow-right ml-2"></i></a>
-
                 </div>
                 <div class="employer-right mt-3">
                     <div class="employer-title">Sản phẩm và dịch vụ</div>
                     <div class="content-detail">
-
+                        @Html.Raw(Model.Company.Product)
                     </div>
                 </div>
             </div>
         </div>
-        <div class="employer-left mt-3">
-            <div class="employer-title">Chính sách và phúc lợi</div>
-            <div class="policy">
-                @for (var i = 0; i < 4; i++)
-                {
-                    <div class="policy-item card">
-                        <img src="~/Content/images/duhoc.jpg" alt="Alternate Text" />
-                        <div class="card-body p-0">
-                            <div class="policy-name">Chính sách phát triển nhân lực</div>
-                            <div class="policy-des">
-                                Về Giáo Dục: Authentic Education Hub được sáng lập bởi các chuyên gia giáo dục và kỹ sư công nghệ thông tin đầy đam mê, có chung mục tiêu là nâng cao chất lượng giáo dục. Chúng tôi tin rằng công nghệ trí tuệ nhân tạo tiên tiến có khả năng cách mạng hóa lĩnh vực giáo dục.
-                                Về Giáo Dục: Authentic Education Hub được sáng lập bởi các chuyên gia giáo dục và kỹ sư công nghệ thông tin đầy đam mê, có chung mục tiêu là nâng cao chất lượng giáo dục. Chúng tôi tin rằng công nghệ trí tuệ nhân tạo tiên tiến có khả năng cách mạng hóa lĩnh vực giáo dục.
-                                Về Giáo Dục: Authentic Education Hub được sáng lập bởi các chuyên gia giáo dục và kỹ sư công nghệ thông tin đầy đam mê, có chung mục tiêu là nâng cao chất lượng giáo dục. Chúng tôi tin rằng công nghệ trí tuệ nhân tạo tiên tiến có khả năng cách mạng hóa lĩnh vực giáo dục.
+        @*<div class="employer-left mt-3">
+                <div class="employer-title">Chính sách và phúc lợi</div>
+                <div class="policy">
+                    @for (var i = 0; i < 4; i++)
+                    {
+                        <div class="policy-item card">
+                            <img src="~/Content/images/duhoc.jpg" alt="Alternate Text" />
+                            <div class="card-body p-0">
+                                <div class="policy-name">Chính sách phát triển nhân lực</div>
+                                <div class="policy-des">
+                                    Về Giáo Dục: Authentic Education Hub được sáng lập bởi các chuyên gia giáo dục và kỹ sư công nghệ thông tin đầy đam mê, có chung mục tiêu là nâng cao chất lượng giáo dục. Chúng tôi tin rằng công nghệ trí tuệ nhân tạo tiên tiến có khả năng cách mạng hóa lĩnh vực giáo dục.
+                                    Về Giáo Dục: Authentic Education Hub được sáng lập bởi các chuyên gia giáo dục và kỹ sư công nghệ thông tin đầy đam mê, có chung mục tiêu là nâng cao chất lượng giáo dục. Chúng tôi tin rằng công nghệ trí tuệ nhân tạo tiên tiến có khả năng cách mạng hóa lĩnh vực giáo dục.
+                                    Về Giáo Dục: Authentic Education Hub được sáng lập bởi các chuyên gia giáo dục và kỹ sư công nghệ thông tin đầy đam mê, có chung mục tiêu là nâng cao chất lượng giáo dục. Chúng tôi tin rằng công nghệ trí tuệ nhân tạo tiên tiến có khả năng cách mạng hóa lĩnh vực giáo dục.
+                                </div>
                             </div>
                         </div>
-                    </div>
-                }
-            </div>
-        </div>
+                    }
+                </div>
+            </div>*@
     </div>
 </div>
 @section scripts{
     <script>
         Details();
         ActionDetail();
+        QickLike();
     </script>
 } 

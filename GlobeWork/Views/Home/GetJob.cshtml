@@ -31,12 +31,23 @@
                 <div class="w-75">
                     <span class="info-job">@Html.DisplayFor(a => item.Wages)</span>
                     <span class="info-job">
-                        @foreach (var countruy in item.Cities)
+                        @if (item.Cities.Any())
                         {
-                            @countruy.Name
-                            if (countruy != item.Cities.Last())
+                            if (item.Cities.Count > 1)
                             {
-                                @: ,
+
+                                <span data-tooltip="@string.Join(" , ", item.Cities.Select(city => city.Name))" data-tooltip-position="top">
+                                    @item.Cities.Count Thành phố
+                                </span>
+                            }
+                            else
+                            {
+                                foreach (var city in item.Cities.Take(1))
+                                {
+                                    <span data-tooltip="@city.Name" data-tooltip-position="top">
+                                        @city.Name
+                                    </span>
+                                }
                             }
                         }
                     </span>

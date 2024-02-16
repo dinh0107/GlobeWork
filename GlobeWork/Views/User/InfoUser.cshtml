@@ -1,4 +1,8 @@
-﻿@model GlobeWork.Models.User
+﻿@model GlobeWork.ViewModel.ChangeInfoUserViewModel
+@{
+    var isNullExp = Model.ListExperiences.Count() > 0;
+    var isNullEdu = Model.ListEducations.Count() > 0;
+}
 <form class="customer-form" style="min-width:50%;">
     <div class="title--child">
         Thông tin cá nhân
@@ -6,18 +10,18 @@
     <hr />
     <div class="form-group">
         @Html.LabelFor(a => a.FullName)
-        @Html.TextBoxFor(a => a.FullName , new { @placeholder = "Nhập họ và tên" , @class="form-control"})
+        @Html.TextBoxFor(a => a.FullName, new { @placeholder = "Nhập họ và tên", @class = "form-control" })
     </div>
     <div class="form-group">
-        @Html.LabelFor(a => a.FullName)
-        <input type="text" name="name" value="" placeholder="Nhân viên văn phòng" class="form-control" />
+        @Html.LabelFor(a => a.Classtify)
+        @Html.TextBoxFor(a => a.Classtify, new { @placeholder = "Chức vụ", @class = "form-control" })
     </div>
     <div class="form-group">
         <div class="add-item add-education">
             <i class="fal fa-plus mr-2"></i>Thêm thông tin học vấn
         </div>
     </div>
-    <div class="box-education">
+    <div class="box-education" style="display: @(isNullEdu ? "block" : "none")">
         <label class="d-flex align-items-center">
             <label class="clone-item-education mr-2 rounded">
                 <i class="fal fa-plus text-white"></i>
@@ -25,19 +29,55 @@
             Học vấn
         </label>
         <div class="d-flex box-input mt-3 align-items-center">
-            <div class="left" style="width:100%; flex:1;">
-                <div class="d-flex  mt-2">
-                    <input type="text" name="name" value="" placeholder="Bắt đầu" style="width:5rem" />
-                    -
-                    <input type="text" name="name" value="" placeholder="Hiện tại" style="width:5rem" class="ml-3" />
+            @if (Model.ListEducations.Any())
+            {
+                foreach (var item in Model.ListEducations)
+                {
+                    <div class="left" style="width:100%; ">
+                        <input type="hidden" name="eduId" value="@item.Id" class="eduId" />
+                        <div class="form-group flex-row align-items-center">
+                            <div class="d-flex align-items-center  mt-2" style="gap: .55rem">
+                                @Html.TextBoxFor(a => item.StartDate, new { @placeholder = "Bắt đầu", @style = "width:7rem", @class = "start-date active" })
+                                <i class="fal fa-long-arrow-right"></i>
+                                @Html.TextBoxFor(a => item.EndDate, new { @placeholder = "Kết thúc", @class = "end-date active", @style = "width:7rem" })
+                                <div class="remove-edu" onclick="Delete(@item.Id , 1)">
+                                    <i class="fa-solid fa-trash text-danger"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(a => item.Majors, new { @placeholder = "Ngành học / Môn học", @class = "w-100 major active" })
+                            @Html.ValidationMessageFor(a => item.Majors)
+                        </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(a => item.School, new { @placeholder = "Tên trường học", @class = "mt-2 d-block w-100 school active" })
+                            @Html.ValidationMessageFor(a => item.School)
+                        </div>
+                        <div class="form-group">
+                            @Html.TextAreaFor(a => item.Description, new { @placeholder = "Mô tả quá trình học tập hoặc thành tích của bạn", @class = "border-0 mt-2 w-100 description active" })
+                        </div>
+                    </div>
+
+                }
+            }
+            else
+            {
+                <div class="left" style="width:100%; ">
+                    <div class="d-flex align-items-center  mt-2" >
+                        <div class="form-group flex-row align-items-center" style="gap: .55rem">
+                            <input type="text" name="StartDate" class="start-date" placeholder="Bắt đầu" style="width:5rem" required />
+                            <i class="fal fa-long-arrow-right"></i>
+                            <input type="text" name="EndDate" class="end-date" placeholder="Kết thúc" style="width:5rem" required />
+                            <div class="remove-edu">
+                                <i class="fa-solid fa-trash text-danger"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="text" name="Majors" class="w-50 major" placeholder="Ngành học / Môn học" required />
+                    <input type="text" name="School" class="mt-2 d-block w-50 school" placeholder="Tên trường học" required />
+                    <textarea name="Description" placeholder="Mô tả quá trình học tập hoặc thành tích của bạn" class="border-0 mt-2 w-100 description"></textarea>
                 </div>
-                <input type="text" name="name" value="" placeholder="Ngành học / Môn học" class="mt-2" />
-                <input type="text" name="name" value="" placeholder="Tên trường học" class="mt-2 d-block" />
-                <textarea class="border-0 mt-2 w-100" placeholder="Mô tả quá trình học tập hoặc thành tích của bạn"></textarea>
-            </div>
-            <div class="remove-edu">
-                <i class="fa-solid fa-trash text-danger"></i>
-            </div>
+            }
         </div>
     </div>
     <div class="form-group">
@@ -45,30 +85,65 @@
             <i class="fal fa-plus mr-2"></i>Thêm kinh nghiệm
         </div>
     </div>
-    <div class="box-experience">
+    <div class="box-experience" style="display: @(isNullExp ? "block" : "none")">
         <label class="d-flex align-items-center">
             <label class="clone-item mr-2 rounded">
                 <i class="fal fa-plus text-white"></i>
             </label>
             Kinh nghiệm làm việc
         </label>
-        <div class="d-flex box-input mt-3">
-            <div class="left">
-                <input type="text" name="name" value="" placeholder="Tên công ty" />
-                <div class="d-flex mt-2">
-                    <input type="text" name="name" value="" placeholder="Bắt đầu" style="width:5rem" />
-                    <input type="text" name="name" value="" placeholder="Hiện tại" style="width:5rem" />
+        @if (Model.ListExperiences.Any())
+        {
+            foreach (var item in Model.ListExperiences)
+            {
+                <div class="d-flex box-input mt-3 gap-9 align-items-center" data-id="@item.Id">
+                    <input type="hidden" name="expId" value="@item.Id" class="expId" />
+                    <div class="w-100 d-flex ">
+                        <div class="left mr-2">
+                            @Html.TextBoxFor(a => item.Company, new { @placeholder = "Tên công ty", @class = "w-100 company" })
+                            <div class="d-flex mt-2 align-items-center" style="gap: .55rem">
+                                @Html.TextBoxFor(a => item.StartDate, new { @placeholder = "Bắt đầu", @style = "width:50%", @class = "start-date" })
+                                <i class="fal fa-long-arrow-right"></i>
+                                @Html.TextBoxFor(a => item.EndDate, new { @placeholder = "Kết thúc", @style = "width:50%", @class = "end-date" })
+                            </div>
+                            <div class="remove text-center mt-4" onclick="Delete(@item.Id , 2)">
+                                <i class="fa-solid fa-trash text-danger"></i>
+                            </div>
+                        </div>
+                        <div class="right">
+                            @Html.TextBoxFor(a => item.Position, new { @placeholder = "Vị trí công việc", @class = "w-100 position" })
+                            @Html.TextAreaFor(a => item.Description, new { @placeholder = "Mô tả quá trình học tập hoặc thành tích của bạn", @class = "border-0 mt-2 w-100 description" })
+                        </div>
+                    </div>
+                    
                 </div>
-            </div>
-            <div class="right">
-                <input type="text" name="name" value="" placeholder="Vị trí công việc" class="w-100" />
-                <input class="mt-2 w-100" type="text" name="name" value="" placeholder="Mô tả kinh nghiệm làm việc của bạn" />
-            </div>
-            <div class="remove">
-                <i class="fa-solid fa-trash text-danger"></i>
-            </div>
-        </div>
+            }
 
+        }
+        else
+        {
+            <div class="d-flex box-input mt-3 gap-9 align-items-center">
+                <div class="w-100 d-flex ">
+                    <div class="left mr-2">
+                        <input type="text" name="Company" class="w-100 company" placeholder="Tên công ty" required />
+                        <div class="d-flex mt-2 align-items-center" style="gap: .55rem">
+                            <input type="text" name="StartDate" class="start-date" placeholder="Bắt đầu" style="width:50%" required />
+                            <i class="fal fa-long-arrow-right"></i>
+                            <input type="text" name="EndDate" class="end-date" placeholder="Kết thúc" style="width: 50%" required />
+                        </div>
+                        <div class="remove text-center mt-4">
+                            <i class="fa-solid fa-trash text-danger"></i>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <input type="text" name="Position" class="w-100 position" placeholder="Vị trí công việc" required />
+                        <textarea name="Description" placeholder="Mô tả quá trình làm việc hoặc thành tích của bạn" class="border-0 mt-2 w-100 description"></textarea>
+                    </div>
+                </div>
+                
+            </div>
+
+        }
     </div>
     <div class="form-group">
         <label>
@@ -76,10 +151,10 @@
         </label>
         <div class="d-flex" style="gap:.625rem">
             <label for="nam">
-                <input id="nam" type="radio" name="name" value="" /> Nam
+                <input id="nam" type="radio" @if (Model.Gender == "Nam") { @Html.Raw("checked") } name="Gender" value="Nam" /> Nam
             </label>
             <label for="nu">
-                <input id="nu" type="radio" name="name" value="" /> Nữ
+                <input id="nu" type="radio" @if (Model.Gender == "Nữ") { @Html.Raw("checked") } name="Gender" value="Nữ" /> Nữ
             </label>
         </div>
     </div>
@@ -89,18 +164,18 @@
         </label>
         <div class="row">
             <div class="col-lg-4">
-                <select class="form-control">
-                    <option value="">Ngày</option>
+                <select class="form-control " name="year" id="year">
+                    <option value="">Năm</option>
                 </select>
             </div>
             <div class="col-lg-4">
-                <select class="form-control">
+                <select class="form-control " name="month" id="thang">
                     <option value="">Tháng</option>
                 </select>
             </div>
             <div class="col-lg-4">
-                <select class="form-control">
-                    <option value="">Năm</option>
+                <select class="form-control " name="day" id="ngay">
+                    <option value="">Ngày</option>
                 </select>
             </div>
         </div>
@@ -109,13 +184,19 @@
         <label>
             Địa chỉ hiện tại*
         </label>
-        <input type="text" name="name" value="" placeholder="Nhập địa chỉ" class="form-control" />
+        @Html.TextBoxFor(a => a.Address , new { @placeholder = "Nhập địa chỉ" ,@class="form-control"})
+    </div>
+    <div class="form-group">
+        <label>
+            Email liên lạc*
+        </label>
+        @Html.TextBoxFor(a => a.Email, new { @placeholder = "Nhập địa chỉ email", @class = "form-control" , @disabled="" })
     </div>
     <div class="form-group">
         <label>
             Số điện thoại liên lạc*
         </label>
-        <input type="text" name="name" value="" placeholder="Thêm số điện thoại" class="form-control" />
+        @Html.TextBoxFor(a => a.Phone, new { @placeholder = "Thêm số điện thoại", @class = "form-control" })
     </div>
     <div class="form-group">
         <label>
@@ -124,7 +205,7 @@
         </label>
         <div class="row">
             <div class="col-lg-8">
-                <input type="text" name="name" value="nguyen-van-a-12356789" placeholder="Nhập liên kết" class="form-control" />
+                @Html.TextBoxFor(a => a.Url , new { @placeholder = "Nhập liên kết" ,@class="form-control"})
             </div>
             <div class="col-lg-4">
                 <div class="check-username">
@@ -138,10 +219,10 @@
         <label>
             Giới thiệu bản thân
         </label>
-        <textarea class="form-control" placeholder="Thêm mô tả bản thân để nhà tuyển dụng có thể hiểu hơn về bạn"></textarea>
+        @Html.TextAreaFor(a => a.Description , new {@class= "form-control description-user", @placeholder="Thêm mô tả bản thân để nhà tuyển dụng có thể hiểu hơn về bạn"})
     </div>
     <div class="text-center">
-        <button type="submit">
+        <button type="submit" class="form-sub ">
             Cập nhật
         </button>
     </div>
@@ -158,9 +239,11 @@
     $(".clone-item-education").on("click", function () {
         var currentBoxInputs = $(".box-education .box-input").length;
         if (currentBoxInputs < maxBoxInputs) {
-            var newBoxInput = $(".box-education .box-input").first().clone();  // Select the first .box-input
+            var newBoxInput = $(".box-education .box-input").first().clone(); 
             newBoxInput.find("input").val("");
-            $(".box-education").append(newBoxInput);  // Append the cloned box-input to .box-education
+            newBoxInput.find("textarea").val("");
+            newBoxInput.find(".remove-edu").removeAttr("onclick"); 
+            $(".box-education").append(newBoxInput); 
         }
     });
     $(".clone-item").on("click", function () {
@@ -168,6 +251,8 @@
         if (currentBoxInputs < maxBoxInputs) {
             var newBoxInput = $(".box-experience .box-input").first().clone();  // Select the first .box-input
             newBoxInput.find("input").val("");
+            newBoxInput.find("textarea").val("");
+            newBoxInput.find(".remove").removeAttr("onclick"); 
             $(".box-experience").append(newBoxInput);  // Append the cloned box-input to .box-education
         }
     });
@@ -177,4 +262,176 @@
     $(document).on("click", ".remove", function () {
         $(this).closest('.box-input').remove();
     });
+
+    $(".customer-form").submit(function (event) {
+        event.preventDefault();
+
+        var formData = {
+            FullName: $("input[name='FullName']").val(),
+            Classtify: $("input[name='Classtify']").val(),
+            Email: $("input[name='Email']").val(),
+            Address: $("input[name='Address']").val(),
+            Phone: $("input[name='Phone']").val(),
+            Url: $("input[name='Url']").val(),
+            Gender: $("input[name='Gender']").val(),
+            Description: $(".description-user").val(),
+            Date: $("#ngay").val(),
+            Month: $("#thang").val(),
+            Year: $("#year").val(),
+            Experiences: [],
+            Educations: []
+        };
+
+        $(".box-education .box-input").each(function () {
+            var educationData = {
+                StartDate: $(this).find(".start-date").val(),
+                EndDate: $(this).find(".end-date").val(),
+                Majors: $(this).find(".major").val(),
+                School: $(this).find(".school").val(),
+                Description: $(this).find(".description").val(),
+                Id: $(this).find(".eduId").val()
+            };
+
+            formData.Educations.push(educationData);
+        });
+        $(".box-experience .box-input").each(function () {
+            var experienceData = {
+                StartDate: $(this).find(".start-date").val(),
+                EndDate: $(this).find(".end-date").val(),
+                Company: $(this).find(".company").val(),
+                Position: $(this).find(".position").val(),
+                Description: $(this).find(".description").val(),
+                Id: $(this).find(".expId").val(),
+            };
+
+            formData.Experiences.push(experienceData);
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "/User/UpdateCv",
+            contentType: "application/json",
+            data: JSON.stringify(formData),
+            success: function (response) {
+                console.log(response)
+                new Notify({
+                    status: 'success',
+                    text: "Cập nhật thông tin thành công",
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+                $.fancybox.close()
+            },
+            error: function (error) {
+                new Notify({
+                    status: 'error',
+                    text: "Đã xảy ra lỗi khi cập nhật thông tin",
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            }
+        });
+    });
+    $('#Url').on('input', function () {
+        var inputText = $(this).val().toLowerCase();
+        var slug = convertToSlug(inputText);
+        $(this).val(slug);
+        $.post("/User/CheckUrl", { url: slug }, function (data) {
+            if (data) {
+                $('.check-username').html('<i class="fal fa-check"></i> Liên kết khả dụng');
+                $('.form-sub').prop('disabled', false); // Kích hoạt nút submit
+            } else {
+                $('.check-username').html('<i class="fal fa-times"></i> Liên kết không khả dụng');
+                $('.form-sub').prop('disabled', true); // Vô hiệu hóa nút submit
+            }
+        });
+    });
+    function convertToSlug(text) {
+        text = text.toLowerCase();
+        var from = "àáảãạăắằẳẵặâấầẩẫậèéẻẽẹêếềểễệìíỉĩịòóỏõọôốồổỗộơớờởỡợùúủũụưứừửữựỳýỷỹỵđ";
+        var to = "aaaaaaaaaaaaaaaaaeeeeeeeeeeeiiiiiooooooooooooooooouuuuuuuuuuuyyyyyd";
+        for (var i = 0, l = from.length; i < l; i++) {
+            text = text.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+        }
+        text = text.replace(/\s+/g, '-');
+        return text;
+    }
+    var modelMonth = @Model.Month;
+    var modelYear = @Model.Year;
+    var modelDate =  @Model.Date;
+
+    var namSelect = $("#year");
+    for (var i = 1900; i <= 2100; i++) {
+        var option = $('<option></option>').val(i).html(i);
+        if (i === modelYear) {
+            option.attr('selected', true);
+        }
+        namSelect.append(option);
+    }
+    // Đổ giá trị cho tháng
+    var thangSelect = $("#thang");
+    for (var i = 1; i <= 12; i++) {
+        var option = $('<option></option>').val(i).html(i);
+        if (i === modelMonth) {
+            option.attr('selected', true);
+        }
+        thangSelect.append(option);
+    }
+
+    // Đổ giá trị cho ngày
+    var ngaySelect = $("#ngay");
+    for (var i = 1; i <= 31; i++) {
+        var option = $('<option></option>').val(i).html(i);
+        if (i === modelDate) {
+            option.attr('selected', true);
+        }
+        ngaySelect.append(option);
+    }
+
+    // Kiểm tra năm có phải là năm nhuận không
+    function isLeapYear(year) {
+        return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+    }
+
+    // Sự kiện thay đổi giá trị năm
+    $("#nam").change(function () {
+        var nam = $(this).val(); // Lấy giá trị năm từ select box
+        if (isLeapYear(parseInt(nam))) {
+            console.log(nam + " là năm nhuận");
+        } else {
+            console.log(nam + " không phải là năm nhuận");
+        }
+    });
+    function Delete(id, type) {
+        if (confirm("Bạn có chắc chắn xóa nó này không?")) {
+            $.post("/User/RemoveInfo", { id: id, type: type }, function (data) {
+                if (data.success) {
+                    alert(data.message); 
+                    $(this).closest('.box-input').remove();
+                } else {
+                    alert(data.message); 
+                }
+            }).fail(function () {
+                alert("Quá trình thực hiện không thành công"); 
+            });
+        }
+    }
+
+
 </script>

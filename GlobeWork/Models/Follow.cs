@@ -1,24 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace GlobeWork.Models
 {
     public class Follow
     {
         public int Id { get; set; }
+        [Display(Name ="Tài khoản")]
         public int UserId { get; set; }
         public int CompanyId { get; set; }
-        public User User { get; set; } 
-        public Company Company { get; set; } 
+        public virtual User User { get; set; } 
+        public virtual Company Company { get; set; } 
     }
     public class Like
     {
         public int Id { get; set; }
         public int UserID { get; set; }
         public int JobId { get; set; }
-        public User User { get; set; }
-        public JobPost JobPost { get; set; }
+        public virtual User User { get; set; }
+        public virtual JobPost JobPost { get; set; }
     }
 }

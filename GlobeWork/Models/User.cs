@@ -22,10 +22,14 @@ namespace GlobeWork.Models
         public string Phone { get; set; }
         [StringLength(500)]
         public string Avatar { get; set; }
+        [StringLength(500)]
+        public string Cover { get; set; }
         [Display(Name = "Hoạt động")]
         public bool Active { get; set; }
         public string Url { get; set; }
-        [Display(Name = "Hoạt động")]
+        public DateTime? DateOfBirth { get; set; }
+        public string Description { get; set; }
+        [Display(Name = "Địa chỉ")]
         public string Address { get; set; }
         [Display(Name = "Giới tính")]
         public string  Gender { get; set; }
@@ -40,11 +44,14 @@ namespace GlobeWork.Models
         //Linkedin Info
         public string LinkedinId { get; set; }
         public string Token { get; set; }
-
         public DateTime CreateDate { get; set; }
         public TypeRegister TypeRegister { get; set; }
-        public ICollection<Follow> Followers { get; set; }
-        public ICollection<Like> Likes { get; set; }
+        public virtual Skill Skill { get; set; }
+        public virtual ICollection<UserLog> UserLog { get; set; }
+        public virtual ICollection<Education> Educations { get; set; }
+        public virtual ICollection<Experiences> Experiences { get; set; }
+        public virtual ICollection<Certificate> Certificates { get; set; }
+        public virtual ICollection<Project> Projects { get; set; }
         public User()
         {
             CreateDate = DateTime.Now;
@@ -62,5 +69,74 @@ namespace GlobeWork.Models
         Google,
         [Display(Name = "Linkedin")]
         Linkedin,
+    }
+    public class UserLog
+    {
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public string Content { get; set; }
+        public DateTime CreateDate { get; set; }
+        public virtual User User { get; set; }
+        public bool Status { get; set; }
+        public UserLog()
+        {
+            CreateDate = DateTime.Now;
+        }
+    }
+    public class Education
+    {
+        public int Id { get; set; }
+        [Required(ErrorMessage = "Chưa nhập ngành học")]
+        public string Majors { get; set; }
+        [Required(ErrorMessage = "Chưa nhập tên trường")]
+        public string School { get; set; }
+        [Display(Name = "Mô tả"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextArea")]
+        public string Description { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
+    }
+    public class Experiences
+    {
+        public int Id { get; set; }
+        [Required(ErrorMessage = "Chưa nhập vị trí")]
+        public string Position { get; set; }
+        [Required(ErrorMessage = "Chưa nhập tên công ty")]
+        public string Company { get; set; }
+        [Display(Name = "Mô tả"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextArea")]
+        public string Description { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
+
+        public int UserId { get; set; }
+        public User User { get; set; }
+    }
+    public class Certificate
+    {
+        public int Id { get; set; }
+        [Required(ErrorMessage = "Tên chứng chỉ")]
+        public string Name { get; set; }
+        [Display(Name = "Mô tả"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextArea")]
+        public string Description { get; set; }
+        public DateTime? Date { get; set; }
+        public int UserId { get; set; }
+        [StringLength(500)]
+        public string Url { get; set; }
+        public User User { get; set; }
+    }
+    public class Project
+    {
+        public int Id { get; set; }
+        [Required(ErrorMessage = "Tên dự án")]
+        public string Name { get; set; }
+        [Display(Name = "Mô tả"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextArea")]
+        public string Description { get; set; }
+        public DateTime? StarDate { get; set; }
+        public DateTime? EndDate { get; set; }
+        public int UserId { get; set; }
+        [StringLength(500)]
+        public string Url { get; set; }
+        public User User { get; set; }
     }
 }

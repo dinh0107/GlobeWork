@@ -26,6 +26,7 @@
         {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true)
+            @Html.Hidden("returnUrl", Request.QueryString["returnUrl"])
             @Html.LabelFor(a => a.Email)
             <div class="form-group form-control control-user">
                 <i class="fas fa-envelope"></i>

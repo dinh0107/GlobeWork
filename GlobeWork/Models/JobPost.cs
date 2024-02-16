@@ -78,7 +78,7 @@ namespace GlobeWork.Models
         public virtual ICollection<Candidate> Candidates { get; set; }
         public virtual ICollection<Skill> Skills { get; set; }
         public virtual ICollection<ApplyJob> ApplyJobs { get; set; }
-        public ICollection<Like> Likes { get; set; }
+        public virtual ICollection<Like> Likes { get; set; }
         [Display(Name = "Mức lương")]
         public Wage Wages { get; set; }
         public Experience Experiences { get; set; }

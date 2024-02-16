@@ -1,0 +1,148 @@
+﻿@model GlobeWork.ViewModel.UserApplyViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Công việc đã ứng tuyển";
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ListApply");
+}
+<div class="bg-light py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="bg-white shadow p-3 rounded">
+                    <div class="w-100 d-flex align-items-center justify-content-between">
+                        <div class="title w-100">
+                            Công việc đã ứng tuyển
+                        </div>
+                        <select class="form-control w-25" name="status" onchange="window.location.href='/user/lich-su-ung-tuyen?status='+this.value" }>
+                            <option value="">Trạng thái</option>
+                            <option @if (Model.Status == 0) { @Html.Raw("selected") } value="0">Đã ứng tuyển</option>
+                            <option @if (Model.Status == 1) { @Html.Raw("selected") } value="1">NTD đã xem CV</option>
+                            <option @if (Model.Status == 2) { @Html.Raw("selected") } value="2">Hồ sơ phù hợp</option>
+                            <option @if (Model.Status == 3) { @Html.Raw("selected") } value="3">Hồ sơ chưa phù hợp</option>
+                        </select>
+                    </div>
+                    @if (Model.ApplyJobs.Any())
+                    {
+                        foreach (var item in Model.ApplyJobs)
+                        {
+                            <div class="job border bg-white hot mt-4">
+
+                                <div class="media align-items-start">
+                                    <div class="company-avata border rounded">
+                                        @if (item.JobPost.Company.Avatar != null)
+                                        {
+                                            <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.JobPost.Company.Avatar)" alt="@item.JobPost.Company.Name" class="lazyload job-avt " />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Content/images/avatar-default.jpg" alt="@item.JobPost.Company.Name" class="lazyload job-avt " />
+                                        }
+                                    </div>
+                                    <div class="media-body ml-2">
+                                        <a href="@Url.Action("JobDetail","Home", new {url = item.JobPost.Url})" class="job-name" data-tooltip="@item.JobPost.Name" data-tooltip-position="top">@item.JobPost.Name</a>
+                                        <div class="company-name" data-tooltip="@item.JobPost.Company.Name" data-tooltip-position="top">
+                                            @item.JobPost.Company.Name
+                                        </div>
+                                        <div class="time-apply">
+                                            Thời gian ứng tuyển: @item.CreateDate
+                                        </div>
+                                        <hr />
+                                        <div class="cv-apply-status-text">
+                                            Trạng thái: @Html.DisplayFor(a => item.Status)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        if (Model.ApplyJobs.PageCount > 1)
+                        {
+                            <div class="text-center mt-3">
+                                @Html.PagedListPager(Model.ApplyJobs, page => Url.Action("ListApply", new { page, status = Model.Status }))
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="none-suitable-job__content shadow-none">
+                            <img src="https://static.topcv.vn/v4/image/job-list/none-result.png" alt="None suitable job">
+                            <span>Bạn chưa ứng tuyển công việc nào!</span>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="bg-white shadow p-3 round">
+                    <canvas id="myChart" width="400" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+@section scripts{
+    <script>
+        $.ajax({
+            url: '/user/lich-su-ung-tuyen/json',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                var statusCounts = countStatus(data);
+
+                var labels = ['Đã ứng tuyển', 'NTD đã xem hồ sơ', 'Hồ sơ phù hợp', 'Hồ sơ chưa phù hợp'];
+                var values = Object.values(statusCounts);
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'pie', 
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Số lượng',
+                            data: values,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true // Loại bỏ việc giữ tỷ lệ khung hình
+                    }
+                });
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.error('Error:', errorThrown);
+                alert('Đã xảy ra lỗi khi tải dữ liệu. Vui lòng thử lại sau.');
+            }
+        });
+
+        // Hàm để đếm số lượng theo từng trạng thái
+        function countStatus(data) {
+            var counts = {};
+            data.forEach(function (item) {
+                if (counts[item.Status] === undefined) {
+                    counts[item.Status] = 1;
+                } else {
+                    counts[item.Status]++;
+                }
+            });
+            return counts;
+        }
+
+
+    </script>
+}

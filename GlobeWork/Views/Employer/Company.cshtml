@@ -19,7 +19,7 @@
                     @Html.ValidationSummary(true)
                     if (Model.Company != null)
                     {
-                        @Html.HiddenFor(a => a.Company.UserId)
+                        @Html.HiddenFor(a => a.Company.EmployerId)
                         <div class="company-cover-inner">
                             <div class="cover-wrapper d-block position-relative">
                                 @if (Model.Company.Cover != null)
@@ -104,7 +104,7 @@
                         <div class="col-lg-12">
                             <div class="form-group">
                                 @Html.LabelFor(a => a.Company.WebsiteUrl)
-                                @Html.TextBoxFor(a => a.Company.WebsiteUrl, new { @class = "form-control", @placeholder = "Website công ty" })
+                                @Html.TextBoxFor(a => a.Company.WebsiteUrl, new { @class = "form-control", @placeholder = "Website công ty" , @type="url" })
                                 @Html.ValidationMessageFor(a => a.Company.WebsiteUrl)
                             </div>
                         </div>

@@ -97,6 +97,20 @@ $(document).ready(function () {
         search: true,
         multiple: true,
         showValueAsTags: true,
+        maxValues: 4,
+    });
+    $('.datetimepicker').datetimepicker({
+        format: 'd/m/Y H:i',
+        vi: {
+            months: [
+                "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
+            ],
+            dayOfWeekShort: [
+                "CN", "T2", "T3", "T4", "T5", "T6", "T7"
+            ],
+            dayOfWeek: ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"]
+        },
+        minDate: new Date()
     });
 
     $("textarea.ckeditor").ckeditor();

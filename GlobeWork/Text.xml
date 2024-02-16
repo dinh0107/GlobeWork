@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Text>
+	<Item>
+		<Sort>
+			1
+		</Sort>
+		<Title>
+			Tìm công việc mơ ước của bạn.
+			Thăng tiến ngay hôm nay
+		</Title>
+		<Des>Công việc của chúng tôi được cập nhật hàng giờ với hàng trăm vị trí việc làm mới, có thể bạn sẽ quan tâm</Des>
+	</Item>
+	<Item>
+		<Sort>
+			2
+		</Sort>
+		<Title>
+			Tìm việc làm nhanh 24h, việc làm mới nhất trên toàn quốc.
+		</Title>
+		<Des>Tiếp cận 40,000+ tin tuyển dụng việc làm mỗi ngày từ hàng nghìn doanh nghiệp uy tín tại Việt Nam</Des>
+	</Item>
+	<Item>
+		<Sort>
+			3
+		</Sort>
+		<Title>
+			Khám phá 100.000+ công ty nổi bật
+		</Title>
+		<Des>Tra cứu thông tin công ty và tìm kiếm nơi làm việc tốt nhất dành cho bạn </Des>
+	</Item>
+</Text>

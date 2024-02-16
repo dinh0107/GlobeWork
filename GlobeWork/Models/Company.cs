@@ -9,7 +9,7 @@ namespace GlobeWork.Models
     {
         [Key]
         [ForeignKey("Employer")]
-        public int UserId { get; set; }
+        public int EmployerId { get; set; }
         [Display(Name = "Tên công ty"), Required(ErrorMessage = "Hãy nhập tên công ty"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự"), UIHint("TextBox")]
         public string Name { get; set; }
         [Display(Name = "WebSite"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự"), UIHint("TextBox")]
@@ -52,7 +52,7 @@ namespace GlobeWork.Models
         public virtual Employer Employer { get; set; }
         public virtual ICollection<JobPost> JobPosts { get; set; }
         public virtual ICollection<Candidate> Candidates { get; set; }
-        public ICollection<Follow> Followers { get; set; }
+        public virtual ICollection<Follow> Followers { get; set; }
         public Company()
         {
             ShowHome = false;

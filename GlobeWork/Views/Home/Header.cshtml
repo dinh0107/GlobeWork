@@ -2,6 +2,7 @@
     var FullName = ViewContext.RouteData.Values["FullName"].ToString();
     var id = ViewContext.RouteData.Values["Id"].ToString();
     var avatar = ViewContext.RouteData.Values["Avatar"].ToString();
+    var url = ViewContext.RouteData.Values["Url"].ToString();
     var email = ViewContext.RouteData.Values["Email"].ToString();
 }
 <header class="shadow">
@@ -32,6 +33,7 @@
                 }
                 else
                 {
+                    @Html.Action("Notify", "User")
                     <div class="navbar-right__item group media">
                         @if (avatar == "")
                         {
@@ -62,9 +64,21 @@
                                 </div>
                             </div>
                             <hr />
-                            <a href="@Url.Action("UserProfile", "User")" class="navbar-btn">
+                            <a href="@Url.Action("UserProfile", "Home" , new {url = url })" class="navbar-btn">
                                 <i class="icon fa-regular fa-pen-to-square"></i>
                                 Thông tin cá nhân
+                            </a>
+                            <a href="@Url.Action("ListApply", "User")" class="navbar-btn">
+                                <i class="fa-solid fa-handshake"></i>
+                                Công việc đã ứng tuyển
+                            </a>
+                            <a href="@Url.Action("ListFollow", "User")" class="navbar-btn">
+                                <i class="fal fa-briefcase"></i>
+                                Công ty đã theo dõi
+                            </a>
+                            <a href="@Url.Action("ListLike", "User")" class="navbar-btn">
+                                <i class="fas fa-heart"></i>
+                                Việc làm đã lưu
                             </a>
                             <a href="" class="navbar-btn">
                                 <i class="icon fa-regular fa-lock"></i>

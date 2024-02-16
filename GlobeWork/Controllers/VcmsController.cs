@@ -10,6 +10,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace GlobeWork.Controllers
 {
@@ -1072,6 +1074,59 @@ namespace GlobeWork.Controllers
         }
         #endregion
 
+        #region Text
+        public ActionResult ListTitle()
+        {
+            string xmlFilePath = Server.MapPath("~/Text.xml");
+            XDocument xmlDoc = XDocument.Load(xmlFilePath);
+
+            List<Item> items = xmlDoc.Root.Elements("Item")
+                .Select(item => new Item
+                {
+                    Sort = (int)item.Element("Sort"),
+                    Title = item.Element("Title").Value,
+                    Description = item.Element("Des").Value,
+                })
+                .ToList();
+
+            return View(items);
+        }
+        public ActionResult EditTitle(int sort = 0)
+        {
+            string xmlFilePath = Server.MapPath("~/Text.xml");
+            XDocument xmlDoc = XDocument.Load(xmlFilePath);
+            XElement itemElement = xmlDoc.Descendants("Item")
+                                         .FirstOrDefault(x => (int)x.Element("Sort") == sort);
+            if (itemElement == null)
+            {
+                return RedirectToAction("ListTitle");
+            }
+            Item model = new Item
+            {
+                Sort = (int)itemElement.Element("Sort"),
+                Title = itemElement.Element("Title").Value,
+                Description = itemElement.Element("Des").Value,
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult EditTitle(Item updatedItem)
+        {
+            string xmlFilePath = Server.MapPath("~/Text.xml");
+            XDocument xmlDoc = XDocument.Load(xmlFilePath);
+            XElement itemElement = xmlDoc.Descendants("Item")
+                                         .FirstOrDefault(x => (int)x.Element("Sort") == updatedItem.Sort);
+            if (itemElement == null)
+            {
+                return RedirectToAction("ListTitle");
+            }
+            itemElement.SetElementValue("Title", updatedItem.Title);
+            itemElement.SetElementValue("Des", updatedItem.Description);
+            xmlDoc.Save(xmlFilePath);
+            return RedirectToAction("ListTitle");
+        }
+        #endregion
         protected override void Dispose(bool disposing)
         {
             _unitOfWork.Dispose();
