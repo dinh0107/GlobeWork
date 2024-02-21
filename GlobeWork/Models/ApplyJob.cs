@@ -8,9 +8,11 @@ namespace GlobeWork.Models
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public int JobPostId { get; set; }
+        public int? JobPostId { get; set; }
+        public int? StudyAbroadId { get; set; }
         [Display(Name = "Lời nhắn"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), DataType(DataType.MultilineText)]
         public string Body { get; set; }
+        public int CompanyId { get; set; }
         [Display(Name = "File CV")]
         public string FileUpload { get; set; }
         public string Url { get; set; }
@@ -18,8 +20,9 @@ namespace GlobeWork.Models
         public TypeApply TypeApply { get; set; }
 
         public DateTime CreateDate { get; set; }
-        //public virtual Candidate Candidate { get; set; }
         public virtual JobPost JobPost { get; set; }
+        public virtual StudyAbroad StudyAbroad { get; set; }
+        public virtual User  User { get; set; }
 
         public ApplyJob()
         {

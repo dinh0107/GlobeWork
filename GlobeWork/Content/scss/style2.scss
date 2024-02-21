@@ -87,7 +87,10 @@
         left: calc($widthArrow * -1.5);
     }
 }
-
+.banner-cat {
+    width: 100%;
+    object-fit: cover;
+}
 .item-scholarship {
     overflow: hidden;
     border: none;
@@ -103,9 +106,11 @@
 
     img {
         width: 100%;
+        object-fit: cover;
+        height: 205px;
     }
 
-    .card-title * {
+    .card-title {
         color: $text-title;
         font-size: 1rem;
         font-weight: 600;
@@ -995,16 +1000,19 @@ $timeColo: #2d7cf1;
 
 .vitae {
     gap: 1rem;
-    margin-bottom: 1rem;
-
+    padding: 1rem 0;
+    border-bottom:2px solid $blur;
     > img {
         width: 5rem;
         height: 5rem;
         border-radius: 50%;
     }
 
-    h3{
+    .apply-name {
         font-size: 1.25rem;
+        font-weight: 600;
+        @include truncate(1);
+        margin-bottom: .5rem;
     }
 
     ul {
@@ -1012,7 +1020,7 @@ $timeColo: #2d7cf1;
         flex-direction: column;
         justify-content: space-between;
         gap: 6px;
-        width: max-content;
+        width: 100%;
         height: 10rem;
         padding: 20px;
         margin: 0;
@@ -1027,11 +1035,12 @@ $timeColo: #2d7cf1;
     li {
         display: flex;
         gap: 6px;
-        align-items: center;
+        align-items: baseline;
     }
 
     .media-body.des {
         height: 12rem;
+        width: 18rem;
         flex: auto;
         overflow-y: auto;
     }
@@ -1052,4 +1061,30 @@ $timeColo: #2d7cf1;
         font-size: .75rem;
         border-radius: 50%;
     }
+}
+.tag {
+    position: absolute;
+    width: 5rem;
+    color: #fff;
+    text-align: center;
+    /*background: #d92027;*/
+    justify-content: center;
+    line-height: 1rem;
+    border-radius: 5px;
+    top: -4%;
+    right: 0.5rem;
+    font-size: .7rem;
+
+    &.success {
+        background: $green;
+    }
+
+    &.error {
+        background: #d92027;
+    }
+}
+.img-a{
+    width:100px;
+    object-fit:cover;
+    aspect-ratio:1.5;
 }

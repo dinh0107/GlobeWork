@@ -14,6 +14,8 @@ using System.Web.UI.WebControls;
 using System.Collections.Generic;
 using PagedList;
 using System.Data.Entity;
+using System.Threading.Tasks;
+using Microsoft.Ajax.Utilities;
 
 namespace GlobeWork.Controllers
 {
@@ -26,7 +28,7 @@ namespace GlobeWork.Controllers
         public SelectList CitySelectList => new SelectList(_unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)), "Id", "Name");
         public SelectList DistrictSelectList(int? cityId) => new SelectList(_unitOfWork.DistrictRepository.Get(a => a.Active && a.CityId == cityId, q => q.OrderBy(a => a.Sort)), "Id", "Name");
         public ConfigSite ConfigSite => (ConfigSite)HttpContext.Application["ConfigSite"];
-        private IEnumerable<StudyAbroadCategory> StudyAbroadCategories() => _unitOfWork.StudyAbroadCategoryRepository.GetQuery(a => a.Active , o => o.OrderBy(a => a.Sort));
+        private IEnumerable<StudyAbroadCategory> StudyAbroadCategories() => _unitOfWork.StudyAbroadCategoryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort));
 
         #region Login 
         [OverrideActionFilters, Route("nha-tuyen-dung")]
@@ -132,7 +134,6 @@ namespace GlobeWork.Controllers
         #endregion
 
         #region Notify
-
         public PartialViewResult Notify()
         {
             var log = _unitOfWork.EmployerLogRepository.GetQuery(a => a.UserId == User.Id, o => o.OrderByDescending(a => a.CreateDate));
@@ -270,6 +271,11 @@ namespace GlobeWork.Controllers
                         {
                             isPost = false;
                             ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg");
+                            model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                            model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                            model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
+                            model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            return View(model);
                         }
                         else
                         {
@@ -277,6 +283,11 @@ namespace GlobeWork.Controllers
                             {
                                 isPost = false;
                                 ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
+                                model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                                model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                                model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
+                                model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                                return View(model);
                             }
                             else
                             {
@@ -297,6 +308,11 @@ namespace GlobeWork.Controllers
                         {
                             isPost = false;
                             ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg");
+                            model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                            model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                            model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
+                            model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            return View(model);
                         }
                         else
                         {
@@ -304,6 +320,11 @@ namespace GlobeWork.Controllers
                             {
                                 isPost = false;
                                 ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
+                                model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                                model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                                model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
+                                model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                                return View(model);
                             }
                             else
                             {
@@ -320,6 +341,51 @@ namespace GlobeWork.Controllers
                     }
                     if (isPost)
                     {
+                        if (model.DateHot > 0)
+                        {
+                            if (User.Amount != 0)
+                            {
+                                int amountToSubtract = Convert.ToInt32((ConfigSite.PriceCompany ?? 30000) * model.DateHot);
+                                string formattedAmountToSubtract = amountToSubtract.ToString("#,0") + "đ";
+                                if (amountToSubtract < User.Amount)
+                                {
+                                    User.Amount -= amountToSubtract;
+                                    Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + "</strong> để hiển thị tin <strong>Công ty</strong>" + "<strong class='text-danger'>" + model.DateHot + "</strong> ngày ở mục nổi bật", EmployerLogType.Deduction, User.Id, amountToSubtract);
+                                    model.Company.Vipdate = DateTime.Now.AddDays(model.DateHot);
+                                    //Update cookie
+                                    HttpCookie cookie = Request.Cookies[".ASPXAUTHEMPLOYER"];
+                                    if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
+                                    {
+                                        var userData = User.Avatar + "|" + User.Id + "|" + User.Email + "|" + User.FullName + "|" + User.Amount;
+                                        var ticket = new FormsAuthenticationTicket(2, User.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
+                                            userData, FormsAuthentication.FormsCookiePath);
+                                        var encTicket = FormsAuthentication.Encrypt(ticket);
+                                        HttpCookie updatedCookie = new HttpCookie(".ASPXAUTHEMPLOYER");
+                                        updatedCookie.Value = encTicket;
+                                        updatedCookie.Expires = DateTime.Now.AddDays(30);
+                                        Response.SetCookie(updatedCookie);
+                                    }
+                                }
+                                else
+                                {
+                                    ModelState.AddModelError("", @"Số tiền trong tài khoản của bạn không đủ vui lòng nạp tiền để tiếp tục sử dụng");
+                                    model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                                    model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                                    model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
+                                    model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                                    return View(model);
+                                }
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", @"Số tiền trong tài khoản của bạn không đủ vui lòng nạp tiền để tiếp tục sử dụng");
+                                model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                                model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                                model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
+                                model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                                return View(model);
+                            }
+                        }
                         model.Company.EmployerId = User.Id;
                         model.Company.Url = HtmlHelpers.ConvertToUnSign(null, model.Company.Url ?? model.Company.Name);
                         model.Company.CityId = Convert.ToInt32(fc["city"]);
@@ -340,8 +406,8 @@ namespace GlobeWork.Controllers
                             }
                             _unitOfWork.Save();
                         }
-                        var urlCount = _unitOfWork.CompanyRepository.GetQuery(a => a.Url == model.Company.Url ).Count();
-                        if(urlCount > 1)
+                        var urlCount = _unitOfWork.CompanyRepository.GetQuery(a => a.Url == model.Company.Url).Count();
+                        if (urlCount > 1)
                         {
                             model.Company.Url += "-" + model.Company.EmployerId;
                             _unitOfWork.Save();
@@ -360,7 +426,10 @@ namespace GlobeWork.Controllers
                     if (avatar.ContentType != "image/jpeg" & avatar.ContentType != "image/png" && avatar.ContentType != "image/gif")
                     {
                         ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg");
+                        model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                         model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                        model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
+                        model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
                         return View(model);
                     }
                     else
@@ -368,7 +437,10 @@ namespace GlobeWork.Controllers
                         if (avatar.ContentLength > 4000 * 1024)
                         {
                             ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
+                            model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                             model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                            model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
+                            model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
                             return View(model);
                         }
                         else
@@ -389,7 +461,10 @@ namespace GlobeWork.Controllers
                     if (cover.ContentType != "image/jpeg" & cover.ContentType != "image/png" && cover.ContentType != "image/gif")
                     {
                         ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg");
+                        model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                         model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                        model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
+                        model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
                         return View(model);
                     }
                     else
@@ -397,7 +472,10 @@ namespace GlobeWork.Controllers
                         if (cover.ContentLength > 4000 * 1024)
                         {
                             ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
+                            model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                             model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                            model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
+                            model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
                             return View(model);
                         }
                         else
@@ -413,6 +491,65 @@ namespace GlobeWork.Controllers
                         }
                     }
                 }
+                if (model.DateHot > 0)
+                {
+                    if (User.Amount != 0)
+                    {
+                        int amountToSubtract = Convert.ToInt32((ConfigSite.PriceCompany ?? 30000) * model.DateHot);
+                        string formattedAmountToSubtract = amountToSubtract.ToString("#,0") + "đ";
+                        if (amountToSubtract < User.Amount)
+                        {
+                            User.Amount -= amountToSubtract;
+                            Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + "</strong> để hiển thị tin <strong>Công ty</strong>" + "<strong class='text-danger'>" + model.DateHot + "</strong> ngày ở mục nổi bật", EmployerLogType.Deduction, User.Id, amountToSubtract);
+                            if (company.Vipdate != null)
+                            {
+                                if (company.Vipdate < DateTime.Now)
+                                {
+                                    company.Vipdate = DateTime.Now.AddDays(model.DateHot);
+                                }
+                                else
+                                {
+                                    company.Vipdate = company.Vipdate.AddDays(model.DateHot);
+                                }
+                            }
+                            else
+                            {
+                                company.Vipdate = DateTime.Now.AddDays(model.DateHot);
+                            }
+                            //Update cookie
+                            HttpCookie cookie = Request.Cookies[".ASPXAUTHEMPLOYER"];
+                            if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
+                            {
+                                var userData = User.Avatar + "|" + User.Id + "|" + User.Email + "|" + User.FullName + "|" + User.Amount;
+                                var ticket = new FormsAuthenticationTicket(2, User.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
+                                    userData, FormsAuthentication.FormsCookiePath);
+                                var encTicket = FormsAuthentication.Encrypt(ticket);
+                                HttpCookie updatedCookie = new HttpCookie(".ASPXAUTHEMPLOYER");
+                                updatedCookie.Value = encTicket;
+                                updatedCookie.Expires = DateTime.Now.AddDays(30);
+                                Response.SetCookie(updatedCookie);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", @"Số tiền trong tài khoản của bạn không đủ vui lòng nạp tiền để tiếp tục sử dụng");
+                            model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                            model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                            model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
+                            model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            return View(model);
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", @"Số tiền trong tài khoản của bạn không đủ vui lòng nạp tiền để tiếp tục sử dụng");
+                        model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                        model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                        model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
+                        model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                        return View(model);
+                    }
+                }
                 company.Name = model.Company.Name;
                 company.WebsiteUrl = model.Company.WebsiteUrl;
                 company.Address = model.Company.Address;
@@ -423,6 +560,7 @@ namespace GlobeWork.Controllers
                 company.Product = model.Company.Product;
                 company.GoogleMap = model.Company.GoogleMap;
                 company.VideoYoutube = model.Company.VideoYoutube;
+                company.Age = model.Company.Age;
                 company.CityId = Convert.ToInt32(fc["city"]);
                 company.Url = HtmlHelpers.ConvertToUnSign(null, company.Url ?? company.Name);
                 _unitOfWork.CompanyRepository.Update(company);
@@ -455,6 +593,7 @@ namespace GlobeWork.Controllers
         [ChildActionOnly]
         public PartialViewResult Header()
         {
+            
             return PartialView();
         }
         [ChildActionOnly]
@@ -462,13 +601,13 @@ namespace GlobeWork.Controllers
         {
             return PartialView();
         }
-        
+
         [Route("dashboad")]
         public ActionResult Index(string result = "")
         {
             ViewBag.Result = result;
             var log = _unitOfWork.EmployerLogRepository.GetQuery(a => a.UserId == User.Id && a.EmployerLogType == EmployerLogType.Deduction);
-            decimal totalAmount = 0; 
+            decimal totalAmount = 0;
             if (log != null)
             {
                 foreach (var item in log)
@@ -505,10 +644,173 @@ namespace GlobeWork.Controllers
         {
             return View();
         }
-
-        public ActionResult ListCV()
+        [Route("danh-sach-ung-tuyen")]
+        public ActionResult ListCV(int? page, int? status, int jobId = 0, string name = "" , int type = 0)
         {
-            return View();
+            var pageNumber = page ?? 1;
+            var apply = _unitOfWork.ApplyJobRepository.GetQuery(a => a.CompanyId == User.Id && a.JobPostId != null, l => l.OrderByDescending(a => a.CreateDate));
+            if (jobId > 0)
+            {
+                apply = apply.Where(a => a.JobPostId == jobId);
+            }
+            if (!string.IsNullOrEmpty(name))
+            {
+                apply = apply.Where(a => a.User.FullName.ToLower().Contains(name.ToLower()));
+            }
+            switch (type)
+            {
+                case 1:
+                    apply = apply.Where(a => a.JobPostId != null);
+                    break;
+                case 2:
+                    apply = apply.Where(a => a.StudyAbroadId != null);
+                    break;
+            }
+            switch (status)
+            {
+                case 0:
+                    apply = apply.Where(a => a.Status == ApplyJobStatus.Waiting);
+                    break;
+                case 1:
+                    apply = apply.Where(a => a.Status == ApplyJobStatus.View);
+                    break;
+                case 2:
+                    apply = apply.Where(a => a.Status == ApplyJobStatus.Active);
+                    break;
+                case 3:
+                    apply = apply.Where(a => a.Status == ApplyJobStatus.NoActive);
+                    break;
+            }
+            var model = new ListCvViewModel
+            {
+                ApplyJobs = apply.ToPagedList(pageNumber, 9),
+                JobId = jobId,
+                Status = status,
+                Name = name,
+                Type = type
+            };
+            return View(model);
+        }
+        [Route("danh-sach-ung-tuyen/du-hoc")]
+        public ActionResult ListCVStudy(int? page, int? status, int jobId = 0, string name = "", int type = 0)
+        {
+            var pageNumber = page ?? 1;
+            var apply = _unitOfWork.ApplyJobRepository.GetQuery(a => a.CompanyId == User.Id && a.StudyAbroadId != null, l => l.OrderByDescending(a => a.CreateDate));
+            if (jobId > 0)
+            {
+                apply = apply.Where(a => a.JobPostId == jobId);
+            }
+            if (!string.IsNullOrEmpty(name))
+            {
+                apply = apply.Where(a => a.User.FullName.ToLower().Contains(name.ToLower()));
+            }
+            switch (type)
+            {
+                case 1:
+                    apply = apply.Where(a => a.JobPostId != null);
+                    break;
+                case 2:
+                    apply = apply.Where(a => a.StudyAbroadId != null);
+                    break;
+            }
+            switch (status)
+            {
+                case 0:
+                    apply = apply.Where(a => a.Status == ApplyJobStatus.Waiting);
+                    break;
+                case 1:
+                    apply = apply.Where(a => a.Status == ApplyJobStatus.View);
+                    break;
+                case 2:
+                    apply = apply.Where(a => a.Status == ApplyJobStatus.Active);
+                    break;
+                case 3:
+                    apply = apply.Where(a => a.Status == ApplyJobStatus.NoActive);
+                    break;
+            }
+            var model = new ListCvViewModel
+            {
+                ApplyJobs = apply.ToPagedList(pageNumber, 9),
+                JobId = jobId,
+                Status = status,
+                Name = name,
+                Type = type
+            };
+            return View(model);
+        }
+        [Route("xem")]
+        public ActionResult ViewApply(int id)
+        {
+            var cv = _unitOfWork.ApplyJobRepository.GetById(id);
+            if(cv == null)
+            {
+                return RedirectToAction("ListCv", "Employer");
+            }
+            cv.Status = ApplyJobStatus.View;
+            _unitOfWork.Save();
+            
+            return RedirectToAction("UserProfile", "Home", new {url = cv.User.Url , type = 1});
+        }
+        [HttpPost]
+        public JsonResult UpdateStatusCV(int id , int status = 0)
+        {
+            var cv = _unitOfWork.ApplyJobRepository.GetById(id);
+            if (cv == null)
+            {
+                return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+            }
+            if(status == 1)
+            {
+                cv.Status = ApplyJobStatus.Active;
+            }else if(status == 2)
+            {
+                cv.Status = ApplyJobStatus.NoActive;
+            }
+            _unitOfWork.Save();
+            var ts = "Phù hợp";
+            if(cv.Status == ApplyJobStatus.NoActive)
+            {
+                ts = "Chưa phù hợp";
+            }
+            var emailTemp = System.IO.File.ReadAllText(Server.MapPath("/EmailTemplates/Apply.html"));
+            if(cv.JobPostId != null)
+            {
+                Utils.Utils.UserLog("Nhà tuyển dụng <strong>" + cv.JobPost.Company.Name + "</strong> đã đánh giá Cv của bạn là <strong>" + ts + "</strong>", false, cv.UserId);
+                emailTemp = emailTemp.Replace("[FULLNAME]", cv.User.FullName).Replace("[JOB]", cv.JobPost.Name).Replace("[STATUS]", ts);
+                var result = HtmlHelpers.SendEmail("gmail", "Thông báo kết quả tuyển dụng " + cv.JobPost.Company.Name, emailTemp, cv.User.Email, ConfigSite.EmailConfigs, ConfigSite.EmailConfigs, ConfigSite.PassWordMail, ConfigSite.Title);
+            }
+            if (cv.StudyAbroadId != null)
+            {
+                Utils.Utils.UserLog("Nhà tuyển dụng <strong>" + cv.StudyAbroad.Company.Name + "</strong> đã đánh giá Cv của bạn là <strong>" + ts + "</strong>", false, cv.UserId);
+                emailTemp = emailTemp.Replace("[FULLNAME]", cv.User.FullName).Replace("[JOB]", cv.StudyAbroad.Name).Replace("[STATUS]", ts);
+                var result = HtmlHelpers.SendEmail("gmail", "Thông báo kết quả tuyển dụng " + cv.StudyAbroad.Company.Name, emailTemp, cv.User.Email, ConfigSite.EmailConfigs, ConfigSite.EmailConfigs, ConfigSite.PassWordMail, ConfigSite.Title);
+            }
+
+            return Json(new { success = true, message = "Cập nhật thành công" });
+        }
+        [HttpPost]
+        public JsonResult DeleteApply(int id)
+        {
+            var cv = _unitOfWork.ApplyJobRepository.GetById(id);
+            if (cv == null)
+            {
+                return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+            }
+            _unitOfWork.ApplyJobRepository.Delete(cv);
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Xóa thành công" });
+        }
+        [Route("thong-tin-chi-tiet")]
+        public ActionResult ViewCv(int id)
+        {
+            var cv = _unitOfWork.ApplyJobRepository.GetById(id);
+            if (cv == null)
+            {
+                return RedirectToAction("ListCv");
+            }
+            cv.Status = ApplyJobStatus.View;
+            _unitOfWork.Save();
+            return View(cv);
         }
 
         #region Job
@@ -574,7 +876,7 @@ namespace GlobeWork.Controllers
                 //model.JobPost.CityId = Convert.ToInt32(fc["CityId"]);
                 model.JobPost.Image = fc["Pictures"];
                 var company = _unitOfWork.CompanyRepository.GetQuery(a => a.EmployerId == User.Id).FirstOrDefault();
-                if(company == null)
+                if (company == null)
                 {
                     return RedirectToAction("Company");
                 }
@@ -584,7 +886,7 @@ namespace GlobeWork.Controllers
                 {
                     if (User.Amount != 0)
                     {
-                        int amountToSubtract = 1000 * model.DateHot;
+                        int amountToSubtract = Convert.ToInt32((ConfigSite.PriceJob ?? 30000) * model.DateHot);
                         string formattedAmountToSubtract = amountToSubtract.ToString("#,0") + "đ";
                         if (amountToSubtract < User.Amount)
                         {
@@ -734,7 +1036,7 @@ namespace GlobeWork.Controllers
                 {
                     if (User.Amount != 0)
                     {
-                        int amountToSubtract = 1000 * model.DateHot;
+                        int amountToSubtract = Convert.ToInt32((ConfigSite.PriceJob ?? 30000) * model.DateHot);
                         string formattedAmountToSubtract = amountToSubtract.ToString("#,0") + "đ";
                         if (amountToSubtract < User.Amount)
                         {
@@ -742,7 +1044,7 @@ namespace GlobeWork.Controllers
                             Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + "</strong> để hiển thị tin <strong>" + jobs.Code + " </strong>" + "<strong class='text-danger'>" + model.DateHot + "</strong> ngày ở mục nổi bật", EmployerLogType.Deduction, User.Id, amountToSubtract);
                             if (jobs.Hot != null)
                             {
-                                if(jobs.Hot < DateTime.Now)
+                                if (jobs.Hot < DateTime.Now)
                                 {
                                     jobs.Hot = DateTime.Now.AddDays(model.DateHot);
                                 }
@@ -912,7 +1214,8 @@ namespace GlobeWork.Controllers
                 StudyAbroad = new StudyAbroad
                 {
                     Active = true,
-                    Quantity = 1
+                    Quantity = 1,
+                    View = 0,
                 },
                 DateHot = 0
             };
@@ -922,17 +1225,24 @@ namespace GlobeWork.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult StudyAbroad(InsertStudyAbroadViewModel model, FormCollection fc)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 model.StudyAbroad.Url = HtmlHelpers.ConvertToUnSign(null, model.StudyAbroad.Name);
                 model.StudyAbroad.CategoryId = Convert.ToInt32(fc["CategoryId"]);
+                model.StudyAbroad.StudyAbroadCategory = _unitOfWork.StudyAbroadCategoryRepository.GetById(model.StudyAbroad.CategoryId);
                 model.StudyAbroad.CompanyId = User.Id;
                 model.StudyAbroad.Code = Utils.Utils.GenerateRandomCode();
+                model.StudyAbroad.ListImage = fc["Pictures"];
+                var company = _unitOfWork.CompanyRepository.GetQuery(a => a.EmployerId == User.Id).FirstOrDefault();
+                if (company == null)
+                {
+                    return RedirectToAction("Company");
+                }
                 if (model.DateHot > 0)
                 {
                     if (User.Amount != 0)
                     {
-                        int amountToSubtract = 1000 * model.DateHot;
+                        int amountToSubtract = Convert.ToInt32((ConfigSite.PriceStudyAbroad ?? 30000) * model.DateHot);
                         string formattedAmountToSubtract = amountToSubtract.ToString("#,0") + "đ";
                         if (amountToSubtract < User.Amount)
                         {
@@ -971,37 +1281,36 @@ namespace GlobeWork.Controllers
                         return View(model);
                     }
                 }
+                var file = Request.Files["StudyAbroad.Image"];
+                if (file == null || file.ContentLength <= 0)
+                {
+                    ModelState.AddModelError("", @"Hãy chọn 1 hình ảnh.");
+                    model.StudyAbroadCategories = StudyAbroadCategories();
+                    return View(model);
+                }
+                else
+                {
+                    if (!HtmlHelpers.CheckFileExt(file.FileName, "jpg|jpeg|png|gif|svg"))
+                    {
+                        ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg, svg");
+                        model.StudyAbroadCategories = StudyAbroadCategories();
+                        return View(model);
+                    }
 
+                    if (file.ContentLength > 4000 * 1024)
+                    {
+                        ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
+                        model.StudyAbroadCategories = StudyAbroadCategories();
+                        return View(model);
+                    }
+                    var imgPath = "/images/studyAbroad/" + DateTime.Now.ToString("yyyy/MM/dd");
+                    HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
+                    var imgFileName = HtmlHelpers.ConvertToUnSign(null, Path.GetFileNameWithoutExtension(file.FileName)) + "-" + DateTime.Now.Millisecond + Path.GetExtension(file.FileName);
+                    model.StudyAbroad.Image = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
+                    file.SaveAs(Server.MapPath(Path.Combine(imgPath, imgFileName)));
+                }
                 _unitOfWork.StudyAbroadRepository.Insert(model.StudyAbroad);
                 _unitOfWork.Save();
-                var cities = fc["city"];
-                if (cities != null)
-                {
-                    if (model.StudyAbroad.Cities == null)
-                    {
-                        model.StudyAbroad.Cities = new List<City>();
-                    }
-                    foreach (var cId in cities.Split(','))
-                    {
-                        var city = _unitOfWork.CityRepository.GetById(Convert.ToInt32(cId));
-                        model.StudyAbroad.Cities.Add(city);
-                    }
-                    _unitOfWork.Save();
-                }
-                var careers = fc["careers"];
-                if (careers != null)
-                {
-                    if (model.StudyAbroad.Careers == null)
-                    {
-                        model.StudyAbroad.Careers = new List<Career>();
-                    }
-                    foreach (var cId in careers.Split(','))
-                    {
-                        var career = _unitOfWork.CareerRepository.GetById(Convert.ToInt32(cId));
-                        model.StudyAbroad.Careers.Add(career);
-                    }
-                    _unitOfWork.Save();
-                }
                 var stu = _unitOfWork.StudyAbroadRepository.GetQuery().AsNoTracking();
                 if (stu.Any(p => p.Url.ToLower().Trim() == model.StudyAbroad.Url.ToLower().Trim()))
                 {
@@ -1015,15 +1324,469 @@ namespace GlobeWork.Controllers
             model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
             return View(model);
         }
+        [Route("cap-nhat-tin-du-hoc")]
+        public ActionResult EditStudyAbroad(int id)
+        {
+            var study = _unitOfWork.StudyAbroadRepository.GetById(id);
+            if (study == null)
+            {
+                return RedirectToAction("ListStudyAbroad");
+            }
+            var model = new InsertStudyAbroadViewModel
+            {
+                StudyAbroad = study,
+                DateHot = 0,
+                Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate)),
+                StudyAbroadCategories = StudyAbroadCategories(),
+                Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)),
+            };
+            return View(model);
+        }
+        [Route("cap-nhat-tin-du-hoc")]
+        [HttpPost, ValidateInput(false)]
+        public ActionResult EditStudyAbroad(InsertStudyAbroadViewModel model, FormCollection fc)
+        {
+            var study = _unitOfWork.StudyAbroadRepository.GetById(model.StudyAbroad.Id);
+            if (study == null)
+            {
+                return RedirectToAction("ListStudyAbroad");
+            }
+            if (ModelState.IsValid)
+            {
+                for (var i = 0; i < Request.Files.Count; i++)
+                {
+                    if (Request.Files[i] == null || Request.Files[i].ContentLength <= 0) continue;
+                    if (!HtmlHelpers.CheckFileExt(Request.Files[i].FileName, "jpg|jpeg|png|gif")) continue;
+                    if (Request.Files[i].ContentLength > 1024 * 1024 * 4) continue;
+
+                    var imgFileName = HtmlHelpers.ConvertToUnSign(null, Path.GetFileNameWithoutExtension(Request.Files[i].FileName)) +
+                        "-" + DateTime.Now.Millisecond + Path.GetExtension(Request.Files[i].FileName);
+                    var imgPath = "/images/studyAbroad/" + DateTime.Now.ToString("yyyy/MM/dd");
+                    HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
+
+                    var imgFile = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
+
+                    var newImage = System.Drawing.Image.FromStream(Request.Files[i].InputStream);
+                    var fixSizeImage = HtmlHelpers.FixedSize(newImage, 1000, 1000, false);
+                    HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
+
+                    if (Request.Files.Keys[i] == "StudyAbroad.Image")
+                    {
+                        study.Image = imgFile;
+                    }
+                }
+                var file = Request.Files["StudyAbroad.Image"];
+                if (file != null && file.ContentLength == 0)
+                {
+                    study.Image = fc["CurrentFile"] == "" ? null : fc["CurrentFile"];
+                }
+                study.ListImage = fc["Pictures"] == "" ? null : fc["Pictures"];
+                if (model.DateHot > 0)
+                {
+                    if (User.Amount != 0)
+                    {
+                        int amountToSubtract = Convert.ToInt32((ConfigSite.PriceJob ?? 30000) * model.DateHot);
+                        string formattedAmountToSubtract = amountToSubtract.ToString("#,0") + "đ";
+                        if (amountToSubtract < User.Amount)
+                        {
+                            User.Amount -= amountToSubtract;
+                            Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + "</strong> để hiển thị tin <strong>" + study.Name + " </strong>" + "<strong class='text-danger'>" + model.DateHot + "</strong> ngày ở mục nổi bật", EmployerLogType.Deduction, User.Id, amountToSubtract);
+                            if (study.Hot != null)
+                            {
+                                if (study.Hot < DateTime.Now)
+                                {
+                                    study.Hot = DateTime.Now.AddDays(model.DateHot);
+                                }
+                                else
+                                {
+                                    study.Hot = study.Hot?.AddDays(model.DateHot);
+                                }
+                            }
+                            else
+                            {
+                                study.Hot = DateTime.Now.AddDays(model.DateHot);
+                            }
+                            //Update cookie
+                            HttpCookie cookie = Request.Cookies[".ASPXAUTHEMPLOYER"];
+                            if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
+                            {
+                                var userData = User.Avatar + "|" + User.Id + "|" + User.Email + "|" + User.FullName + "|" + User.Amount;
+                                var ticket = new FormsAuthenticationTicket(2, User.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
+                                    userData, FormsAuthentication.FormsCookiePath);
+                                var encTicket = FormsAuthentication.Encrypt(ticket);
+                                HttpCookie updatedCookie = new HttpCookie(".ASPXAUTHEMPLOYER");
+                                updatedCookie.Value = encTicket;
+                                updatedCookie.Expires = DateTime.Now.AddDays(30);
+                                Response.SetCookie(updatedCookie);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", @"Số tiền trong tài khoản của bạn không đủ vui lòng nạp tiền để tiếp tục sử dụng");
+                            model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+                            model.StudyAbroadCategories = StudyAbroadCategories();
+                            model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            return View(model);
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", @"Số tiền trong tài khoản của bạn không đủ vui lòng nạp tiền để tiếp tục sử dụng");
+                        model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+                        model.StudyAbroadCategories = StudyAbroadCategories();
+                        model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                        return View(model);
+                    }
+                }
+                study.Url = HtmlHelpers.ConvertToUnSign(null, model.StudyAbroad.Name);
+                study.CategoryId = Convert.ToInt32(fc["CategoryId"]);
+                study.StudyAbroadCategory = _unitOfWork.StudyAbroadCategoryRepository.GetById(study.CategoryId);
+                study.Name = model.StudyAbroad.Name;
+                study.Wages = model.StudyAbroad.Wages;
+                study.Health = model.StudyAbroad.Health;
+                study.Quantity = model.StudyAbroad.Quantity;
+                study.Gender = model.StudyAbroad.Gender;
+                study.Address = model.StudyAbroad.Address;
+                study.ExpirationDate = model.StudyAbroad.ExpirationDate;
+                study.LearningProblems = model.StudyAbroad.LearningProblems;
+                study.Body = model.StudyAbroad.Body;
+                study.Requirements = model.StudyAbroad.Requirements;
+                study.Incentives = model.StudyAbroad.Incentives;
+                _unitOfWork.Save();
+                var stu = _unitOfWork.StudyAbroadRepository.GetQuery().AsNoTracking();
+                if (stu.Any(p => p.Url.ToLower().Trim() == study.Url.ToLower().Trim()))
+                {
+                    study.Url += "-" + study.Id;
+                    _unitOfWork.Save();
+                }
+                return RedirectToAction("ListStudyAbroad");
+            }
+            model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+            model.StudyAbroadCategories = StudyAbroadCategories();
+            model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+            return View(model);
+        }
         #endregion
+
+        #region Article 
+        [Route("danh-sach-bai-viet")]
+        public ActionResult ListArticle(int? page, string name, int? catId, int? childId, string result = "")
+        {
+            ViewBag.Result = result;
+            var pageNumber = page ?? 1;
+            const int pageSize = 15;
+            var article = _unitOfWork.ArticleRepository.GetQuery(a => a.EmployerId == User.Id , o => o.OrderByDescending(a => a.CreateDate));
+            if (!string.IsNullOrEmpty(name))
+            {
+                article = article.Where(l => l.Subject.Contains(name));
+            }
+            var model = new ListArticleViewModel
+            {
+                Articles = article.ToPagedList(pageNumber, pageSize),
+                CatId = catId,
+                ChildId = childId,
+                Name = name
+            };
+            return View(model);
+        }
+        [Route("them-bai-viet")]
+        public ActionResult Article()
+        {
+            var model = new InsertArticleViewModel
+            {
+                Article = new Article { Active = true, IsAdmin = false },
+                StudyAbroadCategories = StudyAbroadCategories(),
+            };
+            return View(model);
+        }
+        [Route("them-bai-viet")]
+        [HttpPost, ValidateInput(false)]
+        public ActionResult Article(InsertArticleViewModel model, FormCollection fc)
+        {
+            if (ModelState.IsValid)
+            {
+                var company = _unitOfWork.CompanyRepository.GetQuery(a => a.EmployerId == User.Id).FirstOrDefault();
+                if (company == null)
+                {
+                    return RedirectToAction("Company");
+                }
+                var file = Request.Files["Article.Image"];
+                if (file == null || file.ContentLength <= 0)
+                {
+                    ModelState.AddModelError("", @"Hãy chọn 1 hình ảnh.");
+                    model.StudyAbroadCategories = StudyAbroadCategories();
+                    return View(model);
+                }
+                else
+                {
+                    if (!HtmlHelpers.CheckFileExt(file.FileName, "jpg|jpeg|png|gif|svg"))
+                    {
+                        ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg, svg");
+                        model.StudyAbroadCategories = StudyAbroadCategories();
+                        return View(model);
+                    }
+
+                    if (file.ContentLength > 4000 * 1024)
+                    {
+                        ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
+                        model.StudyAbroadCategories = StudyAbroadCategories();
+                        return View(model);
+                    }
+
+                    var imgPath = "/images/articles/" + DateTime.Now.ToString("yyyy/MM/dd");
+                    HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
+                    var imgFileName = HtmlHelpers.ConvertToUnSign(null, Path.GetFileNameWithoutExtension(file.FileName)) + "-" + DateTime.Now.Millisecond + Path.GetExtension(file.FileName);
+                    model.Article.Image = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
+                    file.SaveAs(Server.MapPath(Path.Combine(imgPath, imgFileName)));
+                }
+                
+                model.Article.Url = HtmlHelpers.ConvertToUnSign(null, model.Article.Url ?? model.Article.Subject);
+                var articles = _unitOfWork.ArticleRepository.GetQuery().AsNoTracking();
+                if (articles.Any(p => p.Url.Trim() == model.Article.Url.Trim()))
+                {
+                    model.Article.Url += "-" + DateTime.Now.Millisecond;
+                }
+                model.Article.IsAdmin = false;
+                model.Article.EmployerId = User.Id;
+                if (model.DateHot > 0)
+                {
+                    if (User.Amount != 0)
+                    {
+                        int amountToSubtract = Convert.ToInt32((ConfigSite.PriceArticle ?? 30000) * model.DateHot);
+                        string formattedAmountToSubtract = amountToSubtract.ToString("#,0") + "đ";
+                        if (amountToSubtract < User.Amount)
+                        {
+                            User.Amount -= amountToSubtract;
+                            Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + "</strong> để hiển thị bài viết <strong>" + model.Article.Subject + " </strong>" + "<strong class='text-danger'>" + model.DateHot + "</strong> ngày ở mục nổi bật", EmployerLogType.Deduction, User.Id, amountToSubtract);
+                            model.Article.Hot = DateTime.Now.AddDays(model.DateHot);
+                            //Update cookie
+                            HttpCookie cookie = Request.Cookies[".ASPXAUTHEMPLOYER"];
+                            if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
+                            {
+                                var userData = User.Avatar + "|" + User.Id + "|" + User.Email + "|" + User.FullName + "|" + User.Amount;
+                                var ticket = new FormsAuthenticationTicket(2, User.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
+                                    userData, FormsAuthentication.FormsCookiePath);
+                                var encTicket = FormsAuthentication.Encrypt(ticket);
+                                HttpCookie updatedCookie = new HttpCookie(".ASPXAUTHEMPLOYER");
+                                updatedCookie.Value = encTicket;
+                                updatedCookie.Expires = DateTime.Now.AddDays(30);
+                                Response.SetCookie(updatedCookie);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", @"Số tiền trong tài khoản của bạn không đủ vui lòng nạp tiền để tiếp tục sử dụng");
+                            model.StudyAbroadCategories = StudyAbroadCategories();
+                            return View(model);
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", @"Số tiền trong tài khoản của bạn không đủ vui lòng nạp tiền để tiếp tục sử dụng");
+                        model.StudyAbroadCategories = StudyAbroadCategories();
+                        return View(model);
+                    }
+                }
+                _unitOfWork.ArticleRepository.Insert(model.Article);
+                _unitOfWork.Save();
+                return RedirectToAction("ListArticle", new { result = "success" });
+            }
+            model.StudyAbroadCategories = StudyAbroadCategories();
+            return View(model);
+        }
+        [Route("sưa-bai-viet")]
+        public ActionResult UpdateArticle(int articleId = 0)
+        {
+            var article = _unitOfWork.ArticleRepository.GetById(articleId);
+            if (article == null)
+            {
+                return RedirectToAction("ListArticle");
+            }
+            var model = new InsertArticleViewModel
+            {
+                StudyAbroadCategories = StudyAbroadCategories(),
+                Article = article,
+            };
+            return View(model);
+        }
+        [Route("sưa-bai-viet")]
+        [HttpPost, ValidateInput(false)]
+        public ActionResult UpdateArticle(InsertArticleViewModel model, FormCollection fc)
+        {
+            var article = _unitOfWork.ArticleRepository.GetById(model.Article.Id);
+            if (article == null)
+            {
+                return RedirectToAction("ListArticle");
+            }
+            if (ModelState.IsValid)
+            {
+                for (var i = 0; i < Request.Files.Count; i++)
+                {
+                    if (Request.Files[i] == null || Request.Files[i].ContentLength <= 0) continue;
+                    if (!HtmlHelpers.CheckFileExt(Request.Files[i].FileName, "jpg|jpeg|png|gif")) continue;
+                    if (Request.Files[i].ContentLength > 1024 * 1024 * 4) continue;
+
+                    var imgFileName = HtmlHelpers.ConvertToUnSign(null, Path.GetFileNameWithoutExtension(Request.Files[i].FileName)) +
+                        "-" + DateTime.Now.Millisecond + Path.GetExtension(Request.Files[i].FileName);
+                    var imgPath = "/images/articles/" + DateTime.Now.ToString("yyyy/MM/dd");
+                    HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
+
+                    var imgFile = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
+
+                    var newImage = System.Drawing.Image.FromStream(Request.Files[i].InputStream);
+                    var fixSizeImage = HtmlHelpers.FixedSize(newImage, 1000, 1000, false);
+                    HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
+
+                    if (Request.Files.Keys[i] == "Article.Image")
+                    {
+                        article.Image = imgFile;
+                    }
+                }
+                var file = Request.Files["Article.Image"];
+
+                if (file != null && file.ContentLength == 0)
+                {
+                    article.Image = fc["CurrentFile"] == "" ? null : fc["CurrentFile"];
+                }
+                article.Url = HtmlHelpers.ConvertToUnSign(null, model.Article.Url ?? model.Article.Subject);
+                article.Subject = model.Article.Subject;
+                article.Description = model.Article.Description;
+                article.Body = model.Article.Body;
+                article.Active = model.Article.Active;
+                article.TitleMeta = model.Article.TitleMeta;
+                article.DescriptionMeta = model.Article.DescriptionMeta;
+                if (model.DateHot > 0)
+                {
+                    if (User.Amount != 0)
+                    {
+                        int amountToSubtract = Convert.ToInt32((ConfigSite.PriceArticle ?? 30000) * model.DateHot);
+                        string formattedAmountToSubtract = amountToSubtract.ToString("#,0") + "đ";
+                        if (amountToSubtract < User.Amount)
+                        {
+                            User.Amount -= amountToSubtract;
+                            Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + "</strong> để hiển thị bài viết <strong>" + article.Subject + " </strong>" + "<strong class='text-danger'>" + model.DateHot + "</strong> ngày ở mục nổi bật", EmployerLogType.Deduction, User.Id, amountToSubtract);
+                            if (article.Hot != null)
+                            {
+                                if (article.Hot < DateTime.Now)
+                                {
+                                    article.Hot = DateTime.Now.AddDays(model.DateHot);
+                                }
+                                else
+                                {
+                                    article.Hot = article.Hot?.AddDays(model.DateHot);
+                                }
+                            }
+                            else
+                            {
+                                article.Hot = DateTime.Now.AddDays(model.DateHot);
+                            }
+                            //Update cookie
+                            HttpCookie cookie = Request.Cookies[".ASPXAUTHEMPLOYER"];
+                            if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
+                            {
+                                var userData = User.Avatar + "|" + User.Id + "|" + User.Email + "|" + User.FullName + "|" + User.Amount;
+                                var ticket = new FormsAuthenticationTicket(2, User.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
+                                    userData, FormsAuthentication.FormsCookiePath);
+                                var encTicket = FormsAuthentication.Encrypt(ticket);
+                                HttpCookie updatedCookie = new HttpCookie(".ASPXAUTHEMPLOYER");
+                                updatedCookie.Value = encTicket;
+                                updatedCookie.Expires = DateTime.Now.AddDays(30);
+                                Response.SetCookie(updatedCookie);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", @"Số tiền trong tài khoản của bạn không đủ vui lòng nạp tiền để tiếp tục sử dụng");
+                            model.StudyAbroadCategories = StudyAbroadCategories();
+                            return View(model);
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", @"Số tiền trong tài khoản của bạn không đủ vui lòng nạp tiền để tiếp tục sử dụng");
+                        model.StudyAbroadCategories = StudyAbroadCategories();
+                        return View(model);
+                    }
+                }
+                _unitOfWork.Save();
+
+                var articles = _unitOfWork.ArticleRepository.GetQuery().AsNoTracking();
+                if (articles.Any(p => p.Url.ToLower().Trim() == model.Article.Url.ToLower().Trim() && p.Id != model.Article.Id))
+                {
+                    article.Url += "-" + DateTime.Now.Millisecond;
+                }
+
+                _unitOfWork.Save();
+
+                return RedirectToAction("ListArticle", new { result = "update" });
+            }
+            model.StudyAbroadCategories = StudyAbroadCategories();
+            return View(model);
+        }
+        [HttpPost]
+        public bool DeleteArticle(int articleId = 0)
+        {
+
+            var article = _unitOfWork.ArticleRepository.GetById(articleId);
+            if (article == null)
+            {
+                return false;
+            }
+            _unitOfWork.ArticleRepository.Delete(article);
+            _unitOfWork.Save();
+            return true;
+        }
+        [HttpPost]
+        public bool UpdateStatusArticle(int id, int type = 0)
+        {
+            var article = _unitOfWork.ArticleRepository.GetById(id);
+            if (article == null)
+            {
+                return false;
+            }
+            if (type == 1)
+            {
+                article.Active = false;
+            }
+            else if (type == 2)
+            {
+                article.Active = true;
+            }
+            _unitOfWork.Save();
+            return true;
+        }
+        #endregion
+
         public ActionResult OrderTracking()
         {
             return View();
         }
+
+        [Route("nap-tien")]
+        public ActionResult Naptien()
+        {
+            var user = User;
+            var log = _unitOfWork.EmployerLogRepository.GetQuery(a => a.UserId == user.Id && a.EmployerLogType == EmployerLogType.PublicMoney);
+            decimal tongnap = 0;
+            if (log != null && log.Any())
+            {
+                foreach (var item in log)
+                {
+                    tongnap += item.Amount;
+                }
+            }
+            var model = new NaptienViewModel
+            {
+                Employer = user,
+                TongNap = tongnap,
+            };
+            return View(model);
+        }
+
         [Route("lich-su-hoat-dong")]
         public ActionResult History()
         {
-            var log = _unitOfWork.EmployerLogRepository.GetQuery(a => a.UserId == User.Id , o => o.OrderByDescending(a => a.CreateDate));
+            var log = _unitOfWork.EmployerLogRepository.GetQuery(a => a.UserId == User.Id, o => o.OrderByDescending(a => a.CreateDate));
             return View(log);
         }
         public JsonResult CheckEmail(string email)

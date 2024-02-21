@@ -1,4 +1,4 @@
-﻿@model GlobeWork.Models.ConfigSite
+﻿@model GlobeWork.ViewModel.ConfigViewModel
 @{
     ViewBag.Title = "Cấu hình Website";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -16,109 +16,125 @@
     @using (Html.BeginForm("ConfigSite", "Vcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.ValidationSummary(true)
-        @Html.HiddenFor(a => a.Id)
+        @Html.HiddenFor(a => a.ConfigSite.Id)
 <table class="form_table">
     <tr>
-        <td class="form_name">@Html.LabelFor(model => model.Title)</td>
-        <td class="form_text">@Html.EditorFor(model => model.Title)</td>
+        <td class="form_name">@Html.LabelFor(model => model.ConfigSite.Title)</td>
+        <td class="form_text">@Html.EditorFor(model => model.ConfigSite.Title)</td>
     </tr>
     <tr>
-        <td class="form_name">@Html.LabelFor(model => model.Description)</td>
-        <td class="form_text">@Html.EditorFor(model => model.Description)</td>
+        <td class="form_name">@Html.LabelFor(model => model.ConfigSite.Description)</td>
+        <td class="form_text">@Html.EditorFor(model => model.ConfigSite.Description)</td>
     </tr>
     <tr>
-        <td class="form_name">@Html.LabelFor(model => model.Image)</td>
-        <td class="form_text">@Html.TextBoxFor(model => model.Image, new { type = "file" }) <span class="red-warring">Kích thươc: 180px - 50px</span></td>
+        <td class="form_name">@Html.LabelFor(model => model.ConfigSite.Image)</td>
+        <td class="form_text">@Html.TextBoxFor(model => model.ConfigSite.Image, new { type = "file" }) <span class="red-warring">Kích thươc: 180px - 50px</span></td>
     </tr>
-    @if (Model.Image != null)
-        {
-            <tr>
-                <td class="form_name"></td>
-                <td class="form_text"><img class="img-border" src="@Path.Combine("/images/configs/", Model.Image)?w=150" /></td>
-            </tr>
-        }
+    @if (Model.ConfigSite.Image != null)
+    {
+        <tr>
+            <td class="form_name"></td>
+            <td class="form_text"><img class="img-border" src="@Path.Combine("/images/configs/", Model.ConfigSite.Image)?w=150" /></td>
+        </tr>
+    }
     <tr>
-        <td class="form_name">@Html.LabelFor(model => model.Favicon)</td>
-        <td class="form_text">@Html.TextBoxFor(model => model.Favicon, new { type = "file" }) <span class="red-warring">Kích thươc: 64px - 64px</span></td>
+        <td class="form_name">@Html.LabelFor(model => model.ConfigSite.Favicon)</td>
+        <td class="form_text">@Html.TextBoxFor(model => model.ConfigSite.Favicon, new { type = "file" }) <span class="red-warring">Kích thươc: 64px - 64px</span></td>
     </tr>
-    @if (Model.Favicon != null)
-        {
-            <tr>
-                <td class="form_name"></td>
-                <td class="form_text"><img class="img-border" src="@Path.Combine("/images/configs/", Model.Favicon)?w=150" /></td>
-            </tr>
-        }
+    @if (Model.ConfigSite.Favicon != null)
+    {
+        <tr>
+            <td class="form_name"></td>
+            <td class="form_text"><img class="img-border" src="@Path.Combine("/images/configs/", Model.ConfigSite.Favicon)?w=150" /></td>
+        </tr>
+    }
     <tr>
-        <td class="form_name">@Html.LabelFor(model => model.ImageShare)</td>
-        <td class="form_text">@Html.TextBoxFor(model => model.ImageShare, new { type = "file" })</td>
+        <td class="form_name">@Html.LabelFor(model => model.ConfigSite.ImageShare)</td>
+        <td class="form_text">@Html.TextBoxFor(model => model.ConfigSite.ImageShare, new { type = "file" })</td>
     </tr>
-    @if (Model.ImageShare != null)
-        {
-            <tr>
-                <td class="form_name"></td>
-                <td class="form_text"><img class="img-border" src="@Path.Combine("/images/configs/", Model.ImageShare)?w=150" /></td>
-            </tr>
-        }
+    @if (Model.ConfigSite.ImageShare != null)
+    {
+        <tr>
+            <td class="form_name"></td>
+            <td class="form_text"><img class="img-border" src="@Path.Combine("/images/configs/", Model.ConfigSite.ImageShare)?w=150" /></td>
+        </tr>
+    }
 
     <tr>
-        <td class="form_name">@Html.LabelFor(model => model.InfoFooter)</td>
-        <td class="form_text">@Html.EditorFor(model => model.InfoFooter)</td>
+        <td class="form_name">@Html.LabelFor(model => model.ConfigSite.InfoFooter)</td>
+        <td class="form_text">@Html.EditorFor(model => model.ConfigSite.InfoFooter)</td>
+    </tr>
+    <tr>
+        <td class="form_name">@Html.LabelFor(model => model.ConfigSite.NapTien)</td>
+        <td class="form_text">@Html.EditorFor(model => model.ConfigSite.NapTien)</td>
     </tr>
     <tr>
         <td class="form_name"></td>
         <td class="form_text">Cấu hình Mail tự động</td>
     </tr>
     <tr>
-        <td class="form_name">@Html.LabelFor(model => model.EmailConfigs)</td>
-        <td class="form_text">@Html.EditorFor(model => model.EmailConfigs)</td>
+        <td class="form_name">@Html.LabelFor(model => model.ConfigSite.EmailConfigs)</td>
+        <td class="form_text">@Html.EditorFor(model => model.ConfigSite.EmailConfigs)</td>
     </tr>
     <tr>
-        <td class="form_name">@Html.LabelFor(model => model.PassWordMail)</td>
-        <td class="form_text">@Html.EditorFor(model => model.PassWordMail)</td>
+        <td class="form_name">@Html.LabelFor(model => model.ConfigSite.PassWordMail)</td>
+        <td class="form_text">@Html.EditorFor(model => model.ConfigSite.PassWordMail)</td>
     </tr>
     <tr>
-        <td class="form_name">@Html.LabelFor(model => model.Place)</td>
-        <td class="form_text">@Html.EditorFor(model => model.Place)</td>
+        <td class="form_name">@Html.LabelFor(model => model.ConfigSite.Place)</td>
+        <td class="form_text">@Html.EditorFor(model => model.ConfigSite.Place)</td>
     </tr>
     <tr>
-        <td class="form_name">@Html.LabelFor(model => model.Hotline)</td>
-        <td class="form_text">@Html.EditorFor(model => model.Hotline)</td>
+        <td class="form_name">@Html.LabelFor(model => model.ConfigSite.Hotline)</td>
+        <td class="form_text">@Html.EditorFor(model => model.ConfigSite.Hotline)</td>
     </tr>
     <tr>
-        <td class="form_name">@Html.LabelFor(model => model.Zalo)</td>
-        <td class="form_text">@Html.EditorFor(model => model.Zalo)</td>
+        <td class="form_name">@Html.LabelFor(model => model.ConfigSite.Zalo)</td>
+        <td class="form_text">@Html.EditorFor(model => model.ConfigSite.Zalo)</td>
     </tr>
     <tr>
-        <td class="form_name">@Html.LabelFor(model => model.Email)</td>
-        <td class="form_text">@Html.EditorFor(model => model.Email)</td>
+        <td class="form_name">@Html.LabelFor(model => model.ConfigSite.Email)</td>
+        <td class="form_text">@Html.EditorFor(model => model.ConfigSite.Email)</td>
     </tr>
     <tr>
-        <td class="form_name">@Html.LabelFor(model => model.Facebook)</td>
-        <td class="form_text">@Html.EditorFor(model => model.Facebook)</td>
+        <td class="form_name">@Html.LabelFor(model => model.ConfigSite.Facebook)</td>
+        <td class="form_text">@Html.EditorFor(model => model.ConfigSite.Facebook)</td>
     </tr>
     <tr>
-        <td class="form_name">@Html.LabelFor(model => model.Youtube)</td>
-        <td class="form_text">@Html.EditorFor(model => model.Youtube)</td>
+        <td class="form_name">@Html.LabelFor(model => model.ConfigSite.Youtube)</td>
+        <td class="form_text">@Html.EditorFor(model => model.ConfigSite.Youtube)</td>
     </tr>
     <tr>
-        <td class="form_name">@Html.LabelFor(model => model.Twitter)</td>
-        <td class="form_text">@Html.EditorFor(model => model.Twitter)</td>
-    </tr>
-    @*<tr>
-            <td class="form_name">@Html.LabelFor(model => model.Instagram)</td>
-            <td class="form_text">@Html.EditorFor(model => model.Instagram)</td>
-        </tr>*@
-    <tr>
-        <td class="form_name">@Html.LabelFor(model => model.GoogleMap)</td>
-        <td class="form_text">@Html.EditorFor(model => model.GoogleMap)</td>
+        <td class="form_name">@Html.LabelFor(model => model.ConfigSite.Twitter)</td>
+        <td class="form_text">@Html.EditorFor(model => model.ConfigSite.Twitter)</td>
     </tr>
     <tr>
-        <td class="form_name">@Html.LabelFor(model => model.GoogleAnalytics)</td>
-        <td class="form_text">@Html.EditorFor(model => model.GoogleAnalytics)</td>
+        <td class="form_name">@Html.LabelFor(model => model.PriceJob)/ngày</td>
+        <td class="form_text">@Html.EditorFor(model => model.PriceJob, new { @type = "number" })</td>
     </tr>
     <tr>
-        <td class="form_name">@Html.LabelFor(model => model.LiveChat)</td>
-        <td class="form_text">@Html.EditorFor(model => model.LiveChat)</td>
+        <td class="form_name">@Html.LabelFor(model => model.PriceStudyAbroad)/ngày</td>
+        <td class="form_text">@Html.EditorFor(model => model.PriceStudyAbroad, new { @type = "number" })</td>
+    </tr>
+    <tr>
+        <td class="form_name">@Html.LabelFor(model => model.PriceCompany)/ngày</td>
+        <td class="form_text">@Html.EditorFor(model => model.PriceCompany, new { @type = "number" })</td>
+    </tr>
+    <tr>
+        <td class="form_name">@Html.LabelFor(model => model.PriceArticle)/ngày</td>
+        <td class="form_text">@Html.EditorFor(model => model.PriceArticle, new { @type = "number" })</td>
+    </tr>
+    <tr>
+        <td class="form_name">@Html.LabelFor(model => model.ConfigSite.GoogleMap)</td>
+        <td class="form_text">@Html.EditorFor(model => model.ConfigSite.GoogleMap)</td>
+    </tr>
+    <tr>
+        <td class="form_name">@Html.LabelFor(model => model.ConfigSite.GoogleAnalytics)</td>
+        <td class="form_text">@Html.EditorFor(model => model.ConfigSite.GoogleAnalytics)</td>
+    </tr>
+    <tr>
+        <td class="form_name">@Html.LabelFor(model => model.ConfigSite.LiveChat)</td>
+        <td class="form_text">@Html.EditorFor(model => model.ConfigSite.LiveChat)</td>
     </tr>
     <tr>
         <td class="form_name"></td>
@@ -127,3 +143,16 @@
 </table>
     }
 </div>
+@section scripts{
+    <script src="~/Scripts/jquery.maskMoney.min.js"></script>
+    <script src="~/Scripts/jquery.tagsinput-revisited.js"></script>
+    <link href="~/Content/jquery.tagsinput-revisited.css" rel="stylesheet" />
+    <script>
+        $(function () {
+            $(".input-number").maskMoney({
+                precision: 0,
+                thousands: ','
+            });
+        });
+    </script>
+}

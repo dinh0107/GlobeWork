@@ -1,7 +1,98 @@
-﻿
+﻿@model GlobeWork.ViewModel.HotCompanyViewModel
+@using PagedList.Mvc
 @{
-    ViewBag.Title = "CompanyTop";
+    ViewBag.Title = "Top công ty";
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("CompanyTop");
 }
-
-<h2>CompanyTop</h2>
-
+@functions {
+    public string IsLinkActive(string path)
+    {
+        string currentPath = Context.Request.Path;
+        return currentPath.Equals(path, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+    }
+}
+<div class="company-banner">
+    <div class="container">
+        <div class="nav-company">
+            <a href="@Url.Action("ListCompany")" class="@(IsLinkActive(Url.Action("ListCompany")))">Danh sách công ty</a>
+            <a href="@Url.Action("CompanyTop")" class="@(IsLinkActive(Url.Action("CompanyTop")))">Top công ty</a>
+        </div>
+        @foreach (var item in Model.Items.Where(a => a.Sort == 3))
+        {
+            <div class="title-company-search mt-4">
+                @item.Title
+            </div>
+            <div class="title-company-search-sub ">
+                @item.Description
+            </div>
+        }
+        <form action="@Url.Action("SearchCompany")" class="company-form">
+            <i class="far fa-search"></i>
+            <input type="text" name="name" required placeholder="Nhập tên công ty" />
+            <button type="submit">
+                Tìm kiếm
+            </button>
+        </form>
+    </div>
+</div>
+<div class="bg-light py-4">
+    <div class="container">
+        @if (Model.Companies.Any())
+        {
+            <div class="company-title mb-3">
+                Top công ty
+            </div>
+            <div class="row mt-3">
+                @if (Model.Companies.Any())
+                {
+                    foreach (var item in Model.Companies)
+                    {
+                        <div class="col-lg-4 col-6">
+                            <a href="@Url.Action("Employer", new {url = item.Url})" class="card card-company border-0">
+                                @if (item.Cover != null)
+                                {
+                                    <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Cover)" alt="Ảnh bìa" class="lazyload" />
+                                }
+                                else
+                                {
+                                    <img src="~/Content/images/cover-null.png" alt="Ảnh bìa" class="lazyload" />
+                                }
+                                <div class="com-avatar">
+                                    @if (item.Avatar != null)
+                                    {
+                                        <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Avatar)" alt="Avatar" class="lazyload" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Content/images/avatar-default.jpg" alt="Avatar" class="lazyload" />
+                                    }
+                                </div>
+                                <div class="card-body mt-3">
+                                    <div class="com-name mt-2">
+                                        @item.Name
+                                    </div>
+                                    <div class="com-des mt-2">
+                                        @Html.Raw(item.Introduct)
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                    if (Model.Companies.PageCount > 1)
+                    {
+                        <div class="text-center col-12">
+                            @Html.PagedListPager(Model.Companies, page => Url.Action("CompanyTop", new { page }))
+                        </div>
+                    }
+                }
+            </div>
+        }
+        else
+        {
+            <div class="none-suitable-job__content">
+                <img src="https://static.topcv.vn/v4/image/job-list/none-result.png" alt="None suitable job">
+                <span>Chưa tìm thấy công ty phù hợp với yêu cầu của bạn</span>
+            </div>
+        }
+    </div>
+</div>

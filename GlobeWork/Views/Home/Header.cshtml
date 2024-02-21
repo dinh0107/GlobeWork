@@ -1,4 +1,7 @@
-﻿@{
+﻿@model GlobeWork.ViewModel.HeaderViewModel
+@using GlobeWork.Models
+@{
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
     var FullName = ViewContext.RouteData.Values["FullName"].ToString();
     var id = ViewContext.RouteData.Values["Id"].ToString();
     var avatar = ViewContext.RouteData.Values["Avatar"].ToString();
@@ -10,16 +13,86 @@
         <div class="row">
             <div class="col-lg-8 d-flex align-items-center justify-content-between">
                 <a href="/">
-                    <img src="~/Content/images/z5108183533913_f5a32e9f0440e3b6d60d9c260e3e82c8.jpg" alt="Logo" class="logo" />
+                    @if (config.Image != null)
+                    {
+                        <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/configs/", config.Image)" alt="Logo" class="logo lazyload" />
+                    }
                 </a>
                 <ul class="ul-reset menu-nav">
-                    <li><a href="">Giới thiệu</a></li>
-                    <li><a href="">Việc làm</a></li>
-                    <li><a href="">Du học</a></li>
-                    <li><a href="">Doanh nghiệp</a></li>
-                    <li><a href="">Hồ sơ CV</a></li>
-                    <li><a href="">Săn học bổng</a></li>
-                    <li><a href="">Liên hệ</a></li>
+                    <li>
+                        <a href="#">Giới thiệu</a>
+                        @if (Model.Articles.Any())
+                        {
+                            <ul class="sub-menu">
+                                @foreach (var item in Model.Articles)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("ArticleDetail", new {url = item.Url})">@item.Subject</a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </li>
+                    <li>
+                        <a href="#">Việc làm</a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a href="@Url.Action("Job")">
+                                    Tìm việc làm (search)
+                                </a>
+                            </li>
+                            <hr />
+                            <li>
+                                <a href="@Url.Action("JobHot")">
+                                    Việc làm hot
+                                </a>
+                            </li>
+                            @foreach (var item in Model.Careers)
+                            {
+                                <li>
+                                    <a href="@Url.Action("JobCategory" , new {url = item.Code})">
+                                        @item.Name
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("StudyAbroad")">Du học</a>
+                        <ul class="box-menu">
+                            <li class="row">
+                                @foreach (var item in Model.StudyAbroadCategories.Where(a => a.ParentId == null))
+                                {
+                                    <div class="col-lg-3 mb-3">
+                                        <a href="@Url.Action("StudyAbroadCategory", new {url = item.Url})" class="studyabroadcategory-name">
+                                            @item.CategoryName
+                                            @if (item.Image != null)
+                                            {
+                                                <img src="@Path.Combine("/images/category/", item.Image)" class="flag" alt="@item.CategoryName" />
+                                            }
+                                        </a>
+                                        <div class="child-menu mt-2">
+                                            @foreach (var child in Model.StudyAbroadCategories.Where(a => a.ParentId == item.Id))
+                                            {
+                                                <a href="@Url.Action("StudyAbroadCategory", new {url = child.Url})">@child.CategoryName</a>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="@Url.Action("ListCompany")">Doanh nghiệp</a></li>
+                    @if (id == "")
+                    {
+                        <li><a href="@Url.Action("Login")">Hồ sơ CV</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="@Url.Action("UserProfile", "Home" , new {url = url })">Hồ sơ CV</a></li>
+                    }
+                    <li><a href="@Url.Action("StudyAbroadHot")">Săn học bổng</a></li>
+                    <li><a href="@Url.Action("Contact")">Liên hệ</a></li>
                 </ul>
             </div>
             <div class="col-lg-4 d-flex align-items-center justify-content-end position-relative">

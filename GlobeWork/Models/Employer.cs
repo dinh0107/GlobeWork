@@ -1,4 +1,5 @@
-﻿using Helpers;
+﻿using GlobeWork.Models;
+using Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,6 +35,7 @@ namespace GlobeWork.Models
         public virtual City City { get; set; }
         public virtual District District { get; set; }
         public virtual ICollection<EmployerLog> EmployerLogs { get; set; }
+        public virtual ICollection<Article> Articles { get; set; }
         public Employer()
         {
             CreateDate = DateTime.Now;

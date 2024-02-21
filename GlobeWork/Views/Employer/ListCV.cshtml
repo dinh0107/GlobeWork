@@ -1,21 +1,24 @@
-﻿
+﻿@model GlobeWork.ViewModel.ListCvViewModel
+@using GlobeWork.Utils
+@using Helpers
+@using PagedList.Mvc
 @{
     ViewBag.Title = "Quản lý CV ứng viên";
     Layout = "~/Views/Shared/_EmployerLayout.cshtml";
 }
-
 <div class="contents-header">
     <h2>@ViewBag.Title</h2>
+    <a href="@Url.Action("ListCVStudy")">CV ứng tuyển du học</a>
 </div>
-<div class="container py-5">
+<div class="container py-3">
     <div class="box-content">
-        <form class="box-header form-row mb-3" action="@Url.Action("ListStudyAbroad")" method="get">
+        <form class="box-header form-row mb-3" action="@Url.Action("ListCV")" method="get">
             <div class="col">
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text"><i class="fa-regular fa-magnifying-glass"></i></div>
                     </div>
-                    <input class="form-control" placeholder="Tìm kiếm theo tiêu đề hoặc mã tin" />
+                    @Html.TextBoxFor(a => a.Name, new { @class = "form-control", @placeholder = "Tìm kiếm theo tên" })
                 </div>
             </div>
             <div class="col">
@@ -23,12 +26,11 @@
                     <div class="input-group-prepend">
                         <div class="input-group-text">Trạng thái hiển thị:</div>
                     </div>
-                    <select class="v-select" name="status">
-                        <option>CV tiếp nhận</option>
-                        <option>Phù hợp</option>
-                        <option>Hẹn phỏng vấn</option>
-                        <option>Nhận việc</option>
-                        <option>Từ chối</option>
+                    <select class="form-control" name="status">
+                        <option value="0">Đang chờ</option>
+                        <option value="1">NTD đã xem CV</option>
+                        <option value="2">Hồ sơ phù hợp</option>
+                        <option value="3">Hồ sơ chưa phù hợp</option>
                     </select>
                 </div>
             </div>
@@ -38,53 +40,158 @@
                 </button>
             </div>
         </form>
-        @for (int i = 0; i < 10; i++)
+        @if (Model.ApplyJobs.Any())
         {
-            <div class="vitae media">
-                <img src="~/Content/images/avatar-default.jpg" />
-                <div class="media-body">
-                    <h3><a href="">N.V.A</a></h3>
-                    <ul>
-                        <li>
-                            <i class="fa-solid fa-briefcase"></i>
-                            Nhân viên marketing
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-location-dot"></i>
-                            Hà Nội
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-clock"></i>
-                            Cập nhật: 25 giây trước
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-circle-dollar"></i>
-                            7 - 10 triệu
-                        </li>
-                        <li>
-                            <i class="fa-solid fa-eye"></i>
-                            59 lượt xem
-                        </li>
-                    </ul>
+            foreach (var item in Model.ApplyJobs)
+            {
+                <div class="vitae media" data-id="@item.Id">
+                    @if (item.User.Avatar != null)
+                    {
+                        <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/user/", item.User.Avatar)" class="lazyload" />
+                    }
+                    else
+                    {
+                        <img src="~/Content/images/avatar-default.jpg" />
+                    }
+                    <div class="media-body">
+                        <div class="apply-name">
+                            @item.User.FullName
+                        </div>
+                        <ul class="position-relative">
+                            @if (item.Status == GlobeWork.Models.ApplyJobStatus.Waiting)
+                            {
+                                <li class="tag error">
+                                    Chưa xem
+                                </li>
+                            }
+                            else if (item.Status == GlobeWork.Models.ApplyJobStatus.Active)
+                            {
+                                <li class="tag success">
+                                    Phù hợp
+                                </li>
+                            }
+                            else if (item.Status == GlobeWork.Models.ApplyJobStatus.NoActive)
+                            {
+                                <li class="tag error">
+                                    Chưa phù hợp
+                                </li>
+                            }
+                            <li>
+                                <i class="fa-solid fa-briefcase"></i>
+                                @item.JobPost.Name
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-location-dot"></i>
+                                @foreach (var countruy in item.JobPost.Cities)
+                                {
+                                    @countruy.Name
+                                    if (countruy != item.JobPost.Cities.Last())
+                                    {
+                                        @: ,
+                                    }
+                                }
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-clock"></i>
+                                Cập nhật: @Html.DateVn(item.JobPost.LastEditDate, 2)
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-circle-dollar"></i>
+                                @Html.DisplayFor(a => item.JobPost.Wages)
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-eye"></i>
+                                @item.JobPost.View lượt xem
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="media-body des">
+                        @item.Body
+                    </div>
+                    <div class="tool">
+                        @if (item.TypeApply == GlobeWork.Models.TypeApply.Profile)
+                        {
+                            <a href="@Url.Action("ViewApply", "Employer", new {id = item.Id})" class="bg-info view-profile" data-id="@item.Id" data-tooltip="Xem" data-tooltip-position="top right">
+                                <i class="far fa-eye"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("ViewCv", "Employer", new {id = item.Id})" class="bg-info" data-tooltip="Xem" data-tooltip-position="top right">
+                                <i class="far fa-eye"></i>
+                            </a>
+                        }
+                        @if (item.Status != GlobeWork.Models.ApplyJobStatus.Active && item.Status != GlobeWork.Models.ApplyJobStatus.NoActive)
+                        {
+                            <a href="javascript:;" onclick="UpdateApply(@item.Id , 1)" class="bg-success" data-tooltip="Phù hợp" data-tooltip-position="top right">
+                                <i class="fa-solid fa-check"></i>
+                            </a>
+                            <a href="javascript:;" onclick="UpdateApply(@item.Id , 2)" class="bg-danger" data-tooltip="Từ chối" data-tooltip-position="top right">
+                                <i class="fa-solid fa-xmark"></i>
+                            </a>
+                        }
+                        <a href="javascript:;" onclick="DeleteApply(@item.Id)" class="bg-success" data-tooltip="Phù hợp" data-tooltip-position="top right">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+
+                    </div>
                 </div>
-                <div class="media-body des">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ultricies integer quis auctor elit sed. Nisl nisi scelerisque eu ultrices vitae auctor eu. Nulla aliquet enim tortor at auctor urna nunc id. Sed adipiscing diam donec adipiscing. In cursus turpis massa tincidunt dui ut ornare lectus sit. Convallis a cras semper auctor. Egestas maecenas pharetra convallis posuere morbi leo urna molestie. Pellentesque diam volutpat commodo sed egestas. Tempus urna et pharetra pharetra. Tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula. Vitae suscipit tellus mauris a diam maecenas sed enim ut. Sit amet nisl suscipit adipiscing bibendum est. Tincidunt tortor aliquam nulla facilisi cras fermentum odio. Felis eget nunc lobortis mattis aliquam faucibus. Tellus orci ac auctor augue mauris augue neque gravida in. Id volutpat lacus laoreet non. Egestas maecenas pharetra convallis posuere morbi leo urna.
+            }
+            if (Model.ApplyJobs.PageCount > 1)
+            {
+                <div>
+                    @Html.PagedListPager(Model.ApplyJobs, page => Url.Action("ListCv", new { page, name = Model.Name, status = Model.Status }))
                 </div>
-                <div class="tool">
-                    <a href="javascript:;" class="bg-success" data-tooltip="Phù hợp" data-tooltip-position="top right">
-                        <i class="fa-solid fa-check"></i>
-                    </a>
-                    <a href="javascript:;" class="bg-info" data-tooltip="Hẹn phỏng vấn" data-tooltip-position="top right">
-                        <i class="fa-solid fa-calendar-check"></i>
-                    </a>
-                    <a href="javascript:;" class="bg-warning" data-tooltip="Nhận việc" data-tooltip-position="top right">
-                        <i class="fa-solid fa-file-check"></i>
-                    </a>
-                    <a href="javascript:;" class="bg-danger" data-tooltip="Từ chối" data-tooltip-position="top right">
-                        <i class="fa-solid fa-xmark"></i>
-                    </a>
-                </div>
-            </div>
+            }
         }
     </div>
 </div>
+@section scripts{
+    <script>
+        function UpdateApply(id, status) {
+            $.post("/Employer/UpdateStatusCV", { id: id, status: status }, function (data) {
+                console.log(data)
+                if (data.success) {
+                    new Notify({
+                        status: 'success',
+                        text: "Cập nhật thành công",
+                        effect: 'slide',
+                        speed: 600,
+                        showIcon: true,
+                        showCloseButton: true,
+                        autoclose: true,
+                        autotimeout: 3000,
+                        gap: 10,
+                        distance: 20,
+                        type: 3,
+                        position: 'right bottom'
+                    });
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1500);
+                }
+            });
+        }
+        function DeleteApply(id) {
+            $.post("/Employer/DeleteApply", { id: id }, function (data) {
+                if (data.success) {
+                    new Notify({
+                        status: 'success',
+                        text: "Xóa thành công",
+                        effect: 'slide',
+                        speed: 600,
+                        showIcon: true,
+                        showCloseButton: true,
+                        autoclose: true,
+                        autotimeout: 3000,
+                        gap: 10,
+                        distance: 20,
+                        type: 3,
+                        position: 'right bottom'
+                    });
+                    $(".vitae[data-id='" + id + "']").fadeOut();
+                }
+            });
+        }
+    </script>
+    }

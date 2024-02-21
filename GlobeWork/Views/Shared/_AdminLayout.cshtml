@@ -95,10 +95,16 @@
                             <div>@Html.ActionLink("Quản lý địa danh", "City", "Vcms", null, new { @class = "text_link" })</div>
                         </div>
                     </li>
+                    <li data-id="4">
+                        <a class="root"><span>Quản lý tin du học</span><i class="fas fa-caret-down"></i></a>
+                        <div class="sub hidden">
+                            <div><a href="@Url.Action("StudyAbroadCategory", "Vcms")" class="text_link">Danh mục</a></div>
+                            <div>@Html.ActionLink("Danh sách tin du học", "ListStudyAbroad", "Vcms", null, new { @class = "text_link" })</div>
+                        </div>
+                    </li>
                     <li data-id="6">
                         <a class="root"><span>Quản lý Bài viết</span><i class="fas fa-caret-down"></i></a>
                         <div class="sub hidden">
-                            <div>@Html.ActionLink("Danh mục bài viết", "ArticleCategory", "Article", null, new { @class = "text_link" })</div>
                             <div>@Html.ActionLink("Thêm mới bài viết", "Article", "Article", null, new { @class = "text_link" })</div>
                             <div>@Html.ActionLink("Danh sách bài viết", "ListArticle", "Article", null, new { @class = "text_link" })</div>
                         </div>

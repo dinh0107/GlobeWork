@@ -52,6 +52,25 @@
                     </tr>
                 }
                 <tr>
+                    <td class="form_name">@Html.LabelFor(a => Model.StudyAbroadCategory.Banner)</td>
+                    <td class="form_text">
+                        @Html.TextBoxFor(a => Model.StudyAbroadCategory.Banner, new { type = "file" })
+                        <span class="red-warring">
+                            Chấp nhận ảnh jpg, png, gif, jpeg < 4MB
+                        </span>
+                    </td>
+                </tr>
+                @if (Model.StudyAbroadCategory.Banner != null)
+                {
+                    <tr id="ImgPreview">
+                        <td class="form_name"></td>
+                        <td class="form_text">
+                            <img class="img-border mb-2" src="@Path.Combine("/images/category/", Model.StudyAbroadCategory.Banner)" />
+                        </td>
+                        <input type="hidden" name="CurrentBanner" id="CurrentFile" value="@Model.StudyAbroadCategory.Banner" />
+                    </tr>
+                }
+                <tr>
                     <td class="form_name">@Html.LabelFor(a => Model.StudyAbroadCategory.Sort)</td>
                     <td class="form_text">@Html.EditorFor(a => Model.StudyAbroadCategory.Sort)</td>
                 </tr>

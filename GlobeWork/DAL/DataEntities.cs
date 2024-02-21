@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using GlobeWork.Models;
+using GlobeWork.Models;
 
 namespace GlobeWork.DAL
 {
@@ -36,6 +37,8 @@ namespace GlobeWork.DAL
         public DbSet<Experiences> Experiences { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Certificate> Certificates { get; set; }
+        public DbSet<UserViewLog> UserViewLogs { get; set; }
+        public DbSet<Article> Articles { get; set; }
 
     }
 }

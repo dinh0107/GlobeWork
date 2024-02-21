@@ -263,10 +263,169 @@ function Details() {
         var contentId = $(this).data('toggle');
         $('#' + contentId).slideToggle();
     });
+
+    $(".apply-form").submit(function (e) {
+        e.preventDefault(); 
+        var formData = new FormData($(this)[0]); 
+        $.ajax({
+            url: "/Home/Apply", 
+            type: 'POST', 
+            data: formData, 
+            contentType: false, 
+            processData: false, 
+            success: function (response) {
+                if (response.success) {
+                    new Notify({
+                        status: 'success',
+                        text: data.message,
+                        effect: 'slide',
+                        speed: 600,
+                        showIcon: true,
+                        showCloseButton: true,
+                        autoclose: true,
+                        autotimeout: 3000,
+                        gap: 10,
+                        distance: 20,
+                        type: 3,
+                        position: 'right bottom'
+                    });
+                    $(".close").click();
+                } else {
+                    new Notify({
+                        status: 'error',
+                        text: data.message,
+                        effect: 'slide',
+                        speed: 600,
+                        showIcon: true,
+                        showCloseButton: true,
+                        autoclose: true,
+                        autotimeout: 3000,
+                        gap: 10,
+                        distance: 20,
+                        type: 3,
+                        position: 'right bottom'
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("Đã xảy ra lỗi: " + error);
+            }
+        });
+    });
         
 }
 
 // Theo dõi , Lưu tin
+function StudyDetai() {
+    function handleFollowButtonClick(button, companyId, isFollow) {
+        var actionUrl = isFollow ? "/Home/Follow" : "/Home/UnFollow";
+        var buttonText = isFollow ? "Bỏ theo dõi công ty" : "Theo dõi công ty";
+        var buttonClassToRemove = isFollow ? "follow" : "unfollow";
+        var buttonClassToAdd = isFollow ? "unfollow" : "follow";
+
+        $.post(actionUrl, { id: companyId }, function (data) {
+            if (data.success) {
+                button.text(buttonText);
+                button.removeClass(buttonClassToRemove).addClass(buttonClassToAdd);
+                new Notify({
+                    status: 'success',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            } else {
+                new Notify({
+                    status: 'error',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            }
+        });
+    }
+
+    function handleLikeStudy(button, jobId, isLike) {
+        var actionUrl = isLike ? "/Home/LikeStudy" : "/Home/UnStudy";
+        var buttonText = isLike ? "Bỏ lưu" : "Lưu tin";
+        var buttonClassToRemove = isLike ? "like" : "unlike";
+        var buttonClassToAdd = isLike ? "unlike" : "like";
+        $.post(actionUrl, { id: jobId }, function (data) {
+            if (data.success) {
+                button.text(buttonText);
+                button.removeClass(buttonClassToRemove).addClass(buttonClassToAdd);
+                new Notify({
+                    status: 'success',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            } else {
+                new Notify({
+                    status: 'error',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            }
+        });
+    }
+    //Theo dõi công ty
+    $(document).on("click", ".follow", function () {
+        var button = $(this);
+        var companyId = button.data("company-id");
+        handleFollowButtonClick(button, companyId, true);
+    });
+
+    $(document).on("click", ".unfollow", function () {
+        var button = $(this);
+        var companyId = button.data("company-id");
+        handleFollowButtonClick(button, companyId, false);
+    });
+
+    //Like Job
+    $(document).on("click", ".like", function () {
+        var button = $(this);
+        var jobId = button.data("study");
+        handleLikeStudy(button, jobId, true);
+    });
+    $(document).on("click", ".unlike", function () {
+        var button = $(this);
+        var jobId = button.data("study");
+        handleLikeStudy(button, jobId, false);
+    });
+}
 function ActionDetail() {
     function handleFollowButtonClick(button, companyId, isFollow) {
         var actionUrl = isFollow ? "/Home/Follow" : "/Home/UnFollow";
@@ -548,6 +707,89 @@ function QickLike() {
         handleLikeJob(button, jobId, false);
     });
 }
+function QickStudy() {
+    function handleLikeStudy(button, studyId, isLike) {
+        var actionUrl = isLike ? "/Home/LikeStudy" : "/Home/UnStudy";
+        var buttonClassToRemove = isLike ? "likejob" : "unlikejob";
+        var removeactive = isLike ? "" : "active";
+        var buttonClassToAdd = isLike ? "unlikejob" : "likejob";
+        var active = isLike ? "active" : "";
+        $.post(actionUrl, { id: studyId }, function (data) {
+            if (data.success) {
+                button.removeClass(buttonClassToRemove).addClass(buttonClassToAdd);
+                button.removeClass(removeactive).addClass(active);
+                new Notify({
+                    status: 'success',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            } else {
+                new Notify({
+                    status: 'error',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            }
+        });
+    }
+
+    $(document).on("click", ".likejob", function () {
+        var button = $(this);
+        var studyId = button.data("id");
+        handleLikeStudy(button, studyId, true);
+    });
+    $(document).on("click", ".unlikejob", function () {
+        var button = $(this);
+        var studyId = button.data("id");
+        handleLikeStudy(button, studyId, false);
+    });
+}
 $(".box-notification").click(function () {
     $(".notification").toggleClass("active")
 })
+function updateFileName(input) {
+    var selectedFileName = document.getElementById('selectedFileName');
+    if (input.files && input.files.length > 0) {
+        selectedFileName.textContent = input.files[0].name;
+    } else {
+        selectedFileName.textContent = 'Tải lên CV từ máy tính của bạn';
+    }
+}
+function Sort(action) {
+    $(document).on("click", "[data-filter]", function () {
+        let url = $("input[name=currentUrl]").val();
+        let status = $("[name=status]").val();
+        let type = $("[name=type]").val(); 
+      
+        $("[name=status]").on("change", function () {
+            status += $(this).val();
+        });
+        $("[name=type]").on("change", function () {
+            type += $(this).val();
+        });
+        url = url.split('/').at(-1);
+        window.history.pushState("", "", url);
+        $.get(action, { type: type, status: status, url }, function (data) {
+            $("#sort").empty();
+            $("#sort").html(data);
+        });
+    });
+}

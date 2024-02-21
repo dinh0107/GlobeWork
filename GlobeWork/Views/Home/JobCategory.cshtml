@@ -3,7 +3,7 @@
 @using GlobeWork.Utils
 @{
     ViewBag.Title = Model.Career.Name;
-    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("JobCategory");
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("JobCategory", new {url = Model.Career.Code});
     var date = DateTime.Now;
     var email = ViewContext.RouteData.Values["Email"].ToString();
 }

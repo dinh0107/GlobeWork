@@ -1,52 +1,457 @@
-﻿<div class="studyAbroad-filter">
+﻿@model GlobeWork.ViewModel.StudyDetailViewModel
+@using Helpers;
+@{
+    ViewBag.Title = Model.StudyAbroad.Name;
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("StudyAbroadDetail", new { url = Model.StudyAbroad.Url });
+    if (Model.StudyAbroad.Company.Avatar != null)
+    {
+        ViewBag.ImageShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/company/", Model.StudyAbroad.Company.Avatar);
+    }
+    var id = ViewContext.RouteData.Values["Id"].ToString();
+    var email = ViewContext.RouteData.Values["Email"].ToString();
+}
+<div class="bg-light py-4">
     <div class="container">
-        <form class="row custom-row">
-            <div class="col-lg-7">
-                <input type="text" name="name" value="" placeholder="Nhập từ khóa" class="form-control" />
+        <div class="company-cover-inner">
+            <div class="cover-wrapper">
+                @if (Model.StudyAbroad.Company.Cover != null)
+                {
+                    <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", Model.StudyAbroad.Company.Cover)" alt="@Model.StudyAbroad.Company.Name" class="lazyload">
+                }
+                else
+                {
+                    <img src="~/Content/images/cover-null.png" alt="@Model.StudyAbroad.Company.Name" class="lazyload">
+                }
             </div>
-            <div class="col-lg-3">
-                <div class="form-control d-flex align-items-center justify-content-between">
-                    <input type="text" name="name" value="" placeholder="Khu vực" class="border-0 form-control ouline-none" />
-                    <i class="far fa-location"></i>
+            <div class="company-logo">
+                <div class="company-image-logo">
+                    @if (Model.StudyAbroad.Company.Avatar != null)
+                    {
+                        <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", Model.StudyAbroad.Company.Avatar)" alt="@Model.StudyAbroad.Company.Name" class="img-responsive lazyload">
+                    }
+                    else
+                    {
+                        <img src="~/Content/images/avatar-default.jpg" alt="@Model.StudyAbroad.Company.Name" class="img-responsive lazyload">
+                    }
                 </div>
             </div>
-            <div class="col-lg-2">
-                <button type="submit" class="btn btn-block filter-btn">
-                    <i class="far fa-search"></i>
-                    TÌM KIẾM
-                </button>
+            <div class="company-detail-overview">
+                <div class="box-detail">
+                    <h1 class="company-detail-name ">@Model.StudyAbroad.Company.Name <span class="tag-name">@Model.StudyAbroad.Company.City.Name</span></h1>
+                    <div class="company-subdetail">
+                        <a href="@Model.StudyAbroad.Company.WebsiteUrl" target="_blank">
+                            <i class="fa-light fa-globe"></i>
+                            @if (Model.StudyAbroad.Company.WebsiteUrl != null)
+                            {
+                                @Model.StudyAbroad.Company.WebsiteUrl
+                            }
+                            else
+                            {
+                                @:Đang cập nhật
+                            }
+                        </a>
+                        <a href="javascripts:;"><i class="fa-solid fa-buildings"></i>@Model.StudyAbroad.Company.CompanySize</a>
+                        <a href="javascripts:;"><i class="fa-solid fa-users"></i>@Model.StudyAbroad.Company.JobPosts.Count() công việc đang tuyển</a>
+                    </div>
+                </div>
+                <div class="box-follow">
+                    <a href="@Url.Action("Employer", new {url = Model.StudyAbroad.Company.Url})" class="btn btn-follow" target="_blank">
+                        Xem trang công ty <i class="fa-light fa-arrow-up-right-from-square"></i>
+                    </a>
+                    @if (email == "")
+                    {
+                        <a href="@Url.Action("Login","User" , new {returnUrl = Url.Action("JobDetail", new { url = Model.StudyAbroad.Url })})" class="btn btn-follow">
+                            <i class="fa-light fa-plus"></i> Theo dõi công ty
+                        </a>
+                    }
+                    else
+                    {
+                        if (Model.Follows.Any(a => a.CompanyId == Model.StudyAbroad.Company.EmployerId))
+                        {
+                            <a href="javascripts:;" class="btn btn-follow unfollow" data-company-id="@Model.StudyAbroad.Company.EmployerId ">
+                                Bỏ theo dõi công ty
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="javascripts:;" class="btn btn-follow follow" data-company-id="@Model.StudyAbroad.Company.EmployerId ">
+                                Theo dõi công ty
+                            </a>
+                        }
+                    }
+                </div>
             </div>
-        </form>
-        <div class="hot-keyword">
-            <span>Từ Khóa Thịnh Hành:</span>
-            <div class="list-keyword">
-                @for (var i = 0; i < 6; i++)
+        </div>
+        <div class="row custom-row">
+            <div class="col-lg-8">
+                <div class="job-detail__box--left ">
+                    <div class="job-detail__name">
+                        @Model.StudyAbroad.Name
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="media section-info">
+                                <div class="section-info__icon">
+                                    <i class="fa-sharp fa-solid fa-coins"></i>
+                                </div>
+                                <div class="media-body">
+                                    <span class="job-detail__info--section-content-title">Mức lương</span>
+                                    <span class="job-detail__info--section-content-value">@Html.DisplayFor(a => Model.StudyAbroad.Wages)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="media section-info">
+                                <div class="section-info__icon">
+                                    <i class="fa-sharp fa-solid fa-location-dot"></i>
+                                </div>
+                                <div class="media-body">
+                                    <span class="job-detail__info--section-content-title">Quốc gia</span>
+                                    <span class="job-detail__info--section-content-value">
+                                        @Model.StudyAbroad.StudyAbroadCategory.Country.Name
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                                <div class="media section-info">
+                                    <div class="section-info__icon">
+                                        <i class="fa-solid fa-book-open-cover"></i>
+                                    </div>
+                                    <div class="media-body">
+                                        <span class="job-detail__info--section-content-title">Yêu cầu</span>
+                                        <span class="job-detail__info--section-content-value">@Html.DisplayFor(a => a.StudyAbroad.Gender)</span>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="deadline">
+                        <i class="fa-solid fa-clock"></i>Hạn nộp hồ sơ:
+                        @if (Model.StudyAbroad.ExpirationDate != null)
+                        {
+                            @Html.DisplayFor(a => a.StudyAbroad.ExpirationDate)
+                        }
+                        else
+                        {
+                            @:Luôn tuyển
+                        }
+                    </div>
+                    <div class="button-list">
+                        @if (email != "")
+                        {
+                            if (Model.ApplyJobs.Any())
+                            {
+                                <div class="button1">Đã ứng tuyển</div>
+                            }
+                            else
+                            {
+                                <div class="button1" data-toggle="modal" data-target="#exampleModalCenter" data-action="@Url.Action("ApplyForm", "Home")" data-id="@Model.StudyAbroad.Id">Nộp hồ sơ</div>
+                            }
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Login", "User")" class="button1">Nộp hồ sơ</a>
+                        }
+
+                        <div class="button2">Cần tư vấn</div>
+                        @if (email == "")
+                        {
+                            <a href="@Url.Action("Login","User" , new {returnUrl = Url.Action("StudyAbroadDetail", new { url = Model.StudyAbroad.Url })})" class="button3"><i class="fa-regular fa-heart mr-2"></i> Lưu tin </a>
+                        }
+                        else
+                        {
+                            if (Model.Likes.Any())
+                            {
+                                <a href="javascript:;" class="button3 unlike active" data-study="@Model.StudyAbroad.Id"><i class="fa-solid fa-heart mr-2 heart-detail"></i> Bỏ lưu </a>
+
+                            }
+                            else
+                            {
+                                <a href="javascript:;" class="button3 like" data-study="@Model.StudyAbroad.Id"><i class="fa-regular fa-heart mr-2 heart-detail"></i> Lưu tin </a>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="job-detail__box--left my-3">
+                    <div class="detail-title-box">
+                        Yêu cầu chung
+                    </div>
+                    <div class="d-flex flex-row align-items-center">
+                        Sức khỏe:
+                        <div class="deadline mx-2">
+                            @Model.StudyAbroad.Health
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-center">
+                        Trình độ học vấn, bằng cấp:
+                        <div class="deadline mx-2">
+                            @Model.StudyAbroad.LearningProblems
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-center">
+                       Số lượng:
+                        <div class="deadline mx-2">
+                            @Model.StudyAbroad.Quantity
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-center">
+                       Địa chỉ:
+                        <div class="deadline mx-2">
+                            @Model.StudyAbroad.Address
+                        </div>
+                    </div>
+                </div>
+                <div class="job-detail__box--left my-3">
+                    <div class="job-detail__information-detail--title">
+                        Chi tiết tin
+                    </div>
+                    @if (Model.StudyAbroad.ListImage != null)
+                        {
+                            <div class="detail-title-box">
+                                Hình ảnh minh họa
+                            </div>
+                            <div class="list-img">
+                                @foreach (var item in Model.StudyAbroad.ListImage.Split(','))
+                                {
+                                    <a href="@Path.Combine("/images/study/",item)" data-fancybox="detail">
+                                        <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/study/", item)" alt="@Model.StudyAbroad.Name" class="lazyload" />
+                                    </a>
+                                }
+                            </div>
+                        }
+                    @if (Model.StudyAbroad.Body != null)
+                    {
+                        <div class="detail-title-box">
+                            Mô tả công việc
+                        </div>
+                        <div class="content-detail">
+                            @Html.Raw(Model.StudyAbroad.Body)
+                        </div>
+                    }
+                    @if (Model.StudyAbroad.Requirements != null)
+                    {
+                        <div class="detail-title-box">
+                            Yêu cầu ứng viên
+                        </div>
+                        <div class="content-detail">
+                            @Html.Raw(Model.StudyAbroad.Requirements)
+                        </div>
+                    }
+                    @if (Model.StudyAbroad.Incentives != null)
+                    {
+                        <div class="detail-title-box">
+                            Ưu đãi được hưởng
+                        </div>
+                        <div class="content-detail">
+                            @Html.Raw(Model.StudyAbroad.Incentives)
+                        </div>
+                    }
+                </div>
+
+            </div>
+            <div class="col-lg-4">
+                @if (Model.StudyAbroadCompanys.Any())
                 {
-                    <a href="#">LẬP TRÌNH VIÊN</a>
+                    <div class="job-detail__box--right ">
+                        <div class="job-detail__box--right-title">
+                            Tin cùng công ty
+                        </div>
+                        <form class="job-search-box" action="@Url.Action("Search")">
+                            <input type="hidden" name="companyId" value="@Model.StudyAbroad.CompanyId" />
+                            <input type="text" name="keyword" required placeholder="Tên công việc, vị trí bạn muốn ứng tuyển..." />
+                            <button type="submit"><i class="fas fa-search"></i></button>
+                        </form>
+                        <hr />
+                        @foreach (var item in Model.StudyAbroadCompanys)
+                        {
+                            <div class="job-in-company">
+                                <div class="media">
+                                    <div class="company-avata border rounded">
+                                        @if (item.Company.Avatar != null)
+                                        {
+                                            <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Company.Avatar)" alt="@item.Company.Name" class="lazyload" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Content/images/avatar-default.jpg" alt="@item.Company.Name" class="lazyload" />
+                                        }
+                                    </div>
+                                    <div class="media-body ml-2">
+                                        <a href="@Url.Action("StudyAbroadDetail", new {url = item.Url})" class="job-in-company-name">@item.Name</a>
+                                    </div>
+                                </div>
+                                <div class="company-job-name">
+                                    @item.Company.Name
+                                </div>
+                                <div class="info-job-company">
+                                    <div class="info-job-company1 price">@Html.DisplayFor(a => item.Wages)</div>
+                                    <div class="info-job-company2">
+                                        @item.StudyAbroadCategory.Country.Name
+                                    </div>
+                                    <div class="info-job-company3">Cập nhật @Html.DateVn(item.CreateDate, 2) </div>
+                                    <div class="info-job-company4 p-3">
+                                        <i class="fa-solid fa-clock mr-2"></i>
+                                        @if (item.ExpirationDate != null)
+                                        {
+                                            @:Hạn nộp hồ sơ : @Html.DisplayFor(a => item.ExpirationDate)
+                                        }
+                                        else
+                                        {
+                                            @:Hạn nộp hồ sơ : Luôn tuyển
+                                        }
+                                    </div>
+                                </div>
+                                @if (email == "")
+                                {
+                                    <a href="@Url.Action("Login","User" , new {returnUrl = Url.Action("StudyAbroadDetail", new { url = Model.StudyAbroad.Url })})" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                                }
+                                else
+                                {
+                                    if (Model.Likes.Any(a => a.JobId == item.Id))
+                                    {
+                                        <a href="javascripts:;" class="heart active unlikejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                                    }
+                                    else
+                                    {
+                                        <a href="javascripts:;" class="heart likejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                                    }
+                                }
+                            </div>
+                        }
+                        <a href="@Url.Action("JobCompany", new {url = Model.StudyAbroad .Company.Url})" class="view-more-job">Xem thêm công việc<i class="fal fa-long-arrow-right ml-2"></i></a>
+                    </div>
                 }
+
+                @if (Model.StudyAbroads.Any())
+                {
+                    <div class="job-detail__box--right mt-3">
+                        <div class="job-detail__box--right-title">
+                            Tin liên quan
+                        </div>
+                        <form class="job-search-box" action="@Url.Action("Search")">
+                            <input type="text" name="keyword" required placeholder="Tên công việc, vị trí bạn muốn ứng tuyển..." />
+                            <button type="submit"><i class="fas fa-search"></i></button>
+                        </form>
+                        <hr />
+                        @foreach (var item in Model.StudyAbroads)
+                        {
+                            <div class="job-in-company pt-0 mb-3">
+                                <div class="media align-items-center">
+                                    <div class="company-avata border rounded rounded-circle">
+                                        @if (item.Company.Avatar != null)
+                                        {
+                                            <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Company.Avatar)" alt="@item.Company.Name" class="lazyload rounded-circle" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Content/images/avatar-default.jpg" alt="@item.Company.Name" class="lazyload rounded-circle" />
+                                        }
+                                    </div>
+                                    <div class="media-body ml-2">
+                                        <a href="@Url.Action("StudyAbroadDetail", new {url = item.Url})" class="job-in-company-name mt-0">@item.Name</a>
+                                        <div class="company-job-name">
+                                            @item.Company.Name
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="info-job-company resize-h">
+                                    <div class="info-job-company1 price">@Html.DisplayFor(a => item.Wages)</div>
+                                    <div class="info-job-company2">
+                                        @item.StudyAbroadCategory.Country.Name
+                                    </div>
+                                </div>
+                                @if (email == "")
+                                {
+                                    <a href="@Url.Action("Login", "User")" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                                }
+                                else
+                                {
+                                    if (Model.Likes.Any(a => a.StudyAbroadId == item.Id))
+                                    {
+                                        <a href="javascripts:;" class="heart active unlikejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                                    }
+                                    else
+                                    {
+                                        <a href="javascripts:;" class="heart likejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                                    }
+                                }
+                            </div>
+                        }
+                        <a href="" class="view-more-job">Xem thêm công việc<i class="fal fa-long-arrow-right ml-2"></i></a>
+                    </div>
+                }
+                <div class="job-detail__box--right mt-3">
+                    <div class="job-detail__box--right-title">
+                        Chia sẻ công ty tới bạn bè
+                    </div>
+                    <div class="copy-link">
+                        <div class="link">
+                            <span>
+                                @Request.Url
+                            </span>
+                        </div>
+                        <button type="button"><i class="fas fa-copy"></i></button>
+                    </div>
+                    <div class="job-detail__box--right-title mt-4">
+                        Chia sẻ qua mạng xã hội
+                    </div>
+                    <ul class="ul-reset share-social mt-2">
+                        <li>
+                            <a href="#" target="_blank"><img src="~/Content/images/facebook.png" alt="Facebook" /></a>
+                        </li>
+                        <li>
+                            <a href="#" target="_blank"><img src="~/Content/images/twitter.png" alt="Facebook" /></a>
+                        </li>
+                        <li>
+                            <a href="#" target="_blank"><img src="~/Content/images/linkedin.png" alt="Facebook" /></a>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
         </div>
     </div>
 </div>
-<div class="banner-page">
-    @for (int i = 0; i < 5; i++)
-    {
-        <a href="">
-            <img src="https://img.freepik.com/free-photo/plus-size-woman-working-professional-business-office_23-2150579595.jpg?w=996&t=st=1706323494~exp=1706324094~hmac=b695a3a7eba5b030af0ec4869308e2722234012bd70236b7edc78545f1b5e244" alt="" />
-        </a>
-    }
-</div>
-<div class="container py-4">
-    <div class="date">
-        <i class="fa-regular fa-calendar-days mr-1"></i> 10/05/2023
-    </div>
-    <h1 class="detail-subject">Tương quan giữa pháp luật và chính trị, và tầm quan trọng của tính trung thực và công bằng trong quy trình lập pháp</h1>
-    <div class="content-detail">
+<div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="job-detail__name" id="exampleModalLongTitle">Ứng tuyển: <span class="text-success">@Model.StudyAbroad.Name</span></div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("Apply", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <input type="hidden" name="StudyAbroadId" value="@Model.StudyAbroad.Id" />
+                <input type="hidden" name="CompanyId" value="@Model.StudyAbroad.CompanyId" />
 
+                @Html.AntiForgeryToken();
+                @Html.ValidationSummary(true)
+                <div class="modal-body">
+                    @Html.Action("ApplyForm")
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Gửi thông tin</button>
+                </div>
+            }
+        </div>
     </div>
 </div>
-@section scripts{
+@Scripts.Render("~/bundles/jqueryval")
+@section Scripts{
     <script>
-            StudyAbroad()
+        Details()
+        StudyDetai()
+        QickStudy()
+        $('input[type="radio"]').change(function () {
+            var checkedValue = $('input[type="radio"]:checked').val();
+            if (checkedValue === '1') {
+                $('.drop_box').addClass('active');
+            } else {
+                $('.drop_box').removeClass('active');
+            }
+        });
     </script>
 }

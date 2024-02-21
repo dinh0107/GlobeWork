@@ -27,6 +27,8 @@ namespace GlobeWork.Models
         public bool ShowHome { get; set; }
         [Display(Name = "Nổi bật")]
         public bool Hot { get; set; }
+        [Display(Name = "Hiện menu")]
+        public bool Menu { get; set; }
         [Display(Name = "Thứ tự"), Required(ErrorMessage = "Hãy nhập thứ tự"), RegularExpression(@"\d+", ErrorMessage = "Chỉ nhập số nguyên")]
         public int Sort { get; set; }
         [Display(Name = "Ngày tạo"), UIHint("DateTimePicker"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]

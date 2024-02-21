@@ -21,6 +21,8 @@ namespace GlobeWork.Models
         public DateTime EstablishmentDate { get; set; }
         [Display(Name = "Hiện trang chủ")]
         public bool ShowHome { get; set; }
+        [Display(Name = "Độ tuổi trung bình") , Required(ErrorMessage ="Chưa nhập độ tuổi trung bình")]
+        public string Age { get; set; }
         [Display(Name = "Email nhận tin ứng tuyển"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự"), EmailAddress(ErrorMessage = "Email không hợp lệ"), UIHint("TextBox")]
         public string Email { get; set; }
         [Display(Name = "Địa chỉ"), UIHint("TextBox")]

@@ -144,14 +144,22 @@
                         }
                     </div>
                     <div class="button-list">
-                        @if (Model.ApplyJobs.Any())
+                        @if (email != "")
                         {
-                            <div class="button1">Đã ứng tuyển</div>
+                            if (Model.ApplyJobs.Any())
+                            {
+                                <div class="button1">Đã ứng tuyển</div>
+                            }
+                            else
+                            {
+                                <div class="button1" data-toggle="modal" data-target="#exampleModalCenter" data-action="@Url.Action("ApplyForm", "Home")" data-id="@Model.Job.Id">Nộp hồ sơ</div>
+                            }
                         }
                         else
                         {
-                            <div class="button1" data-toggle="modal" data-target="#exampleModalCenter" data-action="@Url.Action("ApplyForm", "Home")" data-id="@Model.Job.Id">Nộp hồ sơ</div>
+                    <a href="@Url.Action("Login", "User")" class="button1">Nộp hồ sơ</a>
                         }
+
                         <div class="button2">Cần tư vấn</div>
                         @if (email == "")
                         {
@@ -564,9 +572,10 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            @using (Html.BeginForm("Apply", "Home", FormMethod.Post , new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("Apply", "Home", FormMethod.Post , new { enctype = "multipart/form-data" , @class="apply-form" }))
             {
                 <input type="hidden" name="JobId" value="@Model.Job.Id" />
+                <input type="hidden" name="CompanyId" value="@Model.Job.CompanyId" />
                 @Html.AntiForgeryToken();
                 @Html.ValidationSummary(true)
                 <div class="modal-body">
@@ -594,5 +603,8 @@
                 $('.drop_box').removeClass('active');
             }
         });
+        $(".apply-form").submit(function () {
+
+        })
     </script>
 } 

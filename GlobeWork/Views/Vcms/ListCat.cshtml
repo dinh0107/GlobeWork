@@ -3,6 +3,7 @@
     <tr>
         <th>STT</th>
         <th>Hình ảnh</th>
+        <th>Banner</th>
         <th>Tên danh mục</th>
         <th>Quốc gia</th>
         <th>Hiện menu</th>
@@ -22,6 +23,12 @@
                         <img src="@Path.Combine("/images/category/", category.Image)" style="width: 150px; height: 100px; object-fit: contain" />
                     }
                 </td>
+                <td>
+                    @if (category.Banner != null)
+                    {
+                        <img src="@Path.Combine("/images/category/", category.Banner)" style="width: 150px; height: 100px; object-fit: contain" />
+                    }
+                </td>
                 <td class="left"><strong>@category.CategoryName</strong></td>
                 <td class="left"><strong>@category.Country.Name</strong></td>
                 <td>@Html.EditorFor(a => category.ShowMenu, new { htmlAttributes = new { id = "Menu" } })</td>
@@ -34,26 +41,32 @@
             </tr>
             foreach (var child in Model.Where(a => a.ParentId == category.Id))
             {
-                <tr data-id="@child.Id">
-                    <td style="width: 120px;">
-                        <input type="number" name="Sort" value="@child.Sort" class="form_control" />
-                    </td>
-                    <td>
-                        @if (child.Image != null)
-                        {
-                            <img src="@Path.Combine("/images/category/", child.Image)" style="width: 150px; height: 100px; object-fit: contain" />
-                        }
-                    </td>
-                    <td class="left"><strong><i class="fal fa-window-minimize"></i> @child.CategoryName</strong></td>
-                    <td class="left"><strong> @child.Country.Name</strong></td>
-                    <td>@Html.EditorFor(a => child.ShowMenu, new { htmlAttributes = new { id = "Menu" } })</td>
-                    <td>@Html.EditorFor(a => child.Active, new { htmlAttributes = new { id = "Active" } })</td>
-                    <td>
-                        <a href="javascript:;" onclick="updateCategory('@child.Id')">Cập nhật - </a>
-                        @Html.ActionLink("Sửa", "EditCategory", new { id = child.Id }) -
-                        <a href="javascript:;" onclick="deleteArtCategory('@child.Id')" style="color: red">Xóa</a>
-                    </td>
-                </tr>
+    <tr data-id="@child.Id">
+        <td style="width: 120px;">
+            <input type="number" name="Sort" value="@child.Sort" class="form_control" />
+        </td>
+        <td>
+            @if (child.Image != null)
+            {
+                <img src="@Path.Combine("/images/category/", child.Image)" style="width: 150px; height: 100px; object-fit: contain" />
+            }
+        </td>
+        <td>
+            @if (child.Banner != null)
+            {
+                <img src="@Path.Combine("/images/category/", child.Banner)" style="width: 150px; height: 100px; object-fit: contain" />
+            }
+        </td>
+        <td class="left"><strong><i class="fal fa-window-minimize"></i> @child.CategoryName</strong></td>
+        <td class="left"><strong> @child.Country.Name</strong></td>
+        <td>@Html.EditorFor(a => child.ShowMenu, new { htmlAttributes = new { id = "Menu" } })</td>
+        <td>@Html.EditorFor(a => child.Active, new { htmlAttributes = new { id = "Active" } })</td>
+        <td>
+            <a href="javascript:;" onclick="updateCategory('@child.Id')">Cập nhật - </a>
+            @Html.ActionLink("Sửa", "EditCategory", new { id = child.Id }) -
+            <a href="javascript:;" onclick="deleteArtCategory('@child.Id')" style="color: red">Xóa</a>
+        </td>
+    </tr>
             }
         }
     </tbody>

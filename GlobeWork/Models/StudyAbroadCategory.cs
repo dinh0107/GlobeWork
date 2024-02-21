@@ -22,10 +22,17 @@ namespace GlobeWork.Models
         public bool Active { get; set; }
         [Display(Name = "Ảnh đại diện"), StringLength(500)]
         public string Image { get; set; }
+        [Display(Name = "Banner"), StringLength(500)]
+        public string Banner { get; set; }
         [Display(Name = "Quốc gia"), Required(ErrorMessage = "Hãy nhập chọn Quốc gia")]
         public int CountryId { get; set; }
         public virtual ICollection<StudyAbroad> StudyAbroads { get; set; }
+        public virtual ICollection<Article> Articles { get; set; }
         public virtual Country Country { get; set; }
+        [Display(Name = "Thẻ tiêu đề"), StringLength(100, ErrorMessage = "Tối đa 100 ký tự"), UIHint("TextBox")]
+        public string TitleMeta { get; set; }
+        [Display(Name = "Thẻ mô tả"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextArea")]
+        public string DescriptionMeta { get; set; }
         public StudyAbroadCategory()
         {
             Active = true;

@@ -3,7 +3,7 @@
     ViewBag.Title = "Công ty";
     Layout = "~/Views/Shared/_EmployerLayout.cshtml";
 }
-<div class="container">
+<div class="container py-3">
     <div class="box-content">
         <div class="box-header">
             <h3>
@@ -74,115 +74,128 @@
                             </div>
                         </div>
                     }
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                @Html.LabelFor(a => a.Company.Name)
-                                @Html.TextBoxFor(a => a.Company.Name, new { @class = "form-control", @placeholder = "Tên công ty" })
-                                @Html.ValidationMessageFor(a => a.Company.Name)
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>Ngành nghề</label>
-                                <select class="career" name="career" multiple>
-                                    @foreach (var item in Model.Careers)
-                                    {
-                                        if (Model.Company != null)
-                                        {
-                                            var isSelected = Model.Company.Careers.Any(a => a.Id == item.Id);
-                                            <option @(isSelected ? "selected" : "") value="@item.Id">@item.Name</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@item.Id">@item.Name</option>
-                                        }
-                                    }
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                @Html.LabelFor(a => a.Company.WebsiteUrl)
-                                @Html.TextBoxFor(a => a.Company.WebsiteUrl, new { @class = "form-control", @placeholder = "Website công ty" , @type="url" })
-                                @Html.ValidationMessageFor(a => a.Company.WebsiteUrl)
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                @Html.LabelFor(a => a.Company.CompanySize)
-                                @Html.TextBoxFor(a => a.Company.CompanySize, new { @class = "form-control", @placeholder = "Quy mô" })
-                                @Html.ValidationMessageFor(a => a.Company.CompanySize)
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                @Html.LabelFor(a => a.Company.EstablishmentDate)
-                                @Html.TextBoxFor(model => model.Company.EstablishmentDate, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker" })
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                @Html.LabelFor(a => a.Company.Phone)
-                                @Html.TextBoxFor(a => a.Company.Phone, new { @class = "form-control", @placeholder = "Hotline công ty" })
-                                @Html.ValidationMessageFor(a => a.Company.Phone)
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>Thành phố</label>
-                                <select class="v-select" name="city">
-                                    @foreach (var item in Model.Cities)
-                                    {
-                                        if (Model.Company != null)
-                                        {
-                                            var isSelected = Model.Company.CityId == item.Id;
-                                            <option @(isSelected ? "selected" : "") value="@item.Id">
-                                                @item.Name
-                                            </option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@item.Id">
-                                                @item.Name
-                                            </option>
-                                        }
-                                    }
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                @Html.LabelFor(a => a.Company.Address)
-                                @Html.TextBoxFor(a => a.Company.Address, new { @class = "form-control", @placeholder = "Địa chỉ" })
-                                @Html.ValidationMessageFor(a => a.Company.Address)
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                @Html.LabelFor(a => a.Company.Introduct)
-                                @Html.EditorFor(a => a.Company.Introduct)
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="form-group">
-                                @Html.LabelFor(a => a.Company.Product)
-                                @Html.EditorFor(a => a.Company.Product)
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                @Html.LabelFor(a => a.Company.GoogleMap)
-                                @Html.TextAreaFor(a => a.Company.GoogleMap, new { @class = "form-control" })
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                @Html.LabelFor(a => a.Company.VideoYoutube)
-                                @Html.TextAreaFor(a => a.Company.VideoYoutube, new { @class = "form-control" })
-                            </div>
-                        </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        @Html.LabelFor(a => a.Company.Name)
+                        @Html.TextBoxFor(a => a.Company.Name, new { @class = "form-control", @placeholder = "Tên công ty" })
+                        @Html.ValidationMessageFor(a => a.Company.Name)
                     </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>Ngành nghề</label>
+                        <select class="career" name="career" multiple>
+                            @foreach (var item in Model.Careers)
+                            {
+                                if (Model.Company != null)
+                                {
+                                    var isSelected = Model.Company.Careers.Any(a => a.Id == item.Id);
+                                    <option @(isSelected ? "selected" : "") value="@item.Id">@item.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        @Html.LabelFor(a => a.Company.WebsiteUrl)
+                        @Html.TextBoxFor(a => a.Company.WebsiteUrl, new { @class = "form-control", @placeholder = "Website công ty", @type = "url" })
+                        @Html.ValidationMessageFor(a => a.Company.WebsiteUrl)
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        @Html.LabelFor(a => a.Company.CompanySize)
+                        @Html.TextBoxFor(a => a.Company.CompanySize, new { @class = "form-control", @placeholder = "Quy mô" })
+                        @Html.ValidationMessageFor(a => a.Company.CompanySize)
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        @Html.LabelFor(a => a.Company.EstablishmentDate)
+                        @Html.TextBoxFor(model => model.Company.EstablishmentDate, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker" })
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        @Html.LabelFor(a => a.Company.Age)
+                        @Html.TextBoxFor(a => a.Company.Age, new { @class = "form-control", @placeholder = "Quy mô" })
+                        @Html.ValidationMessageFor(a => a.Company.Age)
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>Hiển thị nổi bật</label>
+                        @Html.TextBoxFor(a => a.DateHot, new { @class = "input-number custom-input" })
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        @Html.LabelFor(a => a.Company.Phone)
+                        @Html.TextBoxFor(a => a.Company.Phone, new { @class = "form-control", @placeholder = "Hotline công ty" })
+                        @Html.ValidationMessageFor(a => a.Company.Phone)
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label>Thành phố</label>
+                        <select class="v-select" name="city">
+                            @foreach (var item in Model.Cities)
+                            {
+                                if (Model.Company != null)
+                                {
+                                    var isSelected = Model.Company.CityId == item.Id;
+                                    <option @(isSelected ? "selected" : "") value="@item.Id">
+                                        @item.Name
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Id">
+                                        @item.Name
+                                    </option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        @Html.LabelFor(a => a.Company.Address)
+                        @Html.TextBoxFor(a => a.Company.Address, new { @class = "form-control", @placeholder = "Địa chỉ" })
+                        @Html.ValidationMessageFor(a => a.Company.Address)
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        @Html.LabelFor(a => a.Company.Introduct)
+                        @Html.EditorFor(a => a.Company.Introduct)
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        @Html.LabelFor(a => a.Company.Product)
+                        @Html.EditorFor(a => a.Company.Product)
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        @Html.LabelFor(a => a.Company.GoogleMap)
+                        @Html.TextAreaFor(a => a.Company.GoogleMap, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        @Html.LabelFor(a => a.Company.VideoYoutube)
+                        @Html.TextAreaFor(a => a.Company.VideoYoutube, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-primary">
                             Lưu lại

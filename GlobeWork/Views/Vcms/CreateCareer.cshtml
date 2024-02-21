@@ -49,6 +49,10 @@
             <td class="form_text">@Html.CheckBoxFor(model => model.Hot)</td>
         </tr>
         <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Menu)</td>
+            <td class="form_text">@Html.CheckBoxFor(model => model.Menu)</td>
+        </tr>
+        <tr>
             <td class="form_name">@Html.LabelFor(model => model.Active)</td>
             <td class="form_text">@Html.CheckBoxFor(model => model.Active, new { @checked = "checked" })</td>
         </tr>

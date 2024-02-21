@@ -52,6 +52,8 @@ namespace GlobeWork.Models
         public virtual ICollection<Experiences> Experiences { get; set; }
         public virtual ICollection<Certificate> Certificates { get; set; }
         public virtual ICollection<Project> Projects { get; set; }
+        public virtual ICollection<ApplyJob> ApplyJobs { get; set; }
+        public virtual ICollection<UserViewLog> ViewLogs { get; set; }
         public User()
         {
             CreateDate = DateTime.Now;
@@ -139,4 +141,15 @@ namespace GlobeWork.Models
         public string Url { get; set; }
         public User User { get; set; }
     }
+    public class UserViewLog
+    {
+        public int Id { get; set; }
+        public int UserId { get; set; } 
+        public DateTime ViewedAt { get; set; }
+        public UserViewLog()
+        {
+            ViewedAt = DateTime.Now;
+        }
+    }
+
 }

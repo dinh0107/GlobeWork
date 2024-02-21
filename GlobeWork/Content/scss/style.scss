@@ -229,10 +229,34 @@ header {
     width: 100%;
 
     > li {
+        position: relative;
+
+        &:before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 1.25rem;
+            top: 120%;
+        }
+
         &:hover {
-            a {
+            > a {
                 color: $green;
             }
+
+            .sub-menu {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            .box-menu {
+                visibility: visible;
+                opacity: 1;
+            }
+        }
+
+        .sub-menu {
+            position: absolute;
         }
     }
 
@@ -243,7 +267,71 @@ header {
         font-weight: 400;
     }
 }
+.sub-menu {
+    background: $white;
+    display: block;
+    margin: 0;
+    max-height: 88vh;
+    overflow: auto;
+    padding: 1rem;
+    z-index: 1;
+    top: 200%;
+    visibility: hidden;
+    opacity: 0;
+    border-radius: 0.425rem;
+    li {
+        background: #f4f5f5;
+        border-radius: 6px;
+        margin: 8px 0;
+        min-width: 368px;
+        position: relative;
+        padding: 0.625rem 0.938rem;
 
+        a {
+            font-size: 14px;
+            line-height: 1.25rem;
+
+            &:hover {
+                color: $green;
+            }
+        }
+    }
+}
+.box-menu {
+    position: absolute;
+    background: $white;
+    display: block;
+    margin: 0;
+    max-height: 88vh;
+    overflow: auto;
+    padding: 1rem;
+    z-index: 1;
+    border-radius: 0.425rem;
+    top: 200%;
+    width: 66rem;
+    right: 50%;
+    transform: translateX(70%);
+    visibility: hidden;
+    opacity: 0;
+
+    a {
+        margin-top: .6rem;
+        display: block;
+    }
+}
+.flag {
+    width: 1.5rem;
+    height: 1rem;
+    object-fit: cover;
+    margin-left:.5rem;
+}
+
+.studyabroadcategory-name {
+    font-weight: 600 !important;
+    text-transform: uppercase;
+}
+.child-menu{
+}
 .user-action {
     padding: 0.625rem 1.25rem;
     font-size: 0.8125rem;
@@ -761,6 +849,7 @@ header {
     text-align: center;
     font-size: 1rem;
     font-weight: 700;
+    height:3rem;
     text-transform: capitalize;
     @include truncate(2);
 }
@@ -1154,6 +1243,7 @@ footer {
     color: #212F3F;
     font-size: 1rem;
     font-weight: 600;
+    text-transform:capitalize;
 }
 
 .job-detail__name {
@@ -1920,7 +2010,7 @@ footer {
 
 .company-banner {
     height: 18.1875rem;
-    background: url(./images/company-banner.jpg);
+    background: url(../images/company-banner.jpg);
     background-size: cover;
     background-position: center;
 }
@@ -2084,6 +2174,7 @@ footer {
     font-weight: 400;
     line-height: 140%;
     @include truncate(6);
+    height:117px;
 }
 
 .logo-form {
@@ -2875,12 +2966,13 @@ input, button {
         align-items: center;
     }
 
-    img {
-        width: 8.5625rem;
-        height: 6.5rem;
-        object-fit: cover;
-        margin-right: 1rem;
-    }
+    
+}
+.study-img {
+    width: 8.5625rem;
+    height: 6.5rem;
+    object-fit: cover;
+    margin-right: 1rem;
 }
 
 .study-name {
@@ -3382,19 +3474,32 @@ input, button {
         color: $green;
     }
 
+    .count-noti {
+        position: absolute;
+        width: 1.25rem;
+        height: 1.25rem;
+        border-radius: 50%;
+        color: $white;
+        background: $red;
+        @include flex-center;
+        font-size: .6rem;
+        top: -25%;
+        right: 0;
+    }
+
     .notification {
-        bottom: -7.5rem;
         right: 0;
         width: 20rem;
-        top: unset;
+        top: 150%;
 
         &.active {
             visibility: visible;
             opacity: 1;
         }
-        img{
-            width:100px;
-            height:100px;
+
+        img {
+            width: 100px;
+            height: 100px;
         }
     }
 }
@@ -3469,5 +3574,37 @@ input, button {
 
     &.active {
         display: flex;
+    }
+}
+.info-box {
+    padding: 1.25rem;
+
+    img {
+        width: 4rem;
+        height: 4rem;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+}
+.name-user{
+    font-size:1rem;
+    font-weight:600;
+}
+.account-type {
+    padding: .2rem 1rem;
+    color: $white;
+    font-size: .7rem;
+    background-color: $green;
+    width:max-content;
+    display:block;
+    border-radius:.2rem;
+}
+.amount-employ {
+    margin-top:.8rem;
+    font-size: .85rem;
+    font-weight: 600;
+    span {
+        color: #64748B;
+        font-weight:400;
     }
 }

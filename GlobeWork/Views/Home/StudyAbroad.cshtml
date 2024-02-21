@@ -1,12 +1,24 @@
-﻿<div class="studyAbroad-filter">
+﻿@model GlobeWork.ViewModel.StudyAbroadViewModel
+@using GlobeWork.Utils
+@{
+    ViewBag.Title = "Du học";
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("StudyAbroad");
+}
+<div class="studyAbroad-filter">
     <div class="container">
-        <form class="row custom-row">
+        <form class="row custom-row" action="@Url.Action("SearchStudyAbroad")">
             <div class="col-lg-7">
-                <input type="text" name="name" value="" placeholder="Nhập từ khóa" class="form-control" />
+                <input type="text" name="name" value="" placeholder="Nhập từ khóa" class="form-control" required/>
             </div>
             <div class="col-lg-3">
                 <div class="form-control d-flex align-items-center justify-content-between">
-                    <input type="text" name="name" value="" placeholder="Khu vực" class="border-0 form-control ouline-none" />
+                    <select class="select2 w-100" name="countruyId">
+                        <option value="">Khu vực</option>
+                        @foreach (var item in Model.Countries)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    </select>
                     <i class="far fa-location"></i>
                 </div>
             </div>
@@ -17,80 +29,103 @@
                 </button>
             </div>
         </form>
-        <div class="hot-keyword">
+        <div class="hot-keyword justify-content-start">
             <span>Từ Khóa Thịnh Hành:</span>
-            <div class="list-keyword">
-                @for (var i = 0; i < 6; i++)
+            <div class="list-keyword ml-1">
+                @foreach (var item in Model.Skills)
                 {
-                    <a href="#">LẬP TRÌNH VIÊN</a>
+                    <a href="@Url.Action("Search", new {keyword = item.SkillName})">@item.SkillName</a>
                 }
             </div>
         </div>
     </div>
 </div>
 <div class="bg-light">
-    <div class="container py-5">
+    <div class="container py-4">
         <div class="study-abroad">
-            @for (int i = 0; i < 5; i++)
+            @foreach (var item in Model.Banners)
             {
-                <a href="">
-                    <img src="https://img.freepik.com/free-photo/plus-size-woman-working-professional-business-office_23-2150579595.jpg?w=996&t=st=1706323494~exp=1706324094~hmac=b695a3a7eba5b030af0ec4869308e2722234012bd70236b7edc78545f1b5e244" alt="" />
+                <a href="@item.Url">
+                    @if (item.Image != null)
+                    {
+                        <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/banners/", item.Image)" alt="@item.BannerName" class="lazyload" />
+                    }
                 </a>
             }
         </div>
-        <h2 class="title custom-title mt-3">
-            Học bổng mới nhất
-        </h2>
-        <span class="sub-title">Bạn muốn tìm học bổng mới? Xem danh sách học bổng <a href="" class="link-green">tại đây</a></span>
-
-        <div class="scholarship">
-            @for (int i = 0; i < 5; i++)
-            {
-                <div class="card item-scholarship">
-                    <a href="">
-                        <img src="~/Content/images/anhhocbong.png" alt="anhhhongbong" />
-                    </a>
-                    <div class="card-body">
-                        <a href="" class="card-title">
-                            <h5>Kế Toán Nội Bộ - Senior Staff- Tại Hà MMMMMMMMMMMMMMMMMMMMMMMMMMM</h5>
+        @if (Model.NewStudyAbroad.Any())
+        {
+            <h2 class="title custom-title mt-3">
+                Học bổng mới nhất
+            </h2>
+            <span class="sub-title">Bạn muốn tìm học bổng mới? Xem danh sách học bổng <a href="@Url.Action("AllStudyAbroad")" class="link-green">tại đây</a></span>
+            <div class="scholarship">
+                @foreach (var item in Model.NewStudyAbroad)
+                {
+                    <div class="card item-scholarship">
+                        <a href="@Url.Action("StudyAbroadDetail" , new {url = item.Url})">
+                            @if (item.Image != null)
+                            {
+                                <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/studyAbroad/", item.Image)" alt="@item.Name" class="lazyload " />
+                            }
+                            else
+                            {
+                                <img src="~/Content/images/on-image.jpg" alt="@item.Name" />
+                            }
                         </a>
-                        <p class="card-text">Công Ty TNHH Hóa Chất Toàn Hữu</p>
+                        <div class="card-body">
+                            <a href="@Url.Action("StudyAbroadDetail" , new {url = item.Url})" class="card-title">
+                               @item.Name
+                            </a>
+                            <p class="card-text">@item.Company.Name</p>
+                            <div class="card-btns">
+                                <a href="#" class="link-scholarship">
+                                   @Html.DisplayFor(a => item.Wages)
+                                </a>
+                                <a href="#" class="link-scholarship">
+                                    @item.StudyAbroadCategory.Country.Name
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
 
-                        <div class="card-btns">
-                            <a href="#" class="link-scholarship">
-                                12 - 20 triệu
-                            </a>
-                            <a href="#" class="link-scholarship">
-                                Trung Quốc
-                            </a>
+        @if (Model.HotStudyAbroad.Any())
+        {
+            <h2 class="title custom-title mt-4">
+                Du học ngành HOT
+            </h2>
+            <div class="study-abroad-grid">
+                @foreach (var item in Model.HotStudyAbroad)
+                {
+                    <div class="media mb-3">
+                        @if (item.Image != null)
+                        {
+                            <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/studyAbroad/", item.Image)" alt="@item.Name" class="lazyload study-img" />
+                        }
+                        else
+                        {
+                            <img src="~/Content/images/on-image.jpg" alt="@item.Name" class="study-img" />
+                        }
+                        <div class="media-body py-2">
+                            <a href="@Url.Action("StudyAbroadDetail" , new {url = item.Url})" class="study-name">Tuyển sinh du học vừa học vừa làm tại Nhật Bản 2023</a>
+                            <div class="study-company">
+                                @item.Company.Name
+                            </div>
+                            <div class="group-info">
+                                <span><i class="fa-solid fa-briefcase-blank"></i> @Html.DisplayFor(a => item.Wages)</span>
+                                <span><i class="fa-sharp fa-solid fa-location-dot"></i> @item.StudyAbroadCategory.Country.Name</span>
+                                <span><i class="fa-regular fa-calendar-days"></i> @Utils.DateVn(item.CreateDate)</span>
+                                <span class="hot"><i class="fa-solid fa-thumbs-up mr-1"></i> Nổi bật</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
-        </div>
-        <h2 class="title custom-title mt-3">
-            Du học ngành HOT
-        </h2>
-        <div class="study-abroad-grid">
-            @for (int i = 0; i < 30; i++)
-            {
-                <div class="media mb-3">
-                    <img src="~/Content/images/banner.jpg" alt="Alternate Text" />
-                    <div class="media-body py-2">
-                        <a href="" class="study-name">Tuyển sinh du học vừa học vừa làm tại Nhật Bản 2023</a>
-                        <div class="study-company">
-                            Công Ty TNHH Hóa Chất Toàn Hữu
-                        </div>
-                        <div class="group-info">
-                            <span><i class="fa-solid fa-briefcase-blank"></i> Thỏa thuận</span>
-                            <span><i class="fa-sharp fa-solid fa-location-dot"></i> Đồng Nai</span>
-                            <span><i class="fa-regular fa-calendar-days"></i> 2 tháng cách đây</span>
-                            <span class="hot"><i class="fa-solid fa-thumbs-up mr-1"></i> Nổi bật</span>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
+                }
+            </div>
+        }
+
     </div>
 </div>
 <div class="container py-4">
@@ -162,8 +197,11 @@
         </div>
     </div>
 </div>
-    @section scripts{
-        <script>
-            StudyAbroad()
-        </script>
-    }
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@section scripts{
+    <script src="~/Scripts/select2.js"></script>
+    <script>
+        StudyAbroad()
+        $('.select2').select2();
+    </script>
+}

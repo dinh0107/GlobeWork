@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Web;
 using GlobeWork.Models;
+using GlobeWork.Models;
 using WebGrease.Css.Ast.Selectors;
 
 namespace GlobeWork.DAL
@@ -37,7 +38,14 @@ namespace GlobeWork.DAL
         private GenericRepository<Experiences> _experienceRepository;
         private GenericRepository<Project> _projectRepository;
         private GenericRepository<Certificate> _certificateRepository;
+        private GenericRepository<UserViewLog> _userViewLogRepository;
+        private GenericRepository<Article> _articleRepository;
 
+
+        public GenericRepository<Article> ArticleRepository =>
+      _articleRepository ?? (_articleRepository = new GenericRepository<Article>(_context));
+        public GenericRepository<UserViewLog> UserViewLogRepository =>
+       _userViewLogRepository ?? (_userViewLogRepository = new GenericRepository<UserViewLog>(_context));
         public GenericRepository<Project> ProjectRepository =>
         _projectRepository ?? (_projectRepository = new GenericRepository<Project>(_context));
         public GenericRepository<Certificate> CertificateRepository =>

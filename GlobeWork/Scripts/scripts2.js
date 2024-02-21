@@ -164,10 +164,88 @@ function UpdateStatus(id, status) {
         }
     });
 }
+function UpdateStatusArticle(id, status) {
+    $.post("/Employer/UpdateStatusArticle", { id: id, type: status }, function (data) {
+        if (data) {
+            new Notify({
+                status: 'success',
+                text: 'Cập nhật trạng thái thành công',
+                effect: 'slide',
+                speed: 600,
+                showIcon: true,
+                showCloseButton: true,
+                autoclose: true,
+                autotimeout: 2000,
+                gap: 77,
+                distance: 20,
+                type: 3,
+                position: 'right top'
+            })
+            setTimeout(function () {
+                window.location.reload();
+            }, 1500);
+        }
+        else {
+            new Notify({
+                status: 'error',
+                text: 'Thực hiện không thành công vui lòng thử lại',
+                effect: 'slide',
+                speed: 600,
+                showIcon: true,
+                showCloseButton: true,
+                autoclose: true,
+                autotimeout: 3000,
+                gap: 77,
+                distance: 20,
+                type: 3,
+                position: 'right top'
+            })
+        }
+    });
+}
 
 function deleteJob(id) {
     if (confirm("Bạn có chắc chắn xóa tin này không?")) {
         $.post("/Employer/DeleteJob", { id: id }, function (data) {
+            if (data) {
+                new Notify({
+                    status: 'success',
+                    text: 'Cập nhật trạng thái thành công',
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 77,
+                    distance: 20,
+                    type: 3,
+                    position: 'right top'
+                })
+                $("tr[data-id='" + id + "']").fadeOut();
+            }
+            else {
+                new Notify({
+                    status: 'error',
+                    text: 'Thực hiện không thành công vui lòng thử lại',
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 77,
+                    distance: 20,
+                    type: 3,
+                    position: 'right top'
+                })
+            }
+        });
+    }
+}
+function deleteArticle(id) {
+    if (confirm("Bạn có chắc chắn xóa tin này không?")) {
+        $.post("/Employer/DeleteArticle", { articleId: id }, function (data) {
             if (data) {
                 new Notify({
                     status: 'success',

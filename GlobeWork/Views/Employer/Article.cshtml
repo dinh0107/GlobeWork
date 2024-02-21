@@ -1,0 +1,115 @@
+﻿@model GlobeWork.ViewModel.InsertArticleViewModel
+@{
+    ViewBag.Title = "Đăng bài viết";
+    Layout = "~/Views/Shared/_EmployerLayout.cshtml";
+}
+@using (Html.BeginForm("Article","Employer", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="contents-header">
+        <h2>@ViewBag.Title</h2>
+        <div class="btn-group d-dl">
+            <div class="d-flex align-items-center mr-3">
+                <label class="mb-0 mr-2">
+                    Hiển thị
+                </label>
+                @Html.CheckBoxFor(a => a.Article.Active, new { @checked = "checked" })
+            </div>
+            <button type="submit" class="btn btn-primary">Lưu lại</button>
+            <button type="reset" class="btn btn-danger">Huỷ bỏ</button>
+        </div>
+    </div>
+    <div class="container py-3">
+        <div class="box-content mb-4">
+            @Html.ValidationSummary(true)
+            <div class="box-header">
+                <h3>
+                    Thông tin chung
+                </h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="form-group col-12">
+                        <label>
+                            Tiêu đề tuyển dụng <i class="text-danger">*</i>
+                        </label>
+                        @Html.TextBoxFor(a => a.Article.Subject, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(a => a.Article.Subject)
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label>
+                            Trích dẫn ngắn <i class="text-danger">*</i>
+                        </label>
+                        @Html.TextAreaFor(a => a.Article.Description, new { @class = "form-control", rows = "5" })
+                        @Html.ValidationMessageFor(a => a.Article.Description)
+                    </div>
+
+                    <div class="form-group col-4">
+                        <label>
+                            Loại <i class="text-danger">*</i>
+                        </label>
+                        <select class="v-select" name="JobTypeId">
+                            @foreach (var item in Model.StudyAbroadCategories.Where(a => a.ParentId == null))
+                            {
+                                <option value="@item.Id">
+                                    @item.CategoryName
+                                </option>
+                                foreach (var child in Model.StudyAbroadCategories.Where(a => a.ParentId == item.Id))
+                                {
+                                    <option value="@child.Id">
+                                        -- @child.CategoryName
+                                    </option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-2">
+                        <label>
+                            Số ngày hiện thị nổi bật
+                        </label>
+                        @Html.TextBoxFor(a => a.DateHot, new { @class = "input-number custom-input" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-content mb-4">
+            <div class="box-header mb-3">
+                <h3>
+                    Ảnh đại diện
+                </h3>
+            </div>
+            @Html.TextBoxFor(model => model.Article.Image, new { type = "file" })<small class="text-danger">Chấp nhận ảnh jpg, png, gif, jpeg < 4MB</small>
+        </div>
+        <div class="box-content mb-4">
+            <div class="box-header">
+                <h3>
+                    Thông tin chi tiết
+                </h3>
+            </div>
+            <div class="box-body">
+                <div class="form-group">
+                    <label>
+                        Nội dung <i class="text-danger">*</i>
+                    </label>
+                    @Html.EditorFor(a => a.Article.Body)
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link href="~/Content/datepicker.css" rel="stylesheet" />
+@section scripts{
+    <script src="~/Scripts/jquery.maskMoney.min.js"></script>
+    <script>
+        $(".datepicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeMonth: true,
+            changeYear: true,
+            minDate: 1,
+            monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+            monthNamesShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+        });
+    </script>
+}

@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using GlobeWork.Models;
 using PagedList;
 
-namespace GlobeWork.ViewModel  
+namespace GlobeWork.ViewModel
 {
     public class ChangePasswordModel
     {
@@ -153,5 +153,17 @@ namespace GlobeWork.ViewModel
     {
         public StudyAbroadCategory StudyAbroadCategory { get; set; }
         public IEnumerable<Country> Countries { get; set; }
+    }
+    public class ConfigViewModel
+    {
+        public ConfigSite ConfigSite { get; set; }
+        [Display(Name = "Giá hiển thị tin tuyển dụng nổi bật"), UIHint("MoneyBox"), DisplayFormat(DataFormatString = "{0:N0}đ")]
+        public string PriceJob { get; set; }
+        [Display(Name = "Giá hiển thị tin du học nổi bật"), UIHint("MoneyBox"), DisplayFormat(DataFormatString = "{0:N0}đ")]
+        public string PriceStudyAbroad { get; set; }
+        [Display(Name = "Giá hiển thị công ty nổi bật"), UIHint("MoneyBox"), DisplayFormat(DataFormatString = "{0:N0}đ")]
+        public string PriceCompany { get; set; }
+        [Display(Name = "Giá hiển thị bài viết nổi bật"), UIHint("MoneyBox"), DisplayFormat(DataFormatString = "{0:N0}đ")]
+        public string PriceArticle { get; set; }
     }
 }

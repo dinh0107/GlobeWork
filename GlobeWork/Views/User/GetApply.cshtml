@@ -1,0 +1,74 @@
+﻿@model GlobeWork.ViewModel.UserApplyViewModel
+@using PagedList.Mvc
+@if (Model.ApplyJobs.Any())
+{
+    foreach (var item in Model.ApplyJobs)
+    {
+        <div class="job border bg-white hot mt-4">
+            <div class="media align-items-start">
+                <div class="company-avata border rounded">
+                    @if (item.JobPostId != null)
+                    {
+                        if (item.JobPost.Company.Avatar != null)
+                        {
+                            <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.JobPost.Company.Avatar)" alt="@item.JobPost.Company.Name" class="lazyload job-avt " />
+                        }
+                        else
+                        {
+                            <img src="~/Content/images/avatar-default.jpg" alt="@item.JobPost.Company.Name" class="lazyload job-avt " />
+                        }
+                    }
+                    else
+                    {
+                        if (item.StudyAbroad.Company.Avatar != null)
+                        {
+                            <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.StudyAbroad.Company.Avatar)" alt="@item.StudyAbroad.Company.Name" class="lazyload job-avt " />
+                        }
+                        else
+                        {
+                            <img src="~/Content/images/avatar-default.jpg" alt="@item.StudyAbroad.Company.Name" class="lazyload job-avt " />
+                        }
+                    }
+
+                </div>
+                <div class="media-body ml-2">
+                    @if (item.JobPostId != null)
+                    {
+                        <a href="@Url.Action("JobDetail","Home", new {url = item.JobPost.Url})" class="job-name" data-tooltip="@item.JobPost.Name" data-tooltip-position="top">@item.JobPost.Name</a>
+                        <div class="company-name" data-tooltip="@item.JobPost.Company.Name" data-tooltip-position="top">
+                            @item.JobPost.Company.Name
+                        </div>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("StudyAbroadDetail","Home", new {url = item.StudyAbroad.Url})" class="job-name" data-tooltip="@item.StudyAbroad.Name" data-tooltip-position="top">@item.StudyAbroad.Name</a>
+                        <div class="company-name" data-tooltip="@item.StudyAbroad.Company.Name" data-tooltip-position="top">
+                            @item.StudyAbroad.Company.Name
+                        </div>
+                    }
+
+                    <div class="time-apply">
+                        Thời gian ứng tuyển: @item.CreateDate
+                    </div>
+                    <hr />
+                    <div class="cv-apply-status-text">
+                        Trạng thái: @Html.DisplayFor(a => item.Status)
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    if (Model.ApplyJobs.PageCount > 1)
+    {
+        <div class="text-center mt-3">
+            @Html.PagedListPager(Model.ApplyJobs, page => Url.Action("ListApply", new { page, status = Model.Status }))
+        </div>
+    }
+}
+else
+{
+    <div class="none-suitable-job__content shadow-none">
+        <img src="https://static.topcv.vn/v4/image/job-list/none-result.png" alt="None suitable job">
+        <span>Bạn chưa ứng tuyển công việc nào!</span>
+    </div>
+}

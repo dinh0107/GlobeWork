@@ -216,6 +216,7 @@ namespace GlobeWork.ViewModel
     }
     public class UserInfoViewModel
     {
+        public UserViewLog UserViewLog { get; set; }
         public User User { get; set; }
         public IEnumerable<Education> Educations { get; set; }
         public IEnumerable<Experiences> Experiences { get; set; }
@@ -271,11 +272,13 @@ namespace GlobeWork.ViewModel
     }
     public class UserCompanyViewModel
     {
+        public User User { get; set; }
         public IPagedList<Follow> Follows { get; set; }
     }
     public class UserLikeViewModel
     {
         public IPagedList<Like> Likes { get; set; }
+        public User User { get; set; }
     }
     public class UserApplyViewModel
     {

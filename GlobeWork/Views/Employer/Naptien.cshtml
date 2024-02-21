@@ -1,0 +1,108 @@
+﻿@model GlobeWork.ViewModel.NaptienViewModel
+@using GlobeWork.Models
+@{ 
+    ViewBag.Title = "Nạp tiền";
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+    Layout = "~/Views/Shared/_EmployerLayout.cshtml";
+} 
+<div class="contents-header">
+    <h2>@ViewBag.Title (chuyển khoản ngân hàng)</h2>
+</div>
+<div class="container py-3">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="bg-white shadow p-3 rounded">
+                <div>
+                    LƯU Ý KHI NẠP TIỀN <span class="text-danger">TẢI LẠI TRANG TRƯỚC KHI NẠP TIỀN</span>
+                    <br />
+                    Hãy quét mã QR để nạp tiền chính xác nhất. <span class="text-danger">Mỗi giao dịch nội dung chuyển khoản chỉ được chuyển 1 lần</span>
+                </div>
+                <div class="alert-success alert mt-3">
+                    <strong>NỘI DUNG CHUYỂN TIỀN.</strong>
+                    <div class="d-flex align-items-center mt-3">
+                        <input type="text" data-value="@Model.Employer.FullName" value="" class="form-control" disabled  id="fullNameInput"/>
+                        <div class="copy-value btn btn-primary">
+                            Copy
+                        </div>
+                    </div>
+                </div>
+                <div class="content-detail mt-3">
+                    @Html.Raw(config.NapTien)
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="info-box bg-white shadow rounded">
+                <div class="media">
+                    @if (Model.Employer.Avatar != null)
+                    {
+                        <img src="@Path.Combine("/images/employer/", Model.Employer.Avatar)" alt="@Model.Employer.FullName" class="right-avatar" />
+                    }
+                    else
+                    {
+                        <img src="~/Content/images/avatar-default.jpg" alt="@Model.Employer.FullName" class="right-avatar" />
+                    }
+                    <div class="media-body ml-2">
+                        <span>Chào bạn chở lại</span>
+                        <div class="name-user">
+                            @Model.Employer.FullName
+                        </div>
+                        <div class="account-type vip mt-2">
+                            Tài khoản đã xác thực
+                        </div>
+                    </div>
+                </div>
+                <div class="amount-employ">
+                    Số tiền hiện tại: <span>@Html.DisplayFor(a => a.Employer.Amount)</span>
+                </div>
+                <div class="amount-employ">
+                    Tổng nạp: <span>@Html.DisplayFor(a => a.TongNap)</span>
+                </div>
+                <div class="amount-employ">
+                    E-mail: <span>@Model.Employer.Email</span>
+                </div> 
+                <div class="amount-employ">
+                    Ngày tham gia: <span>@Html.DisplayFor(a => a.Employer.CreateDate)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+   <script>
+       var dataValue = $("#fullNameInput").data("value");
+       var result = convertToSlug(dataValue);
+       $("#fullNameInput").val("naptien" + result);
+       function convertToSlug(text) {
+           return text
+               .toLowerCase()
+               .normalize("NFD")
+               .replace(/[\u0300-\u036f]/g, "") 
+               .replace(/[^a-z0-9]/g, "")
+               .replace(/\s+/g, ""); 
+       }
+
+       $(".copy-value").click(function () {
+           var valueToCopy = $("#fullNameInput").data("value");
+           var tempInput = $("<input>");
+           $("body").append(tempInput);
+           tempInput.val(valueToCopy).select();
+           document.execCommand("copy");
+           tempInput.remove();
+           new Notify({
+               status: 'success',
+               text: "Sao chép thành công !!!",
+               effect: 'slide',
+               speed: 600,
+               showIcon: true,
+               showCloseButton: true,
+               autoclose: true,
+               autotimeout: 3000,
+               gap: 10,
+               distance: 20,
+               type: 3,
+               position: 'right bottom'
+           });
+       });
+    </script>
+    }

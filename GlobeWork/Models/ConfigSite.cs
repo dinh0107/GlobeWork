@@ -68,7 +68,17 @@ namespace GlobeWork.Models
         public string InfoFooter { get; set; }
         [Display(Name = "Thông tin liên hệ"), UIHint("EditorBox")]
         public string AboutContact { get; set; }
+        [Display(Name = "Thông tin nạp tiền"), UIHint("EditorBox")]
+        public string NapTien { get; set; }
         [Display(Name = "Thời gian làm việc")]
         public string WorkingTime { get; set; }
+        [Display(Name = "Giá hiển thị tin tuyển dụng nổi bật") , DisplayFormat(DataFormatString = "{0:N0}đ")]
+        public decimal? PriceJob { get; set; }
+        [Display(Name = "Giá hiển thị tin du học nổi bật") , DisplayFormat(DataFormatString = "{0:N0}đ")]
+        public decimal? PriceStudyAbroad { get; set; }
+        [Display(Name = "Giá hiển thị công ty nổi bật"), DisplayFormat(DataFormatString = "{0:N0}đ")]
+        public decimal? PriceCompany { get; set; }
+        [Display(Name = "Giá hiển thị bài viết nổi bật"), DisplayFormat(DataFormatString = "{0:N0}đ")]
+        public decimal? PriceArticle { get; set; }
     }
 }

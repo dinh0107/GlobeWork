@@ -43,6 +43,8 @@ namespace GlobeWork.ViewModel
         public IEnumerable<Rank> Ranks { get; set; }
         public IEnumerable<City> Cities { get; set; }
         public DateTime DateTime { get; set; }
+        [Display(Name = "Số ngày"), Required(ErrorMessage = "Hãy nhập thứ tự"), RegularExpression(@"\d+", ErrorMessage = "Chỉ nhập số nguyên")]
+        public int DateHot { get; set; }
     }
     public class ChangeInfoViewModel
     {
@@ -78,5 +80,19 @@ namespace GlobeWork.ViewModel
         public IEnumerable<City> Citys { get; set; }
         [Display(Name = "Số ngày"), Required(ErrorMessage = "Hãy nhập thứ tự"), RegularExpression(@"\d+", ErrorMessage = "Chỉ nhập số nguyên")]
         public int DateHot { get; set; }
+    }
+    public class ListCvViewModel
+    {
+        public IPagedList<ApplyJob> ApplyJobs { get; set; }    
+        public string Name { get; set; }
+        public int? Status { get; set; }
+        public int JobId { get; set; }
+        public int Type { get; set; }
+    }
+    public class NaptienViewModel
+    {
+        public Employer Employer { get; set; }
+        [DisplayFormat(DataFormatString = "{0:N0} VNĐ")]
+        public decimal TongNap { get; set; }
     }
 }

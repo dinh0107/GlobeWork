@@ -1,0 +1,67 @@
+﻿@model GlobeWork.ViewModel.SearchCompanyViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Tìm kiếm công ty";
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("SearchCompany", new { name = Model.Name });
+}
+<div class="bg-light py-4">
+    <div class="container">
+        @if (Model.Companies.Any())
+        {
+            <div class="company-title mb-3">
+               Kết quả tìm kiếm : @Model.Name
+            </div>
+            <div class="row mt-3">
+                @if (Model.Companies.Any())
+                {
+                    foreach (var item in Model.Companies)
+                    {
+                        <div class="col-lg-4 col-6">
+                            <a href="@Url.Action("Employer", new {url = item.Url})" class="card card-company border-0">
+                                @if (item.Cover != null)
+                                {
+                                    <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Cover)" alt="Ảnh bìa" class="lazyload" />
+                                }
+                                else
+                                {
+                                    <img src="~/Content/images/cover-null.png" alt="Ảnh bìa" class="lazyload" />
+                                }
+                                <div class="com-avatar">
+                                    @if (item.Avatar != null)
+                                    {
+                                        <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Avatar)" alt="Avatar" class="lazyload" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Content/images/avatar-default.jpg" alt="Avatar" class="lazyload" />
+                                    }
+                                </div>
+                                <div class="card-body mt-3">
+                                    <div class="com-name mt-2">
+                                        @item.Name
+                                    </div>
+                                    <div class="com-des mt-2">
+                                        @Html.Raw(item.Introduct)
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                    if (Model.Companies.PageCount > 1)
+                    {
+                        <div class="text-center col-12">
+                            @Html.PagedListPager(Model.Companies, page => Url.Action("SearchCompany", new { page, name = Model.Name }))
+                        </div>
+                    }
+                }
+            </div>
+        }
+        else
+        {
+            <div class="none-suitable-job__content">
+                <img src="https://static.topcv.vn/v4/image/job-list/none-result.png" alt="None suitable job">
+                <span>Chưa tìm thấy công ty phù hợp với yêu cầu của bạn</span>
+            </div>
+        }
+    </div>
+</div>

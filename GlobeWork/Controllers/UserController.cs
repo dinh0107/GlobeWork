@@ -164,7 +164,7 @@ namespace GlobeWork.Controllers
             if (count >= 1)
             {
                 var user = _unitOfWork.UserRepository.GetQuery(a => a.Email == email).FirstOrDefault();
-                var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName;
+                var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url;
                 var ticket = new FormsAuthenticationTicket(2, user.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
                     userData, FormsAuthentication.FormsCookiePath);
                 var encTicket = FormsAuthentication.Encrypt(ticket);
@@ -189,7 +189,7 @@ namespace GlobeWork.Controllers
                     };
                     _unitOfWork.UserRepository.Insert(Insertuser);
                     _unitOfWork.Save();
-                    var countUrl = _unitOfWork.UserRepository.GetQuery(a => a.Url == user.Url).Count();
+                    var countUrl = _unitOfWork.UserRepository.GetQuery(a => a.Url == Insertuser.Url).Count();
                     if (countUrl > 1)
                     {
                         Insertuser.Url += "-" + Insertuser.Id;
@@ -292,7 +292,7 @@ namespace GlobeWork.Controllers
                     _unitOfWork.UserRepository.Insert(user);
                     _unitOfWork.Save();
                     var count = _unitOfWork.UserRepository.GetQuery(a => a.Url == user.Url).Count();
-                    if(count > 1)
+                    if (count > 1)
                     {
                         user.Url += "-" + user.Id;
                         _unitOfWork.Save();
@@ -308,13 +308,13 @@ namespace GlobeWork.Controllers
             return View(model);
         }
 
-        [Route("quen-mat-khau")]
+        [OverrideActionFilters, Route("quen-mat-khau")]
         public ActionResult ForgotPassword(string result = "")
         {
             ViewBag.Result = result;
             return View();
         }
-        [HttpPost, Route("quen-mat-khau")]
+        [OverrideActionFilters, HttpPost, Route("quen-mat-khau")]
         public ActionResult ForgotPassword(ForgotPasswordViewModel model)
         {
             var email = _unitOfWork.UserRepository.GetQuery(a => a.Active && a.Email == model.Email).FirstOrDefault();
@@ -328,7 +328,7 @@ namespace GlobeWork.Controllers
             Task.Run(() => HtmlHelpers.SendEmail("gmail", "Yêu cầu lấy lại mật khẩu từ " + Request.Url?.Host, emailTemp, model.Email, ConfigSite.EmailConfigs, ConfigSite.EmailConfigs, ConfigSite.PassWordMail, ConfigSite.Title));
             return RedirectToAction("ForgotPassword", new { result = "sucsess" });
         }
-        [Route("dat-lai-mat-khau")]
+        [OverrideActionFilters, Route("dat-lai-mat-khau")]
         public ActionResult SetNewPasswordUrl(string token, string result = "")
         {
             ViewBag.Result = result;
@@ -358,7 +358,7 @@ namespace GlobeWork.Controllers
             }
             return View(model);
         }
-        
+
 
         public PartialViewResult InfoUser(int id)
         {
@@ -566,13 +566,13 @@ namespace GlobeWork.Controllers
             }
         }
         [Route("danh-sach-cong-ty-theo-doi")]
-        public ActionResult ListFollow(int? page , string name)
+        public ActionResult ListFollow(int? page, string name)
         {
             var pageNumber = page ?? 1;
             var company = _unitOfWork.FollowRepository.GetQuery(a => a.UserId == User.Id, o => o.OrderBy(a => a.Id));
             var model = new UserCompanyViewModel
             {
-                Follows = company.ToPagedList(pageNumber, 12)
+                Follows = company.ToPagedList(pageNumber, 12),
             };
             return View(model);
         }
@@ -580,10 +580,11 @@ namespace GlobeWork.Controllers
         public ActionResult ListLike(int? page)
         {
             var pageNumber = page ?? 1;
-            var job = _unitOfWork.LikeRepository.GetQuery(a => a.UserID == User.Id , o => o.OrderBy(a => a.Id));
+            var job = _unitOfWork.LikeRepository.GetQuery(a => a.UserID == User.Id && a.JobId != null, o => o.OrderBy(a => a.Id));
             var model = new UserLikeViewModel
             {
-                Likes = job.ToPagedList(pageNumber, 12)
+                Likes = job.ToPagedList(pageNumber, 12),
+                User = _unitOfWork.UserRepository.GetById(User.Id),
             };
             return View(model);
         }
@@ -591,7 +592,8 @@ namespace GlobeWork.Controllers
         public JsonResult ListApplyJson()
         {
             var jobs = _unitOfWork.ApplyJobRepository.GetQuery(a => a.UserId == User.Id)
-        .Select(a => new {
+        .Select(a => new
+        {
             a.JobPost.Company.Name,
             a.Body,
             a.Url,
@@ -604,7 +606,11 @@ namespace GlobeWork.Controllers
         }
 
         [Route("lich-su-ung-tuyen")]
-        public ActionResult ListApply(int? page , int? status )
+        public ActionResult ListApply()
+        {
+            return View(User);
+        }
+        public PartialViewResult GetApply(int? page, int? status, int? id , int? type)
         {
             var pageNumber = page ?? 1;
             var job = _unitOfWork.ApplyJobRepository.GetQuery(a => a.UserId == User.Id, o => o.OrderByDescending(a => a.CreateDate));
@@ -623,14 +629,31 @@ namespace GlobeWork.Controllers
                     job = job.Where(a => a.Status == ApplyJobStatus.NoActive);
                     break;
             }
+            switch (type)
+            {
+                case 1:
+                     job = job.Where(a => a.JobPostId != null);
+                    break;
+                    case 2:
+                    job = job.Where(a => a.StudyAbroadId != null);
+                    break;
+                default:
+                    job = job.Where(a => a.JobPostId != null);
+                    break;
+            }
+            var noti = _unitOfWork.UserLogRepository.GetById(id);
+            if (noti != null)
+            {
+                noti.Status = true;
+                _unitOfWork.Save();
+            }
             var model = new UserApplyViewModel
             {
                 ApplyJobs = job.ToPagedList(pageNumber, 8),
                 User = User,
                 Status = status
             };
-            
-            return View(model);
+            return PartialView(model);
         }
         public PartialViewResult Notify()
         {

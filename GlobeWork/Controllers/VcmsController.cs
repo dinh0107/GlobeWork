@@ -205,15 +205,23 @@ namespace GlobeWork.Controllers
         {
             ViewBag.Result = result;
             var config = _unitOfWork.ConfigSiteRepository.Get().FirstOrDefault();
-            return View(config);
+            var model = new ConfigViewModel
+            {
+                ConfigSite = config,
+                PriceJob = config.PriceJob?.ToString("N0"),
+                PriceStudyAbroad = config.PriceStudyAbroad?.ToString("N0"),
+                PriceCompany = config.PriceCompany?.ToString("N0"),
+                PriceArticle = config.PriceArticle?.ToString("N0"),
+            };
+            return View(model);
         }
         [HttpPost, ValidateInput(false)]
-        public ActionResult ConfigSite(ConfigSite model, FormCollection fc)
+        public ActionResult ConfigSite(ConfigViewModel model, FormCollection fc)
         {
             var config = _unitOfWork.ConfigSiteRepository.Get().FirstOrDefault();
             if (config == null)
             {
-                _unitOfWork.ConfigSiteRepository.Insert(model);
+                _unitOfWork.ConfigSiteRepository.Insert(model.ConfigSite);
             }
             else
             {
@@ -247,23 +255,58 @@ namespace GlobeWork.Controllers
                         config.ImageShare = imgFile;
                     }
                 }
-
-                config.Facebook = model.Facebook;
-                config.GoogleMap = model.GoogleMap;
-                config.Youtube = model.Youtube;
-                config.Instagram = model.Instagram;
-                config.Twitter = model.Twitter;
-                config.Title = model.Title;
-                config.Description = model.Description;
-                config.GoogleAnalytics = model.GoogleAnalytics;
-                config.Hotline = model.Hotline;
-                config.Email = model.Email;
-                config.LiveChat = model.LiveChat;
-                config.Place = model.Place;
-                config.AboutText = model.AboutText;
-                config.InfoFooter = model.InfoFooter;
-                config.EmailConfigs = model.EmailConfigs;
-                config.PassWordMail = model.PassWordMail;
+                if (model.PriceJob != null)
+                {
+                    config.PriceJob = Convert.ToDecimal(model.PriceJob.Replace(",", ""));
+                }
+                else
+                {
+                    config.PriceJob = null;
+                }
+                if (model.PriceStudyAbroad != null)
+                {
+                    config.PriceStudyAbroad = Convert.ToDecimal(model.PriceStudyAbroad.Replace(",", ""));
+                }
+                else
+                {
+                    config.PriceStudyAbroad = null;
+                }
+                if (model.PriceCompany != null)
+                {
+                    config.PriceCompany = Convert.ToDecimal(model.PriceCompany.Replace(",", ""));
+                }
+                else
+                {
+                    config.PriceCompany = null;
+                }
+                if (model.PriceArticle != null)
+                {
+                    config.PriceArticle = Convert.ToDecimal(model.PriceArticle.Replace(",", ""));
+                }
+                else
+                {
+                    config.PriceArticle = null;
+                }
+                config.Facebook = model.ConfigSite.Facebook;
+                config.GoogleMap = model.ConfigSite.GoogleMap;
+                config.Youtube = model.ConfigSite.Youtube;
+                config.Instagram = model.ConfigSite.Instagram;
+                config.Twitter = model.ConfigSite.Twitter;
+                config.Title = model.ConfigSite.Title;
+                config.Description = model.ConfigSite.Description;
+                config.GoogleAnalytics = model.ConfigSite.GoogleAnalytics;
+                config.Hotline = model.ConfigSite.Hotline;
+                config.Email = model.ConfigSite.Email;
+                config.LiveChat = model.ConfigSite.LiveChat;
+                config.Place = model.ConfigSite.Place;
+                config.AboutText = model.ConfigSite.AboutText;
+                config.InfoFooter = model.ConfigSite.InfoFooter;
+                config.EmailConfigs = model.ConfigSite.EmailConfigs;
+                config.PassWordMail = model.ConfigSite.PassWordMail;
+                config.NapTien = model.ConfigSite.NapTien;
+                //config.PriceJob = model.ConfigSite.PriceJob;
+                //config.PriceStudyAbroad = model.ConfigSite.PriceStudyAbroad;
+                //config.PriceCompany = model.ConfigSite.PriceCompany;
                 _unitOfWork.Save();
                 HttpContext.Application["ConfigSite"] = config;
                 return RedirectToAction("ConfigSite", "Vcms", new { result = "success" });
@@ -351,24 +394,6 @@ namespace GlobeWork.Controllers
         #endregion
 
         #region Career
-        [HttpPost]
-        public ActionResult ListCareer(int? page, string name, string result = "")
-        {
-            ViewBag.Result = result;
-            var pageNumber = page ?? 1;
-            var pageSize = 15;
-            var careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
-            if (!string.IsNullOrEmpty(name))
-            {
-                careers = careers.Where(a => a.Name.ToLower().Contains(name.ToLower()));
-            }
-            var model = new ListCareerViewModel
-            {
-                Careers = careers.ToPagedList(pageNumber, pageSize),
-                Name = name,
-            };
-            return View(model);
-        }
         public ActionResult ListCareers(int? page, string name, string result = "")
         {
             ViewBag.Result = result;
@@ -535,7 +560,7 @@ namespace GlobeWork.Controllers
             return true;
         }
         [HttpPost]
-        public bool QuickUpdateCareer(bool active = false, bool home = false, bool hot = false ,int careerId = 0)
+        public bool QuickUpdateCareer(bool active = false, bool home = false, bool hot = false, bool menu = false ,int careerId = 0)
         {
             var career = _unitOfWork.CareerRepository.GetById(careerId);
             if (career == null)
@@ -545,6 +570,7 @@ namespace GlobeWork.Controllers
             career.ShowHome = home;
             career.Active = active;
             career.Hot = hot;
+            career.Menu = menu;
             _unitOfWork.Save();
             return true;
         }
@@ -958,11 +984,15 @@ namespace GlobeWork.Controllers
                     HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
                     var imgFile = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
                     var newImage = Image.FromStream(Request.Files[i].InputStream);
-                    var fixSizeImage = HtmlHelpers.FixedSize(newImage, 1000, 1000, false);
+                    var fixSizeImage = HtmlHelpers.FixedSize(newImage, 1500, 1700, false);
                     HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
                     if (Request.Files.Keys[i] == "StudyAbroadCategory.Image")
                     {
                         model.StudyAbroadCategory.Image = imgFile;
+                    }
+                    if (Request.Files.Keys[i] == "StudyAbroadCategory.Banner")
+                    {
+                        model.StudyAbroadCategory.Banner = imgFile;
                     }
                 }
                 model.StudyAbroadCategory.Url = HtmlHelpers.ConvertToUnSign(null, model.StudyAbroadCategory.Url ?? model.StudyAbroadCategory.CategoryName);
@@ -1014,12 +1044,16 @@ namespace GlobeWork.Controllers
                     var imgFile = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
 
                     var newImage = Image.FromStream(Request.Files[i].InputStream);
-                    var fixSizeImage = HtmlHelpers.FixedSize(newImage, 1000, 1000, false);
+                    var fixSizeImage = HtmlHelpers.FixedSize(newImage, 1500, 1700, false);
                     HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
 
                     if (Request.Files.Keys[i] == "StudyAbroadCategory.Image")
                     {
                         category.StudyAbroadCategory.Image = imgFile;
+                    }
+                    if (Request.Files.Keys[i] == "StudyAbroadCategory.Banner")
+                    {
+                        category.StudyAbroadCategory.Banner = imgFile;
                     }
                 }
 
@@ -1028,6 +1062,12 @@ namespace GlobeWork.Controllers
                 if (file != null && file.ContentLength == 0)
                 {
                     category.StudyAbroadCategory.Image = fc["CurrentFile"] == "" ? null : fc["CurrentFile"];
+                }
+                var banner = Request.Files["StudyAbroadCategory.Banner"];
+
+                if (banner != null && banner.ContentLength == 0)
+                {
+                    category.StudyAbroadCategory.Banner = fc["CurrentBanner"] == "" ? null : fc["CurrentBanner"];
                 }
                 category.StudyAbroadCategory.Url = HtmlHelpers.ConvertToUnSign(null, category.StudyAbroadCategory.Url ?? category.StudyAbroadCategory.CategoryName);
                 category.StudyAbroadCategory.CountryId = Convert.ToInt32(fc["CounId"]);

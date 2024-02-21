@@ -33,6 +33,7 @@
                 <th>CODE</th>
                 <th style="width: 100px">Hiện trang chủ</th>
                 <th style="width: 100px">Nổi bật</th>
+                <th style="width: 100px">Menu</th>
                 <th style="width: 100px">Hoạt động</th>
                 <th style="width: 130px"></th>
             </tr>
@@ -44,6 +45,7 @@
                     <td>@career.Code</td>
                     <td>@Html.EditorFor(model => career.ShowHome)</td>
                     <td>@Html.EditorFor(model => career.Hot)</td>
+                    <td>@Html.EditorFor(model => career.Menu)</td>
                     <td>@Html.EditorFor(model => career.Active)</td>
                     <td>
                         <a href="javascript:;" onclick="updateCareer('@career.Id')">Cập nhật - </a>
@@ -89,8 +91,9 @@
             var active = divId.find("input#career_Active").prop("checked");
             var home = divId.find("input#career_ShowHome").prop("checked");
             var hot = divId.find("input#career_Hot").prop("checked");
+            var menu = divId.find("input#career_Menu").prop("checked");
 
-            $.post("/Vcms/QuickUpdateCareer", { careerId: id, active: active, home: home, hot: hot }, function (data) {
+            $.post("/Vcms/QuickUpdateCareer", { careerId: id, active: active, home: home, hot: hot, menu : menu }, function (data) {
                 if (data) {
                     $.toast({
                         text: 'Cập nhật thành công',

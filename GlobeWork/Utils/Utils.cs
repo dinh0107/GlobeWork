@@ -24,6 +24,19 @@ namespace GlobeWork.Utils
                 unitOfwork.Save();
             }
         }
+        public static void UserLog(string content,bool status, int userId)
+        {
+            using (var unitOfwork = new UnitOfWork())
+            {
+                unitOfwork.UserLogRepository.Insert(new UserLog
+                {
+                    Content = content,
+                    UserId = userId,
+                    Status = status
+                });
+                unitOfwork.Save();
+            }
+        }
         public static string GenerateRandomCode()
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -54,6 +67,33 @@ namespace GlobeWork.Utils
                 return $"{timeSpan.Hours} giờ {timeSpan.Minutes} phút";
             }
             return $"{timeSpan.Minutes} phút";
+        }
+        public static string DateVn(DateTime? sdate)
+        {
+            if (!sdate.HasValue)
+            {
+                return null;
+            }
+            DateTime value = sdate.Value;
+            DateTime now = DateTime.Now;
+            if (now.Day - value.Day == 1 && value.Month == now.Month && value.Year == now.Year)
+            {
+                return $"Hôm qua, lúc {value:HH:mm}";
+            }
+
+            if (value.Day != now.Day || value.Month != now.Month || value.Year != now.Year)
+            {
+                return value.ToString("dd/MM/yyyy");
+            }
+            TimeSpan timeSpan = now - value;
+            int minutes = timeSpan.Minutes;
+            int hours = timeSpan.Hours;
+            if (hours < 1)
+            {
+                return $"{minutes} phút trước";
+            }
+
+            return $"{hours} giờ {minutes} phút trước";
         }
     }
 }

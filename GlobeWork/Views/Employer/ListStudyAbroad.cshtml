@@ -54,9 +54,9 @@
                         <th class="text-center">
                             <i class="fa-light fa-gear"></i>
                         </th>
-                        @*<th class="text-center">
-                            Lần chỉnh sửa gần nhất
-                        </th>*@
+                        <th class="text-center">
+                            Ảnh đại diện
+                        </th>
                         <th class="text-center">
                             Thời gian hiển thị nổi bật
                         </th>
@@ -83,7 +83,7 @@
                             <td class="text-center align-middle">
                                 <ul class="tools-group">
                                     <li>
-                                        <a href="@Url.Action("EditJob", new {id = item.Id})"><i class="fa-solid fa-pencil"></i></a>
+                                        <a href="@Url.Action("EditStudyAbroad", new {id = item.Id})"><i class="fa-solid fa-pencil"></i></a>
                                     </li>
                                     <li class="job-action">
                                         @if (item.Active)
@@ -99,6 +99,16 @@
                                         <a href="#" onclick="deleteJob(@item.Id)"><i class="fas fa-trash"></i></a>
                                     </li>
                                 </ul>
+                            </td>
+                            <td class="text-center align-middle">
+                                @if (item.Image != null)
+                                {
+                                    <img src="@Path.Combine("/images/studyAbroad/", item.Image)" class="img-a" />
+                                }
+                                else
+                                {
+                                    @:Không có ảnh
+                                }
                             </td>
                             <td class="text-center align-middle">
                                 @if (now > item.Hot)

@@ -1,35 +1,37 @@
 ﻿@model IEnumerable<GlobeWork.Models.UserLog>
 @using Helpers
+@{ 
+    var coutn = Model.Count(a => !a.Status);
+}
 <div class="box-notification">
     <a href="javascripts:;">
         <i class="fa-solid fa-bell"></i>
-        <span>
-            @*@if (Model.Count() > 99)
-                {
-                    @:99+
-                }
-                else
-                {
-                    @Model.Count();
-                }*@
+        <span class="count-noti">
+            @if (coutn > 99)
+            {
+                @:99+
+            }
+            else
+            {
+                @coutn
+            }
         </span>
     </a>
     <ul class="notification">
         <li class="header">
             <div class="title-notification">Thông báo</div>
-            @*<a href="javascript:;">Xoá tất cả</a>*@
         </li>
         @if (Model.Any())
         {
             foreach (var item in Model)
             {
-                <li class="media">
-                    <div class="media-body">
+                <li class="media @if (!item.Status) { @Html.Raw("bg-light") } ">
+                    <a href="@Url.Action("ListApply" , "User" , new {id = item.Id})" class="media-body">
                         <p>
                             @Html.Raw(item.Content)
                         </p>
                         <i>@Html.DateVn(item.CreateDate, 2)</i>
-                    </div>
+                    </a>
                 </li>
             }
         }

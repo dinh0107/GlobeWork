@@ -3,7 +3,7 @@
     ViewBag.Title = "Đăng tin tuyển dụng";
     Layout = "~/Views/Shared/_EmployerLayout.cshtml";
 }
-@using (Html.BeginForm())
+@using (Html.BeginForm("StudyAbroad", "Employer", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
@@ -28,7 +28,6 @@
                 </h3>
             </div>
             <div class="box-body">
-
                 <div class="row">
                     <div class="form-group col-12">
                         <label>
@@ -37,8 +36,7 @@
                         @Html.TextBoxFor(a => a.StudyAbroad.Name, new { @class = "form-control" })
                         @Html.ValidationMessageFor(a => a.StudyAbroad.Name)
                     </div>
-
-                    <div class="form-group col-4">
+                    @*<div class="form-group col-3">
                         <label>
                             Ngành nghề <i class="text-danger">*</i>
                         </label>
@@ -50,12 +48,12 @@
                                 </option>
                             }
                         </select>
-                    </div>
-                    <div class="form-group col-4">
+                    </div>*@
+                    <div class="form-group col-3">
                         <label>
                             Loại <i class="text-danger">*</i>
                         </label>
-                        <select class="v-select" name="JobTypeId">
+                        <select class="v-select" name="CategoryId">
                             @foreach (var item in Model.StudyAbroadCategories.Where(a => a.ParentId == null))
                             {
                                 <option value="@item.Id">
@@ -70,7 +68,13 @@
                             }
                         </select>
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-3">
+                        <label>
+                            Mức lương <i class="text-danger">*</i>
+                        </label>
+                        @Html.EnumDropDownListFor(model => model.StudyAbroad.Wages, new { @class = "v-select" })
+                    </div>
+                    <div class="form-group col-3">
                         <label>
                             Sức khỏe <i class="text-danger">*</i>
                         </label>
@@ -80,7 +84,7 @@
                         <label>
                             Hạn nhận hồ sơ <i class="text-danger">*</i>
                         </label>
-                        @Html.TextBoxFor(a => a.StudyAbroad.ExpirationDate, new { @class = "form-control datepicker", @placeholder = "Chọn ngày hết hạn nhận hồ sơ" })
+                        @Html.TextBoxFor(a => a.StudyAbroad.ExpirationDate, new { @class = "form-control datetimepicker", @placeholder = "Chọn ngày hết hạn nhận hồ sơ" })
                     </div>
                     <div class="form-group col-6">
                         <label>
@@ -90,7 +94,7 @@
                         @Html.ValidationMessageFor(a => a.StudyAbroad.LearningProblems)
                     </div>
                 </div>
-                
+
             </div>
         </div>
         <div class="box-content mb-4">
@@ -101,13 +105,13 @@
             </div>
             <div class="box-body">
                 <div class="row">
-                    <div class="form-group col-2">
+                    <div class="form-group col-3">
                         <label>
                             Số lượng <i class="text-danger">*</i>
                         </label>
                         @Html.TextBoxFor(a => a.StudyAbroad.Quantity, new { @class = "input-number custom-input" })
                     </div>
-                    <div class="form-group col-2">
+                    <div class="form-group col-3">
                         <label>
                             Số ngày hiện thị nổi bật
                         </label>
@@ -117,7 +121,7 @@
                         <label>
                             Giới tính <i class="text-danger">*</i>
                         </label>
-                        <select class="v-select" name="JobPost.Gender">
+                        <select class="v-select" name="StudyAbroad.Gender">
                             <option value="nam">
                                 Nam
                             </option>
@@ -129,16 +133,13 @@
                             </option>
                         </select>
                     </div>
-                    <div class="form-group col-4">
+                    @*<div class="form-group col-4">
                         <label>
-                            Khoảng lương <i class="text-danger">*</i>
+                            Cấp bậc
                         </label>
-                        <div class="input-group">
-                            @Html.TextBoxFor(a => a.StudyAbroad.Min, new { @class = "form-control input-money", @placeholder = "Từ" })
-                            @Html.TextBoxFor(a => a.StudyAbroad.Max, new { @class = "form-control input-money", @placeholder = "Đến" })
-                        </div>
-                    </div>
-                    <div class="form-group col-6">
+                        @Html.TextBoxFor(a => a.StudyAbroad.Level, new { @class = "form-control" })
+                    </div>*@
+                    @*<div class="form-group col-6">
                         <label>
                             Thành phố <i class="text-danger">*</i>
                         </label>
@@ -150,8 +151,8 @@
                                 </option>
                             }
                         </select>
-                    </div>
-                    <div class="form-group col-6">
+                    </div>*@
+                    <div class="form-group col-12">
                         <label>
                             Địa chỉ cụ thể <i class="text-danger">*</i>
                         </label>
@@ -161,7 +162,26 @@
                 </div>
             </div>
         </div>
-
+        <div class="box-content mb-4">
+            <div class="box-header mb-3">
+                <h3>
+                    Ảnh đại diện
+                </h3>
+            </div>
+            @Html.TextBoxFor(model => model.StudyAbroad.Image, new { type = "file" })<small class="text-danger">Chấp nhận ảnh jpg, png, gif, jpeg < 4MB</small>
+        </div>
+        <div class="box-content mb-4">
+            <div class="box-header mb-3">
+                <h3>
+                    Danh sách ảnh
+                </h3>
+            </div>
+            <input type="file" id="fileupload" name="files[]" accept="image/*" multiple="" style="flex:none !important;" />
+            <ul id="ListImages" class="ul-reset"></ul>
+            <div id="progress" class="progress">
+                <div class="progress-bar progress-bar-success"></div>
+            </div>
+        </div>
         <div class="box-content mb-4">
             <div class="box-header">
                 <h3>
@@ -183,7 +203,7 @@
                 </div>
                 <div class="form-group">
                     <label>
-                        Yêu đãi được hưởng <i class="text-danger">*</i>
+                        Ưu đãi được hưởng <i class="text-danger">*</i>
                     </label>
                     @Html.EditorFor(a => a.StudyAbroad.Incentives)
                 </div>
@@ -198,16 +218,66 @@
     </div>
 }
 
-<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<link href="~/Content/datepicker.css" rel="stylesheet" />
 @section scripts{
-    <script src="~/Scripts/jquery.maskMoney.min.js"></script>
     <script>
+        $(function () {
+            $("#ListImages").sortable();
+            $("#ListImages").disableSelection();
+        });
+        var i = 1;
+        $("#fileupload").fileupload({
+            add: function (e, data) {
+                var uploadErrors = [];
+                var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+                if (data.originalFiles[0]["type"].length && !acceptFileTypes.test(data.originalFiles[0]["type"])) {
+                    uploadErrors.push("Chỉ chấp nhận định dạng jpeg, jpg, png, gif");
+                }
+                if (data.originalFiles[0]["size"] > 4000000) {
+                    uploadErrors.push("Dung lượng ảnh lớn hơn 4MB");
+                }
+                var totalImg = $("#ListImages .thumb-img-box").length;
+                console.log(totalImg)
+                if (totalImg >= 10) {
+                    uploadErrors.push("Chỉ đăng tối đa 10 ảnh");
+                }
+                if (uploadErrors.length > 0) {
+                    alert(uploadErrors.join("\n"));
+                    return false;
+                } else {
+                    data.submit();
+                }
+                return true;
+            },
+            url: "/Uploader/Upload?folder=study&r=" + Math.random(),
+            dataType: "json",
+            done: function (e, data) {
+                console.log(data)
+                $.each(data.result.files, function (index, file) {
+                    $('#ListImages').append('<li><input type="hidden" name="Pictures" value ="' + file.name + '" /><img src="/images/study/' + file.name + '?w=80&h=80"/><a href="javascript:;" id="' + i + '" onclick="delfile(' + i + ')"><img src="/content/admin/icon-delete.png" alt="" style="vertical-align:middle" /></a></li>');
+                });
+                i = i + 1;
+                $("#progress").fadeOut(2000);
+            },
+            start: function () {
+                $("#progress .progress-bar").css("width", "0");
+                $("#progress").show();
+            },
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $("#progress .progress-bar").css("width", progress + "%");
+            }
+        }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+        function delfile(divid) {
+            if (confirm('Bạn có chắc xóa ảnh này?')) {
+                $('#' + divid).parent().fadeOut().remove();
+            }
+        }
         $(".datepicker").datepicker({
             dateFormat: 'dd/mm/yy',
             changeMonth: true,
             changeYear: true,
-            minDate: 1, 
+            minDate: 1, // Chỉ cho phép chọn từ ngày hiện tại trở đi
             monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
             monthNamesShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
         });

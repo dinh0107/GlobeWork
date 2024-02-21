@@ -7,6 +7,12 @@ using System.Web;
 
 namespace GlobeWork.ViewModel
 {
+    public class HeaderViewModel
+    {
+        public IEnumerable<Article> Articles { get; set; }
+        public IEnumerable<StudyAbroadCategory> StudyAbroadCategories { get; set; }
+        public IEnumerable<Career> Careers { get; set; }
+    }
     public class HomeViewModel
     {
         public IEnumerable<Item> Items { get; set; }
@@ -17,6 +23,8 @@ namespace GlobeWork.ViewModel
        public IEnumerable<Rank> Ranks { get; set; }
        public IEnumerable<Banner> Banners { get; set; }
        public IEnumerable<Skill> Skills { get; set; }
+       public IEnumerable<Company> Companies { get; set; }
+       public IEnumerable<StudyAbroad> StudyAbroads { get; set; }
     }
     public class GetFilterViewModel
     {
@@ -51,6 +59,7 @@ namespace GlobeWork.ViewModel
     public class GetJobHotViewModel
     {
         public IEnumerable<JobPost> JobPosts { get; set; }
+        public IEnumerable<Like> Likes { get; set; }
     }
     public class JobDetailViewModel
     {
@@ -93,6 +102,7 @@ namespace GlobeWork.ViewModel
         public IEnumerable<Career> Careers { get; set; }
         public IEnumerable<Banner> Banners { get; set; }
         public IEnumerable<Career> CareerHot { get; set; }
+        public IEnumerable<Company> Companies { get; set; }
         public string Name { get; set; }
         public int CareerId { get; set; }
         public int CityId { get; set; }
@@ -177,5 +187,71 @@ namespace GlobeWork.ViewModel
         public ApplyJob ApplyJob { get; set; }
         public int Type { get; set; }
         public int JobId { get; set; }
+        public int StudyAbroadId { get; set; }
+        public int CompanyId { get; set; }
+    }
+    public class StudyAbroadViewModel
+    {
+
+        public IEnumerable<StudyAbroad> NewStudyAbroad { get; set; }
+        public IEnumerable<StudyAbroad> HotStudyAbroad { get; set; }
+        public IEnumerable<Article> HotArticle { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
+        public IEnumerable<Banner> Banners { get; set; }
+        public IEnumerable<Skill> Skills { get; set; }
+    }
+    public class StudyAbroadCategoryViewModel
+    {
+        public StudyAbroadCategory StudyAbroadCategory { get; set; }
+        public IEnumerable<StudyAbroad> NewStudyAbroad { get; set; }
+        public IEnumerable<StudyAbroad> HotStudyAbroad { get; set; }
+        public IEnumerable<Article> HotArticle { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
+        public IEnumerable<Banner> Banners { get; set; }
+        public IEnumerable<Skill> Skills { get; set; }
+    }
+    public class StudyAbroadUrlViewModel
+    {
+        public StudyAbroadCategory StudyAbroadCategory { get; set; }
+        public IPagedList<StudyAbroad> StudyAbroads { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
+        public IEnumerable<Skill> Skills { get; set; }
+        public IEnumerable<Like> Likes { get; set; }
+        public string Name { get; set; }
+        public string Url { get; set; }
+        public int CountruyId { get; set; }
+    }
+    public class SearchStudyAbroadViewModel
+    {
+        public IPagedList<StudyAbroad> StudyAbroads { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
+        public string Name { get; set; }
+        public int CountruyId { get; set; }
+    }
+    public class StudyDetailViewModel
+    {
+        public StudyAbroad StudyAbroad { get; set; }
+        public IEnumerable<StudyAbroad> StudyAbroadCompanys { get; set; }
+        public IEnumerable<StudyAbroad> StudyAbroads { get; set; }
+        public IEnumerable<Company> Companies { get; set; }
+        public IEnumerable<Follow> Follows { get; set; }
+        public IEnumerable<Like> Likes { get; set; }
+        public IEnumerable<ApplyJob> ApplyJobs { get; set; }
+    }
+    public class ListCompanyViewModel
+    {
+        public IEnumerable<Company> HotCompanies { get; set; }
+        public IEnumerable<Item> Items { get; set; }
+        public IEnumerable<Company> Companies { get; set; }
+    }
+    public class HotCompanyViewModel
+    {
+        public IPagedList<Company> Companies { get; set; }
+        public IEnumerable<Item> Items { get; set; }
+    }
+    public class SearchCompanyViewModel
+    {
+        public IPagedList<Company> Companies { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -1,4 +1,9 @@
-﻿@functions {
+﻿@model GlobeWork.ViewModel.ListCompanyViewModel
+@{ 
+    ViewBag.Title = "Danh sách công ty";
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ListCompany");
+}
+@functions {
     public string IsLinkActive(string path)
     {
         string currentPath = Context.Request.Path;
@@ -11,15 +16,18 @@
             <a href="@Url.Action("ListCompany")" class="@(IsLinkActive(Url.Action("ListCompany")))">Danh sách công ty</a>
             <a href="@Url.Action("CompanyTop")" class="@(IsLinkActive(Url.Action("CompanyTop")))">Top công ty</a>
         </div>
-        <div class="title-company-search mt-4">
-            Khám phá 100.000+ công ty nổi bật
-        </div>
-        <div class="title-company-search-sub ">
-            Tra cứu thông tin công ty và tìm kiếm nơi làm việc tốt nhất dành cho bạn
-        </div>
-        <form action="" class="company-form">
+        @foreach (var item in Model.Items.Where(a => a.Sort == 3))
+        {
+            <div class="title-company-search mt-4">
+                @item.Title
+            </div>
+            <div class="title-company-search-sub ">
+                @item.Description
+            </div>
+        }
+        <form action="@Url.Action("SearchCompany")" class="company-form">
             <i class="far fa-search"></i>
-            <input type="text" name="name" value="" placeholder="Nhập tên công ty" />
+            <input type="text" name="name" required placeholder="Nhập tên công ty" />
             <button type="submit">
                 Tìm kiếm
             </button>
@@ -28,51 +36,82 @@
 </div>
 <div class="bg-light py-4">
     <div class="container">
-        <div class="company-title mb-3">
-            danh sách các công ty nổi bật
-        </div>
-        <div class="lits-com">
-            @for (var i = 0; i < 12; i++)
-            {
-                <a class="card card-company border-0">
-                    <img src="~/Content/images/banner.jpg" alt="Alternate Text" class="lazyload" />
-                    <div class="com-avatar">
-                        <img src="~/Content/images/logo.png" alt="Alternate Text" class="lazyload" />
-                    </div>
-                    <div class="parter-i">
-                        <i class="fas fa-shield-check mr-1"></i>  Đối tác
-                    </div>
-                    <div class="card-body mt-3">
-                        <div class="com-name mt-2">
-                            FPT INFORMATION SYSTEM
+        @if (Model.HotCompanies.Any())
+        {
+            <div class="company-title mb-3">
+                danh sách các công ty nổi bật
+            </div>
+            <div class="lits-com">
+                @foreach (var item in Model.HotCompanies)
+                {
+                    <a href="@Url.Action("Employer", new {url = item.Url})" class="card card-company border-0">
+                        @if (item.Cover != null)
+                        {
+                            <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Cover)" alt="Ảnh bìa" class="lazyload" />
+                        }
+                        else
+                        {
+                            <img src="~/Content/images/cover-null.png"  alt="Ảnh bìa" class="lazyload" />
+                        }
+                        <div class="com-avatar">
+                            @if (item.Avatar != null)
+                            {
+                                <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Avatar)" alt="Avatar" class="lazyload" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/images/avatar-default.jpg" alt="Avatar" class="lazyload" />
+                            }
                         </div>
-                        <div class="com-des mt-2">
-                            " Trong suốt 29 năm phát triển, Công ty Hệ thống Thông tin FPT (FPT Information System - FPT IS) là nhà tích hợp hệ thống, cung cấp giải pháp hàng đầu Việt Nam và khu vực. Sở hữu năng lực công nghệ được thừa nhận bởi các khách hàng và đối tác toàn cầu, FPT IS mang đến những dịch vụ và giải pháp phục vụ các lĩnh vực trọng..."
+                        <div class="parter-i">
+                            <i class="fas fa-shield-check mr-1"></i>  Đối tác
                         </div>
-                    </div>
-                </a>
-            }
-        </div>
+                        <div class="card-body mt-3">
+                            <div class="com-name mt-2">
+                              @item.Name
+                            </div>
+                            <div class="com-des mt-2">
+                                @Html.Raw(item.Introduct)
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
+        }
         <div class="company-title my-3">
             danh sách các công ty mới
         </div>
         <div class="lits-com">
-            @for (var i = 0; i < 12; i++)
+            @foreach (var item in Model.Companies)
             {
-                <a class="card card-company border-0">
-                    <img src="~/Content/images/banner.jpg" alt="Alternate Text" class="lazyload" />
+                <a href="@Url.Action("Employer", new {url = item.Url})" class="card card-company border-0">
+                    @if (item.Cover != null)
+                    {
+                        <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Cover)" alt="Ảnh bìa" class="lazyload" />
+                    }
+                    else
+                    {
+                        <img src="~/Content/images/cover-null.png" alt="Ảnh bìa" class="lazyload" />
+                    }
                     <div class="com-avatar">
-                        <img src="~/Content/images/logo.png" alt="Alternate Text" class="lazyload" />
+                        @if (item.Avatar != null)
+                        {
+                            <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Avatar)" alt="Avatar" class="lazyload" />
+                        }
+                        else
+                        {
+                            <img src="~/Content/images/avatar-default.jpg" alt="Avatar" class="lazyload" />
+                        }
                     </div>
                     <div class="parter-i">
                         <i class="fas fa-shield-check mr-1"></i>  Đối tác
                     </div>
                     <div class="card-body mt-3">
                         <div class="com-name mt-2">
-                            FPT INFORMATION SYSTEM
+                            @item.Name
                         </div>
                         <div class="com-des mt-2">
-                            " Trong suốt 29 năm phát triển, Công ty Hệ thống Thông tin FPT (FPT Information System - FPT IS) là nhà tích hợp hệ thống, cung cấp giải pháp hàng đầu Việt Nam và khu vực. Sở hữu năng lực công nghệ được thừa nhận bởi các khách hàng và đối tác toàn cầu, FPT IS mang đến những dịch vụ và giải pháp phục vụ các lĩnh vực trọng..."
+                            @Html.Raw(item.Introduct)
                         </div>
                     </div>
                 </a>

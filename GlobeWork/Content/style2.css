@@ -85,6 +85,11 @@
   left: -3.75rem;
 }
 
+.banner-cat {
+  width: 100%;
+  object-fit: cover;
+}
+
 .item-scholarship {
   overflow: hidden;
   border: none;
@@ -99,8 +104,10 @@
 }
 .item-scholarship img {
   width: 100%;
+  object-fit: cover;
+  height: 205px;
 }
-.item-scholarship .card-title * {
+.item-scholarship .card-title {
   color: #212F3F;
   font-size: 1rem;
   font-weight: 600;
@@ -920,22 +927,29 @@ header.header-employer logo {
 
 .vitae {
   gap: 1rem;
-  margin-bottom: 1rem;
+  padding: 1rem 0;
+  border-bottom: 2px solid #F4F5F5;
 }
 .vitae > img {
   width: 5rem;
   height: 5rem;
   border-radius: 50%;
 }
-.vitae h3 {
+.vitae .apply-name {
   font-size: 1.25rem;
+  font-weight: 600;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  margin-bottom: 0.5rem;
 }
 .vitae ul {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 6px;
-  width: max-content;
+  width: 100%;
   height: 10rem;
   padding: 20px;
   margin: 0;
@@ -949,10 +963,11 @@ header.header-employer logo {
 .vitae li {
   display: flex;
   gap: 6px;
-  align-items: center;
+  align-items: baseline;
 }
 .vitae .media-body.des {
   height: 12rem;
+  width: 18rem;
   flex: auto;
   overflow-y: auto;
 }
@@ -972,4 +987,30 @@ header.header-employer logo {
   color: #fff;
   font-size: 0.75rem;
   border-radius: 50%;
+}
+
+.tag {
+  position: absolute;
+  width: 5rem;
+  color: #fff;
+  text-align: center;
+  /*background: #d92027;*/
+  justify-content: center;
+  line-height: 1rem;
+  border-radius: 5px;
+  top: -4%;
+  right: 0.5rem;
+  font-size: 0.7rem;
+}
+.tag.success {
+  background: #66BC46;
+}
+.tag.error {
+  background: #d92027;
+}
+
+.img-a {
+  width: 100px;
+  object-fit: cover;
+  aspect-ratio: 1.5;
 }

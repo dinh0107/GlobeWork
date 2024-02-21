@@ -16,8 +16,10 @@ namespace GlobeWork.Models
     {
         public int Id { get; set; }
         public int UserID { get; set; }
-        public int JobId { get; set; }
+        public int? StudyAbroadId { get; set; }
+        public int? JobId { get; set; }
         public virtual User User { get; set; }
         public virtual JobPost JobPost { get; set; }
+        public virtual StudyAbroad StudyAbroad { get; set; }
     }
 }

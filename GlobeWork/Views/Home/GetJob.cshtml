@@ -1,4 +1,7 @@
 ﻿@model GlobeWork.ViewModel.GetJobHotViewModel
+@{ 
+    var email = ViewContext.RouteData.Values["Email"].ToString();
+}
 <div class="list-hotjob">
     @foreach (var item in Model.JobPosts)
     {
@@ -52,7 +55,21 @@
                         }
                     </span>
                 </div>
-                <a href="#" class="heart"><i class="far fa-heart"></i></a>
+                @if (email == "")
+                {
+                    <a href="@Url.Action("Login", "User")" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                }
+                else
+                {
+                    if (Model.Likes.Any(a => a.JobId == item.Id))
+                    {
+                        <a href="javascripts:;" class="heart active unlikejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                    }
+                    else
+                    {
+                        <a href="javascripts:;" class="heart likejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                    }
+                }
             </div>
         </div>
     }

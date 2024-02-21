@@ -168,81 +168,114 @@
                     </div>
                 </a>
             }
+
+
         </div>
     </div>
 </div>
 <section class="bg-light py-4">
     <div class="container">
-        <h2 class="title">
-            Chương trình hỗ trợ ứng viên - Học bổng du học
-        </h2>
-        <div class="list-support">
-            @for (var i = 0; i < 6; i++)
-            {
-                <div class="card support">
-                    <a href="" class="thuml">
-                        <img src="~/Content/images/duhoc.jpg" alt="Alternate Text" class="lazyload" />
-                        <div class="parter-i">
-                            <i class="fas fa-shield-check mr-1"></i>  Đối tác
-                        </div>
-                    </a>
-                    <div class="card-body p-3">
-                        <a href="#" class="support-name">Học bổng trao đổi sinh viên toàn cầu ( Global Ugrad) 2024 - 2025 tàu trợ toàn phần Học bổng trao đổi sinh viên toàn cầu ( Global Ugrad) 2024 - 2025 tàu trợ toàn phần</a>
-                        <ul class="body-support ul-reset">
-                            <li>
-                                <i class="fa-sharp fa-solid fa-location-dot"></i>
-                                <span>Học bổng du học Mỹ Học bổng du học Mỹ</span>
-                            </li>
-                            <li>
-                                <i class="fa-solid fa-graduation-cap"></i>
-                                <span>Thạc sĩ</span>
-                            </li>
-                            <li>
-                                <i class="fas fa-briefcase"></i>
-                                <span>Khoa học cơ bản</span>
-                            </li>
-                            <li>
-                                <i class="fa-solid fa-calendar-days"></i>
-                                <span>13/10/2023</span>
-                            </li>
-                            <li>
-                                <i class="fal fa-chart-line"></i>
-                                <span>144 views</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            }
-        </div>
-        <h2 class="title mt-5">
-            Top công ty hàng đầu
-        </h2>
-        <div class="list-support arrows-cusotm">
-            @for (var i = 0; i < 6; i++)
-            {
-                <div class="card career-top">
-                    <a href="" class="thuml">
-                        <img src="~/Content/images/duhoc.jpg" alt="Alternate Text" class="lazyload" />
-                        <div class="tag-i">
-                            TOP 10
-                        </div>
-                    </a>
-                    <div class="card-body p-3">
-                        <a href="#" class="career-top-name">công ty CP vật tư thiết bị công trình minh đức công ty CP vật tư thiết bị công trình minh đức</a>
-                        <div class="box-rating" style="gap:10px;">
-                            <div class="rating">
-                                <i class="fas fa-star active"></i>
-                                <i class="fas fa-star active"></i>
-                                <i class="fas fa-star active"></i>
-                                <i class="fas fa-star active"></i>
-                                <i class="fas fa-star"></i>
+        @if (Model.StudyAbroads.Any())
+        {
+            <h2 class="title">
+                Chương trình hỗ trợ ứng viên - Học bổng du học
+            </h2>
+            <div class="list-support">
+                @foreach (var item in Model.StudyAbroads)
+                {
+                    <div class="card support">
+                        <a href="@Url.Action("StudyAbroadsDetail", new {url = item.Url})" class="thuml">
+                            @if (item.Image != null)
+                            {
+                                <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/studyAbroad/", item.Image)" alt="@item.Name" class="lazyload" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/images/on-image.jpg" alt="@item.Name" class="lazyload" />
+                            }
+                            <div class="parter-i">
+                                <i class="fas fa-shield-check mr-1"></i>  Đối tác
                             </div>
-                            / 322 Phản hồi
+                        </a>
+                        <div class="card-body p-3">
+                            <a href="@Url.Action("StudyAbroadsDetail", new {url = item.Url})" class="support-name">@item.Name</a>
+                            <ul class="body-support ul-reset">
+                                <li>
+                                    <i class="fa-sharp fa-solid fa-location-dot"></i>
+                                    <span>@item.StudyAbroadCategory.Country.Name</span>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-graduation-cap"></i>
+                                    <span>@item.LearningProblems</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-briefcase"></i>
+                                    <span>@item.StudyAbroadCategory.CategoryName</span>
+                                </li>
+                                <li>
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                    <span>
+                                        @if (item.ExpirationDate != null)
+                                        {
+                                            @Html.DisplayFor(a => item.ExpirationDate)
+                                        }
+                                        else
+                                        {
+                                            @:Luôn tuyển
+                                        }
+                                    </span>
+                                </li>
+                                <li>
+                                    <i class="fal fa-chart-line"></i>
+                                    <span>@item.View views</span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                </div>
-            }
-        </div>
+                }
+            </div>
+        }
+
+        @if (Model.Companies.Any())
+        {
+            <h2 class="title mt-5">
+                Top công ty hàng đầu
+            </h2>
+            <div class="list-support arrows-cusotm">
+                @foreach (var item in Model.Companies)
+                {
+                    <div class="card career-top">
+                        <a href="@Url.Action("Employer", new {url = item.Url})" class="thuml">
+                            @if (item.Cover != null)
+                            {
+                                <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Cover)" alt="@item.Name" class="lazyload" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/images/cover-null.png" alt="@item.Name" class="lazyload" />
+                            }
+                            <div class="tag-i">
+                                TOP 10
+                            </div>
+                        </a>
+                        <div class="card-body p-3">
+                            <a href="@Url.Action("Employer", new {url = item.Url})" class="career-top-name">@item.Name</a>
+                            <div class="box-rating" style="gap:10px;">
+                                <div class="rating">
+                                    <i class="fas fa-star active"></i>
+                                    <i class="fas fa-star active"></i>
+                                    <i class="fas fa-star active"></i>
+                                    <i class="fas fa-star active"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                / 322 Phản hồi
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
     </div>
 </section>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -250,6 +283,7 @@
     <script src="~/Scripts/select2.js"></script>
     <script>
         HomeJs()
+        QickLike();
         $('.select2').select2();
     </script>
 }

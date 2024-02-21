@@ -45,22 +45,23 @@ namespace GlobeWork.Models
         public string Incentives { get; set; }
         [Display(Name = "Ngày hết hạn"), UIHint("DateTimePicker"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? ExpirationDate { get; set; }
-        //[ForeignKey("Career")]
-        //public int CareerId { get; set; }
         public virtual Company Company { get; set; }
-        //public virtual Career Career { get; set; }
         public int View { get; set; }
         public int CategoryId { get; set; }
         public decimal? Min { get; set; }
         public decimal? Max { get; set; }
         public string Code { get; set; }
+        [Display(Name="Cấp bậc")]
+        public string Level { get; set; }
         public DateTime? Hot { get; set; }
-        //[Display(Name = "Quốc gia"), Required(ErrorMessage = "Hãy nhập chọn Quốc gia")]
-        //public int CounId { get; set; }
-        public virtual Country Country { get; set; }    
+        public string ListImage { get; set; }
         public virtual StudyAbroadCategory  StudyAbroadCategory { get; set; }    
         public virtual ICollection<Career> Careers { get; set; }
         public virtual ICollection<City> Cities { get; set; }
+        public virtual ICollection<Like> Likes { get; set; }
+
+        public Wage Wages { get; set; }
+
         public StudyAbroad()
         {
             CreateDate = DateTime.Now;
@@ -68,4 +69,5 @@ namespace GlobeWork.Models
             Active = true;
         }
     }
+
 }
