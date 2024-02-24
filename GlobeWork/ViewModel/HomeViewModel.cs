@@ -93,6 +93,19 @@ namespace GlobeWork.ViewModel
         public int CityId { get; set; }
         public string Url { get; set; }
     }
+    public class CompanyStudyViewModel
+    {
+        public Company Company { get; set; }
+        public IPagedList<StudyAbroad> StudyAbroads { get; set; }
+        public IEnumerable<Like> Likes { get; set; }
+        public IEnumerable<Follow> Follows { get; set; }
+        public IEnumerable<City> Cities { get; set; }
+        public IEnumerable<Career> Careers { get; set; }
+        public string Name { get; set; }
+        public int CareerId { get; set; }
+        public int CityId { get; set; }
+        public string Url { get; set; }
+    }
     public class JobHotViewModel
     {
         public IPagedList<JobPost> JobPosts { get; set; }
@@ -190,6 +203,13 @@ namespace GlobeWork.ViewModel
         public int StudyAbroadId { get; set; }
         public int CompanyId { get; set; }
     }
+    public class AdviseViewModel
+    {
+        public Advise Advise { get; set; }
+        public int JobId { get; set; }
+        public int StudyAbroadId { get; set; }
+        public int CompanyId { get; set; }
+    }
     public class StudyAbroadViewModel
     {
 
@@ -227,6 +247,14 @@ namespace GlobeWork.ViewModel
         public IEnumerable<Country> Countries { get; set; }
         public string Name { get; set; }
         public int CountruyId { get; set; }
+    }
+    public class AllStudyAbroadViewModel
+    {
+        public IPagedList<StudyAbroad> StudyAbroads { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
+        public string Name { get; set; }
+        public int CountruyId { get; set; }
+        public IEnumerable<Like> Likes { get; set; }
     }
     public class StudyDetailViewModel
     {

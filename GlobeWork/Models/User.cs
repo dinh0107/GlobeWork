@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Web;
 
@@ -52,6 +53,7 @@ namespace GlobeWork.Models
         public virtual ICollection<Experiences> Experiences { get; set; }
         public virtual ICollection<Certificate> Certificates { get; set; }
         public virtual ICollection<Project> Projects { get; set; }
+        public virtual ICollection<UserSkill> UserSkill { get; set; }
         public virtual ICollection<ApplyJob> ApplyJobs { get; set; }
         public virtual ICollection<UserViewLog> ViewLogs { get; set; }
         public User()
@@ -97,6 +99,7 @@ namespace GlobeWork.Models
         public string StartDate { get; set; }
         public string EndDate { get; set; }
         public int UserId { get; set; }
+        public bool Active { get; set; }
         public User User { get; set; }
     }
     public class Experiences
@@ -110,35 +113,81 @@ namespace GlobeWork.Models
         public string Description { get; set; }
         public string StartDate { get; set; }
         public string EndDate { get; set; }
-
+        public string Image { get; set; }
+        public int UserId { get; set; }
+        public bool Active { get; set; }
+        public User User { get; set; }
+    }
+    public class UserSkill
+    {
+        public int Id { get; set; }
+        [Display(Name ="Tên kỹ năng"), Required(ErrorMessage ="Chưa nhập tên kỹ năng")]
+        public string Name { get; set; }
+        public int Star { get ; set; }
+        [Display(Name = "Mô tả"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextArea")]
+        public string Description { get; set; }
+        public DateTime CreateDate { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
+        public UserSkill()
+        {
+            CreateDate = DateTime.Now;
+        }
     }
     public class Certificate
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Tên chứng chỉ")]
+        [Display(Name ="Tên chứng chỉ"),Required(ErrorMessage = "Chưa nhập tên chứng chỉ"),]
         public string Name { get; set; }
-        [Display(Name = "Mô tả"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextArea")]
+        [Display(Name = "Tổ chức"), Required(ErrorMessage = "Chưa nhập tên tổ chức"),]
         public string Description { get; set; }
-        public DateTime? Date { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
         public int UserId { get; set; }
         [StringLength(500)]
         public string Url { get; set; }
+        public string Image { get; set; }
+        public bool Active { get; set; }
         public User User { get; set; }
     }
     public class Project
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Tên dự án")]
+        [Display(Name = "Tên dự án"), Required(ErrorMessage = "Chưa nhập tên dự án"),]
         public string Name { get; set; }
+        [Display(Name = "Khách hàng"), Required(ErrorMessage = "Chưa nhập tên Khách hàng"),]
+        public string Customer { get; set; }
+        [Display(Name = "Vị trí"), Required(ErrorMessage = "Chưa nhập vị trí")]
+        public string Postion { get; set; }
+        [Display(Name = "Số thành viên"), Required(ErrorMessage = "Chưa nhập số thành viên")]
+        public string Member { get; set; }
+        [Display(Name = "Công nghệ"), Required(ErrorMessage = "Chưa nhập tên công nghệ")]
+        public string Tech { get; set; }
         [Display(Name = "Mô tả"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextArea")]
         public string Description { get; set; }
-        public DateTime? StarDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
         public int UserId { get; set; }
+        public string Image { get; set; }
+        public bool Active { get; set; }
         [StringLength(500)]
         public string Url { get; set; }
+        public User User { get; set; }
+    }
+    public class Activity
+    {
+        public int Id { get; set; }
+        [Required(ErrorMessage = "Tên tổ chức")]
+        public string Name { get; set; }
+        [Required(ErrorMessage = "Chưa nhập vị trí")]
+        public string Position { get; set; }
+        [Display(Name = "Mô tả"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextArea")]
+        public string Description { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
+        public string Image { get; set; }
+        public int UserId { get; set; }
+        public bool Active { get; set; }
         public User User { get; set; }
     }
     public class UserViewLog

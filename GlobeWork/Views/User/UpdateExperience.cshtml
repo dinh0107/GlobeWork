@@ -1,0 +1,290 @@
+﻿@model GlobeWork.ViewModel.InsertExperienceViewModel
+@{
+    Layout = null;
+    int currentYear = DateTime.Now.Year;
+    int startYear = 1960;
+    int starMonth = 0;
+    int starYear = 0;
+    int endMonth = 0;
+    int endYear = 0;
+
+    if (Model.Experiences.Active)
+    {
+        starMonth = Convert.ToInt32(Model.Experiences.StartDate.Split('/')[0]);
+        starYear = Convert.ToInt32(Model.Experiences.StartDate.Split('/')[1]);
+    }
+    else
+    {
+        starMonth = Convert.ToInt32(Model.Experiences.StartDate.Split('/')[0]);
+        starYear = Convert.ToInt32(Model.Experiences.StartDate.Split('/')[1]);
+        endMonth = Convert.ToInt32(Model.Experiences.EndDate.Split('/')[0]);
+        endYear = Convert.ToInt32(Model.Experiences.EndDate.Split('/')[1]);
+    }
+}
+
+<div class="modal-header">
+    <strong class="modal-title" id="exampleModalScrollableTitle">Kinh nghiệm</strong>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<form class="modal-body update-education" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(a => a.Experiences.Id)
+    <div class="form-group">
+        <label class="font-weight-bold">
+            Trường *
+        </label>
+        @Html.TextBoxFor(a => a.Experiences.Company, new { @class = "form-control", @placeholder = "Công ty" })
+        @Html.ValidationMessageFor(a => a.Experiences.Company)
+    </div>
+    <div class="form-group">
+        <label class="font-weight-bold">
+            Chức vụ *
+        </label>
+        @Html.TextBoxFor(a => a.Experiences.Position, new { @class = "form-control", @placeholder = "VD: Nhân viên văn phòng" })
+        @Html.ValidationMessageFor(a => a.Experiences.Position)
+    </div>
+    <div class="form-group">
+        <label class="font-weight-bold">
+            Thời gian *
+        </label>
+        <label for="active-exp">
+            @Html.CheckBoxFor(a => a.Experiences.Active, new { @class = "active", @id = "active-exp" })
+            Tôi đang làm việc ở đây
+        </label>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-lg-3">
+                <label for="startMonth">Bắt đầu</label>
+                <select class="form-control" name="StarMonth" id="startMonth" required>
+                    <option value="">Chọn tháng</option>
+                    @for (var i = 1; i <= 12; i++)
+                    {
+                        <option @if (i == Convert.ToInt32(starMonth)) { @Html.Raw("selected") } value="@i">Tháng @i</option>
+                    }
+                </select>
+            </div>
+            <div class="col-lg-3 d-flex align-items-end">
+                <label for="startYear">&nbsp;</label>
+                <select class="form-control" name="StarYear" id="startYear" required>
+                    <option value="">Chọn năm</option>
+                    @for (var i = currentYear; i >= startYear; i--)
+                    {
+                        <option @if (i == Convert.ToInt32(startYear)) { @Html.Raw("selected") } value="@i">@i</option>
+                    }
+                </select>
+            </div>
+            <div class="col-lg-3 end-exp">
+                <label for="endMonth">Kết thúc</label>
+                <select class="form-control" name="EndMonth" id="endMonth">
+                    <option value="">Chọn tháng</option>
+                    @for (var i = 1; i <= 12; i++)
+                    {
+                        <option @if (i == Convert.ToInt32(endMonth)) { @Html.Raw("selected") } value="@i">Tháng @i</option>
+                    }
+                </select>
+            </div>
+            <div class="col-lg-3  end-exp">
+                <label for="endYear">&nbsp;</label>
+                <select class="form-control" name="EndYear" id="endYear">
+                    <option value="">Chọn năm</option>
+                    @for (var i = currentYear; i >= startYear; i--)
+                    {
+                        <option @if (i == Convert.ToInt32(endYear)) { @Html.Raw("selected") } value="@i">@i</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="font-weight-bold">
+            Mô tả chi tiết
+        </label>
+        @Html.TextAreaFor(a => a.Experiences.Description, new { @class = "form-control", @placeholder = "Mô tả chi tiết quá trình học của bạn để nhà tuyển dụng có thể hiểu bạn hơn", @rows = "5" })
+    </div>
+    <div class="form-group">
+        <i>Thêm liên kết hoặc tải lên hình ảnh về kinh nghiệm của bạn</i>
+        <div class="d-flex mt-3">
+            <label class="custom-button" for="expUpEdit">
+                <i class="fa-regular fa-image mr-2"></i> Tải ảnh
+                <input type="file" id="expUpEdit" name="files[]" accept="image/*" multiple="" class="d-none" />
+            </label>
+        </div>
+        <div class="mt-3 row" id="expeditImg">
+            @if (Model.Experiences.Image != null)
+            {
+                foreach (var arr in Model.Experiences.Image.Split(','))
+                {
+                    var i = 1;
+                    <div class="col-lg-4 mb-3">
+                        <div class="card card-ex">
+                            <input type="hidden" name="Pictures" value="@arr" />
+                            <img src="@Path.Combine("/images/exp/", arr)" />
+                            <div class="remove removexp" id="@i" onclick="delfile( '@i')">
+                                <i class="fa-solid fa-trash"></i>
+                            </div>
+                        </div>
+                    </div>
+                    i = i + 1;
+                }
+            }
+        </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <button type="button" class="btn btn-danger mr-3" onclick="DeleteExp(@Model.Experiences.Id)">Xóa</button>
+        <button type="submit" class="btn btn-success">Cập nhật</button>
+    </div>
+</form>
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+
+    if ($("#active-exp").is(":checked")) {
+        $(".end-exp").hide();
+    } else {
+        $(".end-exp").show();
+    }
+    $("#active-exp").change(function () {
+        if ($(this).is(":checked")) {
+            $(".end-exp").hide();
+        } else {
+            $(".end-exp").show();
+        }
+    });
+
+
+    $(".update-education").submit(function (e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.post("/User/UpdateExperience", formData, function (data) {
+            if (data.success) {
+                new Notify({
+                    status: 'success',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+                $(".close").click()
+                setTimeout(function () {
+                    location.reload();
+                }, 1500);
+            } else {
+                new Notify({
+                    status: 'error',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            }
+        });
+    });
+
+    function DeleteExp(id) {
+        $.post("/User/RemoveExperience", { id: id }, function (data) {
+            if (data.success) {
+                new Notify({
+                    status: 'success',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+                $(".close").click()
+                $("div[data-exp='" + id + "']").fadeOut();
+
+            } else {
+                new Notify({
+                    status: 'error',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            }
+        })
+    }
+
+    var i = 1;
+    $("#expUpEdit").fileupload({
+        add: function (e, data) {
+            var uploadErrors = [];
+            var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+            if (data.originalFiles[0]["type"].length && !acceptFileTypes.test(data.originalFiles[0]["type"])) {
+                uploadErrors.push("Chỉ chấp nhận định dạng jpeg, jpg, png, gif");
+            }
+            if (data.originalFiles[0]["size"] > 4000000) {
+                uploadErrors.push("Dung lượng ảnh lớn hơn 4MB");
+            }
+            var totalImg = $("#expeditImg .col-lg-4").length;
+            console.log(totalImg)
+            if (totalImg >= 10) {
+                uploadErrors.push("Chỉ đăng tối đa 10 ảnh");
+            }
+            if (uploadErrors.length > 0) {
+                alert(uploadErrors.join("\n"));
+                return false;
+            } else {
+                data.submit();
+            }
+            return true;
+        },
+        url: "/Uploader/Upload?folder=exp&r=" + Math.random(),
+        dataType: "json",
+        done: function (e, data) {
+            console.log(data.result.files)
+            $.each(data.result.files, function (index, file) {
+                $('#expeditImg').append('<div class="col-lg-4 mb-3"><div class="card card-ex"><input type="hidden" name="Pictures" value="' + file.name + '" /><img src="/images/exp/' + file.name + '" /><div class="remove removexp" onclick="removeFile(' + i + ')"><i class="fa-solid fa-trash" ></i></div></div></div>');
+            });
+            i = i + 1;
+            $("#progress").fadeOut(2000);
+        },
+        start: function () {
+            $("#progress .progress-bar").css("width", "0");
+            $("#progress").show();
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $("#progress .progress-bar").css("width", progress + "%");
+        }
+    }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+    $(document).on('click', '.removexp', function () {
+        const imageCard = $(this).closest('.col-lg-4');
+        const index = imageCard.index();
+        imageCard.remove();
+        const inputFiles = $('#expImg')[0].files;
+        const newFiles = Array.from(inputFiles).filter((_, i) => i !== index);
+        $('#expUpEdit').prop('files', newFiles);
+    });
+</script>

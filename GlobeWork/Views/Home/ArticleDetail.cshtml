@@ -1,0 +1,52 @@
+﻿@model GlobeWork.Models.Article
+@{
+    ViewBag.Title = Model.TitleMeta ?? Model.Subject;
+    ViewBag.Description = Model.DescriptionMeta ?? Model.Description;
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ArticleDetail", new { url = Model.Url });
+    if (Model.Image != null)
+    {
+        ViewBag.ImageShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/articles/", Model.Image);
+    }
+}
+@if (!Model.IsAdmin)
+{
+    if (Model.StudyAbroadCategory.Banner != null && !Model.IsAdmin)
+    {
+        <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/category/", Model.StudyAbroadCategory.Banner)" alt="@Model.StudyAbroadCategory.CategoryName" class="lazyload banner-cat" />
+    }
+}
+<div class="container">
+    <div class="py-3">
+        <div class="date">
+            <i class="fas fa-calendar-alt"></i>
+            @Model.CreateDate.ToString("dd/MM/yyyy")
+        </div>
+        <h1 class="detail-subject">@Model.Subject</h1>
+        <div class="by-user">
+            Đăng bới:
+            @if (Model.IsAdmin)
+            {
+                <strong>Admin</strong>
+            }
+            else
+            {
+                <strong>@Model.Employer.FullName</strong>
+            }
+        </div>
+
+        <div class="content-detail">
+            @Html.Raw(Model.Body)
+        </div>
+        <div class="share mb-3">
+            <ul class="d-flex align-items-center ul-reset">
+                <li class="mr-3">Chia sẻ:</li>
+                <li><button class="facebook" onclick="window.open('https://www.facebook.com/sharer.php?u='+encodeURIComponent(location.href)+'&amp;t='+encodeURIComponent(document.title));return false"><i class="fab fa-facebook-f"></i></button></li>
+                <li><button class="instagram" onclick="window.open('https://www.instagram.com/?url='+encodeURIComponent(location.href)+'&amp;t='+encodeURIComponent(document.title));return false"><i class="fab fa-instagram"></i></button></li>
+                <li><button class="twitter" onclick="window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(location.href)+'&amp;text='+encodeURIComponent(document.title));return false"><i class="fab fa-twitter"></i></button></li>
+                <li><button class="linkedin" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href)+'&amp;t='+encodeURIComponent(document.title));return false"><i class="fab fa-linkedin-in"></i></button></li>
+            </ul>
+        </div>
+        <hr />
+        <div class="fb-comments" data-href="@ViewBag.Canonical" data-numposts="10" data-width="100%"></div>
+    </div>
+</div>

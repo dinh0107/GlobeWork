@@ -4,7 +4,6 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Web;
 using GlobeWork.Models;
-using GlobeWork.Models;
 using WebGrease.Css.Ast.Selectors;
 
 namespace GlobeWork.DAL
@@ -40,12 +39,24 @@ namespace GlobeWork.DAL
         private GenericRepository<Certificate> _certificateRepository;
         private GenericRepository<UserViewLog> _userViewLogRepository;
         private GenericRepository<Article> _articleRepository;
+        private GenericRepository<Advise> _adviseRepository;
+        private GenericRepository<Contact> _contactRepository;
+        private GenericRepository<UserSkill> _userSkillRepository;
+        private GenericRepository<Activity> _activityRepository;
 
 
+        public GenericRepository<Activity> ActivityRepository =>
+                _activityRepository ?? (_activityRepository = new GenericRepository<Activity>(_context));
+        public GenericRepository<UserSkill> UserSkillRepository =>
+                _userSkillRepository ?? (_userSkillRepository = new GenericRepository<UserSkill>(_context));
+        public GenericRepository<Contact> ContactRepository =>
+                _contactRepository ?? (_contactRepository = new GenericRepository<Contact>(_context));
+        public GenericRepository<Advise> AdviseRepository =>
+                _adviseRepository ?? (_adviseRepository = new GenericRepository<Advise>(_context));
         public GenericRepository<Article> ArticleRepository =>
-      _articleRepository ?? (_articleRepository = new GenericRepository<Article>(_context));
+        _articleRepository ?? (_articleRepository = new GenericRepository<Article>(_context));
         public GenericRepository<UserViewLog> UserViewLogRepository =>
-       _userViewLogRepository ?? (_userViewLogRepository = new GenericRepository<UserViewLog>(_context));
+        _userViewLogRepository ?? (_userViewLogRepository = new GenericRepository<UserViewLog>(_context));
         public GenericRepository<Project> ProjectRepository =>
         _projectRepository ?? (_projectRepository = new GenericRepository<Project>(_context));
         public GenericRepository<Certificate> CertificateRepository =>

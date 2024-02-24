@@ -20,6 +20,8 @@ using Microsoft.Ajax.Utilities;
 using System.IO;
 using System.Drawing;
 using PagedList;
+using System.Runtime.ConstrainedExecution;
+using Com.CloudRail.SI.ServiceCode.Commands;
 namespace GlobeWork.Controllers
 {
     [MemberFilter, RoutePrefix("user")]
@@ -360,19 +362,19 @@ namespace GlobeWork.Controllers
         }
 
 
-        public PartialViewResult InfoUser(int id)
+        public ActionResult InfoUser(int id)
         {
             var user = _unitOfWork.UserRepository.GetById(id);
             if (user == null)
             {
-                return PartialView();
+                return View();
             }
-            var edu = _unitOfWork.EducationRepository.GetQuery(a => a.UserId == user.Id, o => o.OrderBy(a => a.Id));
-            var exp = _unitOfWork.ExperienceRepository.GetQuery(a => a.UserId == user.Id, o => o.OrderBy(a => a.Id));
+            //var edu = _unitOfWork.EducationRepository.GetQuery(a => a.UserId == user.Id, o => o.OrderBy(a => a.Id));
+            //var exp = _unitOfWork.ExperienceRepository.GetQuery(a => a.UserId == user.Id, o => o.OrderBy(a => a.Id));
             var model = new ChangeInfoUserViewModel
             {
-                ListEducations = edu,
-                ListExperiences = exp,
+                //ListEducations = edu,
+                //ListExperiences = exp,
                 FullName = user.FullName,
                 Classtify = user.Classtify,
                 Gender = user.Gender,
@@ -385,7 +387,7 @@ namespace GlobeWork.Controllers
                 Month = Convert.ToInt32(user.DateOfBirth?.ToString("MM")),
                 Date = Convert.ToInt32(user.DateOfBirth?.ToString("dd")),
             };
-            return PartialView(model);
+            return View(model);
         }
         [HttpPost]
         public bool UpdateCv(ChangeInfoUserViewModel model)
@@ -395,68 +397,68 @@ namespace GlobeWork.Controllers
                 return false;
             }
 
-            if (model.Educations != null && model.Educations.Any())
-            {
-                foreach (var item in model.Educations)
-                {
-                    if (item != null && !string.IsNullOrWhiteSpace(item.StartDate) && !string.IsNullOrWhiteSpace(item.EndDate) && !string.IsNullOrWhiteSpace(item.Majors) && !string.IsNullOrWhiteSpace(item.School) && !string.IsNullOrWhiteSpace(item.Description))
-                    {
-                        var myEdu = _unitOfWork.EducationRepository.GetById(item.Id);
-                        if (myEdu == null)
-                        {
-                            var education = new Education
-                            {
-                                StartDate = item.StartDate,
-                                EndDate = item.EndDate,
-                                School = item.School,
-                                Description = item.Description,
-                                UserId = User.Id,
-                                Majors = item.Majors,
-                            };
-                            _unitOfWork.EducationRepository.Insert(education);
-                        }
-                        else
-                        {
-                            myEdu.StartDate = item.StartDate;
-                            myEdu.EndDate = item.EndDate;
-                            myEdu.School = item.School;
-                            myEdu.Description = item.Description;
-                            myEdu.UserId = User.Id;
-                            myEdu.Majors = item.Majors;
-                        }
-                    }
+            //if (model.Educations != null && model.Educations.Any())
+            //{
+            //    foreach (var item in model.Educations)
+            //    {
+            //        if (item != null && !string.IsNullOrWhiteSpace(item.StartDate) && !string.IsNullOrWhiteSpace(item.EndDate) && !string.IsNullOrWhiteSpace(item.Majors) && !string.IsNullOrWhiteSpace(item.School) && !string.IsNullOrWhiteSpace(item.Description))
+            //        {
+            //            var myEdu = _unitOfWork.EducationRepository.GetById(item.Id);
+            //            if (myEdu == null)
+            //            {
+            //                var education = new Education
+            //                {
+            //                    StartDate = item.StartDate,
+            //                    EndDate = item.EndDate,
+            //                    School = item.School,
+            //                    Description = item.Description,
+            //                    UserId = User.Id,
+            //                    Majors = item.Majors,
+            //                };
+            //                _unitOfWork.EducationRepository.Insert(education);
+            //            }
+            //            else
+            //            {
+            //                myEdu.StartDate = item.StartDate;
+            //                myEdu.EndDate = item.EndDate;
+            //                myEdu.School = item.School;
+            //                myEdu.Description = item.Description;
+            //                myEdu.UserId = User.Id;
+            //                myEdu.Majors = item.Majors;
+            //            }
+            //        }
 
-                }
-            }
+            //    }
+            //}
 
-            foreach (var item in model.Experiences)
-            {
-                if (item != null && !string.IsNullOrWhiteSpace(item.StartDate) && !string.IsNullOrWhiteSpace(item.EndDate) && !string.IsNullOrWhiteSpace(item.Position) && !string.IsNullOrWhiteSpace(item.Company) && !string.IsNullOrWhiteSpace(item.Description))
-                {
-                    var myExp = _unitOfWork.ExperienceRepository.GetById(item.Id);
-                    if (myExp == null)
-                    {
-                        var experience = new Experiences
-                        {
-                            StartDate = item.StartDate,
-                            EndDate = item.EndDate,
-                            Position = item.Position,
-                            Company = item.Company,
-                            Description = item.Description,
-                            UserId = User.Id
-                        };
-                        _unitOfWork.ExperienceRepository.Insert(experience);
-                    }
-                    else
-                    {
-                        myExp.StartDate = item.StartDate;
-                        myExp.EndDate = item.EndDate;
-                        myExp.Position = item.Position;
-                        myExp.Company = item.Company;
-                        myExp.Description = item.Description;
-                    }
-                }
-            }
+            //foreach (var item in model.Experiences)
+            //{
+            //    if (item != null && !string.IsNullOrWhiteSpace(item.StartDate) && !string.IsNullOrWhiteSpace(item.EndDate) && !string.IsNullOrWhiteSpace(item.Position) && !string.IsNullOrWhiteSpace(item.Company) && !string.IsNullOrWhiteSpace(item.Description))
+            //    {
+            //        var myExp = _unitOfWork.ExperienceRepository.GetById(item.Id);
+            //        if (myExp == null)
+            //        {
+            //            var experience = new Experiences
+            //            {
+            //                StartDate = item.StartDate,
+            //                EndDate = item.EndDate,
+            //                Position = item.Position,
+            //                Company = item.Company,
+            //                Description = item.Description,
+            //                UserId = User.Id
+            //            };
+            //            _unitOfWork.ExperienceRepository.Insert(experience);
+            //        }
+            //        else
+            //        {
+            //            myExp.StartDate = item.StartDate;
+            //            myExp.EndDate = item.EndDate;
+            //            myExp.Position = item.Position;
+            //            myExp.Company = item.Company;
+            //            myExp.Description = item.Description;
+            //        }
+            //    }
+            //}
 
             User.FullName = model.FullName;
             User.Classtify = model.Classtify;
@@ -660,6 +662,465 @@ namespace GlobeWork.Controllers
             var log = _unitOfWork.UserLogRepository.GetQuery(a => a.UserId == User.Id, o => o.OrderByDescending(a => a.CreateDate));
             return PartialView(log);
         }
+
+        #region Edu
+        public PartialViewResult Education()
+        {
+            return PartialView();
+        }
+        [HttpPost]
+        public JsonResult Education(InsertEduViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+
+                model.Education.StartDate = model.StarMonth.ToString()+ "/" + model.StarYear.ToString();
+                model.Education.EndDate = model.EndMonth.ToString () + "/" + model.EndYear.ToString();
+                if (model.Education.Active || model.EndMonth == null || model.EndYear == null)
+                {
+                    model.Education.EndDate = "Hiện tại";
+                    model.Education.Active = true;
+                }
+                model.Education.UserId = User.Id;
+                _unitOfWork.EducationRepository.Insert(model.Education);
+                _unitOfWork.Save();
+                return Json(new { success = true, message = "Thêm thành công" });
+
+            };
+            return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+        }
+
+        public PartialViewResult EditEducation(int id)
+        {
+            var edu = _unitOfWork.EducationRepository.GetById(id);
+            if(edu == null)
+            {
+                return PartialView();
+            }
+            var model = new InsertEduViewModel
+            {
+                Education = edu,
+            };
+            return PartialView(model);
+        }
+        [HttpPost]
+        public JsonResult EditEducation(InsertEduViewModel model)
+        {
+            var edu = _unitOfWork.EducationRepository.GetById(model.Education.Id);
+            if(edu == null)
+            {
+                return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+            }
+            if (ModelState.IsValid)
+            {
+                edu.Majors = model.Education.Majors;
+                edu.School = model.Education.School;
+                edu.Description = model.Education.Description;
+                edu.Active = model.Education.Active;
+                edu.StartDate = model.StarMonth.ToString() + "/" + model.StarYear.ToString();
+                edu.EndDate = model.EndMonth.ToString() + "/" + model.EndYear.ToString();
+                if (edu.Active || model.EndMonth == null || model.EndYear == null)
+                {
+                    edu.EndDate = "Hiện tại";
+                    edu.Active = true;
+                }
+                _unitOfWork.Save();
+                return Json(new { success = true, message = "Cập nhật thành công" });
+            }
+            return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+        }
+        [HttpPost]
+        public JsonResult RemoveEdu(int id)
+        {
+            var edu = _unitOfWork.EducationRepository.GetById(id);
+            if (edu == null)
+            {
+                return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+            }
+            _unitOfWork.EducationRepository.Delete(edu);
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Xóa thành công" });
+
+        }
+        #endregion
+
+        #region Experience
+        public PartialViewResult Experience()
+        {
+            return PartialView();   
+        }
+        [HttpPost]
+        public JsonResult Experience(InsertExperienceViewModel model, FormCollection fc)
+        {
+            if (ModelState.IsValid)
+            {
+                model.Experiences.Image = fc["Pictures"];
+                model.Experiences.StartDate = model.StarMonth.ToString() + "/" + model.StarYear.ToString();
+                model.Experiences.EndDate = model.EndMonth.ToString() + "/" + model.EndYear.ToString();
+                if (model.Experiences.Active || model.EndMonth == null || model.EndYear == null)
+                {
+                    model.Experiences.EndDate = "Hiện tại";
+                    model.Experiences.Active = true;
+                }
+                model.Experiences.UserId = User.Id;
+                _unitOfWork.ExperienceRepository.Insert(model.Experiences);
+                _unitOfWork.Save();
+                return Json(new { success = true, message = "Thêm thành công" });
+            }
+            return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+        }
+
+        public PartialViewResult UpdateExperience(int id)
+        {
+            var exp = _unitOfWork.ExperienceRepository.GetById(id);
+            if(exp == null)
+            {
+                return PartialView();
+            }
+            var model = new InsertExperienceViewModel
+            {
+                Experiences = exp
+            };
+            return PartialView(model);
+        }
+        [HttpPost]
+        public JsonResult UpdateExperience(InsertExperienceViewModel model , FormCollection fc)
+        {
+            var exp = _unitOfWork.ExperienceRepository.GetById(model.Experiences.Id);
+            if (exp == null)
+            {
+                return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+            }
+            if (ModelState.IsValid)
+            {
+                exp.Company = model.Experiences.Company;
+                exp.Position = model.Experiences.Position;
+                exp.Active = model.Experiences.Active;
+                exp.StartDate = model.StarMonth.ToString() + "/" + model.StarYear.ToString();
+                exp.EndDate = model.EndMonth.ToString() + "/" + model.EndYear.ToString();
+                if (exp.Active || model.EndMonth == null || model.EndYear == null)
+                {
+                    exp.EndDate = "Hiện tại";
+                    exp.Active = true;
+                }
+                exp.Description = model.Experiences.Description;
+                exp.Image = fc["Pictures"] == "" ? null : fc["Pictures"];
+                _unitOfWork.Save();
+                return Json(new { success = true, message = "Thêm thành công" });
+            }
+           return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+        }
+        [HttpPost]
+        public JsonResult RemoveExperience(int id)
+        {
+            var exp = _unitOfWork.ExperienceRepository.GetById(id);
+            if (exp == null)
+            {
+                return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+            }
+            _unitOfWork.ExperienceRepository.Delete(exp);
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Xóa thành công" });
+
+        }
+        #endregion
+
+        #region Skill
+        public PartialViewResult Skill ()
+        {
+            return PartialView();
+        }
+
+        [HttpPost]
+        public JsonResult Skill(UserSkill model , FormCollection fc)
+        {
+            if (ModelState.IsValid)
+            {
+                model.Star = Convert.ToInt32(fc["rating"]);
+                model.UserId = User.Id;
+                _unitOfWork.UserSkillRepository.Insert(model);
+                _unitOfWork.Save();
+                return Json(new { success = true, message = "Thêm thành công" });
+            }
+            return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+        }
+        public ActionResult UpdateSkill(int id)
+        {
+            var skill = _unitOfWork.UserSkillRepository.GetById(id);
+            if(skill == null)
+            {
+                return View();
+            }
+            return View(skill);
+        }
+
+        [HttpPost]
+        public JsonResult UpdateSkill(UserSkill model, FormCollection fc)
+        {
+            var skill = _unitOfWork.UserSkillRepository.GetById(model.Id);
+            if (skill == null)
+            {
+                return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+            }
+            if (ModelState.IsValid)
+            {
+                skill.Name = model.Name;
+                skill.Description = model.Description;
+                skill.Star = Convert.ToInt32(fc["rating"]);
+                _unitOfWork.Save();
+                return Json(new { success = true, message = "Cập nhật thành công" });
+            };
+            return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+        }
+
+        [HttpPost]
+        public JsonResult RemoveSkill(int id)
+        {
+            var skill = _unitOfWork.UserSkillRepository.GetById(id);
+            if (skill == null)
+            {
+                return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+            }
+            _unitOfWork.UserSkillRepository.Delete(skill);
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Xóa thành công" });
+
+        }
+        #endregion
+
+        #region Certificate
+        public PartialViewResult Certificate()
+        {
+            return PartialView();
+        }
+
+        [HttpPost]
+        public JsonResult Certificate(InsertCertificateViewModel model, FormCollection fc)
+        {
+            if (ModelState.IsValid)
+            {
+                model.Certificate.Image = fc["Pictures"];
+                model.Certificate.StartDate = model.StarMonth.ToString() + "/" + model.StarYear.ToString();
+                model.Certificate.EndDate = model.EndMonth.ToString() + "/" + model.EndYear.ToString();
+                if (model.Certificate.Active || model.EndMonth == null || model.EndYear == null)
+                {
+                    model.Certificate.EndDate = "Không thời hạn";
+                    model.Certificate.Active = true;
+                }
+                model.Certificate.UserId = User.Id;
+                _unitOfWork.CertificateRepository.Insert(model.Certificate);
+                _unitOfWork.Save();
+                return Json(new { success = true, message = "Thêm thành công" });
+            }
+            return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+        }
+        public PartialViewResult EditCertificate(int id)
+        {
+            var cer = _unitOfWork.CertificateRepository.GetById(id);
+            if(cer == null)
+            {
+                return PartialView();
+            }
+            var model = new InsertCertificateViewModel
+            {
+                Certificate = cer
+            };
+            return PartialView(model);
+        }
+        [HttpPost]
+        public JsonResult EditCertificate(InsertCertificateViewModel model, FormCollection fc)
+        {
+            var cer = _unitOfWork.CertificateRepository.GetById(model.Certificate.Id);
+            if (cer == null)
+            {
+                return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+            }
+            cer.Name = model.Certificate.Name;
+            cer.Description = model.Certificate.Description;
+            cer.Active = model.Certificate.Active;
+            cer.StartDate = model.StarMonth.ToString() + "/" + model.StarYear.ToString();
+            cer.EndDate = model.EndMonth.ToString() + "/" + model.EndYear.ToString();
+            if (cer.Active || model.EndMonth == null || model.EndYear == null)
+            {
+                cer.EndDate = "Không thời hạn";
+                cer.Active = true;
+            }
+            cer.Description = model.Certificate.Description;
+            cer.Image = fc["Pictures"] == "" ? null : fc["Pictures"];
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Thêm thành công" });
+        }
+
+        [HttpPost]
+        public JsonResult RemoveCertificate(int id)
+        {
+            var certificate = _unitOfWork.CertificateRepository.GetById(id);
+            if (certificate == null)
+            {
+                return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+            }
+            _unitOfWork.CertificateRepository.Delete(certificate);
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Xóa thành công" });
+
+        }
+
+        #endregion
+
+        #region Project
+        public PartialViewResult Project()
+        {
+            return PartialView();
+        }
+        [HttpPost]
+        public JsonResult Project(InsertProjectViewModel model, FormCollection fc)
+        {
+            if (ModelState.IsValid)
+            {
+                model.Project.Image = fc["Pictures"];
+                model.Project.StartDate = model.StarMonth.ToString() + "/" + model.StarYear.ToString();
+                model.Project.EndDate = model.EndMonth.ToString() + "/" + model.EndYear.ToString();
+                model.Project.UserId = User.Id;
+                _unitOfWork.ProjectRepository.Insert(model.Project);
+                _unitOfWork.Save();
+                return Json(new { success = true, message = "Thêm thành công" });
+            }
+            return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+        }
+
+        public PartialViewResult EditProject(int id)
+        {
+            var project = _unitOfWork.ProjectRepository.GetById(id);
+            if (project == null)
+            {
+                return PartialView();
+            }
+            var model = new InsertProjectViewModel
+            {
+                Project = project,
+            };
+            return PartialView(model);
+        }
+        [HttpPost]
+        public JsonResult EditProject(InsertProjectViewModel model, FormCollection fc)
+        {
+            var project = _unitOfWork.ProjectRepository.GetById(model.Project.Id);
+            if (project == null)
+            {
+                return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+            }
+            project.StartDate = model.StarMonth.ToString() + "/" + model.StarYear.ToString();
+            project.EndDate = model.EndMonth.ToString() + "/" + model.EndYear.ToString();
+            project.Name = model.Project.Name;
+            project.Customer = model.Project.Customer;
+            project.Postion = model.Project.Postion;
+            project.Member = model.Project.Member;
+            project.Tech = model.Project.Tech;
+            project.Description = model.Project.Description;
+            project.Image = fc["Pictures"] == "" ? null : fc["Pictures"];
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Thêm thành công" });
+        }
+
+        [HttpPost]
+        public JsonResult RemoveProject(int id)
+        {
+            var project = _unitOfWork.ProjectRepository.GetById(id);
+            if (project == null)
+            {
+                return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+            }
+            _unitOfWork.ProjectRepository.Delete(project);
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Xóa thành công" });
+
+        }
+        #endregion
+
+        #region Activity 
+        public PartialViewResult Activity()
+        {
+            return PartialView();
+        }
+        [HttpPost]
+        public JsonResult Activity(InsertActivityViewModel model , FormCollection fc)
+        {
+            if (ModelState.IsValid)
+            {
+                model.Activity.Image = fc["Pictures"];
+                model.Activity.StartDate = model.StarMonth.ToString() + "/" + model.StarYear.ToString();
+                model.Activity.EndDate = model.EndMonth.ToString() + "/" + model.EndYear.ToString();
+                if (model.Activity.Active || model.EndMonth == null || model.EndYear == null)
+                {
+                    model.Activity.EndDate = "Hiện tại";
+                    model.Activity.Active = true;
+                }
+                model.Activity.UserId = User.Id;
+                _unitOfWork.ActivityRepository.Insert(model.Activity);
+                _unitOfWork.Save();
+                return Json(new { success = true, message = "Thêm thành công" });
+            }
+            return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+        }
+
+        public PartialViewResult UpdateActivity(int id)
+        {
+            var activity = _unitOfWork.ActivityRepository.GetById(id);
+            if(activity == null)
+            {
+                return PartialView();
+            }
+            var model = new InsertActivityViewModel
+            {
+                Activity = activity
+            };
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        public JsonResult UpdateActivity(InsertActivityViewModel model, FormCollection fc)
+        {
+            var activity = _unitOfWork.ActivityRepository.GetById(model.Activity.Id);
+            if (activity == null)
+            {
+                return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+            }
+            if (ModelState.IsValid)
+            {
+                activity.Image = fc["Pictures"] == "" ? null : fc["Pictures"];
+                activity.StartDate = model.StarMonth.ToString() + "/" + model.StarYear.ToString();
+                activity.EndDate = model.EndMonth.ToString() + "/" + model.EndYear.ToString();
+                activity.Active = model.Activity.Active;
+                if (activity.Active || model.EndMonth == null || model.EndYear == null)
+                {
+                    activity.EndDate = "Hiện tại";
+                    activity.Active = true;
+
+                }
+                activity.Name = model.Activity.Name;
+                activity.Position = model.Activity.Position;
+                activity.Description = model.Activity.Description; 
+                _unitOfWork.Save();
+                return Json(new { success = true, message = "Thêm thành công" });
+            }
+            return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+        }
+
+        [HttpPost]
+        public JsonResult RemoveActivity(int id)
+        {
+            var ac = _unitOfWork.ActivityRepository.GetById(id);
+            if (ac == null)
+            {
+                return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+            }
+            _unitOfWork.ActivityRepository.Delete(ac);
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Xóa thành công" });
+
+        }
+        #endregion
+
         [OverrideActionFilters]
         public JsonResult CheckEmail(string email)
         {

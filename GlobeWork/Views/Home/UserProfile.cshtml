@@ -1,8 +1,7 @@
 ﻿@model GlobeWork.ViewModel.UserInfoViewModel
 @{
-    ViewBag.Title = "Chi tiết";
+    ViewBag.Title = Model.User.FullName + " - " + Model.User.Classtify;
     ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("UserProfile");
-    var id = ViewContext.RouteData.Values["Id"].ToString();
 }
 <div class="bg-light py-4">
     <div class="container" id="element-to-print">
@@ -16,7 +15,7 @@
                 {
                     <img src="~/Content/images/cover-null.png" class="lazyload">
                 }
-                @if (id != "")
+                @if (Model.IsAccount)
                 {
                     <label for="Cover" class="change-cover">
                         <i class="fa-solid fa-camera mr-1"></i> Chỉnh sửa ảnh bìa
@@ -35,7 +34,7 @@
                     {
                         <img src="~/Content/images/avatar-default.jpg" alt="@Model.User.FullName" class="img-responsive">
                     }
-                    @if (id != "")
+                    @if (Model.IsAccount)
                     {
                         <label for="Avatar" class="change-avater">
                             <i class="fa-solid fa-camera"></i>
@@ -51,31 +50,139 @@
                         @Model.User.Classtify
                     </div>
                     <div class="group-btn-profile">
-                        @if (id != "")
+                        @if (Model.IsAccount)
                         {
-                            <a href="javascripts:;" data-action="@Url.Action("InfoUser", "User", new { id = Model.User.Id })" class="change-info active">Thêm mục <i class="fa-solid fa-caret-down"></i></a>
+                            <div class="position-relative">
+                                <a  class="active" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Thêm mục <i class="fa-solid fa-caret-down"></i></a>
+                                <div class="collapse multi-collapse position-absolute" id="multiCollapseExample1">
+                                    <ul class="collapsible ul-reset">
+                                        <li class="collapsible-item">
+                                            <details class="collapsible-wrapper">
+                                                <summary class="collapsible-button">
+                                                    <strong class="text">Thông tin cá nhân</strong>
+                                                </summary>
+                                                <div class="menu-profile mt-2">
+                                                   <div data-toggle="modal" data-target="#infoUser">
+                                                       <div role="button">Thông tin cá nhân</div>
+                                                       <small class="gray">Chia sẻ những mong muốn của bản thân như: Công việc mong muốn, mức lương mong muốn,... </small>
+                                                   </div>
+                                                </div>
+                                            </details>
+                                        </li>
+                                        <li class="collapsible-item">
+                                            <details class="collapsible-wrapper">
+                                                <summary class="collapsible-button">
+                                                    <strong class="text">Trình độ</strong>
+                                                </summary>
+                                                <div class="menu-profile mt-2">
+                                                    <div data-toggle="modal" data-target="#experience">
+                                                        <div role="button">Kinh nghiệm làm việc</div>
+                                                        <small class="gray">Mô tả kinh nghiệm làm việc thực tế của bạn tại các công ty, tổ chức</small>
+                                                    </div>
+                                                </div>
+                                                <div class="menu-profile mt-2">
+                                                    <div data-toggle="modal" data-target="#education">
+                                                        <div role="button">Học vấn</div>
+                                                        <small class="gray">Mô tả rõ hơn về quá trình học tập của bạn tại các trường học</small>
+                                                    </div>
+                                                </div>
+                                                <div class="menu-profile mt-2">
+                                                    <div data-toggle="modal" data-target="#certificate">
+                                                        <div role="button">Chứng chỉ</div>
+                                                        <small class="gray">Bạn có thể mô tả rõ hơn trong CV bằng cách chèn thêm ảnh chứng chỉ, bằng khen.</small>
+                                                    </div>
+                                                </div>
+                                            </details>
+                                        </li>
+                                        <li class="collapsible-item">
+                                            <details class="collapsible-wrapper">
+                                                <summary class="collapsible-button">
+                                                    <strong class="text">Kỹ năng</strong>
+                                                </summary>
+                                                <div class="menu-profile mt-2">
+                                                    <div data-toggle="modal" data-target="#skill">
+                                                        <div role="button">
+                                                            Kỹ năng
+                                                        </div>
+                                                        <small class="gray">
+                                                            Mô tả kỹ các kỹ năng bạn có giúp người khác hiểu được điểm mạnh của bạn và giúp gia tăng cơ hội kết nối với người khác.
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </details>
+                                        </li>
+                                        <li class="collapsible-item">
+                                            <details class="collapsible-wrapper">
+                                                <summary class="collapsible-button">
+                                                    <strong class="text">Thành tựu</strong>
+                                                </summary>
+                                                <div class="menu-profile mt-2">
+                                                    <div data-toggle="modal" data-target="#project">
+                                                        <div role="button">
+                                                            Dự án
+                                                        </div>
+                                                        <small class="gray">
+                                                            Bạn có thể mô tả rõ hơn trong CV bằng cách chèn thêm hình ảnh hoặc liên kết mô tả dự án
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </details>
+                                        </li>
+                                        <li class="collapsible-item">
+                                            <details class="collapsible-wrapper">
+                                                <summary class="collapsible-button">
+                                                    <strong class="text">Hoạt động xã hội & Tình nguyện</strong>
+                                                </summary>
+                                                <div class="menu-profile mt-2">
+                                                    <div data-toggle="modal" data-target="#activity">
+                                                        <div role="button">
+                                                            Hoạt động xã hội & Tình nguyện
+                                                        </div>
+                                                        <small class="gray">
+                                                            Bạn có thể mô tả rõ hơn trong CV bằng cách chèn thêm nhiều hình ảnh sinh động về hoạt động đã tham gia.
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </details>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         }
                         <a href="#" class="converPDF">Tải xuống PDF</a>
                         <a href="#">Chia sẻ profile</a>
                     </div>
                 </div>
                 <div class="box-follow">
-                    <div class="media  align-items-center">
-                        <div class="border rounded-circle thuml-profile">
-                            <img src="~/Content/images/logo.png" alt="" class="img-fluid" />
+                    @if (Model.ExpInfo != null)
+                    {
+                        <div class="media  align-items-center">
+                            <div class="border rounded-circle thuml-profile">
+                                @if (Model.ExpInfo.Image != null)
+                                {
+                                    <img src="@Path.Combine("/images/exp/", Model.ExpInfo.Image.Split(',')[0])" class="img-fluid" />
+                                }
+                                else
+                                {
+                                    <i class="fal fa-briefcase"></i>
+                                }
+                            </div>
+                            <div class="media-body truncate-1">
+                                @Model.ExpInfo.Company
+                            </div>
                         </div>
-                        <div class="media-body">
-                            Công ty CP Công nghệ Đa nền tản...
+                    }
+                    @if (Model.EduInfo != null)
+                    {
+                        <div class="media  align-items-center">
+                            <div class="border rounded-circle thuml-profile">
+                                <i class="fa-regular fa-school"></i>
+                            </div>
+                            <div class="media-body truncate-1">
+                                @Model.EduInfo.School
+                            </div>
                         </div>
-                    </div>
-                    <div class="media align-items-center">
-                        <div class="border rounded-circle thuml-profile">
-                            <img src="~/Content/images/logo.png" alt="" class="img-fluid" />
-                        </div>
-                        <div class="media-body">
-                            Đại học Kinh doanh công nghệ
-                        </div>
-                    </div>
+                    }
                     <div class="media  align-items-center">
                         <div class="icon-profile">
                             <i class="fa-sharp fa-solid fa-location-dot"></i>
@@ -84,18 +191,18 @@
                             @Model.User.Address
                         </div>
                     </div>
-                    <div class="media  align-items-center">
+                    <div class="media align-items-center">
                         <div class="icon-profile">
                             <i class="fa-sharp fa-solid fa-phone-volume"></i>
                         </div>
-                        <a href="tel:@Model.User.Phone" class="media-body">
+                        <a href="tel:@Model.User.Phone" class="media-body h-auto">
                             @Model.User.Phone
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-        @if (id != "")
+        @if (Model.IsAccount)
         {
             <div class="user-dashboard">
                 <span class="user-dashboard-title mb-3">Thống kê số lượt xem từ Nhà tuyển dụng</span>
@@ -104,7 +211,7 @@
                     <div class="col-lg-4">
                         <div class="box-dashboard">
                             <div class="count-dashboard">
-                                1
+                                @Model.ViewsByWeek
                             </div>
                             <div class="sub-dashboard">
                                 Lượt xem trong tuần
@@ -114,7 +221,7 @@
                     <div class="col-lg-4">
                         <div class="box-dashboard">
                             <div class="count-dashboard">
-                                1
+                                @Model.ViewsByMonth
                             </div>
                             <div class="sub-dashboard">
                                 Lượt xem trong tháng
@@ -124,7 +231,7 @@
                     <div class="col-lg-4">
                         <div class="box-dashboard">
                             <div class="count-dashboard">
-                                1
+                                @Model.ViewsByYear
                             </div>
                             <div class="sub-dashboard">
                                 Lượt xem trong năm
@@ -137,16 +244,16 @@
         <div class="skill-profile mt-3">
             <div class="skill-profile-title mb-3">
                 Học vấn
-                @if (id != "")
+                @if (Model.IsAccount)
                 {
-                    <div class="plus-item add-education"><i class="fal fa-plus"></i></div>
+                    <div class="plus-item add-education" data-toggle="modal" data-target="#education"><i class="fal fa-plus"></i></div>
                 }
             </div>
             @foreach (var item in Model.Educations)
             {
-                <div class="media media-skill education-skill">
+                <div class="media media-skill education-skill" data-edu="@item.Id">
                     <div class="thuml-shill">
-                        <img src="~/Content/images/logo.png" alt="" />
+                        <i class="fa-regular fa-school"></i>
                     </div>
                     <div class="media-body position-relative">
                         <div class="skill-name">
@@ -158,12 +265,15 @@
                         <div class="skill-time">
                             @item.StartDate - @item.EndDate
                         </div>
-                        <div class="edit edit-education">
-                            @if (id != "")
-                            {
-                                <i class="fa-solid fa-pen text-success"></i>
-                            }
+                        <div class="item-description">
+                            @item.Description
                         </div>
+                        @if (Model.IsAccount)
+                        {
+                            <div class="edit edit-education" data-edu="@item.Id" data-action-url="@Url.Action("EditEducation", "User", new { id = item.Id })">
+                                <i class="fa-solid fa-pen text-success"></i>
+                            </div>
+                        }
                     </div>
                 </div>
             }
@@ -171,16 +281,23 @@
         <div class="skill-profile mt-3">
             <div class="skill-profile-title mb-3">
                 Kinh nghiệm
-                @if (id != "")
+                @if (Model.IsAccount)
                 {
-                    <div class="plus-item add-experience"><i class="fal fa-plus"></i></div>
+                    <div class="plus-item add-experience" data-toggle="modal" data-target="#experience"><i class="fal fa-plus"></i></div>
                 }
             </div>
             @foreach (var item in Model.Experiences)
             {
-                <div class="media media-skill education-skill">
+                <div class="media media-skill education-skill align-items-start" data-exp="@item.Id">
                     <div class="thuml-shill">
-                        <img src="~/Content/images/logo.png" alt="" />
+                        @if (item.Image != null)
+                        {
+                            <img src="@Path.Combine("/images/exp/", item.Image.Split(',')[0])" alt="@item.Company" />
+                        }
+                        else
+                        {
+                            <i class="fal fa-briefcase"></i>
+                        }
                     </div>
                     <div class="media-body position-relative">
                         <div class="skill-name">
@@ -192,126 +309,276 @@
                         <div class="skill-time">
                             @item.StartDate - @item.EndDate
                         </div>
-                        <div class="edit edit-education">
-                            <i class="fa-solid fa-pen text-success"></i>
+                        <div class="item-description">
+                            @item.Description
                         </div>
+                        <div class="mt-3 row w-75">
+                            @if (item.Image != null)
+                            {
+                                foreach (var arr in item.Image.Split(','))
+                                {
+                                    <div class="col-lg-4 mb-3">
+                                        <a href="@Path.Combine("/images/exp/", arr)" data-fancybox="gallery" class="card card-ex shadow">
+                                            <img src="@Path.Combine("/images/exp/", arr)">
+                                        </a>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        @if (Model.IsAccount)
+                        {
+                            <div class="edit edit-exp" data-action-url="@Url.Action("UpdateExperience", "User", new { id = item.Id })">
+                                <i class="fa-solid fa-pen text-success"></i>
+                            </div>
+                        }
                     </div>
                 </div>
             }
         </div>
         <div class="skill-profile mt-3">
-            <div class="skill-profile-title">Kỹ năng<div class="plus-item"><i class="fal fa-plus"></i></div></div>
-            @for (var i = 0; i < 2; i++)
+            <div class="skill-profile-title" data-toggle="modal" data-target="#skill">
+                Kỹ năng
+                @if (Model.IsAccount)
+                {
+                    <div class="plus-item add-experience" data-toggle="modal" data-target="#skill"><i class="fal fa-plus"></i></div>
+                }
+            </div>
+            @foreach (var item in Model.UserSkills)
             {
-                <div class="media media-skill" data-index="@i">
+                <div class="media media-skill" data-skill="@item.Id">
                     <div class="thuml-shill">
-                        <img src="~/Content/images/logo.png" alt="" />
+                        <i class="fa-solid fa-chart-simple"></i>
                     </div>
                     <div class="media-body position-relative">
                         <div class="skill-name">
-                            Photoshop
+                            @item.Name
                         </div>
                         <div class="rating-star">
-                            <i class="fa-solid fa-star active"></i>
-                            <i class="fa-solid fa-star active"></i>
-                            <i class="fa-solid fa-star active"></i>
-                            <i class="fa-solid fa-star active"></i>
-                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star @if (item.Star >= 1) { @Html.Raw("active") }"></i>
+                            <i class="fa-solid fa-star @if (item.Star >= 2) { @Html.Raw("active") }"></i>
+                            <i class="fa-solid fa-star @if (item.Star >= 3) { @Html.Raw("active") }"></i>
+                            <i class="fa-solid fa-star @if (item.Star >= 4) { @Html.Raw("active") }"></i>
+                            <i class="fa-solid fa-star @if (item.Star >= 5) { @Html.Raw("active") }"></i>
                         </div>
-                        <div class="edit">
-                            <i class="fa-solid fa-pen text-success"></i>
+                        <div class="item-description">
+                            @item.Description
                         </div>
+                        @if (Model.IsAccount)
+                        {
+                            <div class="edit edit-skill" data-action-url="@Url.Action("UpdateSkill", "User", new { id = item.Id })">
+                                <i class="fa-solid fa-pen text-success"></i>
+                            </div>
+                        }
                     </div>
-                </div>
-                <div class="media-form-experience">
-                    <form class="media-form media-experience" style="display:none;" data-index="@i">
-                        <label for="skill-img-@i" class="skill-img">
-                            <input type="file" name="name" value="" id="skill-img-@i" class="skill-input" />
-                            <i class="fa-duotone fa-camera"></i>
-                            <img src="" alt="" class="preview-image" />
-                        </label>
-                        <div class="media-body">
-                            <input type="text" class="skill-name" name="name" value="Photoshop" placeholder="Tên trường" />
-                            <select class="">
-                                <option value="value">1 sao</option>
-                                <option value="value">2 sao</option>
-                                <option value="value">3 sao</option>
-                                <option value="value">4 sao</option>
-                                <option value="value">5 sao</option>
-                            </select>
-                        </div>
-                        <div class="group mt-3">
-                            <button type="submit" class="btn btn-success">Lưu</button>
-                            <button type="button" class="btn btn-danger cance-edit">Hủy</button>
-                        </div>
-                    </form>
                 </div>
             }
         </div>
         <div class="skill-profile mt-3">
-            <div class="skill-profile-title">Chứng chỉ<div class="plus-item clone-chungchi"><i class="fal fa-plus"></i></div></div>
-            @for (var i = 0; i < 1; i++)
+            <div class="skill-profile-title">
+                Chứng chỉ
+                @if (Model.IsAccount)
+                {
+                    <div class="plus-item add-experience" data-toggle="modal" data-target="#certificate"><i class="fal fa-plus"></i></div>
+                }
+            </div>
+            @foreach (var item in Model.Certificates)
             {
-                <div class="media media-skill" data-index="@i">
+                <div class="media media-skill align-items-start" data-certificates="@item.Id">
                     <div class="thuml-shill">
-                        <img src="~/Content/images/logo.png" alt="" />
+                        <i class="fa-light fa-file-certificate"></i>
                     </div>
                     <div class="media-body position-relative">
                         <div class="skill-name">
-                            Photoshop
+                            @item.Name
                         </div>
                         <div class="skill-sub">
-                           1
+                            @item.Description
                         </div>
                         <div class="skill-time">
-                           2
+                            @item.StartDate - @item.EndDate
                         </div>
-                        <div class="edit">
-                            <i class="fa-solid fa-pen text-success"></i>
+                        <div class="mt-3 row w-75">
+                            @if (item.Image != null)
+                            {
+                                foreach (var arr in item.Image.Split(','))
+                                {
+                                    <div class="col-lg-4 mb-3">
+                                        <a href="@Path.Combine("/images/cer/", arr)" data-fancybox="cer" class="card card-ex shadow">
+                                            <img src="@Path.Combine("/images/cer/", arr)">
+                                        </a>
+                                    </div>
+                                }
+                            }
                         </div>
+                        @if (Model.IsAccount)
+                        {
+                            <div class="edit edit-cer" data-action-url="@Url.Action("EditCertificate", "User", new { id = item.Id })">
+                                <i class="fa-solid fa-pen text-success"></i>
+                            </div>
+                        }
                     </div>
                 </div>
-                <form class="media-form media-experience" id="chungchi" style="display:flex;">
-                    <div class="group mt-3 text-center">
-                        <button type="submit" class="btn btn-success">Lưu</button>
-                        <button type="reset" class="btn btn-danger cance-edit mt-3">Hủy</button>
+            }
+        </div>
+        <div class="skill-profile mt-3">
+            <div class="skill-profile-title">
+                Dự án
+                @if (Model.IsAccount)
+                {
+                    <div class="plus-item add-experience" data-toggle="modal" data-target="#project"><i class="fal fa-plus"></i></div>
+                }
+            </div>
+            @foreach (var item in Model.Projects)
+            {
+                <div class="media media-skill align-items-start" data-project="@item.Id">
+                    <div class="thuml-shill">
+                        @if (item.Image != null)
+                        {
+                            <img src="@Path.Combine("/images/project/", item.Image.Split(',')[0])" alt="@item.Name" />
+                        }
+                        else
+                        {
+                            <i class="fa-light fa-file"></i>
+                        }
                     </div>
-                    <div class="media w-100 input-box">
-                        <label for="skill-img" class="skill-img">
-                            <input type="file" name="name" value="" id="skill-img-@i" class="skill-input" />
-                            <i class="fa-duotone fa-camera"></i>
-                            <img src="" alt="" class="preview-image" />
-                        </label>
-                        <div class="media-body">
-                            <input type="text" class="skill-name" name="name" value="Photoshop" placeholder="Tên chứng chỉ" />
-                            <input type="text" class="" name="name" value="Nội dung bài viết" placeholder="Nội dung" />
-                            <input type="text" class="" name="name" value="12/2019" placeholder="Ngày cấp" />
-                            <input type="text" class="" name="name" value="" placeholder="Đường dẫn(nếu có)" />
+                    <div class="media-body position-relative">
+                        <div class="skill-name">
+                            @item.Name
                         </div>
+                        <div class="skill-time">
+                            @item.StartDate - @item.EndDate
+                        </div>
+                        <div class="skill-sub">
+                            @item.Description
+                        </div>
+                        <div class="mt-3 row w-75">
+                            @if (item.Image != null)
+                            {
+                                foreach (var arr in item.Image.Split(','))
+                                {
+                                    <div class="col-lg-4 mb-3">
+                                        <a href="@Path.Combine("/images/project/", arr)" data-fancybox="cer" class="card card-ex shadow">
+                                            <img src="@Path.Combine("/images/project/", arr)">
+                                        </a>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        @if (Model.IsAccount)
+                        {
+                            <div class="edit edit-cer" data-action-url="@Url.Action("EditProject", "User", new { id = item.Id })">
+                                <i class="fa-solid fa-pen text-success"></i>
+                            </div>
+                        }
                     </div>
-
-                </form>
+                </div>
+            }
+        </div>
+        <div class="skill-profile mt-3">
+            <div class="skill-profile-title">
+                Hoạt động xã hội
+                @if (Model.IsAccount)
+                {
+                    <div class="plus-item add-experience" data-toggle="modal" data-target="#activity"><i class="fal fa-plus"></i></div>
+                }
+            </div>
+            @foreach (var item in Model.Activitys)
+            {
+                <div class="media media-skill align-items-start" data-activity="@item.Id">
+                    <div class="thuml-shill">
+                        @if (item.Image != null)
+                        {
+                            <img src="@Path.Combine("/images/activity/", item.Image.Split(',')[0])" alt="@item.Name" />
+                        }
+                        else
+                        {
+                            <i class="fal fa-hand-holding-heart"></i>
+                        }
+                    </div>
+                    <div class="media-body position-relative">
+                        <div class="skill-name">
+                            @item.Name
+                        </div>
+                        <div class="skill-time">
+                            @item.StartDate - @item.EndDate
+                        </div>
+                        <div class="skill-sub">
+                            @item.Description
+                        </div>
+                        <div class="mt-3 row w-75">
+                            @if (item.Image != null)
+                            {
+                                foreach (var arr in item.Image.Split(','))
+                                {
+                                    <div class="col-lg-4 mb-3">
+                                        <a href="@Path.Combine("/images/activity/", arr)" data-fancybox="cer" class="card card-ex shadow">
+                                            <img src="@Path.Combine("/images/activity/", arr)">
+                                        </a>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        @if (Model.IsAccount)
+                        {
+                            <div class="edit edit-activity" data-action-url="@Url.Action("UpdateActivity", "User", new { id = item.Id })">
+                                <i class="fa-solid fa-pen text-success"></i>
+                            </div>
+                        }
+                    </div>
+                </div>
             }
         </div>
     </div>
 </div>
+@if (Model.IsAccount)
+{
+    @Html.Action("Education", "User")
+    @Html.Action("Experience", "User")
+    @Html.Action("Skill", "User")
+    @Html.Action("Certificate", "User")
+    @Html.Action("Project", "User")
+    @Html.Action("Activity", "User")
+    @Html.Action("InfoUser", "User")
+}
+
+<div id="educationModal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-modal="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- ... Nội dung modal ... -->
+        </div>
+    </div>
+</div>
 @section scripts{
+    <script src="~/Scripts/jquery.fileupload.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
-        ProfileJs()
+        //if ($(".active").is(":checked")) {
+        //    $(".end").hide();
+        //} else {
+        //    $(".end").show();
+        //}
 
+        //$(".active").change(function () {
+        //    if ($(this).is(":checked")) {
+        //        $(".end").hide();
+        //    } else {
+        //        $(".end").show();
+        //    }
+        //});
+        ProfileJs();
+        ProfileAction();
         $(".converPDF").click(function () {
         var element = document.getElementById('element-to-print');
         if (!element) {
             console.error("Không tìm thấy phần tử có id là 'element-to-print'");
             return;
         }
-        var fullName = "@Model.User.FullName";
+        var fullName = "@Model.User.Url";
         var fileName = convertToSlug(fullName);
 
             html2canvas(element).then((canvas) => {
-                let imgWidth = 1600; // Chiều rộng mong muốn của hình ảnh trong tệp PDF
+                let imgWidth = 1400; // Chiều rộng mong muốn của hình ảnh trong tệp PDF
                 let imgHeight = canvas.height * imgWidth / canvas.width; // Tính toán chiều cao tương ứng dựa trên tỉ lệ
 
                 let pdf = new jsPDF('p', 'px', [imgWidth, imgHeight]);
@@ -323,7 +590,6 @@
                 pdf.save(fileName + ".pdf");
             });
         });
-
         function convertToSlug(text) {
             text = text.toLowerCase();
             var from = "àáảãạăắằẳẵặâấầẩẫậèéẻẽẹêếềểễệìíỉĩịòóỏõọôốồổỗộơớờởỡợùúủũụưứừửữựỳýỷỹỵđ";
@@ -334,7 +600,6 @@
             text = text.replace(/\s+/g, '-');
             return text;
         }
-
         function uploadImage(input , type) {
             if (input.files && input.files[0]) {
                 var formData = new FormData();
@@ -376,7 +641,6 @@
                 });
             }
         }
-
         $(".plus-item.clone-chungchi").on("click", function () {
             var newInputBox = $(".input-box").first().clone();
             newInputBox.find("input[type='text']").val("");

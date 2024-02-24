@@ -2,7 +2,7 @@
 @using GlobeWork.Utils
 @{
     var email = ViewContext.RouteData.Values["Email"].ToString();
-    var id = ViewContext.RouteData.Values["Id"].ToString();
+    var id = Convert.ToInt32(ViewContext.RouteData.Values["Id"]);
 }
 <div class="job bg-white detail-job active ">
     <div class="media ">

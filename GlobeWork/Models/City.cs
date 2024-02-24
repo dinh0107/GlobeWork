@@ -21,5 +21,6 @@ namespace GlobeWork.Models
         public int CounId { get; set; }
         public virtual Country Country { get; set; }
         public virtual ICollection<District> Districts { get; set; }
+        public virtual ICollection<JobPost> JobPosts { get; set; }
     }
 }

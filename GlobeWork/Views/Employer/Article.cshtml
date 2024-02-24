@@ -48,7 +48,7 @@
                         <label>
                             Loại <i class="text-danger">*</i>
                         </label>
-                        <select class="v-select" name="JobTypeId">
+                        <select class="v-select" name="StudyAbroadCategoryId">
                             @foreach (var item in Model.StudyAbroadCategories.Where(a => a.ParentId == null))
                             {
                                 <option value="@item.Id">

@@ -1,0 +1,100 @@
+﻿@model GlobeWork.ViewModel.InsertEduViewModel
+@{
+    int currentYear = DateTime.Now.Year;
+    int startYear = 1960;
+}
+<div id="education" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-modal="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong class="modal-title" id="exampleModalScrollableTitle">Học vấn</strong>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form class="modal-body edu-form" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                <div class="form-group">
+                    <label class="font-weight-bold">
+                        Trường *
+                    </label>
+                    @Html.TextBoxFor(a => a.Education.School, new { @placeholder = "Trường học", @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.Education.School)
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold">
+                        Chuyên ngành
+                    </label>
+                    @Html.TextBoxFor(a => a.Education.Majors, new { @placeholder = "Công nghệ phần mềm, Kinh tế, Tự động hóa, ....", @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.Education.Majors)
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold">
+                        Thời gian *
+                    </label>
+                    <div>
+                        <label for="active-ed">
+                            @Html.CheckBoxFor(a => a.Education.Active, new { @class = "active", @id = "active-ed" })
+                            Tôi đang học ở đây
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="startMonth">Bắt đầu</label>
+                            <select class="form-control" name="StarMonth" id="startMonth" required>
+                                <option value="">Chọn tháng</option>
+                                @for (var i = 1; i <= 12; i++)
+                                {
+                                    <option value="@i">Tháng @i</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-lg-3 d-flex align-items-end">
+                            <label for="startYear">&nbsp;</label>
+                            <select class="form-control" name="StarYear" id="startYear" required>
+                                <option value="">Chọn năm</option>
+                                @for (var i = currentYear; i >= startYear; i--)
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-lg-3 end-ed">
+                            <label for="endMonth">Kết thúc</label>
+                            <select class="form-control" name="EndMonth" id="endMonth">
+                                <option value="">Chọn tháng</option>
+                                @for (var i = 1; i <= 12; i++)
+                                {
+                                    <option value="@i">Tháng @i</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-lg-3  end-ed">
+                            <label for="endYear">&nbsp;</label>
+                            <select class="form-control" name="EndYear" id="endYear">
+                                <option value="">Chọn năm</option>
+                                @for (var i = currentYear; i >= startYear; i--)
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold">
+                        Mô tả chi tiết
+                    </label>
+                    @Html.TextAreaFor(a => a.Education.Description, new { @class = "form-control", @placeholder = "Mô tả chi tiết quá trình học của bạn để nhà tuyển dụng có thể hiểu bạn hơn", @rows = "6" })
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

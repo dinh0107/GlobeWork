@@ -1,0 +1,91 @@
+﻿@model GlobeWork.Models.UserSkill
+@{
+    Layout = null;
+}
+<div class="modal-header">
+    <strong class="modal-title" id="exampleModalScrollableTitle">Kỹ năng</strong>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<form class="modal-body update-skill">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(a => a.Id)
+    <div class="form-group">
+        <label class="font-weight-bold">
+            Tên kỹ năng *
+        </label>
+        @Html.TextBoxFor(a => a.Name, new { @placeholder = "Tên kỹ năng", @class = "form-control" })
+        @Html.ValidationMessageFor(a => a.Name)
+    </div>
+    <div class="form-group">
+        <label class="font-weight-bold">
+            Đánh giá
+        </label>
+        <span class="star-rating">
+            <label for="rate-1" style="--i:1"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" @if (Model.Star == 1) { @Html.Raw("checked") } name="rating" id="rate-1" value="1">
+            <label for="rate-2" style="--i:2"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" @if (Model.Star == 2) { @Html.Raw("checked") } name="rating" id="rate-2" value="2">
+            <label for="rate-3" style="--i:3"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" @if (Model.Star == 3) { @Html.Raw("checked") } name="rating" id="rate-3" value="3">
+            <label for="rate-4" style="--i:4"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" @if (Model.Star == 4) { @Html.Raw("checked") } name="rating" id="rate-4" value="4">
+            <label for="rate-5" style="--i:5"><i class="fa-solid fa-star"></i></label>
+            <input type="radio" @if (Model.Star == 5) { @Html.Raw("checked") } name="rating" id="rate-5" value="5">
+        </span>
+    </div>
+    <div class="form-group">
+        <label class="font-weight-bold">
+            Mô tả chi tiết
+        </label>
+        @Html.TextAreaFor(a => a.Description, new { @class = "form-control", @placeholder = "Mô tả chi tiết quá trình học của bạn để nhà tuyển dụng có thể hiểu bạn hơn" })
+    </div>
+    <div class="d-flex justify-content-center">
+        <button type="button" class="btn btn-danger mr-3" onclick="DeleteSkill(@Model.Id)">Xóa</button>
+        <button type="submit" class="btn btn-success">Cập nhật</button>
+    </div>
+</form>
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    
+    function DeleteSkill(id) {
+        $.post("/User/RemoveSkill", { id: id }, function (data) {
+            if (data.success) {
+                new Notify({
+                    status: 'success',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+                $(".close").click()
+                $("div[data-skill='" + id + "']").fadeOut();
+
+            } else {
+                new Notify({
+                    status: 'error',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            }
+        })
+    }
+</script>

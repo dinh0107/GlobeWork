@@ -218,18 +218,28 @@ namespace GlobeWork.ViewModel
     {
         public UserViewLog UserViewLog { get; set; }
         public User User { get; set; }
+        public bool IsAccount { get; set; }
         public IEnumerable<Education> Educations { get; set; }
+        public Education EduInfo { get; set; }
         public IEnumerable<Experiences> Experiences { get; set; }
+        public Experiences ExpInfo { get; set; }
+        public IEnumerable<UserSkill> UserSkills { get; set; }
+        public IEnumerable<Certificate> Certificates { get; set; }
+        public IEnumerable<Project> Projects { get; set; }
+        public IEnumerable<Activity> Activitys { get; set; }
+        public int ViewsByWeek { get; set; }
+        public int ViewsByMonth { get; set; }
+        public int ViewsByYear { get; set; }
     }
     public class ChangeInfoUserViewModel
     {
         //public User User { get; set; }
         //public EducationViewModel Education { get; set; }
         //public ExperiencesViewModel Experience { get; set; }
-        public IEnumerable<Education> ListEducations { get; set; }
-        public IEnumerable<Experiences> ListExperiences { get; set; }
-        public List<EducationViewModel> Educations { get; set; }
-        public List<ExperiencesViewModel> Experiences { get; set; }
+        //public IEnumerable<Education> ListEducations { get; set; }
+        //public IEnumerable<Experiences> ListExperiences { get; set; }
+        //public List<EducationViewModel> Educations { get; set; }
+        //public List<ExperiencesViewModel> Experiences { get; set; }
 
         //user
         [Display(Name = "Họ và tên"), Required(ErrorMessage = "Họ và tên không được để trống")]
@@ -285,5 +295,45 @@ namespace GlobeWork.ViewModel
         public IPagedList<ApplyJob> ApplyJobs { get; set; }
         public User User { get; set; }
         public int? Status { get; set; }
+    }
+    public class InsertEduViewModel
+    {
+        public Education Education { get; set; }
+        public int StarMonth { get; set; }
+        public int StarYear { get; set; }
+        public int? EndMonth { get; set; }
+        public int? EndYear { get; set; }
+    }
+    public class InsertExperienceViewModel
+    {
+        public Experiences  Experiences { get; set; }
+        public int StarMonth { get; set; }
+        public int StarYear { get; set; }
+        public int? EndMonth { get; set; }
+        public int? EndYear { get; set; }
+    }
+    public class InsertCertificateViewModel
+    {
+        public Certificate Certificate { get; set; }
+        public int StarMonth { get; set; }
+        public int StarYear { get; set; }
+        public int? EndMonth { get; set; }
+        public int? EndYear { get; set; }
+    }
+    public class InsertProjectViewModel
+    {
+        public Project Project { get; set; }
+        public int StarMonth { get; set; }
+        public int StarYear { get; set; }
+        public int EndMonth { get; set; }
+        public int EndYear { get; set; }
+    }
+    public class InsertActivityViewModel
+    {
+        public Activity Activity { get; set; }
+        public int StarMonth { get; set; }
+        public int StarYear { get; set; }
+        public int? EndMonth { get; set; }
+        public int? EndYear { get; set; }
     }
 }

@@ -1,0 +1,109 @@
+﻿@model GlobeWork.ViewModel.InsertExperienceViewModel
+@{
+    //Layout = null;
+    int currentYear = DateTime.Now.Year;
+    int startYear = 1960;
+}
+<div id="experience" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-modal="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <strong class="modal-title" id="exampleModalScrollableTitle">Kinh nghiệm</strong>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form class="modal-body exp-form" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                <div class="form-group">
+                    <label class="font-weight-bold">
+                        Công ty *
+                    </label>
+                    @Html.TextBoxFor(a => a.Experiences.Company, new { @class = "form-control", @placeholder = "Công ty" })
+                    @Html.ValidationMessageFor(a => a.Experiences.Company)
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold">
+                        Chức vụ *
+                    </label>
+                    @Html.TextBoxFor(a => a.Experiences.Position, new { @class = "form-control", @placeholder = "VD: Nhân viên văn phòng" })
+                    @Html.ValidationMessageFor(a => a.Experiences.Position)
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold">
+                        Thời gian *
+                    </label>
+                    <label for="active-ex">
+                        @Html.CheckBoxFor(a => a.Experiences.Active, new { @class = "active", @id = "active-ex" })
+                        Tôi đang làm việc ở đây
+                    </label>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="startMonth">Bắt đầu</label>
+                            <select class="form-control" name="StarMonth" id="startMonth" required>
+                                <option value="">Chọn tháng</option>
+                                @for (var i = 1; i <= 12; i++)
+                                {
+                                    <option value="@i">Tháng @i</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-lg-3 d-flex align-items-end">
+                            <label for="startYear">&nbsp;</label>
+                            <select class="form-control" name="StarYear" id="startYear" required>
+                                <option value="">Chọn năm</option>
+                                @for (var i = currentYear; i >= startYear; i--)
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-lg-3 end-ex">
+                            <label for="endMonth">Kết thúc</label>
+                            <select class="form-control" name="EndMonth" id="endMonth">
+                                <option value="">Chọn tháng</option>
+                                @for (var i = 1; i <= 12; i++)
+                                {
+                                    <option value="@i">Tháng @i</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-lg-3  end-ex">
+                            <label for="endYear">&nbsp;</label>
+                            <select class="form-control" name="EndYear" id="endYear" >
+                                <option value="">Chọn năm</option>
+                                @for (var i = currentYear; i >= startYear; i--)
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="font-weight-bold">
+                        Mô tả chi tiết
+                    </label>
+                    @Html.TextAreaFor(a => a.Experiences.Description, new { @class = "form-control", @placeholder = "Mô tả chi tiết quá trình học của bạn để nhà tuyển dụng có thể hiểu bạn hơn", @rows = "5" })
+                </div>
+                <div class="form-group">
+                    <i>Thêm liên kết hoặc tải lên hình ảnh về kinh nghiệm của bạn</i>
+                    <div class="d-flex mt-3">
+                        <label class="custom-button" for="expUp">
+                            <i class="fa-regular fa-image mr-2"></i> Tải ảnh
+                            <input type="file" id="expUp" name="files[]" accept="image/*" multiple="" class="d-none" />
+                        </label>
+                    </div>
+                    <div class="mt-3 row" id="expImg">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

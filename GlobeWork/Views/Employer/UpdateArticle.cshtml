@@ -49,15 +49,15 @@
                         <label>
                             Loại <i class="text-danger">*</i>
                         </label>
-                        <select class="v-select" name="JobTypeId">
+                        <select class="v-select" name="StudyAbroadCategoryId">
                             @foreach (var item in Model.StudyAbroadCategories.Where(a => a.ParentId == null))
                             {
-                                <option value="@item.Id">
-                                    @item.CategoryName
+                                <option @if (item.Id == Model.Article.StudyAbroadCategoryId) { @Html.Raw("selected") } value="@item.Id">
+                            @item.CategoryName
                                 </option>
                                 foreach (var child in Model.StudyAbroadCategories.Where(a => a.ParentId == item.Id))
                                 {
-                                    <option value="@child.Id">
+                                    <option @if (child.Id == Model.Article.StudyAbroadCategoryId) { @Html.Raw("selected") } value="@child.Id">
                                         -- @child.CategoryName
                                     </option>
                                 }

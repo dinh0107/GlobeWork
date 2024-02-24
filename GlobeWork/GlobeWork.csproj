@@ -175,28 +175,25 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202402201452290_ad.cs" />
-    <Compile Include="Migrations\202402201452290_ad.Designer.cs">
-      <DependentUpon>202402201452290_ad.cs</DependentUpon>
+    <Compile Include="Migrations\202402230757393_ad.cs" />
+    <Compile Include="Migrations\202402230757393_ad.Designer.cs">
+      <DependentUpon>202402230757393_ad.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202402201503104_ad1.cs" />
-    <Compile Include="Migrations\202402201503104_ad1.Designer.cs">
-      <DependentUpon>202402201503104_ad1.cs</DependentUpon>
+    <Compile Include="Migrations\202402230812427_ad1.cs" />
+    <Compile Include="Migrations\202402230812427_ad1.Designer.cs">
+      <DependentUpon>202402230812427_ad1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202402210232349_ad2.cs" />
-    <Compile Include="Migrations\202402210232349_ad2.Designer.cs">
-      <DependentUpon>202402210232349_ad2.cs</DependentUpon>
+    <Compile Include="Migrations\202402231532567_ad2.cs" />
+    <Compile Include="Migrations\202402231532567_ad2.Designer.cs">
+      <DependentUpon>202402231532567_ad2.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202402210345375_ad3.cs" />
-    <Compile Include="Migrations\202402210345375_ad3.Designer.cs">
-      <DependentUpon>202402210345375_ad3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202402210745061_ad4.cs" />
-    <Compile Include="Migrations\202402210745061_ad4.Designer.cs">
-      <DependentUpon>202402210745061_ad4.cs</DependentUpon>
+    <Compile Include="Migrations\202402241310176_da.cs" />
+    <Compile Include="Migrations\202402241310176_da.Designer.cs">
+      <DependentUpon>202402241310176_da.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
+    <Compile Include="Models\Advise.cs" />
     <Compile Include="Models\ApplyJob.cs" />
     <Compile Include="Models\Article.cs" />
     <Compile Include="Models\Banner.cs" />
@@ -205,6 +202,7 @@
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\ConfigSite.cs" />
+    <Compile Include="Models\Contact.cs" />
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\District.cs" />
     <Compile Include="Models\Employer.cs" />
@@ -276,6 +274,14 @@
     <Content Include="Content\images\cty.png" />
     <Content Include="Content\images\duhoc.jpg" />
     <Content Include="Content\images\facebook.png" />
+    <Content Include="Content\images\icon\profile-certificate.png" />
+    <Content Include="Content\images\icon\profile-course.png" />
+    <Content Include="Content\images\icon\profile-education.png" />
+    <Content Include="Content\images\icon\profile-experience.png" />
+    <Content Include="Content\images\icon\profile-prize.png" />
+    <Content Include="Content\images\icon\profile-project.png" />
+    <Content Include="Content\images\icon\profile-skills.png" />
+    <Content Include="Content\images\icon\profile-volunteer.png" />
     <Content Include="Content\images\linkedin.png" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\MB-MBTCV00000093870-qr_only.png" />
@@ -357,6 +363,7 @@
     <Content Include="Content\virtual-select.min.css" />
     <Content Include="EmailTemplates\Apply.html" />
     <Content Include="EmailTemplates\ForgotPassword.html" />
+    <Content Include="EmailTemplates\UserApply.html" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -1270,6 +1277,7 @@
     <Content Include="Scripts\jquery.daterangepicker.js" />
     <Content Include="Scripts\jquery.datetimepicker.full.min.js" />
     <Content Include="Scripts\jquery.fancybox.js" />
+    <Content Include="Scripts\jquery.fileupload.js" />
     <Content Include="Scripts\jquery.maskMoney.min.js" />
     <Content Include="Scripts\jquery.nice-number.js" />
     <Content Include="Scripts\jquery.toast.js" />
@@ -1557,6 +1565,23 @@
     <Content Include="Views\Employer\Naptien.cshtml" />
     <Content Include="Views\User\GetApply.cshtml" />
     <Content Include="Views\Home\SearchCompany.cshtml" />
+    <Content Include="Views\Home\AdviseForm.cshtml" />
+    <Content Include="Views\User\Education.cshtml" />
+    <Content Include="Views\User\Experience.cshtml" />
+    <Content Include="Views\User\Skill.cshtml" />
+    <Content Include="Views\User\Certificate.cshtml" />
+    <Content Include="Views\User\Project.cshtml" />
+    <Content Include="Views\User\Activity.cshtml" />
+    <Content Include="Views\User\EditEducation.cshtml" />
+    <Content Include="Views\User\UpdateExperience.cshtml" />
+    <Content Include="Views\User\UpdateSkill.cshtml" />
+    <Content Include="Views\User\EditCertificate.cshtml" />
+    <Content Include="Views\User\EditProject.cshtml" />
+    <Content Include="Views\User\UpdateActivity.cshtml" />
+    <Content Include="Views\Home\ArticleDetail.cshtml" />
+    <Content Include="Views\Home\AllStudyAbroad.cshtml" />
+    <Content Include="Views\Home\StudyAbroadHot.cshtml" />
+    <Content Include="Views\Home\StudyAbroadCom.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1573,20 +1598,17 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202402201452290_ad.resx">
-      <DependentUpon>202402201452290_ad.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202402230757393_ad.resx">
+      <DependentUpon>202402230757393_ad.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202402201503104_ad1.resx">
-      <DependentUpon>202402201503104_ad1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202402230812427_ad1.resx">
+      <DependentUpon>202402230812427_ad1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202402210232349_ad2.resx">
-      <DependentUpon>202402210232349_ad2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202402231532567_ad2.resx">
+      <DependentUpon>202402231532567_ad2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202402210345375_ad3.resx">
-      <DependentUpon>202402210345375_ad3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202402210745061_ad4.resx">
-      <DependentUpon>202402210745061_ad4.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202402241310176_da.resx">
+      <DependentUpon>202402241310176_da.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

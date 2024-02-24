@@ -1,4 +1,5 @@
-﻿AOS.init();
+﻿
+AOS.init();
 
 function HomeJs() {
 
@@ -266,6 +267,7 @@ function Details() {
 
     $(".apply-form").submit(function (e) {
         e.preventDefault(); 
+        var buttonElement = $(".button1");
         var formData = new FormData($(this)[0]); 
         $.ajax({
             url: "/Home/Apply", 
@@ -277,7 +279,7 @@ function Details() {
                 if (response.success) {
                     new Notify({
                         status: 'success',
-                        text: data.message,
+                        text: response.message,
                         effect: 'slide',
                         speed: 600,
                         showIcon: true,
@@ -290,10 +292,12 @@ function Details() {
                         position: 'right bottom'
                     });
                     $(".close").click();
+                    buttonElement.attr("data-target", "");
+                    buttonElement.text("Đã ứng tuyển");
                 } else {
                     new Notify({
                         status: 'error',
-                        text: data.message,
+                        text: response.message,
                         effect: 'slide',
                         speed: 600,
                         showIcon: true,
@@ -415,12 +419,12 @@ function StudyDetai() {
     });
 
     //Like Job
-    $(document).on("click", ".like", function () {
+    $(document).on("click", ".likestudy", function () {
         var button = $(this);
         var jobId = button.data("study");
         handleLikeStudy(button, jobId, true);
     });
-    $(document).on("click", ".unlike", function () {
+    $(document).on("click", ".unlikestudy", function () {
         var button = $(this);
         var jobId = button.data("study");
         handleLikeStudy(button, jobId, false);
@@ -630,6 +634,527 @@ function ProfileJs() {
             smallBtn: false
         });
     });
+
+    var i = 1;
+    $("#expUp").fileupload({
+        add: function (e, data) {
+            var uploadErrors = [];
+            var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+            if (data.originalFiles[0]["type"].length && !acceptFileTypes.test(data.originalFiles[0]["type"])) {
+                uploadErrors.push("Chỉ chấp nhận định dạng jpeg, jpg, png, gif");
+            }
+            if (data.originalFiles[0]["size"] > 4000000) {
+                uploadErrors.push("Dung lượng ảnh lớn hơn 4MB");
+            }
+            var totalImg = $("#expImg .col-lg-4").length;
+            console.log(totalImg)
+            if (totalImg >= 10) {
+                uploadErrors.push("Chỉ đăng tối đa 10 ảnh");
+            }
+            if (uploadErrors.length > 0) {
+                alert(uploadErrors.join("\n"));
+                return false;
+            } else {
+                data.submit();
+            }
+            return true;
+        },
+        url: "/Uploader/Upload?folder=exp&r=" + Math.random(),
+        dataType: "json",
+        done: function (e, data) {
+            console.log(data.result.files)
+            $.each(data.result.files, function (index, file) {
+                $('#expImg').append('<div class="col-lg-4 mb-3"><div class="card card-ex"><input type="hidden" name="Pictures" value="' + file.name + '" /><img src="/images/exp/' + file.name + '" /><div class="remove removexp" onclick="removeFile(' + i + ')"><i class="fa-solid fa-trash" ></i></div></div></div>');
+            });
+            i = i + 1;
+            $("#progress").fadeOut(2000);
+        },
+        start: function () {
+            $("#progress .progress-bar").css("width", "0");
+            $("#progress").show();
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $("#progress .progress-bar").css("width", progress + "%");
+        }
+    }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+    $(document).on('click', '.removexp', function () {
+        const imageCard = $(this).closest('.col-lg-4');
+        const index = imageCard.index();
+        imageCard.remove();
+        const inputFiles = $('#expImg')[0].files;
+        const newFiles = Array.from(inputFiles).filter((_, i) => i !== index);
+        $('#expImg').prop('files', newFiles);
+    });
+
+
+     //Chứng chỉ
+
+    var l = 1;
+    $("#fileuploadCer").fileupload({
+        add: function (e, data) {
+            var uploadErrors = [];
+            var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+            if (data.originalFiles[0]["type"].length && !acceptFileTypes.test(data.originalFiles[0]["type"])) {
+                uploadErrors.push("Chỉ chấp nhận định dạng jpeg, jpg, png, gif");
+            }
+            if (data.originalFiles[0]["size"] > 4000000) {
+                uploadErrors.push("Dung lượng ảnh lớn hơn 4MB");
+            }
+            var totalImg = $("#cerImages .col-lg-4").length;
+            console.log(totalImg)
+            if (totalImg >= 10) {
+                uploadErrors.push("Chỉ đăng tối đa 10 ảnh");
+            }
+            if (uploadErrors.length > 0) {
+                alert(uploadErrors.join("\n"));
+                return false;
+            } else {
+                data.submit();
+            }
+            return true;
+        },
+        url: "/Uploader/Upload?folder=cer&r=" + Math.random(),
+        dataType: "json",
+        done: function (e, data) {
+            console.log(data.result.files)
+            $.each(data.result.files, function (index, file) {
+                $('#cerImages').append('<div class="col-lg-4 mb-3"><div class="card card-ex"><input type="hidden" name="Pictures" value="' + file.name + '" /><img src="/images/cer/' + file.name + '" /><div class="remove removcer" onclick="removeFile(' + i + ')"><i class="fa-solid fa-trash" ></i></div></div></div>');
+            });
+            l = l + 1;
+            $("#progress").fadeOut(2000);
+        },
+        start: function () {
+            $("#progress .progress-bar").css("width", "0");
+            $("#progress").show();
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $("#progress .progress-bar").css("width", progress + "%");
+        }
+    }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+    $(document).on('click', '.removcer', function () {
+        const imageCard = $(this).closest('.col-lg-4');
+        const index = imageCard.index();
+        imageCard.remove();
+        const inputFiles = $('#fileuploadCer')[0].files;
+        const newFiles = Array.from(inputFiles).filter((_, l) => l !== index);
+        $('#fileuploadCer').prop('files', newFiles);
+    });
+
+    // Dự án
+    var a = 1;
+    $("#projectImg").fileupload({
+        add: function (e, data) {
+            var uploadErrors = [];
+            var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+            if (data.originalFiles[0]["type"].length && !acceptFileTypes.test(data.originalFiles[0]["type"])) {
+                uploadErrors.push("Chỉ chấp nhận định dạng jpeg, jpg, png, gif");
+            }
+            if (data.originalFiles[0]["size"] > 4000000) {
+                uploadErrors.push("Dung lượng ảnh lớn hơn 4MB");
+            }
+            var totalImg = $("#project-img .col-lg-4").length;
+            console.log(totalImg)
+            if (totalImg >= 10) {
+                uploadErrors.push("Chỉ đăng tối đa 10 ảnh");
+            }
+            if (uploadErrors.length > 0) {
+                alert(uploadErrors.join("\n"));
+                return false;
+            } else {
+                data.submit();
+            }
+            return true;
+        },
+        url: "/Uploader/Upload?folder=project&r=" + Math.random(),
+        dataType: "json",
+        done: function (e, data) {
+            console.log(data.result.files)
+            $.each(data.result.files, function (index, file) {
+                $('#project-img').append('<div class="col-lg-4 mb-3"><div class="card card-ex"><input type="hidden" name="Pictures" value="' + file.name + '" /><img src="/images/project/' + file.name + '" /><div class="remove removProject" onclick="removeFile(' + i + ')"><i class="fa-solid fa-trash" ></i></div></div></div>');
+            });
+            a = a + 1;
+           
+        },
+    }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+    $(document).on('click', '.removProject', function () {
+        const imageCard = $(this).closest('.col-lg-4');
+        const index = imageCard.index();
+        imageCard.remove();
+        const inputFiles = $('#projectImg')[0].files;
+        const newFiles = Array.from(inputFiles).filter((_, a) => a !== index);
+        $('#projectImg').prop('files', newFiles);
+    });
+    // Hoạt động
+    var ac = 1;
+    $("#activity-file").fileupload({
+        add: function (e, data) {
+            var uploadErrors = [];
+            var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+            if (data.originalFiles[0]["type"].length && !acceptFileTypes.test(data.originalFiles[0]["type"])) {
+                uploadErrors.push("Chỉ chấp nhận định dạng jpeg, jpg, png, gif");
+            }
+            if (data.originalFiles[0]["size"] > 4000000) {
+                uploadErrors.push("Dung lượng ảnh lớn hơn 4MB");
+            }
+            var totalImg = $("#project-img .col-lg-4").length;
+            console.log(totalImg)
+            if (totalImg >= 10) {
+                uploadErrors.push("Chỉ đăng tối đa 10 ảnh");
+            }
+            if (uploadErrors.length > 0) {
+                alert(uploadErrors.join("\n"));
+                return false;
+            } else {
+                data.submit();
+            }
+            return true;
+        },
+        url: "/Uploader/Upload?folder=activity&r=" + Math.random(),
+        dataType: "json",
+        done: function (e, data) {
+            console.log(data.result.files)
+            $.each(data.result.files, function (index, file) {
+                $('#activity-img').append('<div class="col-lg-4 mb-3"><div class="card card-ex"><input type="hidden" name="Pictures" value="' + file.name + '" /><img src="/images/activity/' + file.name + '" /><div class="remove removacti" onclick="removeFile(' + i + ')"><i class="fa-solid fa-trash" ></i></div></div></div>');
+            });
+            ac = ac + 1;
+
+        },
+    }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+    $(document).on('click', '.removacti', function () {
+        const imageCard = $(this).closest('.col-lg-4');
+        const index = imageCard.index();
+        imageCard.remove();
+        const inputFiles = $('#activity-file')[0].files;
+        const newFiles = Array.from(inputFiles).filter((_, ac) => ac !== index);
+        $('#activity-file').prop('files', newFiles);
+    });
+}
+function ProfileAction() {
+    $("#active-ed").change(function () {
+        if ($(this).is(":checked")) {
+            $(".end-ed").hide();
+        } else {
+            $(".end-ed").show();
+        }
+    });
+    $("#active-ex").change(function () {
+        if ($(this).is(":checked")) {
+            $(".end-ex").hide();
+        } else {
+            $(".end-ex").show();
+        }
+    });
+    $("#active-ce").change(function () {
+        if ($(this).is(":checked")) {
+            $(".end-ce").hide();
+        } else {
+            $(".end-ce").show();
+        }
+    });
+
+    $("#active-ac").change(function () {
+        if ($(this).is(":checked")) {
+            $(".end-ac").hide();
+        } else {
+            $(".end-ac").show();
+        }
+    });
+
+    $(".edu-form").submit(function (e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.post("/User/Education", formData, function (data) {
+            if (data.success) {
+                new Notify({
+                    status: 'success',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+                $(".close").click();
+                setTimeout(function () {
+                    location.reload();
+                }, 1500);
+            } else {
+                new Notify({
+                    status: 'error',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            }
+        })
+    })
+
+    $(".edit-education").click(function () {
+        var actionUrl = $(this).data("action-url");
+        $.get(actionUrl, function (data) {
+            $("#educationModal .modal-content").html(data);
+            $("#educationModal").modal("show");
+        });
+    });
+    $(".edit-activity").click(function () {
+        var actionUrl = $(this).data("action-url");
+        $.get(actionUrl, function (data) {
+            $("#educationModal .modal-content").html(data);
+            $("#educationModal").modal("show");
+        });
+    });
+
+    $(".edit-exp").click(function () {
+        var actionUrl = $(this).data("action-url");
+        $.get(actionUrl, function (data) {
+            $("#educationModal .modal-content").html(data);
+            $("#educationModal").modal("show");
+        });
+    });
+
+    $(".edit-cer").click(function () {
+        var actionUrl = $(this).data("action-url");
+        $.get(actionUrl, function (data) {
+            $("#educationModal .modal-content").html(data);
+            $("#educationModal").modal("show");
+        });
+    });
+
+
+    $(".exp-form").submit(function (e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.post("/User/Experience", formData, function (data) {
+            if (data.success) {
+                new Notify({
+                    status: 'success',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+                $("#experience").click()
+                setTimeout(function () {
+                    location.reload();
+                }, 1500);
+            } else {
+                new Notify({
+                    status: 'error',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            }
+        })
+    })
+
+    $(".skill-form").submit(function (e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.post("/User/Skill", formData, function (data) {
+            if (data.success) {
+                new Notify({
+                    status: 'success',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+                $(".close").click();
+                setTimeout(function () {
+                    location.reload();
+                }, 1500);
+            } else {
+                new Notify({
+                    status: 'error',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            }
+        })
+    })
+
+    $(".edit-skill").click(function () {
+        var actionUrl = $(this).data("action-url");
+        $.get(actionUrl, function (data) {
+            $("#educationModal .modal-content").html(data);
+            $("#educationModal").modal("show");
+        });
+    });
+
+    $(".certificate-form").submit(function (e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.post("/User/Certificate", formData, function (data) {
+            if (data.success) {
+                new Notify({
+                    status: 'success',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+                $(".close").click()
+                setTimeout(function () {
+                    location.reload();
+                }, 1500);
+            } else {
+                new Notify({
+                    status: 'error',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            }
+        })
+    })
+
+    $(".project-form").submit(function (e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.post("/User/Project", formData, function (data) {
+            if (data.success) {
+                new Notify({
+                    status: 'success',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+                $(".close").click()
+                setTimeout(function () {
+                    location.reload();
+                }, 1500);
+            } else {
+                new Notify({
+                    status: 'error',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            }
+        })
+    })
+
+    $(".activity-form").submit(function (e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.post("/User/Activity", formData, function (data) {
+            if (data.success) {
+                new Notify({
+                    status: 'success',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+                $(".close").click()
+                setTimeout(function () {
+                    location.reload();
+                }, 1500);
+            } else {
+                new Notify({
+                    status: 'error',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            }
+        })
+    })
+
+
 }
 $(".back-top").click(function () {
     $("html, body").animate({ scrollTop: 0 }, 0);
@@ -793,3 +1318,11 @@ function Sort(action) {
         });
     });
 }
+function ShowLinkInput() {
+    $(".input-link").slideToggle();
+}
+
+
+$(".add-item").click(function () {
+    $(".close-info").click()
+})

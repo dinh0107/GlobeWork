@@ -52,7 +52,7 @@ namespace GlobeWork.Filters
             if (cookie == null)
             {
                 filterContext.RouteData.Values["Avatar"] = "";
-                filterContext.RouteData.Values["Id"] = "";
+                filterContext.RouteData.Values["Id"] = null;
                 filterContext.RouteData.Values["Email"] = "";
                 filterContext.RouteData.Values["FullName"] = "";
                 filterContext.RouteData.Values["Url"] = "";

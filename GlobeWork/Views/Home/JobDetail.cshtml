@@ -7,7 +7,7 @@
     {
         ViewBag.ImageShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/company/", Model.Job.Company.Avatar);
     }
-    var id = ViewContext.RouteData.Values["Id"].ToString();
+    var id = Convert.ToInt32(ViewContext.RouteData.Values["Id"]);
     var email = ViewContext.RouteData.Values["Email"].ToString();
 }
 <div class="bg-light py-4">
@@ -157,10 +157,10 @@
                         }
                         else
                         {
-                    <a href="@Url.Action("Login", "User")" class="button1">Nộp hồ sơ</a>
+                            <a href="@Url.Action("Login", "User")" class="button1">Nộp hồ sơ</a>
                         }
 
-                        <div class="button2">Cần tư vấn</div>
+                        <div class="button2" data-toggle="modal" data-target="#Advise">Cần tư vấn</div>
                         @if (email == "")
                         {
                             <a href="@Url.Action("Login","User" , new {returnUrl = Url.Action("JobDetail", new { url = Model.Job.Url })})" class="button3"><i class="fa-regular fa-heart mr-2"></i> Lưu tin </a>
@@ -169,12 +169,12 @@
                         {
                             if (Model.Likes.Any())
                             {
-                                <a href="javascript:;" class="button3 unlike active" data-job="@Model.Job.Id"><i class="fa-solid fa-heart mr-2 heart-detail"></i> Bỏ lưu </a>
+                                <div class="button3 unlike active" data-job="@Model.Job.Id"><i class="fa-solid fa-heart mr-2 heart-detail"></i> Bỏ lưu </div>
 
                             }
                             else
                             {
-                                <a href="javascript:;" class="button3 like" data-job="@Model.Job.Id"><i class="fa-regular fa-heart mr-2 heart-detail"></i> Lưu tin </a>
+                                <div class="button3 like" data-job="@Model.Job.Id"><i class="fa-regular fa-heart mr-2 heart-detail"></i> Lưu tin </div>
                             }
                         }
                     </div>
@@ -202,57 +202,6 @@
                             </div>
                         }
                     </div>
-                    @*<div class="detail-title-box">
-                           Thông tin chung
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-lg-3">
-                                <div class="media section-info">
-                                    <div class="section-info__icon">
-                                        <i class="fa-solid fa-ranking-star"></i>
-                                    </div>
-                                    <div class="media-body">
-                                        <span class="job-detail__info--section-content-title">Cấp bậc</span>
-                                        <span class="job-detail__info--section-content-value">@Model.Job.Rank.Name</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="media section-info">
-                                    <div class="section-info__icon">
-                                        <i class="fa-solid fa-hourglass-start"></i>
-                                    </div>
-                                    <div class="media-body">
-                                        <span class="job-detail__info--section-content-title">Hình thức làm việc</span>
-                                        <span class="job-detail__info--section-content-value">
-                                            @Model.Job.JobType.Name
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="media section-info">
-                                    <div class="section-info__icon">
-                                        <i class="fa-solid fa-users"></i>
-                                    </div>
-                                    <div class="media-body">
-                                        <span class="job-detail__info--section-content-title">Số lượng tuyển</span>
-                                        <span class="job-detail__info--section-content-value">@Model.Job.Quantity người</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="media section-info">
-                                    <div class="section-info__icon">
-                                        <i class="fa-solid fa-user"></i>
-                                    </div>
-                                    <div class="media-body">
-                                        <span class="job-detail__info--section-content-title">Giới tính</span>
-                                        <span class="job-detail__info--section-content-value">@Model.Job.Gender</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>*@
                 </div>
                 <div class="job-detail__box--left my-3">
                     <div class="job-detail__information-detail--title">
@@ -451,7 +400,7 @@
                                 }
                             </div>
                         }
-                        <a href="@Url.Action("JobCompany", new {url = Model.Job.Company.Url})" class="view-more-job">Xem thêm công việc<i class="fal fa-long-arrow-right ml-2"></i></a>
+                        <a href="@Url.Action("Recruitment", new {url = Model.Job.Company.Url})" class="view-more-job">Xem thêm công việc<i class="fal fa-long-arrow-right ml-2"></i></a>
                     </div>
                 }
 
@@ -563,6 +512,7 @@
         </div>
     </div>
 </div>
+@* Apply form *@
 <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -572,7 +522,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            @using (Html.BeginForm("Apply", "Home", FormMethod.Post , new { enctype = "multipart/form-data" , @class="apply-form" }))
+            @using (Html.BeginForm("Apply", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "apply-form" }))
             {
                 <input type="hidden" name="JobId" value="@Model.Job.Id" />
                 <input type="hidden" name="CompanyId" value="@Model.Job.CompanyId" />
@@ -580,6 +530,34 @@
                 @Html.ValidationSummary(true)
                 <div class="modal-body">
                     @Html.Action("ApplyForm")
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Gửi thông tin</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@* Advise form *@
+<div class="modal fade bd-example-modal-lg" id="Advise" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="job-detail__name" id="exampleModalLongTitle">Tử vấn: <span class="text-success">@Model.Job.Name</span></div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("Advise", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "apply-form" }))
+            {
+                <input type="hidden" name="JobId" value="@Model.Job.Id" />
+                <input type="hidden" name="CompanyId" value="@Model.Job.CompanyId" />
+                @Html.AntiForgeryToken();
+                @Html.ValidationSummary(true)
+                <div class="modal-body">
+                    @Html.Action("AdviseForm")
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
@@ -603,8 +581,5 @@
                 $('.drop_box').removeClass('active');
             }
         });
-        $(".apply-form").submit(function () {
-
-        })
     </script>
 } 

@@ -7,7 +7,7 @@
     {
         ViewBag.ImageShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/company/", Model.StudyAbroad.Company.Avatar);
     }
-    var id = ViewContext.RouteData.Values["Id"].ToString();
+    var id = Convert.ToInt32(ViewContext.RouteData.Values["Id"]);
     var email = ViewContext.RouteData.Values["Email"].ToString();
 }
 <div class="bg-light py-4">
@@ -318,7 +318,7 @@
                                 }
                             </div>
                         }
-                        <a href="@Url.Action("JobCompany", new {url = Model.StudyAbroad .Company.Url})" class="view-more-job">Xem thêm công việc<i class="fal fa-long-arrow-right ml-2"></i></a>
+                        <a href="@Url.Action("StudyAbroadCom", new {url = Model.StudyAbroad .Company.Url})" class="view-more-job">Xem thêm công việc<i class="fal fa-long-arrow-right ml-2"></i></a>
                     </div>
                 }
 
@@ -421,7 +421,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            @using (Html.BeginForm("Apply", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("Apply", "Home", FormMethod.Post, new { enctype = "multipart/form-data" , @class = "apply-form" }))
             {
                 <input type="hidden" name="StudyAbroadId" value="@Model.StudyAbroad.Id" />
                 <input type="hidden" name="CompanyId" value="@Model.StudyAbroad.CompanyId" />

@@ -184,7 +184,7 @@
                 @foreach (var item in Model.StudyAbroads)
                 {
                     <div class="card support">
-                        <a href="@Url.Action("StudyAbroadsDetail", new {url = item.Url})" class="thuml">
+                        <a href="@Url.Action("StudyAbroadDetail", new {url = item.Url})" class="thuml">
                             @if (item.Image != null)
                             {
                                 <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/studyAbroad/", item.Image)" alt="@item.Name" class="lazyload" />
@@ -198,7 +198,7 @@
                             </div>
                         </a>
                         <div class="card-body p-3">
-                            <a href="@Url.Action("StudyAbroadsDetail", new {url = item.Url})" class="support-name">@item.Name</a>
+                            <a href="@Url.Action("StudyAbroadDetail", new {url = item.Url})" class="support-name">@item.Name</a>
                             <ul class="body-support ul-reset">
                                 <li>
                                     <i class="fa-sharp fa-solid fa-location-dot"></i>
@@ -260,7 +260,7 @@
                         </a>
                         <div class="card-body p-3">
                             <a href="@Url.Action("Employer", new {url = item.Url})" class="career-top-name">@item.Name</a>
-                            <div class="box-rating" style="gap:10px;">
+                            @*<div class="box-rating" style="gap:10px;">
                                 <div class="rating">
                                     <i class="fas fa-star active"></i>
                                     <i class="fas fa-star active"></i>
@@ -269,7 +269,7 @@
                                     <i class="fas fa-star"></i>
                                 </div>
                                 / 322 Phản hồi
-                            </div>
+                            </div>*@
                         </div>
                     </div>
                 }

@@ -125,7 +125,6 @@
                 }
             </div>
         }
-
     </div>
 </div>
 <div class="container py-4">
@@ -136,42 +135,35 @@
         <div class="col-lg-8">
             <div class="title-name">
                 Tin tức tiêu biểu
-                <a href="#">Xem thêm<i class="fa-regular fa-arrow-right ml-2"></i></a>
+                <a href="@Url.Action("ArticleHot")">Xem thêm<i class="fa-regular fa-arrow-right ml-2"></i></a>
             </div>
             <div class="row custom-row mt-4">
-                <div class="col-lg-6">
-                    <article class="study-article card">
-                        <a href="#">
-                            <img src="~/Content/images/nganh-nghe.png" alt="Alternate Text" />
-                        </a>
-                        <div class="card-body p-0">
-                            <div class="date">
-                                <i class="fa-regular fa-calendar-days mr-1"></i> 10/05/2023
-                            </div>
-                            <a href="#" class="subject-study">Chính phủ đưa ra chính sách hỗ trợ người dân mua bảo hiểm</a>
-                            <div class="study-des">
-                                Chính sách hỗ trợ để khuyến khích người dân mua bảo hiểm, đặc biệt là trong lĩnh vực bảo hiểm y tế. Điều này giúp người dân có thể...
-                            </div>
-                        </div>
-                    </article>
-                </div>
-                <div class="col-lg-6">
-                    <article class="study-article card">
-                        <a href="#">
-                            <img src="~/Content/images/nganh-nghe.png" alt="Alternate Text" />
-                        </a>
-                        <div class="card-body p-0">
-                            <div class="date">
-                                <i class="fa-regular fa-calendar-days mr-1"></i> 10/05/2023
-                            </div>
-                            <a href="#" class="subject-study">Chính phủ đưa ra chính sách hỗ trợ người dân mua bảo hiểm Chính phủ đưa ra chính sách hỗ trợ người dân mua bảo hiểm</a>
-                            <div class="study-des">
-                                Chính sách hỗ trợ để khuyến khích người dân mua bảo hiểm, đặc biệt là trong lĩnh vực bảo hiểm y tế. Điều này giúp người dân có thể...
-                                Chính sách hỗ trợ để khuyến khích người dân mua bảo hiểm, đặc biệt là trong lĩnh vực bảo hiểm y tế. Điều này giúp người dân có thể...
-                            </div>
-                        </div>
-                    </article>
-                </div>
+                @foreach (var item in Model.HotArticle.Take(2))
+                {
+                    <div class="col-lg-6">
+                        <article class="study-article card">
+                           <a href="@Url.Action("ArticleDetail", new {url = item.Url})">
+                               @if (item.Image != null)
+                               {
+                                   <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/articles/", item.Image)" alt="@item.Subject" class="lazyload" />
+                               }
+                               else
+                               {
+                                   <img src="~/Content/images/on-image.jpg" alt="@item.Subject" class="lazyload" />
+                               }
+                           </a>
+                           <div class="card-body p-0">
+                               <div class="date">
+                                   <i class="fa-regular fa-calendar-days mr-1"></i> @item.CreateDate.ToString("dd/MM/yyyy")
+                               </div>
+                               <a href="@Url.Action("ArticleDetail", new {url = item.Url})" class="subject-study">@item.Subject</a>
+                               <div class="study-des">
+                                   @item.Description
+                               </div>
+                           </div>
+                        </article>
+                    </div>
+                }
             </div>
         </div>
         <div class="col-lg-4">
@@ -179,17 +171,23 @@
                 Xem nhiều
                 <a href="#">Xem thêm<i class="fa-regular fa-arrow-right ml-2"></i></a>
             </div>
-            @for (var i = 0; i < 4; i++)
+            @foreach (var item in Model.HotArticle.Skip(2).Take(4))
             {
                 <div class="media study-media mb-3">
-                    <a href="#">
-                        <img src="~/Content/images/nganh-nghe.png" alt="Alternate Text" />
+                    <a href="@Url.Action("ArticleDetail", new {url = item.Url})">
+                        @if (item.Image != null)
+                        {
+                            <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/articles/", item.Image)" alt="@item.Subject" class="lazyload" />
+                        }
+                        else
+                        {
+                            <img src="~/Content/images/on-image.jpg" alt="@item.Subject" class="lazyload" />
+                        }
                     </a>
                     <div class="media-body ml-3">
-                        <a href="#" class="subject-study-media">Chính phủ đưa ra chính sách hỗ trợ người dân mua bảo hiểm Chính phủ đưa ra chính sách hỗ trợ người dân mua bảo hiểm</a>
+                        <a href="@Url.Action("ArticleDetail", new {url = item.Url})" class="subject-study-media">@item.Subject</a>
                         <div class="study-media-des">
-                            Chính sách hỗ trợ để khuyến khích người dân mua bảo hiểm, đặc biệt là trong lĩnh vực bảo hiểm y tế. Điều này giúp người dân có thể...
-                            Chính sách hỗ trợ để khuyến khích người dân mua bảo hiểm, đặc biệt là trong lĩnh vực bảo hiểm y tế. Điều này giúp người dân có thể...
+                            @item.Description
                         </div>
                     </div>
                 </div>

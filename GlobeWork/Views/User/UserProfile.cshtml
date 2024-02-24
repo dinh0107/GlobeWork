@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Chi tiết";
     ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("UserProfile");
-    var id = ViewContext.RouteData.Values["Id"].ToString();
+    var id = Convert.ToInt32(ViewContext.RouteData.Values["Id"]);
 }
 <div class="bg-light py-4">
     <div class="container" id="element-to-print">
@@ -16,7 +16,7 @@
                 {
                     <img src="~/Content/images/cover-null.png" class="lazyload">
                 }
-                @if (id != "")
+                @if (id > 0)
                 {
                     <label for="Cover" class="change-cover">
                         <i class="fa-solid fa-camera mr-1"></i> Chỉnh sửa ảnh bìa
@@ -35,7 +35,7 @@
                     {
                         <img src="~/Content/images/avatar-default.jpg" alt="@Model.User.FullName" class="img-responsive">
                     }
-                    @if (id != "")
+                    @if (id > 0)
                     {
                         <label for="Avatar" class="change-avater">
                             <i class="fa-solid fa-camera"></i>
@@ -51,7 +51,7 @@
                         @Model.User.Classtify
                     </div>
                     <div class="group-btn-profile">
-                        @if (id != "")
+                        @if (id > 0)
                         {
                             <a href="javascripts:;" data-action="@Url.Action("InfoUser", "User", new { id = Model.User.Id })" class="change-info active">Thêm mục <i class="fa-solid fa-caret-down"></i></a>
                         }
@@ -95,7 +95,7 @@
                 </div>
             </div>
         </div>
-        @if (id != "")
+        @if (id > 0)
         {
             <div class="user-dashboard">
                 <span class="user-dashboard-title mb-3">Thống kê số lượt xem từ Nhà tuyển dụng</span>
@@ -134,40 +134,40 @@
                 </div>
             </div>
         }
-    <div class="skill-profile mt-3">
-        <div class="skill-profile-title mb-3">
-            Học vấn
-            @if (id != "")
+        <div class="skill-profile mt-3">
+            <div class="skill-profile-title mb-3">
+                Học vấn
+                @if (id > 0)
+                {
+                    <div class="plus-item add-education"><i class="fal fa-plus"></i></div>
+                }
+            </div>
+            @foreach (var item in Model.Educations)
             {
-                <div class="plus-item add-education"><i class="fal fa-plus"></i></div>
+                <div class="media media-skill education-skill">
+                    <div class="thuml-shill">
+                        <img src="~/Content/images/logo.png" alt="" />
+                    </div>
+                    <div class="media-body position-relative">
+                        <div class="skill-name">
+                            @item.School
+                        </div>
+                        <div class="skill-sub">
+                            @item.Majors
+                        </div>
+                        <div class="skill-time">
+                            @item.StartDate - @item.EndDate
+                        </div>
+                        <div class="edit edit-education">
+                            @if (id > 0)
+                            {
+                                <i class="fa-solid fa-pen text-success"></i>
+                            }
+                        </div>
+                    </div>
+                </div>
             }
         </div>
-        @foreach (var item in Model.Educations)
-        {
-            <div class="media media-skill education-skill">
-                <div class="thuml-shill">
-                    <img src="~/Content/images/logo.png" alt="" />
-                </div>
-                <div class="media-body position-relative">
-                    <div class="skill-name">
-                        @item.School
-                    </div>
-                    <div class="skill-sub">
-                        @item.Majors
-                    </div>
-                    <div class="skill-time">
-                        @item.StartDate - @item.EndDate
-                    </div>
-                    <div class="edit edit-education">
-                        @if (id != "")
-                        {
-                            <i class="fa-solid fa-pen text-success"></i>
-                        }
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
         <div class="skill-profile mt-3">
             <div class="skill-profile-title mb-3">Kinh nghiệm<div class="plus-item add-experience"><i class="fal fa-plus"></i></div></div>
             @foreach (var item in Model.Experiences)

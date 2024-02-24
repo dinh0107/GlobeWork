@@ -13,7 +13,6 @@ using System.Web.Mvc;
 
 namespace GlobeWork.Controllers
 {
-    [Authorize]
     public class UploaderController : Controller
     {
         private const int ThumbSize = 160;

@@ -1,4 +1,6 @@
-﻿@{
+﻿@using GlobeWork.Models
+@{
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
     var FullName = ViewContext.RouteData.Values["FullName"].ToString();
     var id = ViewContext.RouteData.Values["Id"].ToString();
     var avatar = ViewContext.RouteData.Values["Avatar"].ToString();
@@ -9,8 +11,11 @@
     <button type="button" class="hamburger" onclick="toggleSidebar()">
         <i class="fa-solid fa-bars"></i>
     </button>
-    <a href="" class="logo">
-        <img src="~/Content/images/logo.png" />
+    <a href="/" class="logo">
+        @if (config.Image != null)
+        {
+            <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/configs/", config.Image)" alt="@config.Title" class="lazyload" />
+        }
     </a>
     <ul>
         @Html.Action("Notify")

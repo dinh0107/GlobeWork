@@ -82,11 +82,11 @@
                         {
                             if (Model.Likes.Any(a => a.StudyAbroadId == item.Id))
                             {
-                                <div  class="heart active unlikejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></div>
+                                <div  class="heart active unlikejob" data-study="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></div>
                             }
                             else
                             {
-                                <div  class="heart likejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></div>
+                                <div  class="heart likejob" data-study="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></div>
                             }
                         }
                     </div>

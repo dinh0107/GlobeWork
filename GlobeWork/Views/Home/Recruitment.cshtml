@@ -85,8 +85,9 @@
                     }
                 </div>
                 <div class="navs-employer">
-                    <a href="@Url.Action("Employer" , new {url = Model.Company.Url})" class="@(IsLinkActive(Url.Action("Employer")))">Trang chủ</a>
+                    <a href="@Url.Action("Employer" , new {url = Model.Company.Url})" class="@(IsLinkActive(Url.Action("Employer", new {url = Model.Company.Url} )))">Trang chủ</a>
                     <a href="@Url.Action("Recruitment" , new {url = Model.Company.Url})" class="@(IsLinkActive(Url.Action("Recruitment")))">Tin tuyển dụng</a>
+                    <a href="@Url.Action("StudyAbroadCom" , new {url = Model.Company.Url})" class="@(IsLinkActive(Url.Action("StudyAbroadCom")))">Tin du học</a>
                 </div>
             </div>
         </div>
