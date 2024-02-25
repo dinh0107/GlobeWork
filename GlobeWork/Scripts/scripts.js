@@ -316,7 +316,76 @@ function Details() {
             }
         });
     });
-        
+    $(".advise-form").submit(function (e) {
+        e.preventDefault();
+        var formData = new FormData($(this)[0]);
+        $.ajax({
+            url: "/Home/AdviseForm",
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.success) {
+                    new Notify({
+                        status: 'success',
+                        text: response.message,
+                        effect: 'slide',
+                        speed: 600,
+                        showIcon: true,
+                        showCloseButton: true,
+                        autoclose: true,
+                        autotimeout: 3000,
+                        gap: 10,
+                        distance: 20,
+                        type: 3,
+                        position: 'right bottom'
+                    });
+                    $(".close").click();
+                } else {
+                    new Notify({
+                        status: 'error',
+                        text: response.message,
+                        effect: 'slide',
+                        speed: 600,
+                        showIcon: true,
+                        showCloseButton: true,
+                        autoclose: true,
+                        autotimeout: 3000,
+                        gap: 10,
+                        distance: 20,
+                        type: 3,
+                        position: 'right bottom'
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("Đã xảy ra lỗi: " + error);
+            }
+        });
+    });
+    $(".copy-value").click(function () {
+        var dataValue = $("#url-request").data("value");
+        var tempInput = $("<input>");
+        $("body").append(tempInput);
+        tempInput.val(dataValue).select();
+        document.execCommand("copy");
+        tempInput.remove();
+        new Notify({
+                status: 'success',
+                text: "Sao chép thành công !!!",
+                effect: 'slide',
+                speed: 600,
+                showIcon: true,
+                showCloseButton: true,
+                autoclose: true,
+                autotimeout: 3000,
+                gap: 10,
+                distance: 20,
+                type: 3,
+                position: 'right bottom'
+            });
+    });
 }
 
 // Theo dõi , Lưu tin
@@ -1326,3 +1395,42 @@ function ShowLinkInput() {
 $(".add-item").click(function () {
     $(".close-info").click()
 })
+$("#form-contact").on("submit", function (e) {
+    e.preventDefault();
+    if ($(this).valid()) {
+        $.post("/Home/Contact", $(this).serialize(), function (data) {
+            if (data.status) {
+                new Notify({
+                    status: 'success',
+                    text: data.msg,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+                $("#form-contact").trigger("reset");
+            } else {
+                new Notify({
+                    status: 'error',
+                    text: data.msg,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            }
+        });
+    }
+});

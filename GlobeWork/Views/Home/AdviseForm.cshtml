@@ -1,7 +1,23 @@
 ﻿@model GlobeWork.ViewModel.AdviseViewModel
-@*<div class="form-group">
-    <div class="form-group">
-        @Html.LabelFor(a => a.ApplyJob.Body)
-        @Html.TextAreaFor(a => a.ApplyJob.Body, new { @class = "form-control text-cv", @placeholder = "Viết giới thiệu ngắn gọn về bản thân (điểm mạnh, điểm yếu) và nêu rõ mong muốn, lý do bạn muốn ứng tuyển cho vị trí này." })
-    </div>
-</div>*@
+<div class="form-group">
+    <label>
+        Họ và tên
+    </label>
+    <input type="text"  value="@Model.User.FullName" disabled class="form-control" />
+</div>
+<div class="form-group">
+    <label>
+        Email
+    </label>
+    <input type="text"  value="@Model.User.Email" disabled class="form-control" />
+</div>
+<div class="form-group">
+    <label>
+        Số điện thoại
+    </label>
+    <input type="text" value="@Model.User.Phone" disabled class="form-control" />
+</div>
+<div class="form-group">
+    @Html.LabelFor(a => a.Advise.Body)
+    @Html.TextAreaFor(a => a.Advise.Body, new { @class = "form-control text-cv", @placeholder = "Nội dung" })
+</div>

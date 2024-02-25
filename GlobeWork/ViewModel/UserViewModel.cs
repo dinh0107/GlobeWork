@@ -202,7 +202,7 @@ namespace GlobeWork.ViewModel
         public IEnumerable<Career> Careers { get; set; }
         public IEnumerable<JobType> JobTypes { get; set; }
         public IEnumerable<Rank> Ranks { get; set; }
-        public DateTime DateTime { get; set; }
+        public IEnumerable<City> Cities { get; set; }
     }
     public class AdminEditCandidateViewModel
     {

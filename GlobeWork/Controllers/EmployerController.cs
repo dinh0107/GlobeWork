@@ -491,6 +491,34 @@ namespace GlobeWork.Controllers
                         }
                     }
                 }
+                company.Name = model.Company.Name;
+                company.WebsiteUrl = model.Company.WebsiteUrl;
+                company.Address = model.Company.Address;
+                company.CompanySize = model.Company.CompanySize;
+                company.EstablishmentDate = model.Company.EstablishmentDate;
+                company.Phone = model.Company.Phone;
+                company.Introduct = model.Company.Introduct;
+                company.Product = model.Company.Product;
+                company.GoogleMap = model.Company.GoogleMap;
+                company.VideoYoutube = model.Company.VideoYoutube;
+                company.Age = model.Company.Age;
+                company.CityId = Convert.ToInt32(fc["city"]);
+                company.Email = model.Company.Email;
+                company.Url = HtmlHelpers.ConvertToUnSign(null, company.Url ?? company.Name);
+                _unitOfWork.CompanyRepository.Update(company);
+                company.Careers.Clear();
+                _unitOfWork.Save();
+                var careers = fc["career"];
+                if (!string.IsNullOrEmpty(careers))
+                {
+                    var listCareer = careers.Split((',')).Select(int.Parse).ToList();
+                    foreach (var item in listCareer)
+                    {
+                        var careerItem = _unitOfWork.CareerRepository.GetById(item);
+                        company.Careers.Add(careerItem);
+                    }
+                    _unitOfWork.Save();
+                }
                 if (model.DateHot > 0)
                 {
                     if (User.Amount != 0)
@@ -533,6 +561,7 @@ namespace GlobeWork.Controllers
                         else
                         {
                             ModelState.AddModelError("", @"Số tiền trong tài khoản của bạn không đủ vui lòng nạp tiền để tiếp tục sử dụng");
+                            model.Company = company;
                             model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                             model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                             model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
@@ -544,39 +573,14 @@ namespace GlobeWork.Controllers
                     {
                         ModelState.AddModelError("", @"Số tiền trong tài khoản của bạn không đủ vui lòng nạp tiền để tiếp tục sử dụng");
                         model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                        model.Company = company;
                         model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                         model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
                         model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
                         return View(model);
                     }
                 }
-                company.Name = model.Company.Name;
-                company.WebsiteUrl = model.Company.WebsiteUrl;
-                company.Address = model.Company.Address;
-                company.CompanySize = model.Company.CompanySize;
-                company.EstablishmentDate = model.Company.EstablishmentDate;
-                company.Phone = model.Company.Phone;
-                company.Introduct = model.Company.Introduct;
-                company.Product = model.Company.Product;
-                company.GoogleMap = model.Company.GoogleMap;
-                company.VideoYoutube = model.Company.VideoYoutube;
-                company.Age = model.Company.Age;
-                company.CityId = Convert.ToInt32(fc["city"]);
-                company.Url = HtmlHelpers.ConvertToUnSign(null, company.Url ?? company.Name);
-                _unitOfWork.CompanyRepository.Update(company);
-                _unitOfWork.Save();
-                company.Careers.Clear();
-                var careers = fc["career"];
-                if (!string.IsNullOrEmpty(careers))
-                {
-                    var listCareer = careers.Split((',')).Select(int.Parse).ToList();
-                    foreach (var item in listCareer)
-                    {
-                        var careerItem = _unitOfWork.CareerRepository.GetById(item);
-                        company.Careers.Add(careerItem);
-                    }
-                    _unitOfWork.Save();
-                }
+
                 var urlCount = _unitOfWork.CompanyRepository.GetQuery(a => a.Url == company.Url).Count();
                 if (urlCount > 1)
                 {
@@ -606,21 +610,14 @@ namespace GlobeWork.Controllers
         public ActionResult Index(string result = "")
         {
             ViewBag.Result = result;
-            var log = _unitOfWork.EmployerLogRepository.GetQuery(a => a.UserId == User.Id && a.EmployerLogType == EmployerLogType.Deduction);
-            decimal totalAmount = 0;
-            if (log != null)
-            {
-                foreach (var item in log)
-                {
-                    totalAmount += item.Amount;
-                }
-            }
+
             var model = new EmployerViewModel
             {
                 Employer = User,
-                Amount = totalAmount,
                 JobPost = _unitOfWork.JobPostRepository.GetQuery(a => a.CompanyId == User.Id).Count(),
-
+                Article = _unitOfWork.ArticleRepository.GetQuery(a => a.EmployerId == User.Id).Count(),
+                Study = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.CompanyId == User.Id).Count(),
+                Cv = _unitOfWork.ApplyJobRepository.GetQuery(a => a.CompanyId == User.Id).Count(),
             };
             return View(model);
         }
@@ -1232,7 +1229,9 @@ namespace GlobeWork.Controllers
             {
                 model.StudyAbroad.Url = HtmlHelpers.ConvertToUnSign(null, model.StudyAbroad.Name);
                 model.StudyAbroad.CategoryId = Convert.ToInt32(fc["CategoryId"]);
-                model.StudyAbroad.StudyAbroadCategory = _unitOfWork.StudyAbroadCategoryRepository.GetById(model.StudyAbroad.CategoryId);
+                model.StudyAbroad.CareerId = Convert.ToInt32(fc["CareerId"]);
+                model.StudyAbroad.Careers = _unitOfWork.CareerRepository.GetById(model.StudyAbroad.CareerId) ?? null;
+                model.StudyAbroad.StudyAbroadCategory = _unitOfWork.StudyAbroadCategoryRepository.GetById(model.StudyAbroad.CategoryId) ?? null;
                 model.StudyAbroad.CompanyId = User.Id;
                 model.StudyAbroad.Code = Utils.Utils.GenerateRandomCode();
                 model.StudyAbroad.ListImage = fc["Pictures"];
@@ -1443,7 +1442,9 @@ namespace GlobeWork.Controllers
                 }
                 study.Url = HtmlHelpers.ConvertToUnSign(null, model.StudyAbroad.Name);
                 study.CategoryId = Convert.ToInt32(fc["CategoryId"]);
-                study.StudyAbroadCategory = _unitOfWork.StudyAbroadCategoryRepository.GetById(study.CategoryId);
+                study.CareerId = Convert.ToInt32(fc["CareerId"]);
+                study.StudyAbroadCategory = _unitOfWork.StudyAbroadCategoryRepository.GetById(study.CategoryId) ?? null;
+                study.Careers = _unitOfWork.CareerRepository.GetById(study.CareerId) ?? null;
                 study.Name = model.StudyAbroad.Name;
                 study.Wages = model.StudyAbroad.Wages;
                 study.Health = model.StudyAbroad.Health;
@@ -1455,6 +1456,7 @@ namespace GlobeWork.Controllers
                 study.Body = model.StudyAbroad.Body;
                 study.Requirements = model.StudyAbroad.Requirements;
                 study.Incentives = model.StudyAbroad.Incentives;
+                study.TypeStudyAbroad = model.StudyAbroad.TypeStudyAbroad;
                 _unitOfWork.Save();
                 var stu = _unitOfWork.StudyAbroadRepository.GetQuery().AsNoTracking();
                 if (stu.Any(p => p.Url.ToLower().Trim() == study.Url.ToLower().Trim()))
@@ -1659,6 +1661,7 @@ namespace GlobeWork.Controllers
                 article.Description = model.Article.Description;
                 article.Body = model.Article.Body;
                 article.Active = model.Article.Active;
+                article.TypeArticle = model.Article.TypeArticle;
                 article.StudyAbroadCategory = _unitOfWork.StudyAbroadCategoryRepository.GetById(Convert.ToInt32(fc["StudyAbroadCategoryId"])) ?? null;
                 article.TitleMeta = model.Article.TitleMeta;
                 article.DescriptionMeta = model.Article.DescriptionMeta;

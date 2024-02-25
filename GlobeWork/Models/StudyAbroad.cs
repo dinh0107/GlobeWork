@@ -53,13 +53,17 @@ namespace GlobeWork.Models
         public string Code { get; set; }
         [Display(Name="Cấp bậc")]
         public string Level { get; set; }
+        [Display(Name = "Học bổng")]
+        public bool Scholarship { get; set; }
         public DateTime? Hot { get; set; }
         public string ListImage { get; set; }
+        public int? CareerId { get; set; }
         public virtual StudyAbroadCategory  StudyAbroadCategory { get; set; }    
-        public virtual ICollection<Career> Careers { get; set; }
+        public virtual Career Careers { get; set; }
         public virtual ICollection<City> Cities { get; set; }
         public virtual ICollection<Like> Likes { get; set; }
 
+        public TypeStudyAbroad  TypeStudyAbroad { get; set; }
         public Wage Wages { get; set; }
 
         public StudyAbroad()
@@ -69,5 +73,11 @@ namespace GlobeWork.Models
             Active = true;
         }
     }
-
+    public enum TypeStudyAbroad
+    {
+        [Display(Name ="Du học")]
+        StudyAbroad,
+        [Display(Name = "Học bổng")]
+        Scholarship,
+    }
 }

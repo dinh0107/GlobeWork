@@ -9,6 +9,7 @@
     }
     var id = Convert.ToInt32(ViewContext.RouteData.Values["Id"]);
     var email = ViewContext.RouteData.Values["Email"].ToString();
+    var request = Request.Url;
 }
 <div class="bg-light py-4">
     <div class="container">
@@ -486,24 +487,24 @@
                     </div>
                     <div class="copy-link">
                         <div class="link">
-                            <span>
-                                @Request.Url
+                            <span id="url-request" data-value="@request">
+                                @request
                             </span>
                         </div>
-                        <button type="button"><i class="fas fa-copy"></i></button>
+                        <button type="button" class="copy-value"><i class="fas fa-copy"></i></button>
                     </div>
                     <div class="job-detail__box--right-title mt-4">
                         Chia sẻ qua mạng xã hội
                     </div>
                     <ul class="ul-reset share-social mt-2">
                         <li>
-                            <a href="#" target="_blank"><img src="~/Content/images/facebook.png" alt="Facebook" /></a>
+                            <a href="javascripts:;" onclick="window.open('https://www.facebook.com/sharer.php?u='+encodeURIComponent(location.href)+'&amp;t='+encodeURIComponent(document.title));return false" target="_blank"><img src="~/Content/images/facebook.png" alt="Facebook" /></a>
                         </li>
                         <li>
-                            <a href="#" target="_blank"><img src="~/Content/images/twitter.png" alt="Facebook" /></a>
+                            <a href="javascripts:;" onclick="window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(location.href)+'&amp;text='+encodeURIComponent(document.title));return false" target="_blank"><img src="~/Content/images/twitter.png" alt="Facebook" /></a>
                         </li>
                         <li>
-                            <a href="#" target="_blank"><img src="~/Content/images/linkedin.png" alt="Facebook" /></a>
+                            <a href="javascripts:;" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href)+'&amp;t='+encodeURIComponent(document.title));return false" target="_blank"><img src="~/Content/images/linkedin.png" alt="Facebook" /></a>
                         </li>
                     </ul>
                 </div>
@@ -541,32 +542,37 @@
 </div>
 
 @* Advise form *@
-<div class="modal fade bd-example-modal-lg" id="Advise" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="job-detail__name" id="exampleModalLongTitle">Tử vấn: <span class="text-success">@Model.Job.Name</span></div>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+@if (id > 0)
+{
+    <div class="modal fade bd-example-modal-lg" id="Advise" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="job-detail__name" id="exampleModalLongTitle">Tư vấn: <span class="text-success">@Model.Job.Name</span></div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @using (Html.BeginForm("Advise", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "advise-form" }))
+                {
+                    <input type="hidden" name="JobId" value="@Model.Job.Id" />
+                    <input type="hidden" name="Advise.EmployerId" value="@Model.Job.CompanyId" />
+                    <input type="hidden" name="UserId" value="@id" />
+                    @Html.AntiForgeryToken();
+                    @Html.ValidationSummary(true)
+                    <div class="modal-body">
+                        @Html.Action("AdviseForm")
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary">Gửi thông tin</button>
+                    </div>
+                }
             </div>
-            @using (Html.BeginForm("Advise", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "apply-form" }))
-            {
-                <input type="hidden" name="JobId" value="@Model.Job.Id" />
-                <input type="hidden" name="CompanyId" value="@Model.Job.CompanyId" />
-                @Html.AntiForgeryToken();
-                @Html.ValidationSummary(true)
-                <div class="modal-body">
-                    @Html.Action("AdviseForm")
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                    <button type="submit" class="btn btn-primary">Gửi thông tin</button>
-                </div>
-            }
         </div>
     </div>
-</div>
+}
+
 @Scripts.Render("~/bundles/jqueryval")
 @section scripts{
     <script>

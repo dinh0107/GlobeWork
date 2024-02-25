@@ -70,7 +70,7 @@
                 if (Model.StudyAbroads.PageCount > 1)
                 {
                     <div class="text-center col-12">
-                        @Html.PagedListPager(Model.StudyAbroads, page => Url.Action("SearchStudyAbroad", new { page, name = Model.Name }))
+                        @Html.PagedListPager(Model.StudyAbroads, page => Url.Action("SearchStudyAbroad", new { page, name = Model.Name , countruyId = Model.CountruyId , companyId = Model.CompanyId }))
                     </div>
                 }
             }

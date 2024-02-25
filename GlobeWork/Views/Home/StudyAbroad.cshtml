@@ -133,11 +133,11 @@
     </h2>
     <div class="row mt-4 custom-row">
         <div class="col-lg-8">
-            <div class="title-name">
+            @*<div class="title-name">
                 Tin tức tiêu biểu
                 <a href="@Url.Action("ArticleHot")">Xem thêm<i class="fa-regular fa-arrow-right ml-2"></i></a>
-            </div>
-            <div class="row custom-row mt-4">
+            </div>*@
+            <div class="row custom-row mt-3">
                 @foreach (var item in Model.HotArticle.Take(2))
                 {
                     <div class="col-lg-6">
@@ -167,13 +167,13 @@
             </div>
         </div>
         <div class="col-lg-4">
-            <div class="title-name mb-4">
+            @*<div class="title-name mb-4">
                 Xem nhiều
                 <a href="#">Xem thêm<i class="fa-regular fa-arrow-right ml-2"></i></a>
-            </div>
+            </div>*@
             @foreach (var item in Model.HotArticle.Skip(2).Take(4))
             {
-                <div class="media study-media mb-3">
+                <div class="media study-media my-3">
                     <a href="@Url.Action("ArticleDetail", new {url = item.Url})">
                         @if (item.Image != null)
                         {

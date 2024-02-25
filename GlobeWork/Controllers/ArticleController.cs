@@ -147,6 +147,8 @@ namespace GlobeWork.Controllers
                 article.Active = model.Article.Active;
                 article.Menu = model.Article.Menu;
                 article.Sort = model.Article.Sort;
+                article.Footer = model.Article.Footer;
+                article.TypeArticle = model.Article.TypeArticle;
                 article.TitleMeta = model.Article.TitleMeta;
                 article.DescriptionMeta = model.Article.DescriptionMeta;
 

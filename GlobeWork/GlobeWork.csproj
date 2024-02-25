@@ -160,6 +160,7 @@
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\BannerController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\EmployerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JobPostVcmsController.cs" />
@@ -175,21 +176,17 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202402230757393_ad.cs" />
-    <Compile Include="Migrations\202402230757393_ad.Designer.cs">
-      <DependentUpon>202402230757393_ad.cs</DependentUpon>
+    <Compile Include="Migrations\202402251138085_ad.cs" />
+    <Compile Include="Migrations\202402251138085_ad.Designer.cs">
+      <DependentUpon>202402251138085_ad.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202402230812427_ad1.cs" />
-    <Compile Include="Migrations\202402230812427_ad1.Designer.cs">
-      <DependentUpon>202402230812427_ad1.cs</DependentUpon>
+    <Compile Include="Migrations\202402251334242_ad1.cs" />
+    <Compile Include="Migrations\202402251334242_ad1.Designer.cs">
+      <DependentUpon>202402251334242_ad1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202402231532567_ad2.cs" />
-    <Compile Include="Migrations\202402231532567_ad2.Designer.cs">
-      <DependentUpon>202402231532567_ad2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202402241310176_da.cs" />
-    <Compile Include="Migrations\202402241310176_da.Designer.cs">
-      <DependentUpon>202402241310176_da.cs</DependentUpon>
+    <Compile Include="Migrations\202402251442583_ad2.cs" />
+    <Compile Include="Migrations\202402251442583_ad2.Designer.cs">
+      <DependentUpon>202402251442583_ad2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
@@ -220,6 +217,7 @@
     <Compile Include="ViewModel\AdminViewModel.cs" />
     <Compile Include="ViewModel\ArticleViewModel.cs" />
     <Compile Include="ViewModel\BannerViewModel.cs" />
+    <Compile Include="ViewModel\ContactViewModel.cs" />
     <Compile Include="ViewModel\DashboardViewModel.cs" />
     <Compile Include="ViewModel\EmployerViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
@@ -268,6 +266,8 @@
     <Content Include="Content\images\banner.jpg" />
     <Content Include="Content\images\base64.gif" />
     <Content Include="Content\images\bct.png" />
+    <Content Include="Content\images\bg-box-candidate-.png" />
+    <Content Include="Content\images\bg-candidate-detail.jpg" />
     <Content Include="Content\images\bussiness.efbec2d.png" />
     <Content Include="Content\images\company-banner.jpg" />
     <Content Include="Content\images\cover-null.png" />
@@ -368,6 +368,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="LinkedIn-Icon-Logo.wine.ico" />
+    <Content Include="Partner.xml" />
     <Content Include="Scripts\aos.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -1582,6 +1583,11 @@
     <Content Include="Views\Home\AllStudyAbroad.cshtml" />
     <Content Include="Views\Home\StudyAbroadHot.cshtml" />
     <Content Include="Views\Home\StudyAbroadCom.cshtml" />
+    <Content Include="Views\Home\CountruyStudy.cshtml" />
+    <Content Include="Views\Home\Scholarship.cshtml" />
+    <Content Include="Views\Home\StudyCareer.cshtml" />
+    <Content Include="Views\Home\SchoolCountruy.cshtml" />
+    <Content Include="Views\Contact\ListContact.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1598,17 +1604,14 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202402230757393_ad.resx">
-      <DependentUpon>202402230757393_ad.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202402251138085_ad.resx">
+      <DependentUpon>202402251138085_ad.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202402230812427_ad1.resx">
-      <DependentUpon>202402230812427_ad1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202402251334242_ad1.resx">
+      <DependentUpon>202402251334242_ad1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202402231532567_ad2.resx">
-      <DependentUpon>202402231532567_ad2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202402241310176_da.resx">
-      <DependentUpon>202402241310176_da.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202402251442583_ad2.resx">
+      <DependentUpon>202402251442583_ad2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

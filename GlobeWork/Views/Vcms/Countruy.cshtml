@@ -25,6 +25,22 @@
                         <td class="form_text">@Html.EditorFor(model => model.Sort)</td>
                     </tr>
                     <tr>
+                        <td class="form_name">@Html.LabelFor(model => model.School)</td>
+                        <td class="form_text">@Html.CheckBoxFor(model => model.School)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(model => model.Hot)</td>
+                        <td class="form_text">@Html.CheckBoxFor(model => model.Hot)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(model => model.Footer)</td>
+                        <td class="form_text">@Html.CheckBoxFor(model => model.Footer)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(model => model.Scholarship)</td>
+                        <td class="form_text">@Html.CheckBoxFor(model => model.Scholarship)</td>
+                    </tr>
+                    <tr>
                         <td class="form_name">@Html.LabelFor(model => model.Active)</td>
                         <td class="form_text">@Html.CheckBoxFor(model => model.Active, new { @checked = "checked" }) Có/Không</td>
                     </tr>

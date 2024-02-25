@@ -27,6 +27,10 @@ namespace GlobeWork.Models
         public bool ShowHome { get; set; }
         [Display(Name = "Nổi bật")]
         public bool Hot { get; set; }
+        [Display(Name = "Hiện chân trang")]
+        public bool Footer { get; set; }
+        [Display(Name = "Ngành du học Hot")]
+        public bool StudyHot { get; set; }
         [Display(Name = "Hiện menu")]
         public bool Menu { get; set; }
         [Display(Name = "Thứ tự"), Required(ErrorMessage = "Hãy nhập thứ tự"), RegularExpression(@"\d+", ErrorMessage = "Chỉ nhập số nguyên")]
@@ -36,6 +40,7 @@ namespace GlobeWork.Models
         public virtual ICollection<JobPost> Posts { get; set; }
         public virtual ICollection<Candidate> Candidates { get; set; }
         public virtual ICollection<Company> Companies { get; set; }
+        public virtual ICollection<StudyAbroad> StudyAbroads { get; set; }
 
         public Career()
         {

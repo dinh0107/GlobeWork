@@ -1,6 +1,8 @@
 ﻿@model GlobeWork.ViewModel.StudyAbroadCategoryViewModel
 @using GlobeWork.Utils
+@using GlobeWork.Models
 @{
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
     ViewBag.Title = Model.StudyAbroadCategory.TitleMeta ?? Model.StudyAbroadCategory.CategoryName;
     ViewBag.Description = Model.StudyAbroadCategory.DescriptionMeta;
     ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("StudyAbroadCategory", new { url = Model.StudyAbroadCategory.Url }); ;
@@ -168,11 +170,10 @@
                     du học các nước
                 </div>
                 <ul class="ul-reset ul-studyAbroad">
-                    <li><a href="#">Du học Mỹ</a></li>
-                    <li><a href="#">Du học Úc</a></li>
-                    <li><a href="#">Du học Canada</a></li>
-                    <li><a href="#">Du học Singapore</a></li>
-                    <li><a href="#">Du học New Zealend</a></li>
+                    @foreach (var item in Model.FooterCountries)
+                    {
+                        <li><a href="@Url.Action("CountruyStudy", new {id = item.Id})">Du học @item.Name</a></li>
+                    }
                 </ul>
             </div>
             <div class="col-lg-3">
@@ -180,11 +181,10 @@
                     Học bổng
                 </div>
                 <ul class="ul-reset ul-studyAbroad">
-                    <li><a href="#">Du học Mỹ</a></li>
-                    <li><a href="#">Du học Úc</a></li>
-                    <li><a href="#">Du học Canada</a></li>
-                    <li><a href="#">Du học Singapore</a></li>
-                    <li><a href="#">Du học New Zealend</a></li>
+                    @foreach (var item in Model.CountriesStudy)
+                    {
+                        <li><a href="@Url.Action("Scholarship", new {id = item.Id})">Học bổng @item.Name</a></li>
+                    }
                 </ul>
             </div>
             <div class="col-lg-3">
@@ -192,11 +192,10 @@
                     danh sách trường
                 </div>
                 <ul class="ul-reset ul-studyAbroad">
-                    <li><a href="#">Du học Mỹ</a></li>
-                    <li><a href="#">Du học Úc</a></li>
-                    <li><a href="#">Du học Canada</a></li>
-                    <li><a href="#">Du học Singapore</a></li>
-                    <li><a href="#">Du học New Zealend</a></li>
+                    @foreach (var item in Model.CountriesSchool)
+                    {
+                        <li><a href="@Url.Action("SchoolCountruy", new {id = item.Id})">Danh sách trường  @item.Name</a></li>
+                    }
                 </ul>
             </div>
             <div class="col-lg-3">
@@ -204,11 +203,10 @@
                     du học ngành hot
                 </div>
                 <ul class="ul-reset ul-studyAbroad">
-                    <li><a href="#">Du học Mỹ</a></li>
-                    <li><a href="#">Du học Úc</a></li>
-                    <li><a href="#">Du học Canada</a></li>
-                    <li><a href="#">Du học Singapore</a></li>
-                    <li><a href="#">Du học New Zealend</a></li>
+                    @foreach (var item in Model.Careers)
+                    {
+                        <li><a href="@Url.Action("StudyCareer", new {url = item.Code})">@item.Name</a></li>
+                    }
                 </ul>
             </div>
         </div>
@@ -221,7 +219,7 @@
                 <div class="media">
                     <i class="fa-sharp fa-solid fa-location-dot"></i>
                     <div class="media-body">
-                        <a href="#">  Số 41, ngõ 4 Đồng Me, Mễ Trì, Nam Từ Liêm, Hà Nội</a>
+                        <a href="#">@config.Place</a>
                     </div>
                 </div>
             </div>
@@ -230,7 +228,7 @@
                     <i class="fa-sharp fa-solid fa-phone"></i>
                     <div class="media-body">
                         <span>Điện thoại</span>
-                        <a href="tel">(070) 3358.555</a>
+                        <a href="tel:@config.Hotline">@config.Hotline</a>
                     </div>
                 </div>
             </div>
@@ -239,7 +237,7 @@
                     <i class="fa-sharp fa-solid fa-phone"></i>
                     <div class="media-body">
                         <span>Điện thoại</span>
-                        <a href="tel">(070) 3358.555</a>
+                        <a href="tel:@config.Hotline2">@config.Hotline2</a>
                     </div>
                 </div>
             </div>
@@ -248,7 +246,7 @@
                     <i class="fa-sharp fa-solid fa-phone"></i>
                     <div class="media-body">
                         <span>Điện thoại tư vấn</span>
-                        <a href="#">(070) 3358.555  </a>
+                        <a href="tel:@config.Hotline3">@config.Hotline3</a>
                     </div>
                 </div>
             </div>

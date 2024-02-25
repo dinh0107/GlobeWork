@@ -50,12 +50,16 @@
             </tr>
         }
         <tr>
-            <td class="form_name">@Html.LabelFor(model => model.ShowHome)</td>
-            <td class="form_text">@Html.EditorFor(model => model.ShowHome)</td>
+            <td class="form_name">@Html.LabelFor(model => model.StudyHot)</td>
+            <td class="form_text">@Html.EditorFor(model => model.StudyHot)</td>
         </tr>
         <tr>
             <td class="form_name">@Html.LabelFor(model => model.Hot)</td>
             <td class="form_text">@Html.CheckBoxFor(model => model.Hot)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Footer)</td>
+            <td class="form_text">@Html.CheckBoxFor(model => model.Footer)</td>
         </tr>
         <tr>
             <td class="form_name">@Html.LabelFor(model => model.Menu)</td>
@@ -65,10 +69,10 @@
             <td class="form_name">@Html.LabelFor(model => model.Active)</td>
             <td class="form_text">@Html.CheckBoxFor(model => model.Active, new { @checked = "checked" })</td>
         </tr>
-        <tr>
+        @*<tr>
             <td class="form_name">@Html.LabelFor(model => model.Url)</td>
             <td class="form_text">@Html.EditorFor(model => model.Url)</td>
-        </tr>
+        </tr>*@
         <tr>
             <td class="form_name"></td>
             <td class="form_text">

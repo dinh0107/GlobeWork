@@ -31,7 +31,6 @@
                 <th style="width: 50px">Hình ảnh</th>
                 <th style="width: 400px">Tên ngành nghề</th>
                 <th>CODE</th>
-                <th style="width: 100px">Hiện trang chủ</th>
                 <th style="width: 100px">Nổi bật</th>
                 <th style="width: 100px">Menu</th>
                 <th style="width: 100px">Hoạt động</th>
@@ -43,7 +42,6 @@
                     <td>@Html.DisplayFor(model => career.Image)</td>
                     <td class="left">@Html.DisplayFor(model => career.Name)</td>
                     <td>@career.Code</td>
-                    <td>@Html.EditorFor(model => career.ShowHome)</td>
                     <td>@Html.EditorFor(model => career.Hot)</td>
                     <td>@Html.EditorFor(model => career.Menu)</td>
                     <td>@Html.EditorFor(model => career.Active)</td>
@@ -57,7 +55,7 @@
             @if (Model.Careers.PageCount > 1)
             {
                 <tr>
-                    <td colspan="6">@Html.PagedListPager(Model.Careers, page => Url.Action("ListCareers", new { page, name = Model.Name }))</td>
+                    <td colspan="12">@Html.PagedListPager(Model.Careers, page => Url.Action("ListCareers", new { page, name = Model.Name }))</td>
                 </tr>
             }
         </tbody>

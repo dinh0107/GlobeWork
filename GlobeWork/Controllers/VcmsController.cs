@@ -304,6 +304,9 @@ namespace GlobeWork.Controllers
                 config.EmailConfigs = model.ConfigSite.EmailConfigs;
                 config.PassWordMail = model.ConfigSite.PassWordMail;
                 config.NapTien = model.ConfigSite.NapTien;
+                config.Hotline2 = model.ConfigSite.Hotline2;
+                config.Hotline3 = model.ConfigSite.Hotline3;
+                config.AboutContact = model.ConfigSite.AboutContact;
                 //config.PriceJob = model.ConfigSite.PriceJob;
                 //config.PriceStudyAbroad = model.ConfigSite.PriceStudyAbroad;
                 //config.PriceCompany = model.ConfigSite.PriceCompany;
@@ -458,14 +461,14 @@ namespace GlobeWork.Controllers
 
                 if (isPost)
                 {
-                    model.Url = HtmlHelpers.ConvertToUnSign(null, model.Url ?? model.Name);
+                    model.Code = HtmlHelpers.ConvertToUnSign(null, model.Code ?? model.Name);
                     _unitOfWork.CareerRepository.Insert(model);
                     _unitOfWork.Save();
 
-                    var count = _unitOfWork.CareerRepository.GetQuery(a => a.Url == model.Url).Count();
+                    var count = _unitOfWork.CareerRepository.GetQuery(a => a.Code == model.Code).Count();
                     if (count > 1)
                     {
-                        model.Url += "-" + model.Id;
+                        model.Code += "-" + model.Id;
                         _unitOfWork.Save();
                     }
 
@@ -530,13 +533,13 @@ namespace GlobeWork.Controllers
 
                 if (isPost)
                 {
-                    model.Url = HtmlHelpers.ConvertToUnSign(null, model.Url ?? model.Name);
+                    model.Code = HtmlHelpers.ConvertToUnSign(null, model.Code ?? model.Name);
                     _unitOfWork.CareerRepository.Update(model);
                     _unitOfWork.Save();
-                    var count = _unitOfWork.CareerRepository.GetQuery(a => a.Url == model.Url).Count();
+                    var count = _unitOfWork.CareerRepository.GetQuery(a => a.Code == model.Code).Count();
                     if (count > 1)
                     {
-                        model.Url += "-" + model.Id;
+                        model.Code += "-" + model.Id;
                         _unitOfWork.Save();
                     }
 
@@ -836,6 +839,10 @@ namespace GlobeWork.Controllers
             countruy.Name = model.Name;
             countruy.Sort = model.Sort;
             countruy.Active = model.Active;
+            countruy.Footer = model.Footer;
+            countruy.Hot = model.Hot;
+            countruy.School = model.School;
+            countruy.Scholarship = model.Scholarship;
             _unitOfWork.Save();
             return RedirectToAction("ListCountruy", new { result = "update" });
         }

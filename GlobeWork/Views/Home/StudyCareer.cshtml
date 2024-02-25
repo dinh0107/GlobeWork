@@ -1,0 +1,59 @@
+﻿@model GlobeWork.ViewModel.CountruyStudyAbroadViewModel
+@using GlobeWork.Models
+@using PagedList.Mvc
+@{
+    var config = (ConfigSite)HttpContext.Current.Application["ConfigSite"];
+    ViewBag.Title = "Du học " + Model.Career.Name;
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("StudyCareer", new { url = Model.Career.Url }); ;
+}
+<div class="container">
+    <div class="row">
+        @if (Model.StudyAbroads.Any())
+        {
+            foreach (var item in Model.StudyAbroads)
+            {
+                <div class="col-lg-4">
+                    <div class="card item-scholarship">
+                        <a href="@Url.Action("StudyAbroadDetail" , new {url = item.Url})">
+                            @if (item.Image != null)
+                            {
+                                <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/studyAbroad/", item.Image)" alt="@item.Name" class="lazyload" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/images/on-image.jpg" alt="@item.Name" />
+                            }
+                        </a>
+                        <div class="card-body">
+                            <a href="@Url.Action("StudyAbroadDetail" , new {url = item.Url})" class="card-title">
+                                @item.Name
+                            </a>
+                            <p class="card-text">@item.Company.Name</p>
+                            <div class="card-btns">
+                                <a href="#" class="link-scholarship">
+                                    @Html.DisplayFor(a => item.Wages)
+                                </a>
+                                <a href="#" class="link-scholarship">
+                                    @item.StudyAbroadCategory.Country.Name
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            if (Model.StudyAbroads.PageCount > 1)
+            {
+                <div class="col-12 text-center">
+                    @Html.PagedListPager(Model.StudyAbroads, page => Url.Action("StudyCareer", new { page, url = Model.Career.Url }))
+                </div>
+            }
+        }
+        else
+        {
+            <div class="none-suitable-job__content">
+                <img src="https://static.topcv.vn/v4/image/job-list/none-result.png" alt="None suitable job">
+                <span>Chưa tìm thấy nội dung phù hợp với yêu cầu của bạn</span>
+            </div>
+        }
+    </div>
+</div>

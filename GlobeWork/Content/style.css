@@ -3606,3 +3606,29 @@ input, button {
 summary {
   list-style-type: none;
 }
+
+.menu-footer li {
+  margin-top: 0.5rem;
+}
+
+.title-model {
+  text-align: center;
+  color: #000;
+}
+.title-model:before {
+  display: none;
+}
+
+#form-contact {
+  background: #fff;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  border-top: 5px solid #FF8400;
+  padding: 20px;
+}
+#form-contact button {
+  background: #FF8400;
+  color: #fff;
+  padding: 10px;
+  text-transform: uppercase;
+  font-weight: 600;
+}

@@ -17,7 +17,6 @@
                 @Html.CheckBoxFor(a => a.StudyAbroad.Active, new { @checked = "checked" })
             </div>
             <button type="submit" class="btn btn-primary">Lưu lại</button>
-            <button class="btn btn-danger">Huỷ bỏ</button>
         </div>
     </div>
     <div class="container py-5">
@@ -39,7 +38,20 @@
                     </div>
                     <div class="form-group col-3">
                         <label>
-                            Loại <i class="text-danger">*</i>
+                            Ngành nghề <i class="text-danger">*</i>
+                        </label>
+                        <select class="v-select" name="CareerId">
+                            @foreach (var item in Model.Careers)
+                            {
+                                <option @if (item.Id == Model.StudyAbroad.CareerId) { @Html.Raw("selected") } value="@item.Id">
+                                    @item.Name
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group col-3">
+                        <label>
+                            Danh mục <i class="text-danger">*</i>
                         </label>
                         <select class="v-select" name="CategoryId">
                             @foreach (var item in Model.StudyAbroadCategories.Where(a => a.ParentId == null))
@@ -68,13 +80,19 @@
                         </label>
                         @Html.TextBoxFor(a => a.StudyAbroad.Health, new { @class = "form-control ", @placeholder = "Yêu cầu sức khỏe" })
                     </div>
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
+                        <label>
+                            Loại tin <i class="text-danger">*</i>
+                        </label>
+                        @Html.EnumDropDownListFor(model => model.StudyAbroad.TypeStudyAbroad, new { @class = "v-select" })
+                    </div>
+                    <div class="form-group col-4">
                         <label>
                             Hạn nhận hồ sơ <i class="text-danger">*</i>
                         </label>
                         @Html.TextBoxFor(a => a.StudyAbroad.ExpirationDate, new { @class = "form-control datetimepicker", @placeholder = "Chọn ngày hết hạn nhận hồ sơ" })
                     </div>
-                    <div class="form-group col-6">
+                    <div class="form-group col-4">
                         <label>
                             Trình độ học vấn, bằng cấp <i class="text-danger">*</i>
                         </label>

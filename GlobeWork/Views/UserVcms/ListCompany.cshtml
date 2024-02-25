@@ -114,17 +114,9 @@
                         <td>@Html.EditorFor(a => company.ShowHome)</td>
                         <td>@Html.CheckBoxFor(a => company.Employer.Active, new{id = "active"})</td>
                         <td>
-                            @if (company.Employer.Active)
-                            {
-                                <a href="javascript:;" onclick="deleteCompany('@company.EmployerId')" class="red-warring">Xóa vĩnh viễn</a>
-                                @:- <a href="javascript:;" onclick="restoreCompany('@company.EmployerId')" class="text-success">Khôi phục</a>
-                            }
-                            else
-                            {
-                                <a href="javascript:;" onclick="updateCompany('@company.EmployerId')">Cập nhật</a>
-                                @:- <a href="@Url.Action("EditCompany", new{companyId = company.EmployerId})">Sửa</a>
-                                @:- <a href="javascript:;" onclick="deleteCompany('@company.EmployerId')" class="red-warring">Xóa</a>
-                            }
+                            <a href="javascript:;" onclick="updateCompany('@company.EmployerId')">Cập nhật</a>
+                            - <a href="@Url.Action("EditCompany", new{companyId = company.EmployerId})">Sửa</a>
+                            - <a href="javascript:;" onclick="deleteCompany('@company.EmployerId')" class="red-warring">Xóa</a>
                         </td>
                     </tr>
                 }

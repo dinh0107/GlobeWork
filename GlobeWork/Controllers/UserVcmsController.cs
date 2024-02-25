@@ -399,6 +399,7 @@ namespace GlobeWork.Controllers
                 Company = company,
                 Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name)),
                 Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name)),
+                Cities = _unitOfWork.CityRepository.Get(orderBy: o => o.OrderBy(a => a.Sort)),
             };
             return View(model);
         }
@@ -414,7 +415,7 @@ namespace GlobeWork.Controllers
             if (ModelState.IsValid)
             {
                 company.Name = model.Company.Name;
-                company.WebsiteUrl = model.Company.Url;
+                company.WebsiteUrl = model.Company.WebsiteUrl;
                 company.Address = model.Company.Address;
                 company.CompanySize = model.Company.CompanySize;
                 company.EstablishmentDate = model.Company.EstablishmentDate;
@@ -423,22 +424,27 @@ namespace GlobeWork.Controllers
                 company.Product = model.Company.Product;
                 company.GoogleMap = model.Company.GoogleMap;
                 company.VideoYoutube = model.Company.VideoYoutube;
+                company.Age = model.Company.Age;
+                company.CityId = Convert.ToInt32(fc["city"]);
                 company.Email = model.Company.Email;
-                company.Body = model.Company.Body;
                 company.Url = HtmlHelpers.ConvertToUnSign(null, company.Url ?? company.Name);
                 _unitOfWork.CompanyRepository.Update(company);
-                company.Careers.Clear();
+                if (company.Careers.Any())
+                {
+                    company.Careers.Clear();
+                }
+                _unitOfWork.Save();
                 var careers = fc["career"];
                 if (!string.IsNullOrEmpty(careers))
                 {
-                    var listCareer = careers.Split((',')).Select(int.Parse).ToList();
-                    foreach (var item in listCareer)
+                    foreach (var item in careers.Split(','))
                     {
-                        var careerItem = _unitOfWork.CareerRepository.GetById(item);
+                        var id = Convert.ToInt32(item);
+                        var careerItem = _unitOfWork.CareerRepository.GetById(id);
                         company.Careers.Add(careerItem);
                     }
+                    _unitOfWork.Save();
                 }
-                _unitOfWork.Save();
                 return RedirectToAction("ListCompany");
             }
             model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));

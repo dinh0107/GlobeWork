@@ -53,7 +53,7 @@
                             @foreach (var item in Model.StudyAbroadCategories.Where(a => a.ParentId == null))
                             {
                                 <option @if (item.Id == Model.Article.StudyAbroadCategoryId) { @Html.Raw("selected") } value="@item.Id">
-                            @item.CategoryName
+                                    @item.CategoryName
                                 </option>
                                 foreach (var child in Model.StudyAbroadCategories.Where(a => a.ParentId == item.Id))
                                 {
@@ -69,6 +69,12 @@
                             Số ngày hiện thị nổi bật
                         </label>
                         @Html.TextBoxFor(a => a.DateHot, new { @class = "input-number custom-input" })
+                    </div>
+                    <div class="form-group col-2">
+                        <label>
+                            Loại bài viết
+                        </label>
+                        @Html.EnumDropDownListFor(model => model.Article.TypeArticle, new { @class = "v-select" })
                     </div>
                 </div>
             </div>

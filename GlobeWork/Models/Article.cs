@@ -35,6 +35,9 @@ namespace GlobeWork.Models
         public bool IsAdmin { get; set; }
         [Display(Name = "Hiện Menu")]
         public bool Menu { get; set; }
+
+        [Display(Name = "Hiện chân trang")]
+        public bool Footer { get; set; }
         [StringLength(300)]
         public string Url { get; set; }
         public int? StudyAbroadCategoryId { get; set; }
@@ -50,7 +53,7 @@ namespace GlobeWork.Models
         public virtual Employer Employer { get; set; }
         public virtual Admin Admin { get; set; }
         public virtual StudyAbroadCategory StudyAbroadCategory { get; set; }
-
+        public TypeArticle TypeArticle { get; set; }
 
         public Article()
         {
@@ -59,5 +62,12 @@ namespace GlobeWork.Models
             View = 1;
             Sort = 1;
         }
+    }
+    public enum TypeArticle
+    {
+        [Display(Name ="Tin tức")]
+        Article,
+        [Display(Name ="Trường")]
+        School
     }
 }

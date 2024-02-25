@@ -12,10 +12,10 @@ namespace GlobeWork.ViewModel
     public class EmployerViewModel
     {
         public Employer Employer { get; set; }
-        [DisplayFormat(DataFormatString = "{0:N0} VNĐ")]
-        public decimal Amount { get ; set; }
         public int JobPost {  get; set; }
         public int Cv {  get; set; }
+        public int Study { get; set; }
+        public int Article { get; set; }
     }
     public class InsertEmployerViewModel
     {

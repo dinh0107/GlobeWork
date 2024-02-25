@@ -59,7 +59,7 @@
                         </div>
                     </li>
                     <li data-id="1">
-                        <a href="@Url.Action("EditTitle")" class="root"><span>Tiêu đề</span><i class="fas fa-caret-down"></i></a>
+                        <a href="@Url.Action("ListTitle")" class="root"><span>Tiêu đề</span><i class="fas fa-caret-down"></i></a>
                     </li>
                     <li data-id="2">
                         <a class="root"><span>Quản lý người dùng</span><i class="fas fa-caret-down"></i></a>
@@ -120,7 +120,6 @@
                         <a class="root"><span>Quản lý Liên hệ</span><i class="fas fa-caret-down"></i></a>
                         <div class="sub hidden">
                             <div>@Html.ActionLink("Danh sách liên hệ", "ListContact", "Contact", null, new { @class = "text_link" })</div>
-                            <div>@Html.ActionLink("Danh đăng ký nhận tin", "ListSubcribe", "Contact", null, new { @class = "text_link" })</div>
                         </div>
                     </li>
                 </ul>

@@ -8,6 +8,7 @@
         ViewBag.ImageShare = Request.Url?.GetLeftPart(UriPartial.Authority) + Path.Combine("/images/company/", Model.StudyAbroad.Company.Avatar);
     }
     var id = Convert.ToInt32(ViewContext.RouteData.Values["Id"]);
+    var request = Request.Url;
     var email = ViewContext.RouteData.Values["Email"].ToString();
 }
 <div class="bg-light py-4">
@@ -114,16 +115,16 @@
                             </div>
                         </div>
                         <div class="col-lg-4">
-                                <div class="media section-info">
-                                    <div class="section-info__icon">
-                                        <i class="fa-solid fa-book-open-cover"></i>
-                                    </div>
-                                    <div class="media-body">
-                                        <span class="job-detail__info--section-content-title">Yêu cầu</span>
-                                        <span class="job-detail__info--section-content-value">@Html.DisplayFor(a => a.StudyAbroad.Gender)</span>
-                                    </div>
+                            <div class="media section-info">
+                                <div class="section-info__icon">
+                                    <i class="fa-solid fa-book-open-cover"></i>
+                                </div>
+                                <div class="media-body">
+                                    <span class="job-detail__info--section-content-title">Yêu cầu</span>
+                                    <span class="job-detail__info--section-content-value">@Html.DisplayFor(a => a.StudyAbroad.Gender)</span>
                                 </div>
                             </div>
+                        </div>
                     </div>
                     <div class="deadline">
                         <i class="fa-solid fa-clock"></i>Hạn nộp hồ sơ:
@@ -153,7 +154,7 @@
                             <a href="@Url.Action("Login", "User")" class="button1">Nộp hồ sơ</a>
                         }
 
-                        <div class="button2">Cần tư vấn</div>
+                        <div class="button2" data-toggle="modal" data-target="#Advise">Cần tư vấn</div>
                         @if (email == "")
                         {
                             <a href="@Url.Action("Login","User" , new {returnUrl = Url.Action("StudyAbroadDetail", new { url = Model.StudyAbroad.Url })})" class="button3"><i class="fa-regular fa-heart mr-2"></i> Lưu tin </a>
@@ -189,13 +190,13 @@
                         </div>
                     </div>
                     <div class="d-flex flex-row align-items-center">
-                       Số lượng:
+                        Số lượng:
                         <div class="deadline mx-2">
                             @Model.StudyAbroad.Quantity
                         </div>
                     </div>
                     <div class="d-flex flex-row align-items-center">
-                       Địa chỉ:
+                        Địa chỉ:
                         <div class="deadline mx-2">
                             @Model.StudyAbroad.Address
                         </div>
@@ -206,19 +207,19 @@
                         Chi tiết tin
                     </div>
                     @if (Model.StudyAbroad.ListImage != null)
-                        {
-                            <div class="detail-title-box">
-                                Hình ảnh minh họa
-                            </div>
-                            <div class="list-img">
-                                @foreach (var item in Model.StudyAbroad.ListImage.Split(','))
-                                {
-                                    <a href="@Path.Combine("/images/study/",item)" data-fancybox="detail">
-                                        <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/study/", item)" alt="@Model.StudyAbroad.Name" class="lazyload" />
-                                    </a>
-                                }
-                            </div>
-                        }
+                    {
+                        <div class="detail-title-box">
+                            Hình ảnh minh họa
+                        </div>
+                        <div class="list-img">
+                            @foreach (var item in Model.StudyAbroad.ListImage.Split(','))
+                            {
+                                <a href="@Path.Combine("/images/study/",item)" data-fancybox="detail">
+                                    <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/study/", item)" alt="@Model.StudyAbroad.Name" class="lazyload" />
+                                </a>
+                            }
+                        </div>
+                    }
                     @if (Model.StudyAbroad.Body != null)
                     {
                         <div class="detail-title-box">
@@ -256,9 +257,9 @@
                         <div class="job-detail__box--right-title">
                             Tin cùng công ty
                         </div>
-                        <form class="job-search-box" action="@Url.Action("Search")">
+                        <form class="job-search-box" action="@Url.Action("SearchStudyAbroad")">
                             <input type="hidden" name="companyId" value="@Model.StudyAbroad.CompanyId" />
-                            <input type="text" name="keyword" required placeholder="Tên công việc, vị trí bạn muốn ứng tuyển..." />
+                            <input type="text" name="name" required placeholder="Tên công việc, vị trí bạn muốn ứng tuyển..." />
                             <button type="submit"><i class="fas fa-search"></i></button>
                         </form>
                         <hr />
@@ -328,8 +329,8 @@
                         <div class="job-detail__box--right-title">
                             Tin liên quan
                         </div>
-                        <form class="job-search-box" action="@Url.Action("Search")">
-                            <input type="text" name="keyword" required placeholder="Tên công việc, vị trí bạn muốn ứng tuyển..." />
+                        <form class="job-search-box" action="@Url.Action("SearchStudyAbroad")">
+                            <input type="text" name="name" required placeholder="Tên công việc, vị trí bạn muốn ứng tuyển..." />
                             <button type="submit"><i class="fas fa-search"></i></button>
                         </form>
                         <hr />
@@ -377,36 +378,36 @@
                                 }
                             </div>
                         }
-                        <a href="" class="view-more-job">Xem thêm công việc<i class="fal fa-long-arrow-right ml-2"></i></a>
+                        @*<a href="" class="view-more-job">Xem thêm công việc<i class="fal fa-long-arrow-right ml-2"></i></a>*@
                     </div>
                 }
-                <div class="job-detail__box--right mt-3">
-                    <div class="job-detail__box--right-title">
-                        Chia sẻ công ty tới bạn bè
-                    </div>
-                    <div class="copy-link">
-                        <div class="link">
-                            <span>
-                                @Request.Url
-                            </span>
-                        </div>
-                        <button type="button"><i class="fas fa-copy"></i></button>
-                    </div>
-                    <div class="job-detail__box--right-title mt-4">
-                        Chia sẻ qua mạng xã hội
-                    </div>
-                    <ul class="ul-reset share-social mt-2">
-                        <li>
-                            <a href="#" target="_blank"><img src="~/Content/images/facebook.png" alt="Facebook" /></a>
-                        </li>
-                        <li>
-                            <a href="#" target="_blank"><img src="~/Content/images/twitter.png" alt="Facebook" /></a>
-                        </li>
-                        <li>
-                            <a href="#" target="_blank"><img src="~/Content/images/linkedin.png" alt="Facebook" /></a>
-                        </li>
-                    </ul>
+            <div class="job-detail__box--right mt-3">
+                <div class="job-detail__box--right-title">
+                    Chia sẻ công ty tới bạn bè
                 </div>
+                <div class="copy-link">
+                    <div class="link">
+                        <span id="url-request" data-value="@request">
+                            @request
+                        </span>
+                    </div>
+                    <button type="button" class="copy-value"><i class="fas fa-copy"></i></button>
+                </div>
+                <div class="job-detail__box--right-title mt-4">
+                    Chia sẻ qua mạng xã hội
+                </div>
+                <ul class="ul-reset share-social mt-2">
+                    <li>
+                        <a href="javascripts:;" onclick="window.open('https://www.facebook.com/sharer.php?u='+encodeURIComponent(location.href)+'&amp;t='+encodeURIComponent(document.title));return false" target="_blank"><img src="~/Content/images/facebook.png" alt="Facebook" /></a>
+                    </li>
+                    <li>
+                        <a href="javascripts:;" onclick="window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(location.href)+'&amp;text='+encodeURIComponent(document.title));return false" target="_blank"><img src="~/Content/images/twitter.png" alt="Facebook" /></a>
+                    </li>
+                    <li>
+                        <a href="javascripts:;" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href)+'&amp;t='+encodeURIComponent(document.title));return false" target="_blank"><img src="~/Content/images/linkedin.png" alt="Facebook" /></a>
+                    </li>
+                </ul>
+            </div>
 
             </div>
         </div>
@@ -421,7 +422,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            @using (Html.BeginForm("Apply", "Home", FormMethod.Post, new { enctype = "multipart/form-data" , @class = "apply-form" }))
+            @using (Html.BeginForm("Apply", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "apply-form" }))
             {
                 <input type="hidden" name="StudyAbroadId" value="@Model.StudyAbroad.Id" />
                 <input type="hidden" name="CompanyId" value="@Model.StudyAbroad.CompanyId" />
@@ -439,6 +440,36 @@
         </div>
     </div>
 </div>
+@if (id > 0)
+{
+    <div class="modal fade bd-example-modal-lg" id="Advise" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="job-detail__name" id="exampleModalLongTitle">Tư vấn: <span class="text-success">@Model.StudyAbroad.Name</span></div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @using (Html.BeginForm("Advise", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "advise-form" }))
+                {
+                    <input type="hidden" name="StudyAbroadId" value="@Model.StudyAbroad.Id" />
+                    <input type="hidden" name="Advise.EmployerId" value="@Model.StudyAbroad.CompanyId" />
+                    <input type="hidden" name="UserId" value="@id" />
+                    @Html.AntiForgeryToken();
+                    @Html.ValidationSummary(true)
+                    <div class="modal-body">
+                        @Html.Action("AdviseForm")
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary">Gửi thông tin</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
 @Scripts.Render("~/bundles/jqueryval")
 @section Scripts{
     <script>

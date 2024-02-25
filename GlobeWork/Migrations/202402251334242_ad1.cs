@@ -7,12 +7,12 @@
     {
         public override void Up()
         {
-            AddColumn("dbo.Certificates", "EndDate", c => c.String());
+            AddColumn("dbo.Articles", "Footer", c => c.Boolean(nullable: false));
         }
         
         public override void Down()
         {
-            DropColumn("dbo.Certificates", "EndDate");
+            DropColumn("dbo.Articles", "Footer");
         }
     }
 }

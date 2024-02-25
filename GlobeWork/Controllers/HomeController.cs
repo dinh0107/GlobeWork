@@ -1,4 +1,4 @@
-﻿using Helpers;
+﻿    using Helpers;
 using GlobeWork.DAL;
 using GlobeWork.Filters;
 using GlobeWork.Models;
@@ -20,6 +20,8 @@ using System.Web.Routing;
 using Com.CloudRail.SI.Interfaces;
 using System.Globalization;
 using System.Threading.Tasks;
+using Antlr.Runtime;
+using System.Data.Entity;
 
 namespace GlobeWork.Controllers
 {
@@ -48,7 +50,16 @@ namespace GlobeWork.Controllers
         [ChildActionOnly]
         public PartialViewResult Footer()
         {
-            return PartialView();
+            var career = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.Footer, o => o.OrderBy(a => a.Sort));
+            var article = _unitOfWork.ArticleRepository.GetQuery(a => a.Active && a.Footer, o => o.OrderByDescending(a => a.CreateDate));
+            var countruy = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.Footer , o => o.OrderBy(a => a.Sort));
+            var model = new FooterViewModel
+            {
+                Careers = career,
+                Articles = article,
+                Countries = countruy
+            };
+            return PartialView(model);
         }
         public ActionResult Index()
         {
@@ -703,9 +714,9 @@ namespace GlobeWork.Controllers
         [Route("du-hoc")]
         public ActionResult StudyAbroad()
         {
-            var studyAbroad = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate) , 10);
+            var studyAbroad = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && a.TypeStudyAbroad == TypeStudyAbroad.Scholarship, o => o.OrderByDescending(a => a.CreateDate) , 10);
             var hot = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && a.Hot >= DateTime.Now, o => o.OrderByDescending(a => a.CreateDate));
-            var article = _unitOfWork.ArticleRepository.GetQuery(a => a.Active && a.Hot >= DateTime.Now, o => o.OrderByDescending(a => a.CreateDate), 6);
+            var article = _unitOfWork.ArticleRepository.GetQuery(a => a.Active && (a.Hot >= DateTime.Now && a.TypeArticle == TypeArticle.Article), o => o.OrderByDescending(a => a.CreateDate), 6);
             var model = new StudyAbroadViewModel
             {
                 NewStudyAbroad = studyAbroad,
@@ -726,8 +737,8 @@ namespace GlobeWork.Controllers
                 return RedirectToAction("Index");
             }
             var study = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.Hot >= DateTime.Now && a.CategoryId == cat.Id) , o => o.OrderByDescending(a => a.CreateDate), 30);
-            var article = _unitOfWork.ArticleRepository.GetQuery(a => a.Active && (a.StudyAbroadCategoryId == cat.Id && a.Hot >= DateTime.Now), o => o.OrderByDescending(a => a.CreateDate), 6);
-            var studyAbroad = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && a.CategoryId == cat.Id, o => o.OrderByDescending(a => a.CreateDate) , 10);
+            var article = _unitOfWork.ArticleRepository.GetQuery(a => a.Active && (a.StudyAbroadCategoryId == cat.Id && a.Hot >= DateTime.Now && a.TypeArticle == TypeArticle.Article), o => o.OrderByDescending(a => a.CreateDate), 6);
+            var studyAbroad = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.CategoryId == cat.Id && a.TypeStudyAbroad == TypeStudyAbroad.Scholarship), o => o.OrderByDescending(a => a.CreateDate) , 10);
             var model = new StudyAbroadCategoryViewModel
             {
                 StudyAbroadCategory = cat,
@@ -737,6 +748,10 @@ namespace GlobeWork.Controllers
                 Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort)),
                 Banners = _unitOfWork.BannerRepository.GetQuery(a => a.Active && a.GroupId == 2, o => o.OrderBy(a => a.Sort)),
                 Skills = _unitOfWork.SkillRepository.GetQuery(a => a.ShowHome, o => o.OrderBy(a => a.SkillName), 10),
+                FooterCountries = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.Hot, o =>  o.OrderBy(a => a.Sort),9),
+                CountriesStudy = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.Scholarship, o => o.OrderBy(a => a.Sort),9),
+                CountriesSchool = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.School, o => o.OrderBy(a => a.Sort), 9),
+                Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.StudyHot , o => o.OrderBy(a => a.Sort),9)
             };
             return View(model);
         }
@@ -787,7 +802,7 @@ namespace GlobeWork.Controllers
             return View(model);
         }
         [Route("tim-kiem-du-hoc")]
-        public ActionResult SearchStudyAbroad(int? page , string name , int countruyId = 0)
+        public ActionResult SearchStudyAbroad(int? page , string name , int countruyId = 0 , int companyId = 0)
         {
             var pageNumber = page ?? 1;
             var study = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Name.Contains(name) , o => o.OrderByDescending(a => a.CreateDate));
@@ -795,12 +810,17 @@ namespace GlobeWork.Controllers
             {
                 study = study.Where(a => a.StudyAbroadCategory.CountryId == countruyId);
             }
+            if (companyId > 0)
+            {
+                study = study.Where(a => a.CompanyId == companyId);
+            }
             var model = new SearchStudyAbroadViewModel
             {
                 Name = name ,
                 StudyAbroads = study.ToPagedList(pageNumber , 10),
                 Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort)),
-                CountruyId = countruyId
+                CountruyId = countruyId,
+                CompanyId = companyId
             };
             return View(model);
 
@@ -845,6 +865,76 @@ namespace GlobeWork.Controllers
             };
             return View(model);
         }
+        [Route("du-hoc/nuoc/{id}")]
+        public ActionResult CountruyStudy(int? page ,int id)
+        {
+            var pageNumber = page ?? 1;
+            var countruy = _unitOfWork.CountryRepository.GetById(id);
+            if(countruy == null)
+            {
+                return RedirectToAction("Index");
+            }
+            var study = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.StudyAbroadCategory.CountryId == countruy.Id && a.TypeStudyAbroad == TypeStudyAbroad.StudyAbroad), o => o.OrderByDescending(a => a.CreateDate));
+            var model = new CountruyStudyAbroadViewModel
+            {
+                StudyAbroads = study.ToPagedList(pageNumber, 9),
+                Country = countruy
+            };
+            return View(model);
+        }
+        [Route("du-hoc/hoc-bong/{id}")]
+        public ActionResult Scholarship(int? page, int id)
+        {
+            var pageNumber = page ?? 1;
+            var countruy = _unitOfWork.CountryRepository.GetById(id);
+            if (countruy == null)
+            {
+                return RedirectToAction("Index");
+            }
+            var study = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.StudyAbroadCategory.CountryId == countruy.Id && a.TypeStudyAbroad == TypeStudyAbroad.Scholarship), o => o.OrderByDescending(a => a.CreateDate));
+            var model = new CountruyStudyAbroadViewModel
+            {
+                Country = countruy,
+                StudyAbroads = study.ToPagedList(pageNumber, 9),
+            };
+            return View(model);
+        }
+
+
+        [Route("du-hoc/nganh/{url}")]
+        public ActionResult StudyCareer(int? page, string url)
+        {
+            var pageNumber = page ?? 1;
+            var career = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.Code == url).FirstOrDefault();
+            if(career == null)
+            {
+                return RedirectToAction("Index");
+            }
+            var study = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.CareerId == career.Id && a.TypeStudyAbroad == TypeStudyAbroad.StudyAbroad), o => o.OrderByDescending(a => a.CreateDate));
+            var model = new CountruyStudyAbroadViewModel
+            {
+                StudyAbroads = study.ToPagedList(pageNumber, 9),
+                Career = career
+            };
+            return View(model);
+        }
+        [Route("danh-sach-truong/{id}")]
+        public ActionResult SchoolCountruy(int? page, int id)
+        {
+            var pageNumber = page ?? 1;
+            var countruy = _unitOfWork.CountryRepository.GetById(id);
+            if (countruy == null)
+            {
+                return RedirectToAction("Index");
+            }
+            var article = _unitOfWork.ArticleRepository.GetQuery(a => a.Active && a.StudyAbroadCategory.CountryId == countruy.Id, o => o.OrderByDescending(a => a.CreateDate));
+            var model = new CountruyStudyAbroadViewModel
+            {
+                Articles = article.ToPagedList(pageNumber, 9),
+                Country = countruy
+            };
+            return View(model);
+        }
         #endregion
 
         [Route("bai-viet/{url}.hmtl")]
@@ -863,12 +953,42 @@ namespace GlobeWork.Controllers
         {
             return View();
         }
-
+        [Route("lien-he")]
         public ActionResult Contact()
         {
             return View();
         }
 
+        [HttpPost, ValidateAntiForgeryToken]
+        public JsonResult Contact(Contact model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { status = false, msg = "Hãy điền đúng định dạng." });
+            }
+            var IP = HttpContext.Request.UserHostAddress;
+            if (IP == null)
+            {
+                return Json(new { status = false, msg = "Hãy điền đúng định dạng." });
+            }
+            DateTime currentDate = DateTime.Now.Date;
+            var count = _unitOfWork.ContactRepository.GetQuery(a => a.IP == IP && DbFunctions.TruncateTime(a.CreateDate) == currentDate).Count();
+            if (count > 5)
+            {
+                return Json(new { status = false, msg = "Vượt quá số lần cho phép" });
+            }
+            model.IP = IP;
+            _unitOfWork.ContactRepository.Insert(model);
+            _unitOfWork.Save();
+            var subject = "Email liên hệ từ website: " + Request.Url?.Host;
+            var body = $"<p>Tên người liên hệ: {model.FullName},</p>" +
+                        $"<p>Email liên hệ: {model.Email},</p>" +
+                        $"<p>Số điện thoại: {model.Mobile},</p>" +
+                        $"<p>Nội dung:{model.Body}</p>" +
+                        $"<p>Đây là hệ thống gửi email tự động, vui lòng không phản hồi lại email này.</p>";
+            Task.Run(() => HtmlHelpers.SendEmail("gmail", subject, body, ConfigSite.Email, ConfigSite.EmailConfigs, ConfigSite.EmailConfigs, ConfigSite.PassWordMail, ConfigSite.Title));
+            return Json(new { status = true, msg = "Gửi liên hệ thành công.\nChúng tôi sẽ liên lạc lại với bạn sớm nhất có thể." });
+        }
         [Route("chi-tiet/{url}.html")]
         public ActionResult UserProfile(string url, int type = 0)
         {
@@ -1011,7 +1131,7 @@ namespace GlobeWork.Controllers
                         .Replace("[DATE]", model.ApplyJob.CreateDate.ToString("dd/MM/yyyy")).Replace("[URL]", url);
 
                     var stud = _unitOfWork.StudyAbroadRepository.GetById(model.ApplyJob.StudyAbroad.Id);
-                    var companyEmail = model.ApplyJob.StudyAbroad.Company.Employer.Email;
+                    var companyEmail = model.ApplyJob.StudyAbroad.Company.Email ?? model.ApplyJob.StudyAbroad.Company.Employer.Email;
                     var emailSubject = "Thông báo tuyển dụng " + stud.Name;
                     var emailBody = emailTemp;
                     _unitOfWork.Dispose();
@@ -1083,7 +1203,7 @@ namespace GlobeWork.Controllers
                         .Replace("[DATE]", model.ApplyJob.CreateDate.ToString("dd/MM/yyyy")).Replace("[URL]", url);
 
                     var jobPost = _unitOfWork.JobPostRepository.GetById(model.ApplyJob.JobPost.Id);
-                    var companyEmail = model.ApplyJob.JobPost.Company.Employer.Email;
+                    var companyEmail = model.ApplyJob.StudyAbroad.Company.Email ?? model.ApplyJob.JobPost.Company.Employer.Email;
                     var emailSubject = "Thông báo tuyển dụng " + jobPost.Name;
                     var emailBody = emailTemp;
                     _unitOfWork.Dispose();
@@ -1096,7 +1216,67 @@ namespace GlobeWork.Controllers
         }
         public PartialViewResult AdviseForm()
         {
-            return PartialView();
+            var model = new AdviseViewModel
+            {
+                User = User
+            };
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        public JsonResult AdviseForm(AdviseViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if(model.JobId > 0)
+                {
+                    var job = _unitOfWork.JobPostRepository.GetById(model.JobId);
+                    if (job == null)
+                    {
+                        return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+                    }
+                    model.Advise.UserId = User.Id;
+                    model.Advise.User = User;
+                    model.Advise.JobPostId = job.Id;
+                    model.Advise.JobPost = job;
+                    _unitOfWork.AdviseRepository.Insert(model.Advise);
+                    _unitOfWork.Save();
+                    var jobsubject = "Yêu cầu tư vấn: " + Request.Url?.Host;
+                    var jobbody = $"<p>Tên người liên hệ: {model.Advise.User.FullName},</p>" +
+                                $"<p>Email liên hệ: {model.Advise.User.Email},</p>" +
+                                $"<p>Số điện thoại: {model.Advise.User.Phone},</p>" +
+                                $"<p>Việc làm cần tư vấn: {model.Advise.JobPost.Name},</p>" +
+                                $"<p>Nội dung:{model.Advise.Body}</p>" +
+                                $"<p>Đây là hệ thống gửi email tự động, vui lòng không phản hồi lại email này.</p>";
+
+                    Task.Run(() => HtmlHelpers.SendEmail("gmail", jobsubject, jobbody, model.Advise.JobPost.Company.Email, ConfigSite.EmailConfigs, ConfigSite.EmailConfigs, ConfigSite.PassWordMail, ConfigSite.Title));
+                    return Json(new { success = true, message = "Gửi thông yêu cầu tư vấn thành công!!!" });
+                }
+                if (model.StudyAbroadId > 0)
+                {
+                    var study = _unitOfWork.StudyAbroadRepository.GetById(model.StudyAbroadId);
+                    if (study == null)
+                    {
+                        return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
+                    }
+                    model.Advise.UserId = User.Id;
+                    model.Advise.User = User;
+                    model.Advise.StudyAbroadId = study.Id;
+                    model.Advise.StudyAbroad = study;
+                }
+                _unitOfWork.AdviseRepository.Insert(model.Advise);
+                _unitOfWork.Save();
+                var subject = "Yêu cầu tư vấn: " + Request.Url?.Host;
+                var body = $"<p>Tên người liên hệ: {model.Advise.User.FullName},</p>" +
+                            $"<p>Email liên hệ: {model.Advise.User.Email},</p>" +
+                            $"<p>Số điện thoại: {model.Advise.User.Phone},</p>" +
+                            $"<p>Tin du học cần tư vấn: {model.Advise.StudyAbroad.Name},</p>" +
+                            $"<p>Nội dung:{model.Advise.Body}</p>" +
+                            $"<p>Đây là hệ thống gửi email tự động, vui lòng không phản hồi lại email này.</p>";
+                Task.Run(() => HtmlHelpers.SendEmail("gmail", subject, body, model.Advise.StudyAbroad.Company.Email, ConfigSite.EmailConfigs, ConfigSite.EmailConfigs, ConfigSite.PassWordMail, ConfigSite.Title));
+                return Json(new { success = true, message = "Gửi thông yêu cầu tư vấn thành công!!!" });
+            }
+            return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
         }
         protected override void Dispose(bool disposing)
         {

@@ -13,6 +13,12 @@ namespace GlobeWork.ViewModel
         public IEnumerable<StudyAbroadCategory> StudyAbroadCategories { get; set; }
         public IEnumerable<Career> Careers { get; set; }
     }
+    public class FooterViewModel
+    {
+        public IEnumerable<Article> Articles { get; set; }
+        public IEnumerable<Career> Careers { get; set; }
+        public IEnumerable<Country>  Countries { get; set; }
+    }
     public class HomeViewModel
     {
         public IEnumerable<Item> Items { get; set; }
@@ -206,6 +212,7 @@ namespace GlobeWork.ViewModel
     public class AdviseViewModel
     {
         public Advise Advise { get; set; }
+        public User User { get; set; }
         public int JobId { get; set; }
         public int StudyAbroadId { get; set; }
         public int CompanyId { get; set; }
@@ -229,6 +236,10 @@ namespace GlobeWork.ViewModel
         public IEnumerable<Country> Countries { get; set; }
         public IEnumerable<Banner> Banners { get; set; }
         public IEnumerable<Skill> Skills { get; set; }
+        public IEnumerable<Country> FooterCountries { get; set; }
+        public IEnumerable<Country> CountriesStudy { get; set; }
+        public IEnumerable<Country> CountriesSchool { get; set; }
+        public IEnumerable<Career> Careers { get; set; }
     }
     public class StudyAbroadUrlViewModel
     {
@@ -247,6 +258,7 @@ namespace GlobeWork.ViewModel
         public IEnumerable<Country> Countries { get; set; }
         public string Name { get; set; }
         public int CountruyId { get; set; }
+        public int CompanyId { get; set; }
     }
     public class AllStudyAbroadViewModel
     {
@@ -280,6 +292,16 @@ namespace GlobeWork.ViewModel
     public class SearchCompanyViewModel
     {
         public IPagedList<Company> Companies { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class CountruyStudyAbroadViewModel
+    {
+        public IPagedList<StudyAbroad> StudyAbroads { get; set; }
+        public IPagedList<Article> Articles { get; set; }
+        public Country Country { get; set; }
+        public Career  Career { get; set; }
+        public IEnumerable<Like> Likes { get; set; }
         public string Name { get; set; }
     }
 }

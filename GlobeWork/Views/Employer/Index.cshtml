@@ -29,24 +29,24 @@
                             </div>
                             <i class="fal fa-bullhorn"></i>
                         </a>
-                        <a href="" class="media item-dashboard green">
+                        <a href="@Url.Action("ListCv", "Employer")" class="media item-dashboard green">
                             <div class="media-body">
-                                <h5 class="mt-0">0</h5>
+                                <h5 class="mt-0">@Model.Cv</h5>
                                 <p>CV tiếp nhận</p>
                             </div>
                             <i class="fal fa-bullhorn"></i>
                         </a>
-                        <a href="" class="media item-dashboard yellow">
+                        <a href="@Url.Action("ListStudyAbroad", "Employer")" class="media item-dashboard yellow">
                             <div class="media-body">
-                                <h5 class="mt-0">0</h5>
-                                <p>Tin tuyển dụng hiển thị</p>
+                                <h5 class="mt-0">@Model.Study</h5>
+                                <p>Tin du học</p>
                             </div>
                             <i class="fal fa-bullhorn"></i>
                         </a>
-                        <a href="" class="media item-dashboard red">
+                        <a href="@Url.Action("ListArticle","Employer")" class="media item-dashboard red">
                             <div class="media-body">
-                                <h5 class="mt-0">@Html.DisplayFor(a => a.Amount)</h5>
-                                <p>Số tiền đã tiêu</p>
+                                <h5 class="mt-0">@Model.Article</h5>
+                                <p>Số bài viết</p>
                             </div>
                             <i class="fas fa-coins"></i>
                         </a>

@@ -58,6 +58,10 @@ namespace GlobeWork.Models
         public string Description { get; set; }
         [Display(Name = "Hotline"), StringLength(50, ErrorMessage = "Tối đa 50 ký tự"), UIHint("TextBox")]
         public string Hotline { get; set; }
+        [Display(Name = "Điện thoại tư vấn"), StringLength(50, ErrorMessage = "Tối đa 50 ký tự"), UIHint("TextBox")]
+        public string Hotline2 { get; set; }
+        [Display(Name = "Chăm sóc khách hàng"), StringLength(50, ErrorMessage = "Tối đa 50 ký tự"), UIHint("TextBox")]
+        public string Hotline3 { get; set; }
 
         [StringLength(50, ErrorMessage = "Tối đa 50 ký tự"), Display(Name = "Email"), UIHint("TextBox")]
         public string Email { get; set; }
