@@ -170,18 +170,15 @@
         });
         document.querySelector('.v-select').addEventListener('change', function (data) {
             const id = $(this).val();
+            console.log(id)
             var items = [];
             items.push("<option value>Chọn quận huyện</option>");
-            if (id !== "") {
-                $.getJSON("/User/GetDistrict", { cityId: id }, function (data) {
-                    $.each(data, function (key, val) {
-                        items.push("<option value='" + val.Id + "'>" + val.Name + "</option>");
-                    });
-                    $("[data-item=district]").html(items.join(""));
+            $.getJSON("/User/GetDistrict", { cityId: id }, function (data) {
+                $.each(data, function (key, val) {
+                    items.push("<option value='" + val.Id + "'>" + val.Name + "</option>");
                 });
-            } else {
                 $("[data-item=district]").html(items.join(""));
-            }
+            });
         });
     </script>
 }

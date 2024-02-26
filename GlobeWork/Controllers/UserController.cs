@@ -1140,6 +1140,7 @@ namespace GlobeWork.Controllers
             return Json(cities, JsonRequestBehavior.AllowGet);
         }
 
+        [OverrideActionFilters]
         public JsonResult GetDistrict(int? cityId)
         {
             var districts = _unitOfWork.DistrictRepository
