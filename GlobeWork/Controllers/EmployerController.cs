@@ -1471,6 +1471,25 @@ namespace GlobeWork.Controllers
             model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
             return View(model);
         }
+
+        [HttpPost]
+        public bool DeleteStudy(int id)
+        {
+            var study = _unitOfWork.StudyAbroadRepository.GetById(id);
+            if (study == null)
+            {
+                return false;
+            }
+            var apply = _unitOfWork.ApplyJobRepository.GetQuery(a => a.StudyAbroadId == study.Id);
+            foreach(var item in apply)
+            {
+                _unitOfWork.ApplyJobRepository.Delete(item);
+                _unitOfWork.Save();
+            }
+            _unitOfWork.StudyAbroadRepository.Delete(study);
+            _unitOfWork.Save();
+            return true;
+        }
         #endregion
 
         #region Article 

@@ -42,7 +42,6 @@
     <table class="list_table tablecenter table-striped">
         <tbody>
             <tr>
-
                 <th width="16%">Tên công việc</th>
                 <th width="10%">Nhà tuyển dụng</th>
                 <th width="8%">Ngày ứng tuyển</th>
@@ -57,15 +56,15 @@
                     <td>
                         <div class="text-left">
                             <strong>
-                                <a href="@Url.Action("JobPostDetail", "Home", new {url = item.JobPost.Url, jobId = item.JobPost.Id})">
-                                    @item.JobPost.Name
+                                <a href="">
+                                    @item.StudyAbroad.Name
                                 </a>
                             </strong>
                         </div>
                     </td>
                     <td>
                         <div class="text-left">
-                            @item.JobPost.Company.Name
+                            @item.StudyAbroad.Company.Name
                         </div>
                     </td>
                     <td>@item.CreateDate.ToString("dd/MM/yyyy")</td>

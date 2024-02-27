@@ -33,9 +33,13 @@ namespace GlobeWork.ViewModel
         public int Contacts { get; set; }
         public int Admins { get; set; }
         public int Banners { get; set; }
-        public int Products { get; set; }
-        public int Orders { get; set; }
-        public int Showrooms { get; set; }
+        public int Job { get; set; }
+        public int Study { get; set; }
+        public int ApplyJob { get; set; }
+        public int ApplyStudy { get; set; }
+        public int Employer { get; set; }
+        public int User { get; set; }
+        //public int Showrooms { get; set; }
     }
     public class EditAdminViewModel
     {

@@ -12,6 +12,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Antlr.Runtime;
 
 namespace GlobeWork.Controllers
 {
@@ -66,9 +67,16 @@ namespace GlobeWork.Controllers
             var model = new InfoAdminViewModel
             {
                 Admins = _unitOfWork.AdminRepository.GetQuery().Count(),
-                //Articles = _unitOfWork.ArticleRepository.GetQuery().Count(),
-                //Contacts = _unitOfWork.ContactRepository.GetQuery().Count(),
-                //Banners = _unitOfWork.BannerRepository.GetQuery().Count(),
+                Job = _unitOfWork.JobPostRepository.GetQuery().Count(),
+                Study = _unitOfWork.StudyAbroadRepository.GetQuery().Count(),
+                ApplyJob = _unitOfWork.ApplyJobRepository.GetQuery(a => a.JobPostId != null).Count(),
+                ApplyStudy = _unitOfWork.ApplyJobRepository.GetQuery(a => a.StudyAbroadId != null).Count(),
+                Articles = _unitOfWork.ArticleRepository.GetQuery().Count(),
+                Contacts = _unitOfWork.ContactRepository.GetQuery().Count(),
+                Banners = _unitOfWork.BannerRepository.GetQuery().Count(),
+                Employer = _unitOfWork.CompanyRepository.GetQuery().Count(),
+                User = _unitOfWork.UserRepository.GetQuery().Count(),
+
                 //Products = _unitOfWork.ProductRepository.GetQuery().Count(),
                 //Orders = _unitOfWork.OrderRepository.GetQuery().Count(),
                 //Showrooms = _unitOfWork.ShowRoomRepository.GetQuery().Count(),
@@ -1135,7 +1143,6 @@ namespace GlobeWork.Controllers
                     Description = item.Element("Des").Value,
                 })
                 .ToList();
-
             return View(items);
         }
         public ActionResult EditTitle(int sort = 0)
@@ -1173,6 +1180,115 @@ namespace GlobeWork.Controllers
             xmlDoc.Save(xmlFilePath);
             return RedirectToAction("ListTitle");
         }
+
+        #endregion
+
+        #region Parter 
+        public ActionResult ListParter()
+        {
+            string xmlFilePath = Server.MapPath("~/Partner.xml");
+            XDocument xmlDoc = XDocument.Load(xmlFilePath);
+
+            List<Parter> items = xmlDoc.Root.Elements("Partner")
+                .Select(item => new Parter
+                {
+                    Id = (int)item.Element("Id"),
+                    Sort = (int)item.Element("Sort"),
+                    Title = item.Element("Title").Value,
+                    Url = item.Element("Url").Value
+                })
+                .ToList();
+
+            return View(items);
+        }
+
+        public ActionResult Parter()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Parter(Parter newPartner)
+        {
+            string xmlFilePath = Server.MapPath("~/Partner.xml");
+            XDocument xmlDoc = XDocument.Load(xmlFilePath);
+
+            int maxId = xmlDoc.Descendants("Partner")
+                             .Select(p => (int)p.Element("Id"))
+                             .DefaultIfEmpty(0)
+                             .Max();
+
+            XElement newElement = new XElement("Partner",
+                                        new XElement("Id", maxId + 1),
+                                        new XElement("Sort", newPartner.Sort),
+                                        new XElement("Title", newPartner.Title),
+                                        new XElement("Url", newPartner.Url));
+
+            xmlDoc.Root.Add(newElement);
+            xmlDoc.Save(xmlFilePath);
+
+            return RedirectToAction("ListParter");
+        }
+
+        public ActionResult UpdatePartner(int id)
+        {
+            string xmlFilePath = Server.MapPath("~/Partner.xml");
+            XDocument xmlDoc = XDocument.Load(xmlFilePath);
+
+            XElement partnerToDelete = xmlDoc.Descendants("Partner")
+                                             .FirstOrDefault(p => (int)p.Element("Id") == id);
+            if (partnerToDelete == null)
+            {
+                return RedirectToAction("ListParter");
+            }
+            Parter partner = new Parter
+            {
+                Id = (int)partnerToDelete.Element("Id"),
+                Sort = (int)partnerToDelete.Element("Sort"),
+                Title = partnerToDelete.Element("Title").Value,
+                Url = partnerToDelete.Element("Url").Value
+            };
+            return View(partner);
+        }
+        [HttpPost]
+        public ActionResult UpdatePartner(Parter updatedPartner)
+        {
+            string xmlFilePath = Server.MapPath("~/Partner.xml");
+            XDocument xmlDoc = XDocument.Load(xmlFilePath);
+
+            XElement partnerToUpdate = xmlDoc.Descendants("Partner")
+                                             .FirstOrDefault(p => (int)p.Element("Id") == updatedPartner.Id);
+
+            if (partnerToUpdate != null)
+            {
+                partnerToUpdate.SetElementValue("Sort", updatedPartner.Sort);
+                partnerToUpdate.SetElementValue("Title", updatedPartner.Title);
+                partnerToUpdate.SetElementValue("Url", updatedPartner.Url);
+                xmlDoc.Save(xmlFilePath);
+                return RedirectToAction("ListParter");
+            }
+            return RedirectToAction("ListParter");
+        }
+
+        [HttpPost]
+        public bool DeletePartner(int id)
+        {
+            string xmlFilePath = Server.MapPath("~/Partner.xml");
+            XDocument xmlDoc = XDocument.Load(xmlFilePath);
+
+            XElement partnerToDelete = xmlDoc.Descendants("Partner")
+                                             .FirstOrDefault(p => (int)p.Element("Id") == id);
+            if(partnerToDelete == null)
+            {
+                return false;
+            }
+            if (partnerToDelete != null)
+            {
+                partnerToDelete.Remove();
+                xmlDoc.Save(xmlFilePath);
+            }
+            return true;
+        }
+
         #endregion
         protected override void Dispose(bool disposing)
         {

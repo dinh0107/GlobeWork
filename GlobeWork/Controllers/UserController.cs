@@ -361,6 +361,33 @@ namespace GlobeWork.Controllers
             return View(model);
         }
 
+        //[Route("doi-mat-khau")]
+        //public ActionResult ChangePassword(int result = 0)
+        //{
+        //    ViewBag.Result = result;
+        //    var model = new UserPasswordViewModel
+        //    {
+        //        User = _unitOfWork.UserRepository.GetById(User.Id),
+        //    };
+        //    return View(model);
+        //}
+
+        //[Route("doi-mat-khau"), HttpPost, ValidateAntiForgeryToken]
+        //public ActionResult ChangePassword(UserPasswordViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        if (User == null || !HtmlHelpers.VerifyHash(model.Password, "SHA256", User.Password))
+        //        {
+        //            ModelState.AddModelError("", @"Tên đăng nhập hoặc mật khẩu không chính xác.");
+        //            return View(model);
+        //        }
+        //        User.Password = HtmlHelpers.ComputeHash(model.Password, "SHA256", null);
+        //        _unitOfWork.Save();
+        //        return RedirectToAction("ChangePassword", new { result = 1 });
+        //    }
+        //    return View(model);
+        //}
 
         public ActionResult InfoUser(int id)
         {
@@ -369,12 +396,8 @@ namespace GlobeWork.Controllers
             {
                 return View();
             }
-            //var edu = _unitOfWork.EducationRepository.GetQuery(a => a.UserId == user.Id, o => o.OrderBy(a => a.Id));
-            //var exp = _unitOfWork.ExperienceRepository.GetQuery(a => a.UserId == user.Id, o => o.OrderBy(a => a.Id));
             var model = new ChangeInfoUserViewModel
             {
-                //ListEducations = edu,
-                //ListExperiences = exp,
                 FullName = user.FullName,
                 Classtify = user.Classtify,
                 Gender = user.Gender,
@@ -389,6 +412,7 @@ namespace GlobeWork.Controllers
             };
             return View(model);
         }
+
         [HttpPost]
         public bool UpdateCv(ChangeInfoUserViewModel model)
         {
@@ -1139,7 +1163,6 @@ namespace GlobeWork.Controllers
                 .GetQuery(a => a.Active && a.Name.ToLower().Contains(city.ToLower()), q => q.OrderBy(a => a.Sort)).Select(a => new { a.Id, a.Name });
             return Json(cities, JsonRequestBehavior.AllowGet);
         }
-
         [OverrideActionFilters]
         public JsonResult GetDistrict(int? cityId)
         {

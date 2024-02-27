@@ -41,7 +41,7 @@ namespace GlobeWork.Models
         public string Body { get; set; }
         [Display(Name = "Yêu cầu học viên"), UIHint("EditorBox")]
         public string Requirements { get; set; }
-        [Display(Name = "Yêu đãi được hưởng"), UIHint("EditorBox")]
+        [Display(Name = "Ưu đãi được hưởng"), UIHint("EditorBox")]
         public string Incentives { get; set; }
         [Display(Name = "Ngày hết hạn"), UIHint("DateTimePicker"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? ExpirationDate { get; set; }
@@ -62,10 +62,9 @@ namespace GlobeWork.Models
         public virtual Career Careers { get; set; }
         public virtual ICollection<City> Cities { get; set; }
         public virtual ICollection<Like> Likes { get; set; }
-
+        public virtual ICollection<ApplyJob> ApplyJobs { get; set; }
         public TypeStudyAbroad  TypeStudyAbroad { get; set; }
         public Wage Wages { get; set; }
-
         public StudyAbroad()
         {
             CreateDate = DateTime.Now;

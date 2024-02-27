@@ -9,6 +9,8 @@ using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using GlobeWork.Controllers;
+using System.Web.Security;
+using System.Web;
 
 namespace GlobeWork.Controllers
 {
@@ -20,7 +22,7 @@ namespace GlobeWork.Controllers
         {
             var pageNumber = page ?? 1;
             var pageSize = 30;
-            var jobPosts = _unitOfWork.JobPostRepository.GetQuery().AsNoTracking();
+            var jobPosts = _unitOfWork.JobPostRepository.Get(orderBy: a => a.OrderByDescending(l => l.CreateDate));
             if (!string.IsNullOrEmpty(result))
             {
                 ViewBag.Result = result;
@@ -42,10 +44,10 @@ namespace GlobeWork.Controllers
                 switch (statusTime)
                 {
                     case 0:
-                        jobPosts = jobPosts.Where(a => a.ExpirationDate < DateTime.Now);
+                        jobPosts = jobPosts.Where(a => a.ExpirationDate > DateTime.Now || a.ExpirationDate == null);
                         break;
                     case 1:
-                        jobPosts = jobPosts.Where(a => a.ExpirationDate > DateTime.Now || a.ExpirationDate == null);
+                        jobPosts = jobPosts.Where(a => a.ExpirationDate <  DateTime.Now);
                         break;
                 }
             }
@@ -180,101 +182,77 @@ namespace GlobeWork.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult UpdateJobPostVcms(CreatePostViewModel model, FormCollection fc)
         {
-            var jobPost = _unitOfWork.JobPostRepository.GetById(model.JobPost.Id);
-            if (jobPost == null)
+            var jobs = _unitOfWork.JobPostRepository.GetById(model.JobPost.Id);
+            if (jobs == null)
             {
-                return RedirectToAction("ListJobPost", "JobPostVcms");
+                return RedirectToAction("ListJobPost");
             }
             if (ModelState.IsValid)
             {
-                jobPost.Url = HtmlHelpers.ConvertToUnSign(null, model.JobPost.Url ?? model.JobPost.Name);
-                jobPost.Name = model.JobPost.Name;
-                jobPost.Body = model.JobPost.Body;
-                jobPost.WebsiteUrl = model.JobPost.WebsiteUrl;
-                jobPost.SalalyMax = model.JobPost.SalalyMax;
-                jobPost.SalalyMin = model.JobPost.SalalyMin;
-                jobPost.Email = model.JobPost.Email;
-                jobPost.LastEditDate = DateTime.Now;
-                var fcExpirationDate = fc["ExpirationDate"];
-                if (!string.IsNullOrEmpty(fcExpirationDate))
+                jobs.Url = HtmlHelpers.ConvertToUnSign(null, jobs.Name);
+                jobs.RankId = Convert.ToInt32(fc["RankId"]);
+                jobs.CareerId = Convert.ToInt32(fc["CareerId"]);
+                jobs.JobTypeId = Convert.ToInt32(fc["JobTypeId"]);
+                jobs.Image = fc["Pictures"] == "" ? null : fc["Pictures"];
+                jobs.Name = model.JobPost.Name;
+                jobs.ExpirationDate = model.JobPost.ExpirationDate;
+                jobs.Quantity = model.JobPost.Quantity;
+                jobs.Gender = model.JobPost.Gender;
+                jobs.Experiences = model.JobPost.Experiences;
+                jobs.Address = model.JobPost.Address;
+                jobs.Body = model.JobPost.Body;
+                jobs.Requirement = model.JobPost.Requirement;
+                jobs.Benefits = model.JobPost.Benefits;
+                jobs.WorkLocation = model.JobPost.WorkLocation;
+                jobs.LastEditDate = DateTime.Now;
+                jobs.Active = model.JobPost.Active;
+                jobs.SalalyMin = model.JobPost.SalalyMin;
+                jobs.SalalyMax = model.JobPost.SalalyMax;
+                jobs.Wages = model.JobPost.Wages;
+                if (jobs.Cities.Any())
                 {
-                    var expirationDate = DateTime.ParseExact(fcExpirationDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    jobPost.ExpirationDate = expirationDate;
+                    jobs.Cities.Clear();
                 }
-                else
+                if (jobs.Skills.Any())
                 {
-                    jobPost.ExpirationDate = null;
-
+                    jobs.Skills.Clear();
                 }
-                //jobPost.Careers.Clear();
-                //jobPost.Skills.Clear();
-                //var careers = fc["career"];
-                //var listCareer = careers.Split((',')).Select(int.Parse).ToList();
-                //if (!string.IsNullOrEmpty(careers))
-                //{
-                //    foreach (var item in listCareer)
-                //    {
-                //        var careerItem = _unitOfWork.CareerRepository.GetById(item);
-                //        jobPost.Careers.Add(careerItem);
-                //    }
-                //}
-                var skills = fc["skill"];
-                if (!string.IsNullOrEmpty(skills))
-                {
-                    var listSkill = skills.Split((',')).ToList();
-                    foreach (var item in listSkill)
-                    {
-                        if (string.IsNullOrWhiteSpace(item)) continue;
-                        var newSkill = new Skill { SkillName = item.Trim() };
-                        var allSkills = _unitOfWork.SkillRepository.GetQuery(a => a.SkillName == item.Trim()).FirstOrDefault();
-                        if (allSkills == null)
-                        {
-                            jobPost.Skills.Add(newSkill);
-                        }
-                        else
-                        {
-                            allSkills.Posts.Add(jobPost);
-                        }
-                    }
-                }
-                var type = Convert.ToInt32(fc["type"]);
-                if (type != 0)
-                {
-                    jobPost.JobTypeId = type;
-                }
-
-                var rank = Convert.ToInt32(fc["rank"]);
-                if (rank != 0)
-                {
-                    jobPost.RankId = rank;
-                }
+                _unitOfWork.Save();
 
                 var cities = fc["city"];
                 if (cities != "")
                 {
-                    foreach (var cId in cities.Split(','))
+                    foreach (var Id in cities.Split(','))
                     {
-                        var city = _unitOfWork.CityRepository.GetById(Convert.ToInt32(cId));
-                        jobPost.Cities.Add(city);
+                        var cityId = Convert.ToInt32(Id);
+                        var city = _unitOfWork.CityRepository.GetById(cityId);
+                        city?.JobPosts.Add(jobs);
+                    }
+                }
+                var skill = fc["skill"];
+                if (skill != null)
+                {
+                    foreach (var skills in skill.Split(','))
+                    {
+                        var skillId = Convert.ToInt32(skills);
+                        var skil = _unitOfWork.SkillRepository.GetById(skillId);
+                        skil?.Posts.Add(jobs);
                     }
                 }
                 _unitOfWork.Save();
-
-                var count = _unitOfWork.JobPostRepository.GetQuery(a => a.Url == jobPost.Url).Count();
-                if (count > 1)
+                var job = _unitOfWork.JobPostRepository.GetQuery().AsNoTracking();
+                if (job.Any(p => p.Url.ToLower().Trim() == jobs.Url.ToLower().Trim()))
                 {
-                    jobPost.Url += "-" + jobPost.Id;
-                    _unitOfWork.Save();
+                    jobs.Url += "-" + jobs.Id;
                 }
-
-                return RedirectToAction("ListJobPost", "JobPostVcms", new { result = "true" });
+                _unitOfWork.Save();
+                return RedirectToAction("ListJobPost");
             }
-
-            model.CitySelectList = CitySelectList;
-            model.Careers = Careers;
+            model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+            model.JobPost = jobs;
             model.JobTypeSelectList = JobTypeSelectList;
-            model.RankSelectList = RankSelectList;
             model.SkillSelectList = SkillSelectList;
+            model.RankSelectList = RankSelectList;
             return View(model);
         }
 
@@ -293,15 +271,19 @@ namespace GlobeWork.Controllers
             return true;
         }
         [HttpPost]
-
-        public bool DeleteJobPost(int jobPostId = 0)
+        public bool DeleteJob(int id)
         {
-            var jobPost = _unitOfWork.JobPostRepository.GetById(jobPostId);
-            if (jobPost == null)
+            var job = _unitOfWork.JobPostRepository.GetById(id);
+            if (job == null)
             {
                 return false;
             }
-            _unitOfWork.JobPostRepository.Delete(jobPost);
+            var apply = _unitOfWork.ApplyJobRepository.GetQuery(a => a.JobPostId == job.Id);
+            foreach(var item in apply)
+            {
+                _unitOfWork.ApplyJobRepository.Delete(item);
+            }
+            _unitOfWork.JobPostRepository.Delete(job);
             _unitOfWork.Save();
             return true;
         }

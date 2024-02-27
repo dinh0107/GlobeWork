@@ -1,0 +1,32 @@
+﻿@model GlobeWork.Models.Parter
+@{
+    ViewBag.Title = "Cập nhật đối tác";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="box_content mt-3">
+    @using (Html.BeginForm("UpdatePartner", "Vcms", FormMethod.Post))
+    {
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+        <table class="form_table form-table-cat">
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Sort)</td>
+                <td class="form_text">@Html.EditorFor(model => model.Sort)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Title)</td>
+                <td class="form_text">@Html.EditorFor(model => model.Title)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Url)</td>
+                <td class="form_text">@Html.EditorFor(model => model.Url)</td>
+            </tr>
+            <tr>
+                <td class="form_name"></td>
+                <td class="form_text">
+                    <input type="submit" class="btn quick-link" value="Thêm" />
+                </td>
+            </tr>
+        </table>
+    }
+</div>

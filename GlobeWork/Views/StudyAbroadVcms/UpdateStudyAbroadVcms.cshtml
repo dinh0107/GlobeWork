@@ -1,0 +1,267 @@
+﻿@model GlobeWork.ViewModel.CreateStudyVcmsViewModel
+@{
+    ViewBag.Title = "Cập nhật tin tuyển dụng";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    .w100 {
+        width: 100% !important;
+    }
+
+    .load-order-view {
+        padding: 0 15px;
+    }
+
+    .vscomp-ele {
+        max-width: none;
+    }
+
+    .form_name{
+        width:120px;
+    }
+
+    .title {
+        font-size: 1.25rem;
+    }
+
+    .vscomp-toggle-all-button {
+        display: none !important;
+    }
+</style>
+<h2 class="mb-5">Cập nhât</h2>
+@using (Html.BeginForm("UpdateStudyAbroadVcms", "StudyAbroadVcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.StudyAbroad.Id)
+    <div class="box_content">
+        <table class="form_table">
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.StudyAbroad.Name)</td>
+                <td class="form_text">@Html.EditorFor(model => model.StudyAbroad.Name)</td>
+            </tr>
+            <tr>
+                <td class="form_name"></td>
+                <td class="form_text">
+                    <div class="row">
+                        <div class="col-6">
+                            <select class="v-slelect" name="CareerId">
+                                @foreach (var item in Model.Careers)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <select class="v-slelect" name="CategoryId">
+                                @foreach (var item in Model.StudyAbroadCategories)
+                                {
+                                    <option value="@item.Id">@item.CategoryName</option>
+                                }
+                            </select>
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="form_name"></td>
+                <td class="form_text pt-3">
+                    <div class="row">
+                        <div class="col-4">
+                            @Html.EnumDropDownListFor(model => model.StudyAbroad.Wages, new { @class = "v-slelect" })
+                        </div>
+                        <div class="col-4">
+                            <select class="v-slelect" name="StudyAbroad.Gender">
+                                <option value="nam">
+                                    Nam
+                                </option>
+                                <option value="nữ">
+                                    Nữ
+                                </option>
+                                <option value="Không yêu cầu">
+                                    Không yêu cầu
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            @Html.EnumDropDownListFor(model => model.StudyAbroad.TypeStudyAbroad, new { @class = "v-slelect" })
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.StudyAbroad.Health)</td>
+                <td class="form_text pt-3">@Html.EditorFor(model => model.StudyAbroad.Health)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.StudyAbroad.LearningProblems)</td>
+                <td class="form_text">@Html.EditorFor(model => model.StudyAbroad.LearningProblems)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.StudyAbroad.Address)</td>
+                <td class="form_text">@Html.EditorFor(model => model.StudyAbroad.Address)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.StudyAbroad.Quantity)</td>
+                <td class="form_text">@Html.EditorFor(model => model.StudyAbroad.Quantity)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.StudyAbroad.ExpirationDate)</td>
+                <td class="form_text">
+                    <input type="text" name="StudyAbroad.ExpirationDate" value="@Model.StudyAbroad.ExpirationDate" class="form_control expiration-date datetimepicker" autocomplete="off" />
+                </td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.StudyAbroad.Image)</td>
+                <td class="form_text">
+                    @Html.TextBoxFor(model => model.StudyAbroad.Image, new { type = "file" })
+                    <span class="red-warring">Chấp nhận ảnh jpg, png, gif, jpeg < 4MB</span>
+                </td>
+            </tr>
+            @if (Model.StudyAbroad.Image != null)
+            {
+                <tr id="ImgPreview">
+                    <td class="form_name"></td>
+                    <td class="form_text">
+                        <img class="img-border mb-2" src="@Path.Combine("/images/studyAbroad/", Model.StudyAbroad.Image)" />
+                        <input type="hidden" name="CurrentFile" id="CurrentFile" value="@Model.StudyAbroad.Image" />
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.StudyAbroad.ListImage)</td>
+                <td class="form_text">
+                    <div class="alert alert-info">
+                        <p class="btn btn-success fileinput-button">
+                            <i class="glyphicon glyphicon-plus"></i>
+                            <span>Chọn ảnh...</span>
+                            <input type="file" id="fileupload" name="files[]" accept="image/*" multiple="" />
+                        </p><br />
+                        - Chọn ảnh để upload: (gif, png, jpg, jpeg < 4MB)<br />
+                        - Kích thước: 800x 800px<br />
+                        - Ảnh đầu tiên sẽ là ảnh đại diện<br />
+                    </div>
+                    <div id="progress" class="progress">
+                        <div class="progress-bar progress-bar-success"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="form_name"></td>
+                <td class="form_text">
+                    <ul id="ListImages">
+                        @if (Model.StudyAbroad.ListImage != null)
+                        {
+                            var i = 1;
+                            var arrPic = Model.StudyAbroad.ListImage.Split(',');
+                            foreach (var item in arrPic)
+                            {
+                                <li>
+                                    <input type="hidden" name="Pictures" value="@item" />
+                                    <img src="@Path.Combine("/images/study/",item)?w=80&h=80&mode=crop" alt="" />
+                                    <a href="javascript:;" id="@i" onclick="delfile( '@i')"><img src="/content/admin/icon-delete.png" alt="" /></a>
+                                </li>
+                                i = i + 1;
+                            }
+                        }
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.StudyAbroad.Body)</td>
+                <td class="form_text">@Html.EditorFor(model => model.StudyAbroad.Body)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.StudyAbroad.Requirements)</td>
+                <td class="form_text">@Html.EditorFor(model => model.StudyAbroad.Requirements)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.StudyAbroad.Incentives)</td>
+                <td class="form_text">@Html.EditorFor(model => model.StudyAbroad.Incentives)</td>
+            </tr>
+            <tr>
+                <td class="form_name"></td>
+                <td class="form_text">
+                    <input type="submit" class="btn quick-link" value="Cập nhật" />
+                </td>
+            </tr>
+        </table>
+    </div>
+}
+@section scripts{
+    <script>
+        $(function () {
+            $("#ListImages").sortable();
+            $("#ListImages").disableSelection();
+        });
+        var i = 1;
+        $("#fileupload").fileupload({
+            add: function (e, data) {
+                var uploadErrors = [];
+                var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+                if (data.originalFiles[0]["type"].length && !acceptFileTypes.test(data.originalFiles[0]["type"])) {
+                    uploadErrors.push("Chỉ chấp nhận định dạng jpeg, jpg, png, gif");
+                }
+                if (data.originalFiles[0]["size"] > 4000000) {
+                    uploadErrors.push("Dung lượng ảnh lớn hơn 4MB");
+                }
+                var totalImg = $("#ListImages .ui-sortable-handle").length;
+                console.log(totalImg)
+                if (totalImg >= 10) {
+                    uploadErrors.push("Chỉ đăng tối đa 10 ảnh");
+                }
+                if (uploadErrors.length > 0) {
+                    alert(uploadErrors.join("\n"));
+                    return false;
+                } else {
+                    data.submit();
+                }
+                return true;
+            },
+            url: "/Uploader/Upload?folder=job&r=" + Math.random(),
+            dataType: "json",
+            done: function (e, data) {
+                console.log(data)
+                $.each(data.result.files, function (index, file) {
+                    $('#ListImages').append('<li><input type="hidden" name="Pictures" value ="' + file.name + '" /><img src="/images/job/' + file.name + '?w=80&h=80"/><a href="javascript:;" id="' + i + '" onclick="delfile(' + i + ')"><img src="/content/admin/icon-delete.png" alt="" style="vertical-align:middle" /></a></li>');
+                });
+                i = i + 1;
+                $("#progress").fadeOut(2000);
+            },
+            start: function () {
+                $("#progress .progress-bar").css("width", "0");
+                $("#progress").show();
+            },
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                $("#progress .progress-bar").css("width", progress + "%");
+            }
+        }).prop('disabled', !$.support.fileInput).parent().addClass($.support.fileInput ? undefined : 'disabled');
+
+        function delfile(divid) {
+            if (confirm('Bạn có chắc xóa ảnh này?')) {
+                $('#' + divid).parent().fadeOut().remove();
+            }
+        }
+        VirtualSelect.init({
+            ele: '.v-slelect',
+            required: true,
+            search: true,
+            maxValues: 4,
+        });
+        $('.datetimepicker').datetimepicker({
+            format: 'd/m/Y H:i',
+            vi: {
+                months: [
+                    "Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
+                ],
+                dayOfWeekShort: [
+                    "CN", "T2", "T3", "T4", "T5", "T6", "T7"
+                ],
+                dayOfWeek: ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"]
+            },
+            minDate: new Date()
+        });
+    </script>
+}
+

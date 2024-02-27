@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-lg-8">
                 <table class="form_table">
-                    <tr>
+                    @*<tr>
                         <td class="form_name">@Html.LabelFor(model => model.City.CounId)</td>
                         <td class="form_text">
                             <select name="City.CounId" class="form_control w300" required="">
@@ -30,7 +30,7 @@
                                 }
                             </select>
                         </td>
-                    </tr>
+                    </tr>*@
                     <tr>
                         <td class="form_name">@Html.LabelFor(model => model.City.Name)</td>
                         <td class="form_text">@Html.EditorFor(model => model.City.Name)</td>

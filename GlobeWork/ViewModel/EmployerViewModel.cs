@@ -60,6 +60,17 @@ namespace GlobeWork.ViewModel
         [Display(Name = "Mật khẩu hiện tại"), Required(ErrorMessage = "Bạn chưa nhập mật khẩu hiện tại"), UIHint("Password")]
         public string OldPassword { get; set; }
     }
+
+    public class UserPasswordViewModel
+    {
+        [Display(Name = "Mật khẩu mới"), StringLength(20, MinimumLength = 6, ErrorMessage = "Mật khẩu từ 4 đến 20 ký tự"), Required(ErrorMessage = "Bạn chưa nhập mật khẩu mới"), UIHint("Password")]
+        public string Password { get; set; }
+        [Display(Name = "Nhập lại mật khẩu mới"), Required(ErrorMessage = "Bạn chưa nhập lại mật khẩu"), System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "Nhập lại mật khẩu không chính xác"), UIHint("Password")]
+        public string ConfirmPassword { get; set; }
+        [Display(Name = "Mật khẩu hiện tại"), Required(ErrorMessage = "Bạn chưa nhập mật khẩu hiện tại"), UIHint("Password")]
+        public string OldPassword { get; set; }
+        public User User { get; set; }
+    }
     public class ListMyJobPost
     {
         public IPagedList<JobPost> JobPosts { get; set; }

@@ -1,0 +1,56 @@
+﻿@using GlobeWork.Models;
+@model List<Parter>
+@{
+    ViewBag.Title = "Danh sách tiêu đề";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<a class="btn quick-link" href="@Url.Action("Parter")"><i class="fal fa-plus-circle mr-1"></i>Thêm đối tác</a>
+<div class="box_content mt-3">
+    <table class="list_table tablecenter" id="list-cat">
+        <tr>
+            <th>STT</th>
+            <th>Tên</th>
+            <th style="max-width:300px;">Mô tả</th>
+            <th style="width:200px;"></th>
+        </tr>
+        @foreach (var cat in Model)
+        {
+            <tr data-id="@cat.Id">
+                <td>@cat.Sort</td>
+                <td>@Html.ActionLink(cat.Title, "UpdatePartner", new { id = cat.Id })</td>
+                <td>
+                    @cat.Url
+                </td>
+                <td>
+                    @Html.ActionLink("Sửa", "UpdatePartner", new { id = cat.Id })-
+                    <a href="javascript:;" onclick="deleteArticle('@cat.Id')" style="color: red;">Xóa</a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+@section scripts
+{
+    <script>
+        function deleteArticle(id) {
+            if (confirm("Bạn có chắc chắn xóa không?")) {
+                $.post("/Vcms/DeletePartner", { Id: id }, function (data) {
+                    if (data) {
+                        $.toast({
+                            text: 'Xóa  thành công',
+                            position: 'bottom-right',
+                            icon: 'success',
+                        })
+                        $("tr[data-id='" + id + "']").fadeOut();
+                    }
+                    else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            icon: 'error',
+                        })
+                    }
+                });
+            }
+        }
+    </script>
+    }

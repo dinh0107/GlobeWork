@@ -1,4 +1,4 @@
-﻿    using Helpers;
+﻿using Helpers;
 using GlobeWork.DAL;
 using GlobeWork.Filters;
 using GlobeWork.Models;
@@ -1131,7 +1131,7 @@ namespace GlobeWork.Controllers
                         .Replace("[DATE]", model.ApplyJob.CreateDate.ToString("dd/MM/yyyy")).Replace("[URL]", url);
 
                     var stud = _unitOfWork.StudyAbroadRepository.GetById(model.ApplyJob.StudyAbroad.Id);
-                    var companyEmail = model.ApplyJob.StudyAbroad.Company.Email ?? model.ApplyJob.StudyAbroad.Company.Employer.Email;
+                    var companyEmail = stud.Company.Email ?? stud.Company.Employer.Email;
                     var emailSubject = "Thông báo tuyển dụng " + stud.Name;
                     var emailBody = emailTemp;
                     _unitOfWork.Dispose();
@@ -1203,7 +1203,7 @@ namespace GlobeWork.Controllers
                         .Replace("[DATE]", model.ApplyJob.CreateDate.ToString("dd/MM/yyyy")).Replace("[URL]", url);
 
                     var jobPost = _unitOfWork.JobPostRepository.GetById(model.ApplyJob.JobPost.Id);
-                    var companyEmail = model.ApplyJob.StudyAbroad.Company.Email ?? model.ApplyJob.JobPost.Company.Employer.Email;
+                    var companyEmail = jobPost.Company.Email ?? jobPost.Company.Employer.Email;
                     var emailSubject = "Thông báo tuyển dụng " + jobPost.Name;
                     var emailBody = emailTemp;
                     _unitOfWork.Dispose();

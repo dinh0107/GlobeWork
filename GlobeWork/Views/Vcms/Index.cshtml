@@ -26,37 +26,47 @@
             <a class="stretched-link" href="@Url.Action("CreateAdmin","Vcms")">Quản trị viên</a>
             <p class="counter">@Model.Admins</p>
             <div class="info">
-                <i class="far fa-edit mr-1"></i> Có thể thay đổi thông tin website
+                <i class="fal fa-list-alt mr-1"></i> Có thể thay đổi thông tin website
             </div>
         </div>
     </div>
     <div class="col-sm-12 col-md-6 col-lg-3 mt-md-5 mt-3">
         <div class="overview-item">
-            <div class="icon icon-product"><i class="fal fa-box"></i></div>
-            <a class="stretched-link" href="@Url.Action("ListProduct","ProductVcms")">Sản phẩm</a>
-            <p class="counter">@Model.Products</p>
+            <div class="icon"><i class="fas fa-users"></i></div>
+            <a class="stretched-link" href="@Url.Action("ListUser", "UserVcms")">Người dùng</a>
+            <p class="counter">@Model.User</p>
             <div class="info">
-                <i class="fal fa-shopping-cart mr-1"></i> Cập nhật liên tục
+                <i class="far fa-edit mr-1"></i> Danh sách ứng viên
             </div>
         </div>
     </div>
     <div class="col-sm-12 col-md-6 col-lg-3 mt-md-5 mt-3">
         <div class="overview-item">
-            <div class="icon icon-video"><i class="fal fa-shopping-basket"></i></div>
-            <a class="stretched-link" href="@Url.Action("ListOrder","Order")">Đơn hàng</a>
-            <p class="counter">@Model.Orders</p>
+            <div class="icon"><i class="far fa-building"></i></div>
+            <a class="stretched-link" href="@Url.Action("ListCompany", "UserVcms")">Nhà tuyển dụng</a>
+            <p class="counter">@Model.Employer</p>
             <div class="info">
-                <i class="fal fa-history mr-1"></i> Cập nhật liên tục
+                <i class="fal fa-list-alt mr-1"></i> Danh sách nhà tuyển dụng
             </div>
         </div>
     </div>
     <div class="col-sm-12 col-md-6 col-lg-3 mt-md-5 mt-3">
         <div class="overview-item">
-            <div class="icon icon-article"> <i class="fal fa-newspaper"></i></div>
-            <a class="stretched-link" href="@Url.Action("ListArticle","Article")">Tin tức</a>
-            <p class="counter">@Model.Articles</p>
+            <div class="icon"><i class="fal fa-clipboard-list"></i></div>
+            <a class="stretched-link" href="@Url.Action("ListJobPost", "JobPostVcms")">Việc làm</a>
+            <p class="counter">@Model.Job</p>
             <div class="info">
-                <i class="far fa-history mr-1"></i> Tin tức mới nhất
+                <i class="fal fa-list-alt mr-1"></i> Việc làm cập nhật liên tục
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-3 mt-md-5 mt-3">
+        <div class="overview-item">
+            <div class="icon"><i class="far fa-address-card"></i></div>
+            <a class="stretched-link" href="@Url.Action("ListApplyJob", "JobPostVcms")">Đơn ứng tuyển việc làm</a>
+            <p class="counter">@Model.ApplyJob</p>
+            <div class="info">
+                <i class="fal fa-list-alt mr-1"></i> Đơn ứng tuyển của ứng viên
             </div>
         </div>
     </div>
@@ -66,17 +76,7 @@
             <a class="stretched-link" href="@Url.Action("ListBanner","Banner")">Quảng cáo</a>
             <p class="counter">@Model.Banners</p>
             <div class="info">
-                <i class="far fa-history mr-1"></i> Cập nhật liên tục
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-12 col-md-6 col-lg-3 mt-md-5 mt-3">
-        <div class="overview-item">
-            <div class="icon icon-order"><i class="fal fa-comments"></i></div>
-            <a class="stretched-link" href="@Url.Action("Showroom","Vcms")">Showroom</a>
-            <p class="counter">@Model.Showrooms</p>
-            <div class="info">
-                <i class="far fa-history mr-1"></i> Cập nhật mới nhất
+                <i class="fal fa-shopping-cart mr-1"></i> Cập nhật liên tục
             </div>
         </div>
     </div>
@@ -85,6 +85,16 @@
             <div class="icon icon-city"><i class="fal fa-mailbox"></i></div>
             <a class="stretched-link" href="@Url.Action("ListContact","Contact")">Liên hệ</a>
             <p class="counter">@Model.Contacts</p>
+            <div class="info">
+                <i class="far fa-history mr-1"></i> Cập nhật mới nhất
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-3 mt-md-5 mt-3">
+        <div class="overview-item">
+            <div class="icon icon-article"> <i class="fal fa-newspaper"></i></div>
+            <a class="stretched-link" href="@Url.Action("ListArticle","Article")">Tin tức</a>
+            <p class="counter">@Model.ApplyJob</p>
             <div class="info">
                 <i class="far fa-history mr-1"></i> Cập nhật mới nhất
             </div>

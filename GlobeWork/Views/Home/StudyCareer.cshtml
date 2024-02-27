@@ -6,7 +6,7 @@
     ViewBag.Title = "Du học " + Model.Career.Name;
     ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("StudyCareer", new { url = Model.Career.Url }); ;
 }
-<div class="container">
+<div class="container my-3">
     <div class="row">
         @if (Model.StudyAbroads.Any())
         {
@@ -50,7 +50,7 @@
         }
         else
         {
-            <div class="none-suitable-job__content">
+            <div class="none-suitable-job__content col-12">
                 <img src="https://static.topcv.vn/v4/image/job-list/none-result.png" alt="None suitable job">
                 <span>Chưa tìm thấy nội dung phù hợp với yêu cầu của bạn</span>
             </div>

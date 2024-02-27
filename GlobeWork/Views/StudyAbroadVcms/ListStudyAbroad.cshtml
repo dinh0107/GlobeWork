@@ -1,7 +1,7 @@
-﻿@model GlobeWork.ViewModel.ListJobPostViewModel
+﻿@model GlobeWork.ViewModel.ListStudyVcmsViewModel
 @using PagedList.Mvc
 @{
-    ViewBag.Title = "Danh sách công việc";
+    ViewBag.Title = "Danh sách tin tuyển dụng";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <style>
@@ -11,7 +11,7 @@
 </style>
 @if (ViewBag.Result == "true")
 {
-    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật việc làm thành công</strong></div>}
+    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật thành công</strong></div>}
 
 @if (ViewBag.Result == "success")
 {
@@ -19,9 +19,8 @@
 }
 <h2>Danh sách việc làm</h2>
 <a class="btn quick-link" href=""></a>
-
 <div class="box_content">
-    @using (Html.BeginForm("ListJobPost", "JobPostVcms", FormMethod.Get))
+    @using (Html.BeginForm("ListStudyAbroad", "StudyAbroadVcms", FormMethod.Get))
     {
         <div class="row">
             <div class="col-lg-3 mb-lg-0 mb-2">
@@ -40,8 +39,8 @@
                 <label>Hạn ứng tuyển</label>
                 <select name="StatusTime">
                     <option value="">Tất cả</option>
-                    <option value="0" @if (Model.StatusTime == 0) { @Html.Raw("selected='selected'") }>Việc đang tuyển </option>
-                    <option value="1" @if (Model.StatusTime == 1) { @Html.Raw("selected='selected'") }>Việc hết hạn</option>
+                    <option value="1" @if (Model.StatusTime == 1) { @Html.Raw("selected='selected'") }>Việc đang tuyển </option>
+                    <option value="0" @if (Model.StatusTime == 0) { @Html.Raw("selected='selected'") }>Việc hết hạn</option>
                 </select>
             </div>
             <div class="col-lg-3 mb-lg-0 mb-2">
@@ -59,6 +58,7 @@
             <div class="col-lg-3 mb-2">
                 <label>Ngành nghề</label>
                 <select class="filter" name="CareerIds">
+                    <option value="">Ngành nghề</option>
                     @foreach (var item in Model.Careers)
                     {
                         if (!string.IsNullOrEmpty(Model.CareerIds))
@@ -72,76 +72,12 @@
                     }
                 </select>
             </div>
-            <div class="col-lg-3 mb-2">
-                <label>Thành phố</label>
-                <select class="filter" name="CityIds" multiple="multiple">
-                    @foreach (var item in Model.CitySelectList)
-                    {
-                        if (!string.IsNullOrEmpty(Model.CityIds))
-                        {
-                            <option value="@item.Value" @if (Model.CityIds.Split(',').Contains(item.Value)) { @Html.Raw("selected") } )>@item.Text</option>
-                        }
-                        else
-                        {
-                            <option value="@item.Value">@item.Text</option>
-                        }
-                    }
-                </select>
-            </div>
-            <div class="col-lg-3 mb-2">
-                <label>Kỹ năng</label>
-                <select class="filter" name="SkillIds" multiple="multiple">
-                    @foreach (var item in Model.SkillSelectList)
-                    {
-                        if (!string.IsNullOrEmpty(Model.SkillIds))
-                        {
-                            <option value="@item.Value" @if (Model.SkillIds.Split(',').Contains(item.Value)) { @Html.Raw("selected") } )>@item.Text</option>
-                        }
-                        else
-                        {
-                            <option value="@item.Value">@item.Text</option>
-                        }
-                    }
-                </select>
-            </div>
-            <div class="col-lg-3 mb-2">
-                <label>Cấp bậc</label>
-                <select class="filter" name="RankIds" multiple="multiple">
-                    @foreach (var item in Model.RankSelectList)
-                    {
-                        if (!string.IsNullOrEmpty(Model.RankIds))
-                        {
-                            <option value="@item.Value" @if (Model.RankIds.Split(',').Contains(item.Value)) { @Html.Raw("selected") } )>@item.Text</option>
-                        }
-                        else
-                        {
-                            <option value="@item.Value">@item.Text</option>
-                        }
-                    }
-                </select>
-            </div>
-            <div class="col-lg-3 mb-2">
-                <label>Hình thức công việc</label>
-                <select class="filter" name="JobTypeIds" multiple="multiple">
-                    @foreach (var item in Model.JobTypeSelectList)
-                    {
-                        if (!string.IsNullOrEmpty(Model.JobTypeIds))
-                        {
-                            <option value="@item.Value" @if (Model.JobTypeIds.Split(',').Contains(item.Value)) { @Html.Raw("selected") } )>@item.Text</option>
-                        }
-                        else
-                        {
-                            <option value="@item.Value">@item.Text</option>
-                        }
-                    }
-                </select>
-            </div>
             <div class="col-lg-3 align-self-center">
                 <button type="submit" class="btn-search ">Tìm kiếm</button>
             </div>
         </div>
     }
-    <p>Có tổng số <strong>@Model.JobPosts.TotalItemCount</strong> việc làm</p>
+    <p>Có tổng số <strong>@Model.StudyAbroads.TotalItemCount</strong> việc làm</p>
     <div class="overflow-x-auto">
         <form id="productList">
             <table class="list_table tablecenter table-striped">
@@ -154,10 +90,10 @@
                         <th width="8%">Ngày hết hạn</th>
                         <th width="80px">Lượt xem</th>
                         <th width="80px">Đã đăng</th>
-                        <th width="80px">Hiện trang chủ</th>
+                        <th width="80px">Danh mục</th>
                         <th width="120px"></th>
                     </tr>
-                    @foreach (var item in Model.JobPosts)
+                    @foreach (var item in Model.StudyAbroads)
                     {
                         <tr data-id="@item.Id">
                             <td class="left">
@@ -177,13 +113,9 @@
                             </td>
                             <td>@item.CreateDate.ToString("dd/MM/yyyy")</td>
                             <td>
-                                @if (item.ExpirationDate != null && item.ExpirationDate > DateTime.Now)
+                                @if (item.ExpirationDate != null)
                                 {
                                     @item.ExpirationDate.Value.ToString("dd/MM/yyyy")
-                                }
-                                else if (item.ExpirationDate < DateTime.Now)
-                                {
-                                    <span>Hết hạn ứng tuyển</span>
                                 }
                                 else
                                 {
@@ -192,40 +124,36 @@
                             </td>
                             <td>@item.View</td>
                             <td>@Html.EditorFor(a => item.Active)</td>
-                            <td>@Html.DisplayFor(a => item.Hot)</td>
+                            <td>@item.StudyAbroadCategory.CategoryName</td>
                             <td>
-                                <a href="javascript:;" onclick="updateJobPost('@item.Id')">Cập nhật - </a>
-                                <a href="@Url.Action("UpdateJobPostVcms", new{jobPostId = item.Id})">Sửa</a>
+                                @*<a href="javascript:;" onclick="updateJobPost('@item.Id')">Cập nhật - </a>*@
+                                <a href="@Url.Action("UpdateStudyAbroadVcms", new{Id = item.Id})">Sửa</a>
                                 - <a href="javascript:;" onclick="deleteJobPost('@item.Id')" class="red-warring">Xóa</a>
                             </td>
                         </tr>
                     }
-                    @if (Model.JobPosts.PageCount > 1)
+                    @if (Model.StudyAbroads.PageCount > 1)
                     {
                         <tr>
                             <td colspan="10">
-                                @Html.PagedListPager(Model.JobPosts, page => Url.Action("ListJobPost", new
-                                {
-                                    page,
-                                    name = Model.Name,
-                                    startTime = Model.StartTime,
-                                    endTime = Model.EndTime,
-                                    status = Model.Status,
-                                    sort = Model.Sort,
-                                    statusTime = Model.StatusTime,
-                                    careerIds = Model.CareerIds,
-                                    cityIds = Model.CityIds,
-                                    rankIds = Model.RankIds,
-                                    jobTypeIds = Model.JobTypeIds,
-                                    skillIds = Model.SkillIds
-                                }))
+                                @Html.PagedListPager(Model.StudyAbroads, page => Url.Action("ListStudyAbroad", new
+                           {
+                               page,
+                               name = Model.Name,
+                               startTime = Model.StartTime,
+                               endTime = Model.EndTime,
+                               status = Model.Status,
+                               sort = Model.Sort,
+                               statusTime = Model.StatusTime,
+                               careerIds = Model.CareerIds,
+                               countruyIds = Model.CountryIds,
+                           }))
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
         </form>
-
     </div>
 </div>
 @section scripts
@@ -233,14 +161,9 @@
     <script src="~/Scripts/moment.js"></script>
     <script src="~/Scripts/jquery.daterangepicker.js"></script>
     <script type="text/javascript">
-        VirtualSelect.init({
-            ele: '.filter',
-            multiple: true,
-            maxValues: 4,
-        });
         function deleteJobPost(id) {
             if (confirm("Bạn có chắc chắn xóa bài viết này không?")) {
-                $.post("/JobPostVcms/DeleteJob", { Id: id }, function (data) {
+                $.post("/StudyAbroadVcms/DeleteStudyAbroad", { Id: id }, function (data) {
                     if (data) {
                         $.toast({
                             text: 'Xóa việc làm thành công',
@@ -264,7 +187,7 @@
             var home = elm.find("input#item_ShowHome").prop("checked");
             var special = elm.find("input#item_Special").prop("checked");
 
-            $.post("/JobPostVcms/QuickUpdateJobPost", { jobPostId: id, active, home, special },
+            $.post("/StudyAbroadVcms/QuickUpdateStudyAbroad", { Id: id, active, home, special },
                 function (data) {
                     if (data) {
                         $.toast({

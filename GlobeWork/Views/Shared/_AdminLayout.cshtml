@@ -9,6 +9,10 @@
     <link rel="shortcut icon" href="~/favicon.png">
     @Styles.Render("~/Content/admincss", "~/Content/themes/base/css")
     <link href="~/Scripts/multi-upload/jquery.fileupload.css" rel="stylesheet" />
+    <link href="~/Content/virtual-select.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link href="~/Content/datepicker.css" rel="stylesheet" />
+    <link href="~/Content/jquery.datetimepicker.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -89,6 +93,14 @@
                         </div>
                     </li>
                     <li data-id="4">
+                        <a class="root"><span>Quản lý tin du học</span><i class="fas fa-caret-down"></i></a>
+                        <div class="sub hidden">
+                            <div><a href="@Url.Action("StudyAbroadCategory", "Vcms")" class="text_link">Danh mục</a></div>
+                            <div>@Html.ActionLink("Danh sách tin du học", "ListStudyAbroad", "StudyAbroadVcms", null, new { @class = "text_link" })</div>
+                            <div>@Html.ActionLink("Danh sách đơn ứng tuyển", "ListApplyJob", "StudyAbroadVcms", null, new { @class = "text_link" })</div>
+                        </div>
+                    </li>
+                    <li data-id="4">
                         <a class="root"><span>Quản lý quốc gia</span><i class="fas fa-caret-down"></i></a>
                         <div class="sub hidden">
                             <div><a href="@Url.Action("ListCountruy", "Vcms")" class="text_link">Danh sách quốc gia</a></div>
@@ -96,10 +108,9 @@
                         </div>
                     </li>
                     <li data-id="4">
-                        <a class="root"><span>Quản lý tin du học</span><i class="fas fa-caret-down"></i></a>
+                        <a class="root"><span>Quản lý đối tác</span><i class="fas fa-caret-down"></i></a>
                         <div class="sub hidden">
-                            <div><a href="@Url.Action("StudyAbroadCategory", "Vcms")" class="text_link">Danh mục</a></div>
-                            <div>@Html.ActionLink("Danh sách tin du học", "ListStudyAbroad", "Vcms", null, new { @class = "text_link" })</div>
+                            <div><a href="@Url.Action("ListParter", "Vcms")" class="text_link">Danh sách đối tác</a></div>
                         </div>
                     </li>
                     <li data-id="6">
@@ -136,6 +147,7 @@
     <script src="https://code.jquery.com/jquery-migrate-3.3.0.min.js"></script>
     <script src="~/Scripts/multi-upload/jquery.iframe-transport.js"></script>
     <script src="~/Scripts/multi-upload/jquery.fileupload.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
     <script src="~/Scripts/ckeditor/ckeditor.js"></script>
     <script src="~/Scripts/jquery.toast.js"></script>
     <script src="~/Scripts/ckeditor/adapters/jquery.js"></script>
@@ -143,6 +155,8 @@
     <script src="~/Scripts/jquery.fancybox.js"></script>
     <script src="~/Scripts/select2.js"></script>
     <script src="~/Scripts/jquery-ui-timepicker-addon.js"></script>
+    <script src="~/Scripts/virtual-select.min.js"></script>
+    <script src="~/Scripts/jquery.datetimepicker.full.min.js"></script>
     <script src="~/Scripts/scriptAdmin.js"></script>
     @RenderSection("scripts", false)
 </body>

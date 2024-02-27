@@ -164,6 +164,7 @@
     <Compile Include="Controllers\EmployerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JobPostVcmsController.cs" />
+    <Compile Include="Controllers\StudyAbroadVcmsController.cs" />
     <Compile Include="Controllers\UploaderController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserVcmsController.cs" />
@@ -222,6 +223,7 @@
     <Compile Include="ViewModel\EmployerViewModel.cs" />
     <Compile Include="ViewModel\HomeViewModel.cs" />
     <Compile Include="ViewModel\JobViewModel.cs" />
+    <Compile Include="ViewModel\StudyVcmsViewModel.cs" />
     <Compile Include="ViewModel\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1588,6 +1590,14 @@
     <Content Include="Views\Home\StudyCareer.cshtml" />
     <Content Include="Views\Home\SchoolCountruy.cshtml" />
     <Content Include="Views\Contact\ListContact.cshtml" />
+    <Content Include="Views\User\ChangePassword.cshtml" />
+    <Content Include="Views\StudyAbroadVcms\ListStudyAbroad.cshtml" />
+    <Content Include="Views\StudyAbroadVcms\UpdateStudyAbroadVcms.cshtml" />
+    <Content Include="Views\StudyAbroadVcms\ListApplyJob.cshtml" />
+    <Content Include="Views\StudyAbroadVcms\PreviewCanidate.cshtml" />
+    <Content Include="Views\Vcms\Parter.cshtml" />
+    <Content Include="Views\Vcms\ListParter.cshtml" />
+    <Content Include="Views\Vcms\UpdatePartner.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

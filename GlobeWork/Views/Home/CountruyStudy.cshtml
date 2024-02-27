@@ -8,7 +8,7 @@
 
 
 }
-<div class="container">
+<div class="container my-3">
     <div class="row">
         @if (Model.StudyAbroads.Any())
         {
@@ -45,14 +45,14 @@
             }
             if (Model.StudyAbroads.PageCount > 1)
             {
-                <div class="col-12 text-center">
+                <div class="col-12 text-center col-12">
                     @Html.PagedListPager(Model.StudyAbroads, page => Url.Action("CountruyStudy", new { page, id = Model.Country.Id }))
                 </div>
             }
         }
         else
         {
-            <div class="none-suitable-job__content">
+            <div class="none-suitable-job__content col-12">
                 <img src="https://static.topcv.vn/v4/image/job-list/none-result.png" alt="None suitable job">
                 <span>Chưa tìm thấy nội dung phù hợp với yêu cầu của bạn</span>
             </div>
