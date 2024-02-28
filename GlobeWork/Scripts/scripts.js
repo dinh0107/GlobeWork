@@ -3,6 +3,17 @@ AOS.init();
 
 function HomeJs() {
 
+    $('.owl-carousel').owlCarousel({
+        loop: true,
+        margin: 10,
+        nav: true,
+        dots: false,
+        //autoWidth: true,
+        navText: ["<i class='fal fa-chevron-circle-left'></i>", "<i class='fal fa-chevron-circle-right'></i>"],
+        items: 5
+
+    }) 
+
     $(".list-banner").slick({
         dots: false,
         infinite: true,
