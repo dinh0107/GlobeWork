@@ -89,7 +89,7 @@ namespace GlobeWork.Controllers
             };
             return View(model);
         }
-        public PartialViewResult GetFilter()
+        public PartialViewResult GetFilter(int type = 0)
         {
             var model = new GetFilterViewModel
             {
@@ -99,28 +99,18 @@ namespace GlobeWork.Controllers
             return PartialView(model);
         }
 
-        public PartialViewResult GetJob(int cityId = 0, int type = 0)
+        public PartialViewResult GetJob(int cityId = 0, int careerId = 0)
         {
             var job = _unitOfWork.JobPostRepository.GetQuery(a => a.Active && a.Hot != null && a.Hot > DateTime.Now);
-            switch (type)
-            {
-                case 1:
-                    job = job.OrderBy(a => a.CityId);
-                    break;
-                case 2:
-                    job = job.OrderByDescending(a => a.Wages);
-                    break;
-                case 3:
-                    job = job.OrderBy(a => a.Experiences);
-                    break;
-                case 4:
-                    job = job.OrderBy(a => a.CareerId);
-                    break;
-            }
             if (cityId > 0)
             {
-                job = job.Where(a => a.CityId == cityId);
+                job = job.Where(a => a.Cities.Any(l => l.Id == cityId));
             }
+            if(careerId > 0)
+            {
+                job = job.Where(a => a.CareerId == careerId);
+            }
+
             var like = _unitOfWork.LikeRepository.GetQuery(a => a.UserID == User.Id);
             var model = new GetJobHotViewModel
             {

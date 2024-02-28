@@ -1,16 +1,45 @@
 ﻿@model GlobeWork.ViewModel.GetFilterViewModel
-<div class="list-contruy active" >
-    <div>
-        <div class="contruy-name active" data-id="">
-            Ngẫu nhiên
-        </div>
+<div class="owl-carousel owl-theme " data-selector="1">
+    <div class="contruy-name active" data-id="">
+        Ngẫu nhiên
     </div>
     @foreach (var item in Model.Cities)
     {
-        <div>
-            <div class="contruy-name" data-id="@item.Id">
-                @item.Name
-            </div>
+        <div class="contruy-name" data-id="@item.Id">
+            @item.Name
+        </div>
+    }
+</div>
+<div class="owl-carousel owl-theme " data-selector="2">
+    <div class="contruy-name active" data-id="">
+       Tất cả
+    </div>
+    @foreach (var item in Model.Wage)
+    {
+        <div class="contruy-name" data-id="@item.Key">
+            @item.Value
+        </div>
+    }
+</div>
+<div class="owl-carousel owl-theme " data-selector="3   ">
+    <div class="contruy-name active" data-id="">
+        Tất cả
+    </div>
+    @foreach (var item in Model.Experience)
+    {
+        <div class="contruy-name" data-id="@item.Key">
+            @item.Value
+        </div>
+    }
+</div>
+<div class="owl-carousel owl-theme" data-selector="4">
+    <div class="contruy-name active" data-career-id="">
+        Ngẫu nhiên
+    </div>
+    @foreach (var item in Model.Careers)
+    {
+        <div class="contruy-name" data-career-id="@item.Id">
+            @item.Name
         </div>
     }
 </div>

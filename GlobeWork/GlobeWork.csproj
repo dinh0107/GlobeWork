@@ -303,6 +303,12 @@
     <Content Include="Content\login.min.css" />
     <Content Include="Content\owl.carousel.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\scss\Responsive.css">
+      <DependentUpon>Responsive.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\scss\Responsive.min.css">
+      <DependentUpon>Responsive.css</DependentUpon>
+    </Content>
     <Content Include="Content\scss\style2.css">
       <DependentUpon>style2.scss</DependentUpon>
     </Content>
@@ -1258,6 +1264,7 @@
     <Content Include="Content\scss\style2.scss" />
     <Content Include="Content\scss\_variables.scss" />
     <Content Include="Content\scss\_mixins.scss" />
+    <Content Include="Content\scss\Responsive.scss" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\isotope.pkgd.min.js" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />

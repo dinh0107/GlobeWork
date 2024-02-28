@@ -452,7 +452,7 @@ header {
   margin: 0 -10px;
 }
 .list-hotjob .slick-arrow {
-  top: -16%;
+  top: -18%;
   right: 0;
   font-size: 30px;
   color: #66BC46;
@@ -625,7 +625,7 @@ header {
 }
 
 .contruy-name {
-  padding: 0.625rem;
+  padding: 0.525rem;
   border-radius: 1.28125rem;
   text-align: center;
   background: #DEE0E2;
@@ -633,6 +633,12 @@ header {
   font-size: 0.875rem;
   font-weight: 400;
   cursor: pointer;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  /*width: max-content;*/
+  line-height: 30px;
 }
 .contruy-name.active {
   background: #66BC46;
@@ -3631,4 +3637,33 @@ summary {
   padding: 10px;
   text-transform: uppercase;
   font-weight: 600;
+}
+
+.owl-carousel.owl-loaded {
+  width: 50%;
+  margin-right: 60px;
+  display: none !important;
+}
+.owl-carousel.owl-loaded.active {
+  display: block !important;
+}
+
+.owl-nav {
+  font-size: 30px;
+  color: #66BC46;
+  z-index: 1;
+}
+
+.owl-prev, .owl-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.owl-prev {
+  left: -8%;
+}
+
+.owl-next {
+  right: -8%;
 }

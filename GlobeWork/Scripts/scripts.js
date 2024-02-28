@@ -13,6 +13,8 @@ function HomeJs() {
         arrows: false,
         autoplaySpeed: 3000,
     });
+
+    
     $('.list-hotjob').slick({
         rows: 5,
         dots: false,
@@ -20,8 +22,6 @@ function HomeJs() {
         infinite: true,
         speed: 800,
         slidesToShow: 3,
-        //fade: true,
-        //cssEase: 'linear',
         slidesToScroll: 3,
         prevArrow: '<button class="previous-slie"><i class="fal fa-chevron-circle-left"></i></button>',
         nextArrow: '<button class="next-slie"><i class="fal fa-chevron-circle-right"></i></button>',
@@ -52,6 +52,45 @@ function HomeJs() {
             }
         ]
     });
+    //$('.list-hotjob').slick({
+    //    rows: 5,
+    //    dots: false,
+    //    arrows: true,
+    //    infinite: true,
+    //    speed: 800,
+    //    slidesToShow: 3,
+    //    //fade: true,
+    //    //cssEase: 'linear',
+    //    slidesToScroll: 3,
+    //    prevArrow: '<button class="previous-slie"><i class="fal fa-chevron-circle-left"></i></button>',
+    //    nextArrow: '<button class="next-slie"><i class="fal fa-chevron-circle-right"></i></button>',
+    //    responsive: [
+    //        {
+    //            breakpoint: 1024,
+    //            settings: {
+    //                slidesToShow: 6,
+    //                slidesToScroll: 3,
+    //                infinite: true,
+    //                dots: false
+    //            }
+    //        },
+    //        {
+    //            breakpoint: 600,
+    //            settings: {
+    //                slidesToShow: 3,
+    //                slidesToScroll: 1,
+    //                slidesToShow: 3,
+    //            }
+    //        },
+    //        {
+    //            breakpoint: 480,
+    //            settings: {
+    //                slidesToShow: 3,
+    //                slidesToScroll: 3
+    //            }
+    //        }
+    //    ]
+    //});
     $('.list-contruy').slick({
         infinite: false,
         speed: 300,
@@ -166,18 +205,20 @@ function HomeJs() {
         arrows: false,
         autoplaySpeed: 3000,
     });
+    $('.owl-carousel[data-selector="' + 1 + '"]').addClass('active');
     $(".filter-select").change(function () {
         var value = $(this).val();
-        $.post("/Home/GetJob", { type: value }, function (data) {
-            $("#filter").empty();
-            $("#filter").html(data);
-        })
-    })
+        console.log(value)
+        $('.owl-carousel').removeClass('active');
+        $('.owl-carousel[data-selector="' + value + '"]').addClass('active');
+    });
+
     $(".contruy-name").click(function () {
         $(".contruy-name").removeClass("active");
         $(this).addClass("active");
         var dataId = $(this).data("id");
-        $.post("/Home/GetJob", { cityId: dataId }, function (data) {
+        var career = $(this).data("career-id");
+        $.post("/Home/GetJob", { cityId: dataId, careerId: career,  }, function (data) {
             $("#filter").empty();
             $("#filter").html(data);
         })
@@ -186,6 +227,7 @@ function HomeJs() {
     $(".setting-filter").click(function () {
         $(".group-filter").toggleClass("active")
     })
+
 }
 
 function Details() {

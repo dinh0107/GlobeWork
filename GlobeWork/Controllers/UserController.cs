@@ -1,4 +1,4 @@
-﻿using Helpers;
+﻿    using Helpers;
 using GlobeWork.DAL;
 using GlobeWork.Models;
 using GlobeWork.Filters;
@@ -88,15 +88,18 @@ namespace GlobeWork.Controllers
             }
             return View(model);
         }
+
         [OverrideActionFilters]
         public ActionResult FacebookRedirect(string code, string returnUrl)
         {
+
+            var host = Request.Url.Scheme + "://" + Request.Url.Host + ":" + Request.Url.Port;
             var fb = new FacebookClient();
             dynamic result = fb.Get("/oauth/access_token", new
             {
                 client_id = "872873711287852",
                 client_secret = "a375a6962d4a46fbd920dd29d5acf604",
-                redirect_uri = "https://localhost:44327/User/FacebookRedirect",
+                redirect_uri = host + "/User/FacebookRedirect",
                 code = code
             });
             fb.AccessToken = result.access_token;
@@ -121,13 +124,13 @@ namespace GlobeWork.Controllers
                 };
                 _unitOfWork.UserRepository.Insert(Insertuser);
                 _unitOfWork.Save();
-                var countUrl = _unitOfWork.UserRepository.GetQuery(a => a.Url == user.Url).Count();
+                var countUrl = _unitOfWork.UserRepository.GetQuery(a => a.Url == Insertuser.Url).Count();
                 if (countUrl > 1)
                 {
                     Insertuser.Url += "-" + Insertuser.Id;
                     _unitOfWork.Save();
                 }
-                var userData = Insertuser.Username + "|" + Insertuser.Avatar + "|" + Insertuser.Id + "|" + Insertuser.Email + "|" + Insertuser.FullName + "|" + Insertuser.Url;
+                var userData = Insertuser.Avatar + "|" + Insertuser.Id + "|" + Insertuser.Email + "|" + Insertuser.FullName + "|" + Insertuser.Url;
                 var ticket = new FormsAuthenticationTicket(2, Insertuser.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
                     userData, FormsAuthentication.FormsCookiePath);
                 var encTicket = FormsAuthentication.Encrypt(ticket);
@@ -136,7 +139,7 @@ namespace GlobeWork.Controllers
             }
             else
             {
-                var userData = user.Username + "|" + user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url;
+                var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url;
                 var ticket = new FormsAuthenticationTicket(2, user.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
                     userData, FormsAuthentication.FormsCookiePath);
                 var encTicket = FormsAuthentication.Encrypt(ticket);
