@@ -48,7 +48,7 @@
                         }
                     </td>
                     <td class="left">
-                        <a href="@Url.Action("UpdateArticle", new { articleId = article.Id })"><strong>@article.Subject</strong></a>
+                        <a href="@Url.Action("UpdateArticle", new { articleId = article.Id })" class="@if (article.Hot != null && article.Hot > DateTime.Now) { @Html.Raw("alert-success")}"><strong>@article.Subject</strong></a>
                     </td>
                     <td>
                         @if (article.IsAdmin)

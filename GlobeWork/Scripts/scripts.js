@@ -4,11 +4,10 @@ AOS.init();
 function HomeJs() {
 
     $('.owl-carousel').owlCarousel({
-        loop: true,
+        loop: false,
         margin: 10,
         nav: true,
         dots: false,
-        //autoWidth: true,
         navText: ["<i class='fal fa-chevron-circle-left'></i>", "<i class='fal fa-chevron-circle-right'></i>"],
         items: 5
 
@@ -38,10 +37,11 @@ function HomeJs() {
         nextArrow: '<button class="next-slie"><i class="fal fa-chevron-circle-right"></i></button>',
         responsive: [
             {
-                breakpoint: 1024,
+                breakpoint: 1044,
                 settings: {
-                    slidesToShow: 6,
+                    slidesToShow: 3,
                     slidesToScroll: 3,
+                    rows: 3,
                     infinite: true,
                     dots: false
                 }
@@ -182,7 +182,7 @@ function HomeJs() {
         nextArrow: '<button class="next-support"><i class="fal fa-chevron-circle-right"></i></button>',
         responsive: [
             {
-                breakpoint: 1024,
+                breakpoint: 1044,
                 settings: {
                     slidesToShow: 3,
                     slidesToScroll: 3,
@@ -219,17 +219,30 @@ function HomeJs() {
     $('.owl-carousel[data-selector="' + 1 + '"]').addClass('active');
     $(".filter-select").change(function () {
         var value = $(this).val();
-        console.log(value)
+        $('.section-filter').removeClass('active');
         $('.owl-carousel').removeClass('active');
         $('.owl-carousel[data-selector="' + value + '"]').addClass('active');
+        $('.section-filter[data-selector="' + value + '"]').addClass('active');
     });
+    $(".section-filter").change(function () {
+        var dataId = $(".section-filter[data-selector='1']").val();
+        var career = $(".section-filter[data-selector='4']").val();
+        var wage = $(".section-filter[data-selector='2']").val();
+        var exp = $(".section-filter[data-selector='3']").val();
+        $.post("/Home/GetJob", { cityId: dataId, careerId: career, wage: wage, exp: exp }, function (data) {
+            $("#filter").empty();
+            $("#filter").html(data);
+        })
+    })
 
     $(".contruy-name").click(function () {
         $(".contruy-name").removeClass("active");
         $(this).addClass("active");
         var dataId = $(this).data("id");
         var career = $(this).data("career-id");
-        $.post("/Home/GetJob", { cityId: dataId, careerId: career,  }, function (data) {
+        var wage = $(this).data("wage");
+        var exp = $(this).data("exp");
+        $.post("/Home/GetJob", { cityId: dataId, careerId: career, wage: wage, exp: exp }, function (data) {
             $("#filter").empty();
             $("#filter").html(data);
         })
@@ -1486,4 +1499,15 @@ $("#form-contact").on("submit", function (e) {
             }
         });
     }
+});
+$('.toggle-icon').click(function () {
+    $(this).find('i').toggleClass("fa-bars fa-xmark");
+    $(".box-menu-repon").slideToggle()
+});
+$('.icon-reponsive').click(function () {
+    $(this).toggleClass("active");
+    $(this).closest('li').find('.ul-reponsive').slideToggle();
+});
+$('.icon-study').click(function () {
+    $(this).closest('li').next('.study-repon').slideToggle(); $(this).toggleClass("active");
 });

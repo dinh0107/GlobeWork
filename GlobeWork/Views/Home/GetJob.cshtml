@@ -1,79 +1,89 @@
-﻿    @model GlobeWork.ViewModel.GetJobHotViewModel
-@{ 
+﻿@model GlobeWork.ViewModel.GetJobHotViewModel
+@{
     var email = ViewContext.RouteData.Values["Email"].ToString();
 }
-<div class="list-hotjob">
-    @foreach (var item in Model.JobPosts)
-    {
-        <div class="job border bg-white hot">
-            <div class="hot-job" data-tooltip="Việc làm tốt nhất" data-tooltip-position="top">
-                <i class="fab fa-hotjar mr-1"></i> Hot
-            </div>
-            <div class="media align-items-center">
-                <div class="rounded-circle border thuml-job">
-                    @if (item.Company.Avatar != null)
-                    {
-                        <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Company.Avatar)" alt="@item.Company.Name" class="lazyload job-avt " />
-                    }
-                    else
-                    {
-                        <img src="~/Content/images/avatar-default.jpg" alt="@item.Company.Name" class="lazyload job-avt " />
-                    }
+@if (Model.JobPosts.Any())
+{
+    <div class="list-hotjob">
+        @foreach (var item in Model.JobPosts)
+        {
+            <div class="job border bg-white hot">
+                <div class="hot-job" data-tooltip="Việc làm tốt nhất" data-tooltip-position="top">
+                    <i class="fab fa-hotjar mr-1"></i> Hot
                 </div>
-                <div class="media-body ml-2">
-                    <a href="@Url.Action("JobDetail", new {url = item.Url})" class="job-name" data-tooltip="@item.Name" data-tooltip-position="top">@item.Name</a>
-                    <div class="company-name" data-tooltip="@item.Company.Name" data-tooltip-position="top">
-                        @item.Company.Name
-                    </div>
-                    @*<div class="discount-job">
-                        Đơn hàng giảm phí 25 triệu
-                    </div>*@
-                </div>
-            </div>
-            <div class="d-flex align-items-center justify-content-between mt-3">
-                <div class="w-75">
-                    <span class="info-job">@Html.DisplayFor(a => item.Wages)</span>
-                    <span class="info-job">
-                        @if (item.Cities.Any())
+                <div class="media align-items-center">
+                    <div class="rounded-circle border thuml-job">
+                        @if (item.Company.Avatar != null)
                         {
-                            if (item.Cities.Count > 1)
+                            <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Company.Avatar)" alt="@item.Company.Name" class="lazyload job-avt " />
+                        }
+                        else
+                        {
+                            <img src="~/Content/images/avatar-default.jpg" alt="@item.Company.Name" class="lazyload job-avt " />
+                        }
+                    </div>
+                    <div class="media-body ml-2">
+                        <a href="@Url.Action("JobDetail", new { url = item.Url })" class="job-name" data-tooltip="@item.Name" data-tooltip-position="top">@item.Name</a>
+                        <div class="company-name" data-tooltip="@item.Company.Name" data-tooltip-position="top">
+                            @item.Company.Name
+                        </div>
+                        @*<div class="discount-job">
+                                Đơn hàng giảm phí 25 triệu
+                            </div>*@
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mt-3">
+                    <div class="w-75">
+                        <span class="info-job">@Html.DisplayFor(a => item.Wages)</span>
+                        <span class="info-job">
+                            @if (item.Cities.Any())
                             {
-
-                                <span data-tooltip="@string.Join(" , ", item.Cities.Select(city => city.Name))" data-tooltip-position="top">
-                                    @item.Cities.Count Thành phố
-                                </span>
-                            }
-                            else
-                            {
-                                foreach (var city in item.Cities.Take(1))
+                                if (item.Cities.Count > 1)
                                 {
-                                    <span data-tooltip="@city.Name" data-tooltip-position="top">
-                                        @city.Name
+
+                                    <span data-tooltip="@string.Join(" , ", item.Cities.Select(city => city.Name))" data-tooltip-position="top">
+                                        @item.Cities.Count Thành phố
                                     </span>
                                 }
+                                else
+                                {
+                                    foreach (var city in item.Cities.Take(1))
+                                    {
+                                        <span data-tooltip="@city.Name" data-tooltip-position="top">
+                                            @city.Name
+                                        </span>
+                                    }
+                                }
                             }
-                        }
-                    </span>
-                </div>
-                @if (email == "")
-                {
-                    <a href="@Url.Action("Login", "User")" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
-                }
-                else
-                {
-                    if (Model.Likes.Any(a => a.JobId == item.Id))
+                        </span>
+                    </div>
+                    @if (email == "")
                     {
-                        <a href="javascripts:;" class="heart active unlikejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                        <a href="@Url.Action("Login", "User")" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
                     }
                     else
                     {
-                        <a href="javascripts:;" class="heart likejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                        if (Model.Likes.Any(a => a.JobId == item.Id))
+                        {
+                            <a href="javascripts:;" class="heart active unlikejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                        }
+                        else
+                        {
+                            <a href="javascripts:;" class="heart likejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                        }
                     }
-                }
+                </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
+}
+else
+{
+    <div class="none-suitable-job__content mt-3 shadow-none">
+        <img src="https://static.topcv.vn/v4/image/job-list/none-result.png" alt="None suitable job">
+        <span>Chưa tìm thấy việc làm phù hợp với yêu cầu của bạn</span>
+    </div>
+}
 
 <script>
     $('.list-hotjob').slick({

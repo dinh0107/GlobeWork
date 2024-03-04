@@ -161,7 +161,7 @@
                     {
                         <tr data-id="@item.Id">
                             <td class="left">
-                                <a href="@Url.Action("JobPostDetail", "Home", new{url = item.Url, jobId = item.Id})" target="_blank">@item.Name</a>
+                                <a href="@Url.Action("JobDetail", "Home", new{url = item.Url})" target="_blank" class="@if (item.Hot != null && item.Hot > DateTime.Now) { @Html.Raw("alert-success")}">@item.Name</a>
                             </td>
                             <td class="left">@item.Company.Name (@item.Company.Employer.FullName)</td>
                             <td>

@@ -34,7 +34,7 @@
                     <th style="width: 100px">STT</th>
                     <th>Email đăng ký</th>
                     <th>Ngày tạo</th>
-                    @*<th>Tên công ty</th>*@
+                    <th>Số dư</th>
                     <th>Chức danh</th>
                     <th>Kích hoạt</th>
                     <th style="width: 140px;"></th>
@@ -46,7 +46,7 @@
                         <td>@i</td>
                         <td>@user.Email</td>
                         <td>@user.CreateDate.ToString("dd/MM/yyyy")</td>
-                        @*<td>@user.CompanyName</td>*@
+                        <td>@Html.DisplayFor(a => user.Amount)</td>
                         <td>@user.Rank.Name</td>
                         <td>@Html.DisplayFor(a => user.Active)</td>
                         <td>

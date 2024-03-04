@@ -17,6 +17,7 @@ namespace GlobeWork.Controllers
     public class ArticleController : Controller
     {
         private readonly UnitOfWork _unitOfWork = new UnitOfWork();
+        public ConfigSite ConfigSite => (ConfigSite)HttpContext.Application["ConfigSite"];
         #region Article
         public ActionResult ListArticle(int? page, string name, int? catId, int? childId, string result = "")
         {
@@ -41,7 +42,8 @@ namespace GlobeWork.Controllers
         {
             var model = new InsertArticleViewModel
             {
-                Article = new Article { Active = true , IsAdmin = true }
+                Article = new Article { Active = true , IsAdmin = true },
+                DateHot = 0
             };
             return View(model);
         }
@@ -72,7 +74,7 @@ namespace GlobeWork.Controllers
                         model.Article.Image = imgFile;
                     }
                 }
-
+                
                 model.Article.Url = HtmlHelpers.ConvertToUnSign(null, model.Article.Url ?? model.Article.Subject);
                 var articles = _unitOfWork.ArticleRepository.GetQuery().AsNoTracking();
                 if (articles.Any(p => p.Url.Trim() == model.Article.Url.Trim()))
@@ -81,6 +83,53 @@ namespace GlobeWork.Controllers
                 }
                 model.Article.IsAdmin = true;
                 _unitOfWork.ArticleRepository.Insert(model.Article);
+                _unitOfWork.Save();
+                if (model.DateHot > 0)
+                {
+                    if (model.TruTien)
+                    {
+                        if (model.Article.Employer.Amount > 0)
+                        {
+                            int amountToSubtract = Convert.ToInt32((ConfigSite.PriceJob ?? 30000) * model.DateHot);
+                            string formattedAmountToSubtract = amountToSubtract.ToString("#,0") + "đ";
+                            if (amountToSubtract < model.Article.Employer.Amount)
+                            {
+                                model.Article.Employer.Amount -= amountToSubtract;
+                                Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + "</strong> để hiển thị bài viết <strong>" + model.Article.Subject + " </strong>" + "<strong class='text-danger'>" + model.DateHot + "</strong> ngày ở mục nổi bật", EmployerLogType.Deduction, model.Article.Employer.Id, amountToSubtract);
+                                if (model.Article.Hot != null)
+                                {
+                                    if (model.Article.Hot < DateTime.Now)
+                                    {
+                                        model.Article.Hot = DateTime.Now.AddDays(model.DateHot);
+                                    }
+                                    else
+                                    {
+                                        model.Article.Hot = model.Article.Hot?.AddDays(model.DateHot);
+                                    }
+                                }
+                                else
+                                {
+                                    model.Article.Hot = DateTime.Now.AddDays(model.DateHot);
+                                }
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", @"Số dư của tài khoản này không đủ để hiển thị tin");
+                                return View(model);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", @"Số dư của tài khoản này không đủ để hiển thị tin");
+                            return View(model);
+                        }
+                    }
+                    else
+                    {
+                        model.Article.Hot = DateTime.Now.AddDays(model.DateHot);
+                    }
+
+                }
                 _unitOfWork.Save();
                 return RedirectToAction("ListArticle", new { result = "success" });
             }
@@ -96,6 +145,7 @@ namespace GlobeWork.Controllers
             var model = new InsertArticleViewModel
             {
                 Article = article,
+                DateHot = 0
             };
             return View(model);
         }
@@ -159,7 +209,67 @@ namespace GlobeWork.Controllers
                 {
                     article.Url += "-" + DateTime.Now.Millisecond;
                 }
+                if (model.DateHot > 0)
+                {
+                    if (model.TruTien)
+                    {
+                        if (article.Employer.Amount > 0)
+                        {
+                            int amountToSubtract = Convert.ToInt32((ConfigSite.PriceJob ?? 30000) * model.DateHot);
+                            string formattedAmountToSubtract = amountToSubtract.ToString("#,0") + "đ";
+                            if (amountToSubtract < article.Employer.Amount)
+                            {
+                                article.Employer.Amount -= amountToSubtract;
+                                Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + "</strong> để hiển bài viết <strong>" + article.Subject + " </strong>" + "<strong class='text-danger'>" + model.DateHot + "</strong> ngày ở mục nổi bật", EmployerLogType.Deduction, article.Employer.Id, amountToSubtract);
+                                if (article.Hot != null)
+                                {
+                                    if (article.Hot < DateTime.Now)
+                                    {
+                                        article.Hot = DateTime.Now.AddDays(model.DateHot);
+                                    }
+                                    else
+                                    {
+                                        article.Hot = article.Hot?.AddDays(model.DateHot);
+                                    }
+                                }
+                                else
+                                {
+                                    article.Hot = DateTime.Now.AddDays(model.DateHot);
+                                }
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", @"Số dư của tài khoản này không đủ để hiển thị tin");
+                                model.Article = article;
+                                return View(model);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", @"Số dư của tài khoản này không đủ để hiển thị tin");
+                            return View(model);
+                        }
+                    }
+                    else
+                    {
+                        if (article.Hot != null)
+                        {
+                            if (article.Hot < DateTime.Now)
+                            {
+                                article.Hot = DateTime.Now.AddDays(model.DateHot);
+                            }
+                            else
+                            {
+                                article.Hot = article.Hot?.AddDays(model.DateHot);
+                            }
+                        }
+                        else
+                        {
+                            article.Hot = DateTime.Now.AddDays(model.DateHot);
+                        }
+                    }
 
+                }
                 _unitOfWork.Save();
 
                 return RedirectToAction("ListArticle", new { result = "update" });

@@ -95,14 +95,24 @@
             <div class="col-lg-4">
                 <div class="employer-left">
                     <div class="employer-title">Giới thiệu</div>
-                    <div class="intro">
-                        <div class="employer-intro">
-                            @Html.Raw(Model.Company.Introduct)
+                    @if (Model.Company.Introduct != null)
+                    {
+                        <div class="intro">
+                            <div class="employer-intro">
+                                @Html.Raw(Model.Company.Introduct)
+                            </div>
+                            <div class="show-more">
+                                <span class="icon">Xem thêm</span> <i class="fa-sharp fa-light fa-chevron-down"></i>
+                            </div>
                         </div>
-                        <div class="show-more">
-                            <span class="icon">Xem thêm</span> <i class="fa-sharp fa-light fa-chevron-down"></i>
+                    }
+                    else
+                    {
+                        <div class="none-suitable-job__content shadow-none">
+                            <img src="https://static.topcv.vn/v4/image/job-list/none-result.png" alt="None suitable job">
+                            <span>Chưa có thông tin công ty</span>
                         </div>
-                    </div>
+                    }
                     <hr />
                     <div class="media mb-4">
                         <div class="info-employ">
@@ -136,7 +146,7 @@
                         </div>
                         <div class="media-body ml-3">
                             <div class="year">
-                               @Model.Company.Age
+                                @Model.Company.Age
                             </div>
                             <div class="info-employ-sub">
                                 Độ tuổi trung bình
@@ -172,9 +182,24 @@
                     </div>
                     <hr />
                     <ul class="ul-reset company-contact">
-                        <li><a href="tel:@Model.Company.Phone"><i class="fa-solid fa-phone"></i>@Model.Company.Phone</a></li>
-                        <li><a href="@Model.Company.WebsiteUrl" target="_blank"><i class="fa-sharp fa-solid fa-globe"></i>@Model.Company.WebsiteUrl</a></li>
-                        <li><a href="" class="d-flex"><i class="fa-solid fa-location-dot"></i>@Model.Company.Address</a></li>
+                        <li>
+                            <a href="tel:@Model.Company.Phone">
+                                <i class="fa-solid fa-phone"></i>
+                                @(Model.Company.Phone != null ? Model.Company.Phone : "Đang cập nhật")
+                            </a>
+                        </li>
+                        <li>
+                            <a href="@Model.Company.WebsiteUrl" target="_blank">
+                                <i class="fa-sharp fa-solid fa-globe"></i>
+                                @(Model.Company.WebsiteUrl != null ? Model.Company.WebsiteUrl : "Đang cập nhật")
+                            </a>
+                        </li>
+                        <li>
+                            <a href="" class="d-flex">
+                                <i class="fa-solid fa-location-dot"></i>
+                                @(Model.Company.Address != null ? Model.Company.Address : "Đang cập nhật")
+                            </a>
+                        </li>
                     </ul>
                     <div class="employer-title">Địa chỉ trụ sở chính </div>
                     <div class="embed-responsive embed-responsive-21by9 mt-3">
@@ -285,9 +310,19 @@
                 </div>
                 <div class="employer-right mt-3">
                     <div class="employer-title">Sản phẩm và dịch vụ</div>
-                    <div class="content-detail">
-                        @Html.Raw(Model.Company.Product)
-                    </div>
+                    @if (Model.Company.Product != null)
+                    {
+                        <div class="content-detail">
+                            @Html.Raw(Model.Company.Product)
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="none-suitable-job__content shadow-none">
+                            <img src="https://static.topcv.vn/v4/image/job-list/none-result.png" alt="None suitable job">
+                            <span>Chưa có thông tin sản phẩm và dịch vụ</span>
+                        </div>
+                    }
                 </div>
             </div>
         </div>

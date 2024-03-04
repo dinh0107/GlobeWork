@@ -18,6 +18,7 @@ namespace GlobeWork.Controllers
     [Authorize]
     public class StudyAbroadVcmsController : BaseController
     {
+        public ConfigSite ConfigSite => (ConfigSite)HttpContext.Application["ConfigSite"];
         private IEnumerable<StudyAbroadCategory> StudyAbroadCategories() => _unitOfWork.StudyAbroadCategoryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort));
         #region StudyAbroad
         public ActionResult ListStudyAbroad(string result, int? page, string endTime, string careerIds, string countruyIds, string startTime, int? status, int? statusTime, string name, string sort = "date-asc")
@@ -182,6 +183,76 @@ namespace GlobeWork.Controllers
                 study.Incentives = model.StudyAbroad.Incentives;
                 study.TypeStudyAbroad = model.StudyAbroad.TypeStudyAbroad;
                 _unitOfWork.Save();
+
+                if (model.Date > 0)
+                {
+                    if (model.TruTien)
+                    {
+                        if (study.Company.Employer.Amount > 0)
+                        {
+                            int amountToSubtract = Convert.ToInt32((ConfigSite.PriceJob ?? 30000) * model.Date);
+                            string formattedAmountToSubtract = amountToSubtract.ToString("#,0") + "đ";
+                            if (amountToSubtract < study.Company.Employer.Amount)
+                            {
+                                study.Company.Employer.Amount -= amountToSubtract;
+                                Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + "</strong> để hiển thị tin <strong>" + study.Code + " </strong>" + "<strong class='text-danger'>" + model.Date + "</strong> ngày ở mục nổi bật", EmployerLogType.Deduction, study.Company.Employer.Id, amountToSubtract);
+                                if (study.Hot != null)
+                                {
+                                    if (study.Hot < DateTime.Now)
+                                    {
+                                        study.Hot = DateTime.Now.AddDays(model.Date);
+                                    }
+                                    else
+                                    {
+                                        study.Hot = study.Hot?.AddDays(model.Date);
+                                    }
+                                }
+                                else
+                                {
+                                    study.Hot = DateTime.Now.AddDays(model.Date);
+                                }
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", @"Số dư của tài khoản này không đủ để hiển thị tin");
+                                model.StudyAbroad = study;
+                                model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+                                model.StudyAbroadCategories = StudyAbroadCategories();
+                                model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                                return View(model);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", @"Số dư của tài khoản này không đủ để hiển thị tin");
+                            model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+                            model.StudyAbroadCategories = StudyAbroadCategories();
+                            model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            return View(model);
+                        }
+                    }
+                    else
+                    {
+                        if (study.Hot != null)
+                        {
+                            if (study.Hot < DateTime.Now)
+                            {
+                                study.Hot = DateTime.Now.AddDays(model.Date);
+                            }
+                            else
+                            {
+                                study.Hot = study.Hot?.AddDays(model.Date);
+                            }
+                        }
+                        else
+                        {
+                            study.Hot = DateTime.Now.AddDays(model.Date);
+                        }
+                    }
+
+                }
+                _unitOfWork.Save();
+
                 var stu = _unitOfWork.StudyAbroadRepository.GetQuery().AsNoTracking();
                 if (stu.Any(p => p.Url.ToLower().Trim() == study.Url.ToLower().Trim()))
                 {

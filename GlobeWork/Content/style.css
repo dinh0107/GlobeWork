@@ -228,11 +228,13 @@ header {
 }
 .menu-nav > li:hover .sub-menu {
   visibility: visible;
+  transform: translateY(0);
   opacity: 1;
 }
 .menu-nav > li:hover .box-menu {
   visibility: visible;
   opacity: 1;
+  transform: translateX(70%) translateY(0);
 }
 .menu-nav > li .sub-menu {
   position: absolute;
@@ -256,6 +258,8 @@ header {
   visibility: hidden;
   opacity: 0;
   border-radius: 0.425rem;
+  transition: all 0.5s;
+  transform: translateY(-1.25rem);
 }
 .sub-menu li {
   background: #f4f5f5;
@@ -289,6 +293,7 @@ header {
   transform: translateX(70%);
   visibility: hidden;
   opacity: 0;
+  transition: all 0.5s;
 }
 .box-menu a {
   margin-top: 0.6rem;
@@ -1756,7 +1761,7 @@ footer {
   color: #66BC46;
 }
 .company-contact a {
-  color: #000;
+  color: #000 !important;
   font-size: 0.875rem;
   font-weight: 400;
 }
@@ -3645,6 +3650,7 @@ summary {
   display: none !important;
 }
 .owl-carousel.owl-loaded.active {
+  width: 100%;
   display: block !important;
 }
 
@@ -3661,9 +3667,34 @@ summary {
 }
 
 .owl-prev {
-  left: -8%;
+  left: -6%;
 }
 
 .owl-next {
-  right: -8%;
+  right: -6%;
+}
+
+.toggle-icon {
+  display: none;
+}
+
+.box-menu-repon {
+  display: none;
+}
+
+.hot-section {
+  padding: 30px 0;
+}
+
+.box-filer {
+  width: 60%;
+  margin-right: 3rem;
+}
+
+.grid-study {
+  grid-area: 1/7/2/11;
+}
+
+.grid-study-1 {
+  grid-area: 1/1/2/7;
 }

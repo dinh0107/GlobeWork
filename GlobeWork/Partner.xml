@@ -1,2 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Text />
+<Text>
+  <Partner>
+    <Id>1</Id>
+    <Sort>1</Sort>
+    <Title>VicoGroup</Title>
+    <Url>https://vicogroup.vn/</Url>
+  </Partner>
+  <Partner>
+    <Id>2</Id>
+    <Sort>1</Sort>
+    <Title>VicoGroup</Title>
+    <Url>https://vicogroup.vn/</Url>
+  </Partner>
+  <Partner>
+    <Id>3</Id>
+    <Sort>1</Sort>
+    <Title>VicoGroup</Title>
+    <Url>https://vicogroup.vn/</Url>
+  </Partner>
+  <Partner>
+    <Id>4</Id>
+    <Sort>1</Sort>
+    <Title>VicoGroup</Title>
+    <Url>https://vicogroup.vn/</Url>
+  </Partner>
+</Text>

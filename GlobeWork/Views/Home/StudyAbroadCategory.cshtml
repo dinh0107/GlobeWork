@@ -91,6 +91,13 @@
                 }
             </div>
         }
+        else
+        {
+            <div class="none-suitable-job__content shadow-none">
+                <img src="https://static.topcv.vn/v4/image/job-list/none-result.png" alt="None suitable job">
+                <span>Chưa tìm thấy việc làm phù hợp với yêu cầu của bạn</span>
+            </div>
+        }
 
         @if (Model.HotStudyAbroad.Any())
         {
@@ -110,7 +117,7 @@
                             <img src="~/Content/images/on-image.jpg" alt="@item.Name" class="study-img" />
                         }
                         <div class="media-body py-2">
-                            <a href="@Url.Action("StudyAbroadDetail" , new {url = item.Url})" class="study-name">Tuyển sinh du học vừa học vừa làm tại Nhật Bản 2023</a>
+                            <a href="@Url.Action("StudyAbroadDetail", new { url = item.Url })" class="study-name">Tuyển sinh du học vừa học vừa làm tại Nhật Bản 2023</a>
                             <div class="study-company">
                                 @item.Company.Name
                             </div>

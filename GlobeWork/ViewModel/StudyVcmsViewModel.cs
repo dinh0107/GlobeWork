@@ -40,6 +40,9 @@ namespace GlobeWork.ViewModel
         public IEnumerable<Career> Careers { get; set; }
         public IEnumerable<StudyAbroadCategory> StudyAbroadCategories { get; set; }
         public IEnumerable<City> Citys { get; set; }
+        [Display(Name = "Số ngày hiển thị nổi bật"), RegularExpression(@"\d+", ErrorMessage = "Chỉ nhập số nguyên dương"), UIHint("NumberBox")]
+        public int Date { get; set; }
+        public bool TruTien { get; set; }
 
     }
 }

@@ -35,183 +35,198 @@
 <h2 class="mb-5">Cập nhât</h2>
 @using (Html.BeginForm("UpdateJobPostVcms", "JobPostVcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    @Html.ValidationSummary(true)
     @Html.HiddenFor(model => model.JobPost.Id)
     @*@Html.HiddenFor(model => model.JobPost.CompanyId)
     @Html.HiddenFor(model => model.JobPost.CityId)
     @Html.HiddenFor(model => model.JobPost.RankId)
     @Html.HiddenFor(model => model.JobPost.JobTypeId)*@
-    <div class="box_content">
-        <div class="item">
-            @Html.LabelFor(model => model.JobPost.Name)
-            @Html.EditorFor(model => model.JobPost.Name)
-            @Html.ValidationMessageFor(model => model.JobPost.Name)
-        </div>
+<div class="box_content">
+    @Html.ValidationSummary(true)
+    <div class="item">
+        @Html.LabelFor(model => model.JobPost.Name)
+        @Html.EditorFor(model => model.JobPost.Name)
+        @Html.ValidationMessageFor(model => model.JobPost.Name)
+    </div>
 
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="item w-100">
+                <label>Ngành nghề*</label>
+                <select class="career" name="CareerId" placeholder="Chọn ngành nghề">
+                    @foreach (var item in Model.Careers)
+                    {
+                        <option value="@item.Id" @if (Model.JobPost.CareerId == item.Id) { @Html.Raw("selected") }>@item.Name</option>
+                    }
+                </select>
+            </div>
+
+        </div>
+        <div class="col-lg-6">
+            <div class="item w-100">
+                <label>Hình thức công việc*</label>
+                <select class="type" required name="JobTypeId" placeholder="Chọn hình thức">
+                    <option value="" selected disabled>Chọn hình thức</option>
+                    @foreach (var item in Model.JobTypeSelectList)
+                    {
+                        <option value="@item.Value" @if (Model.JobPost.JobTypeId == Convert.ToInt32(item.Value)) { @Html.Raw("selected") }>@item.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="item w-100">
+                <label>Cấp bậc*</label>
+                <select class="rank" required name="RankId" placeholder="Chọn cấp bậc">
+                    <option value="" selected disabled>Chọn cấp bậc</option>
+                    @foreach (var item in Model.RankSelectList)
+                    {
+                        <option name="rank" value="@item.Value" @if (Model.JobPost.RankId == Convert.ToInt32(item.Value)) { @Html.Raw("selected") }>@item.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="item">
+                <label>Mức lương</label>
+                @Html.EnumDropDownListFor(model => model.JobPost.Wages, new { @class = "v-select" })
+            </div>
+        </div>
+    </div>
+    <div class="box">
+        <h3 class="title">
+            Cách thức nộp hồ sơ
+        </h3>
         <div class="row">
             <div class="col-lg-6">
-                <div class="item w-100">
-                    <label>Ngành nghề*</label>
-                    <select class="career" name="CareerId" placeholder="Chọn ngành nghề">
-                        @foreach (var item in Model.Careers)
-                        {
-                            <option value="@item.Id" @if (Model.JobPost.CareerId == item.Id) { @Html.Raw("selected") }>@item.Name</option>
-                        }
-                    </select>
-                </div>
-
-            </div>
-            <div class="col-lg-6">
-                <div class="item w-100">
-                    <label>Hình thức công việc*</label>
-                    <select class="type" required name="JobTypeId" placeholder="Chọn hình thức">
-                        <option value="" selected disabled>Chọn hình thức</option>
-                        @foreach (var item in Model.JobTypeSelectList)
-                        {
-                            <option value="@item.Value" @if (Model.JobPost.JobTypeId == Convert.ToInt32(item.Value)) { @Html.Raw("selected") }>@item.Text</option>
-                        }
-                    </select>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="item w-100">
-                    <label>Cấp bậc*</label>
-                    <select class="rank" required name="RankId" placeholder="Chọn cấp bậc">
-                        <option value="" selected disabled>Chọn cấp bậc</option>
-                        @foreach (var item in Model.RankSelectList)
-                        {
-                            <option name="rank" value="@item.Value" @if (Model.JobPost.RankId == Convert.ToInt32(item.Value)) { @Html.Raw("selected") }>@item.Text</option>
-                        }
-                    </select>
+                <div class="item">
+                    @Html.LabelFor(model => model.JobPost.ExpirationDate)
+                    <input type="text" name="JobPost.ExpirationDate" value="@Model.JobPost.ExpirationDate" class="form_control expiration-date datetimepicker" autocomplete="off" />
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="item">
-                    <label>Mức lương</label>
-                    @Html.EnumDropDownListFor(model => model.JobPost.Wages, new { @class = "v-select" })
+                    @Html.LabelFor(model => model.JobPost.Address)
+                    @Html.TextBoxFor(a => a.JobPost.Address, new { @class = "form_control" })
                 </div>
             </div>
         </div>
-        <div class="box">
-            <h3 class="title">
-                Cách thức nộp hồ sơ
-            </h3>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="item">
-                        @Html.LabelFor(model => model.JobPost.ExpirationDate)
-                        <input type="text" name="JobPost.ExpirationDate" value="@Model.JobPost.ExpirationDate" class="form_control expiration-date datetimepicker" autocomplete="off" />
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="item">
-                        @Html.LabelFor(model => model.JobPost.Address)
-                        @Html.TextBoxFor(a => a.JobPost.Address, new { @class = "form_control" })
-                    </div>
+    </div>
+    <div class="box">
+        <div class="row">
+            <div class="col-lg-6">
+                <h3 class="title">Kỹ năng yêu cầu</h3>
+                <div class="item">
+                    <label>Kỹ năng yêu cầu</label>
+                    <select multiple class="skill mutile" name="skill" placeholder="Chọn kỹ năng">
+                        <option value="" selected disabled>Chọn kỹ năng</option>
+                        @foreach (var item in Model.SkillSelectList)
+                        {
+                            <option name="skill" value="@item.Value" @if (Model.JobPost.Skills.Any(a => a.Id == Convert.ToInt32(item.Value))) { @Html.Raw("selected") }>@item.Text</option>
+                        }
+                    </select>
                 </div>
             </div>
-        </div>
-        <div class="box">
-            <div class="row">
-                <div class="col-lg-6">
-                    <h3 class="title">Kỹ năng yêu cầu</h3>
-                    <div class="item">
-                        <label>Kỹ năng yêu cầu</label>
-                        <select multiple class="skill mutile" name="skill" placeholder="Chọn kỹ năng">
-                            <option value="" selected disabled>Chọn kỹ năng</option>
-                            @foreach (var item in Model.SkillSelectList)
-                            {
-                                <option name="skill" value="@item.Value" @if (Model.JobPost.Skills.Any(a => a.Id == Convert.ToInt32(item.Value))) { @Html.Raw("selected") }>@item.Text</option>
-                            }
-                        </select>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <h3 class="title">Địa chỉ</h3>
-                    <div class="item">
-                        <label>Thành phố </label>
-                        <select class="city mutile" name="city" placeholder="Chọn thành phố" multiple>
-                            <option value="" selected disabled>Chọn chọn thành phố</option>
-                            @foreach (var item in Model.CitySelectList)
-                            {
-                                var cId = Convert.ToInt32(item.Value);
-                                <option value="@item.Value" @if (Model.JobPost.Cities.Any(c => c.Id == cId)) { @Html.Raw("selected") }>@item.Text</option>
-                            }
-                        </select>
-                    </div>
+            <div class="col-lg-6">
+                <h3 class="title">Địa chỉ</h3>
+                <div class="item">
+                    <label>Thành phố </label>
+                    <select class="city mutile" name="city" placeholder="Chọn thành phố" multiple>
+                        <option value="" selected disabled>Chọn chọn thành phố</option>
+                        @foreach (var item in Model.CitySelectList)
+                        {
+                            var cId = Convert.ToInt32(item.Value);
+                            <option value="@item.Value" @if (Model.JobPost.Cities.Any(c => c.Id == cId)) { @Html.Raw("selected") }>@item.Text</option>
+                        }
+                    </select>
                 </div>
             </div>
-        </div>
-        <div class="item">
-            <div class="col-5">
-                <div class="alert alert-info">
-                    <p class="btn btn-success fileinput-button">
-                        <i class="glyphicon glyphicon-plus"></i>
-                        <span>Chọn ảnh...</span>
-                        <input type="file" id="fileupload" name="files[]" accept="image/*" multiple="" />
-                    </p><br />
-                    - Chọn ảnh để upload: (gif, png, jpg, jpeg < 4MB)<br />
-                    - Kích thước: 800x 800px<br />
-                    - Ảnh đầu tiên sẽ là ảnh đại diện<br />
-                </div>
-                <div id="progress" class="progress">
-                    <div class="progress-bar progress-bar-success"></div>
-                </div>
-            </div>
-            <ul id="ListImages">
-                @if (Model.JobPost.Image != null)
-                {
-                    var i = 1;
-                    var arrPic = Model.JobPost.Image.Split(',');
-                    foreach (var item in arrPic)
-                    {
-                        <li>
-                            <input type="hidden" name="Pictures" value="@item" />
-                            <img src="@Path.Combine("/images/job/",item)?w=80&h=80&mode=crop" alt="" />
-                            <a href="javascript:;" id="@i" onclick="delfile( '@i')"><img src="/content/admin/icon-delete.png" alt="" /></a>
-                        </li>
-                        i = i + 1;
-                    }
-                }
-            </ul>
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-        </div>
-        <div class="item">
-            @Html.LabelFor(model => model.JobPost.Body)
-            @Html.EditorFor(model => model.JobPost.Body)
-            @Html.ValidationMessageFor(model => model.JobPost.Body)
-        </div>
-        <div class="item">
-            @Html.LabelFor(model => model.JobPost.Requirement)
-            @Html.EditorFor(model => model.JobPost.Requirement)
-            @Html.ValidationMessageFor(model => model.JobPost.Requirement)
-        </div>
-        <div class="item">
-            @Html.LabelFor(model => model.JobPost.Benefits)
-            @Html.EditorFor(model => model.JobPost.Benefits)
-            @Html.ValidationMessageFor(model => model.JobPost.Benefits)
-        </div>
-        <div class="item">
-            @Html.LabelFor(model => model.JobPost.WorkLocation)
-            @Html.EditorFor(model => model.JobPost.WorkLocation)
-            @Html.ValidationMessageFor(model => model.JobPost.WorkLocation)
-        </div>
-        <div class="text-right mt-3">
-            <button type="submit" class="btn quick-link">
-                <i class="far fa-paper-plane mr-2"></i>
-                Cập nhật
-            </button>
 
         </div>
     </div>
+    <div class="box">
+        <div class="col-lg-6">
+            <h3 class="title">Số ngày hiển thị nổi bật</h3>
+            Số tiền còn lại :
+            <div class="item">
+                @Html.EditorFor(item => item.Date)
+                @Html.ValidationMessageFor(a => a.Date)
+            </div>
+            <div class="item">
+                Trừ tiền
+                @Html.CheckBoxFor(a => a.TruTien)
+            </div>
+        </div>
+    </div>
+    <div class="item">
+        <div class="col-5">
+            <div class="alert alert-info">
+                <p class="btn btn-success fileinput-button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>Chọn ảnh...</span>
+                    <input type="file" id="fileupload" name="files[]" accept="image/*" multiple="" />
+                </p><br />
+                - Chọn ảnh để upload: (gif, png, jpg, jpeg < 4MB)<br />
+                - Kích thước: 800x 800px<br />
+                - Ảnh đầu tiên sẽ là ảnh đại diện<br />
+            </div>
+            <div id="progress" class="progress">
+                <div class="progress-bar progress-bar-success"></div>
+            </div>
+        </div>
+        <ul id="ListImages">
+            @if (Model.JobPost.Image != null)
+            {
+                var i = 1;
+                var arrPic = Model.JobPost.Image.Split(',');
+                foreach (var item in arrPic)
+                {
+                    <li>
+                        <input type="hidden" name="Pictures" value="@item" />
+                        <img src="@Path.Combine("/images/job/",item)?w=80&h=80&mode=crop" alt="" />
+                        <a href="javascript:;" id="@i" onclick="delfile( '@i')"><img src="/content/admin/icon-delete.png" alt="" /></a>
+                    </li>
+                    i = i + 1;
+                }
+            }
+        </ul>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+    <div class="item">
+        @Html.LabelFor(model => model.JobPost.Body)
+        @Html.EditorFor(model => model.JobPost.Body)
+        @Html.ValidationMessageFor(model => model.JobPost.Body)
+    </div>
+    <div class="item">
+        @Html.LabelFor(model => model.JobPost.Requirement)
+        @Html.EditorFor(model => model.JobPost.Requirement)
+        @Html.ValidationMessageFor(model => model.JobPost.Requirement)
+    </div>
+    <div class="item">
+        @Html.LabelFor(model => model.JobPost.Benefits)
+        @Html.EditorFor(model => model.JobPost.Benefits)
+        @Html.ValidationMessageFor(model => model.JobPost.Benefits)
+    </div>
+    <div class="item">
+        @Html.LabelFor(model => model.JobPost.WorkLocation)
+        @Html.EditorFor(model => model.JobPost.WorkLocation)
+        @Html.ValidationMessageFor(model => model.JobPost.WorkLocation)
+    </div>
+    <div class="text-right mt-3">
+        <button type="submit" class="btn quick-link">
+            <i class="far fa-paper-plane mr-2"></i>
+            Cập nhật
+        </button>
+
+    </div>
+</div>
 }
 @section scripts{
     <script>

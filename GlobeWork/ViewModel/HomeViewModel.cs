@@ -18,6 +18,7 @@ namespace GlobeWork.ViewModel
         public IEnumerable<Article> Articles { get; set; }
         public IEnumerable<Career> Careers { get; set; }
         public IEnumerable<Country>  Countries { get; set; }
+        public IEnumerable<Parter> Parters { get; set; }
     }
     public class HomeViewModel
     {

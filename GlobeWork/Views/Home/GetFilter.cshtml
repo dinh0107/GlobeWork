@@ -1,45 +1,81 @@
 ﻿@model GlobeWork.ViewModel.GetFilterViewModel
-<div class="owl-carousel owl-theme " data-selector="1">
-    <div class="contruy-name active" data-id="">
-        Ngẫu nhiên
-    </div>
-    @foreach (var item in Model.Cities)
-    {
-        <div class="contruy-name" data-id="@item.Id">
-            @item.Name
+<div class="box-filer">
+    <div class="owl-carousel owl-theme " data-selector="1">
+        <div class="contruy-name active" data-id="">
+            Ngẫu nhiên
         </div>
-    }
+        @foreach (var item in Model.Cities)
+        {
+            <div class="contruy-name" data-id="@item.Id">
+                @item.Name
+            </div>
+        }
+    </div>
+    <div class="owl-carousel owl-theme " data-selector="2">
+        <div class="contruy-name active" data-id="">
+            Tất cả
+        </div>
+        @foreach (var item in Model.Wage)
+        {
+            <div class="contruy-name" data-wage="@item.Key">
+                @item.Value
+            </div>
+        }
+    </div>
+    <div class="owl-carousel owl-theme " data-selector="3">
+        <div class="contruy-name active" data-id="">
+            Tất cả
+        </div>
+        @foreach (var item in Model.Experience)
+        {
+            <div class="contruy-name" data-exp="@item.Key">
+                @item.Value
+            </div>
+        }
+    </div>
+    <div class="owl-carousel owl-theme" data-selector="4">
+        <div class="contruy-name active" data-career-id="">
+            Ngẫu nhiên
+        </div>
+        @foreach (var item in Model.Careers)
+        {
+            <div class="contruy-name" data-career-id="@item.Id">
+                @item.Name
+            </div>
+        }
+    </div>
 </div>
-<div class="owl-carousel owl-theme " data-selector="2">
-    <div class="contruy-name active" data-id="">
-       Tất cả
-    </div>
-    @foreach (var item in Model.Wage)
-    {
-        <div class="contruy-name" data-id="@item.Key">
-            @item.Value
-        </div>
-    }
-</div>
-<div class="owl-carousel owl-theme " data-selector="3   ">
-    <div class="contruy-name active" data-id="">
-        Tất cả
-    </div>
-    @foreach (var item in Model.Experience)
-    {
-        <div class="contruy-name" data-id="@item.Key">
-            @item.Value
-        </div>
-    }
-</div>
-<div class="owl-carousel owl-theme" data-selector="4">
-    <div class="contruy-name active" data-career-id="">
-        Ngẫu nhiên
-    </div>
-    @foreach (var item in Model.Careers)
-    {
-        <div class="contruy-name" data-career-id="@item.Id">
-            @item.Name
-        </div>
-    }
+<div class="w-50 d-xl-none d-lg-block">
+    <select class="form-control section-filter active" data-selector="1" data-id>
+        <option value="">Ngẫu nhiên</option>
+        @foreach (var item in Model.Cities)
+        {
+            <option value="@item.Id">@item.Name</option>
+        }
+    </select>
+
+    <select class="form-control section-filter" data-selector="2" data-career-id>
+        <option value="">Tất cả</option>
+        @foreach (var item in Model.Wage)
+        {
+            <option value="@item.Key">@item.Value</option>
+        }
+    </select>
+
+    <select class="form-control section-filter" data-selector="3" data-wage>
+        <option value="">Tất cả</option>
+        @foreach (var item in Model.Experience)
+        {
+            <option value="@item.Key">@item.Value</option>
+        }
+    </select>
+
+    <select class="form-control section-filter" data-selector="4" data-exp>
+        <option value="">Ngẫu nhiên</option>
+        @foreach (var item in Model.Careers)
+        {
+            <option value="@item.Id">@item.Name</option>
+        }
+    </select>
+
 </div>

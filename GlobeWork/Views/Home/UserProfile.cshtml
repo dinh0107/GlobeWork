@@ -1,7 +1,9 @@
 ﻿@model GlobeWork.ViewModel.UserInfoViewModel
 @{
     ViewBag.Title = Model.User.FullName + " - " + Model.User.Classtify;
+    ViewBag.Description = Model.User.Description;
     ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("UserProfile");
+    var request = Request.Url;
 }
 <div class="bg-light py-4">
     <div class="container" id="element-to-print">
@@ -46,14 +48,14 @@
             <div class="company-detail-overview employer-detail">
                 <div class="box-detail name-profile">
                     <h1 class="company-detail-name text-dark">@Model.User.FullName</h1>
-                    <div class="sub-line">
+                    <div class="sub-line" id="classtify">
                         @Model.User.Classtify
                     </div>
                     <div class="group-btn-profile">
                         @if (Model.IsAccount)
                         {
                             <div class="position-relative">
-                                <a  class="active" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Thêm mục <i class="fa-solid fa-caret-down"></i></a>
+                                <a class="active cat-user" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Thêm mục <i class="fa-solid fa-caret-down"></i></a>
                                 <div class="collapse multi-collapse position-absolute" id="multiCollapseExample1">
                                     <ul class="collapsible ul-reset">
                                         <li class="collapsible-item">
@@ -62,10 +64,10 @@
                                                     <strong class="text">Thông tin cá nhân</strong>
                                                 </summary>
                                                 <div class="menu-profile mt-2">
-                                                   <div data-toggle="modal" data-target="#infoUser">
-                                                       <div role="button">Thông tin cá nhân</div>
-                                                       <small class="gray">Chia sẻ những mong muốn của bản thân như: Công việc mong muốn, mức lương mong muốn,... </small>
-                                                   </div>
+                                                    <div data-toggle="modal" data-target="#infoUser">
+                                                        <div role="button">Thông tin cá nhân</div>
+                                                        <small class="gray">Chia sẻ những mong muốn của bản thân như: Công việc mong muốn, mức lương mong muốn,... </small>
+                                                    </div>
                                                 </div>
                                             </details>
                                         </li>
@@ -150,10 +152,10 @@
                             </div>
                         }
                         <a href="#" class="converPDF">Tải xuống PDF</a>
-                        <a href="#">Chia sẻ profile</a>
+                        <a href="#" data-toggle="modal" data-target="#share">Chia sẻ profile</a>
                     </div>
                 </div>
-                <div class="box-follow">
+                <div class="box-follow d-xl-flex d-none">
                     @if (Model.ExpInfo != null)
                     {
                         <div class="media  align-items-center">
@@ -201,6 +203,12 @@
                     </div>
                 </div>
             </div>
+            @if (Model.User.Description != null)
+            {
+                <div class="bg-white p-4 rounded mb-4" id="Description">
+                    @Model.User.Description
+                </div>
+            }
         </div>
         @if (Model.IsAccount)
         {
@@ -530,6 +538,40 @@
         </div>
     </div>
 </div>
+<div id="share" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-modal="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="job-detail__box--right mt-3">
+                <div class="job-detail__box--right-title">
+                    Chia sẻ trang cá nhân
+                </div>
+                <div class="copy-link">
+                    <div class="link">
+                        <span id="url-request" data-value="@request">
+                            @request
+                        </span>
+                    </div>
+                    <button type="button" class="copy-value"><i class="fas fa-copy"></i></button>
+                </div>
+                <div class="job-detail__box--right-title mt-4">
+                    Chia sẻ qua mạng xã hội
+                </div>
+                <ul class="ul-reset share-social mt-2">
+                    <li>
+                        <a href="javascripts:;" onclick="window.open('https://www.facebook.com/sharer.php?u='+encodeURIComponent(location.href)+'&amp;t='+encodeURIComponent(document.title));return false" target="_blank"><img src="~/Content/images/facebook.png" alt="Facebook" /></a>
+                    </li>
+                    <li>
+                        <a href="javascripts:;" onclick="window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(location.href)+'&amp;text='+encodeURIComponent(document.title));return false" target="_blank"><img src="~/Content/images/twitter.png" alt="Facebook" /></a>
+                    </li>
+                    <li>
+                        <a href="javascripts:;" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href)+'&amp;t='+encodeURIComponent(document.title));return false" target="_blank"><img src="~/Content/images/linkedin.png" alt="Facebook" /></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
 @if (Model.IsAccount)
 {
     @Html.Action("Education", "User")

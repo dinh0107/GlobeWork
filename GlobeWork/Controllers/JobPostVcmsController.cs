@@ -17,6 +17,7 @@ namespace GlobeWork.Controllers
     [Authorize]
     public class JobPostVcmsController : BaseController
     {
+        public ConfigSite ConfigSite => (ConfigSite)HttpContext.Application["ConfigSite"];
         #region JobPost
         public ActionResult ListJobPost(string result, int? page, string endTime, string careerIds, string cityIds, string jobTypeIds, string skillIds, string rankIds, string startTime, int? status, int? statusTime, string name, string sort = "date-asc")
         {
@@ -176,6 +177,7 @@ namespace GlobeWork.Controllers
                 SkillSelectList = SkillSelectList,
                 RankSelectList = RankSelectList,
                 JobPost = jobPost,
+                Date = 0,
             };
             return View(model);
         }
@@ -244,6 +246,80 @@ namespace GlobeWork.Controllers
                 if (job.Any(p => p.Url.ToLower().Trim() == jobs.Url.ToLower().Trim()))
                 {
                     jobs.Url += "-" + jobs.Id;
+                }
+                _unitOfWork.Save();
+                
+                if (model.Date > 0)
+                {
+                    if (model.TruTien)
+                    {
+                        if (jobs.Company.Employer.Amount > 0)
+                        {
+                            int amountToSubtract = Convert.ToInt32((ConfigSite.PriceJob ?? 30000) * model.Date);
+                            string formattedAmountToSubtract = amountToSubtract.ToString("#,0") + "đ";
+                            if (amountToSubtract < jobs.Company.Employer.Amount)
+                            {
+                                jobs.Company.Employer.Amount -= amountToSubtract;
+                                Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + "</strong> để hiển thị tin <strong>" + jobs.Code + " </strong>" + "<strong class='text-danger'>" + model.Date + "</strong> ngày ở mục nổi bật", EmployerLogType.Deduction, jobs.Company.Employer.Id, amountToSubtract);
+                                if (jobs.Hot != null)
+                                {
+                                    if (jobs.Hot < DateTime.Now)
+                                    {
+                                        jobs.Hot = DateTime.Now.AddDays(model.Date);
+                                    }
+                                    else
+                                    {
+                                        jobs.Hot = jobs.Hot?.AddDays(model.Date);
+                                    }
+                                }
+                                else
+                                {
+                                    jobs.Hot = DateTime.Now.AddDays(model.Date);
+                                }
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", @"Số dư của tài khoản này không đủ để hiển thị tin");
+                                model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+                                model.JobPost = jobs;
+                                model.JobTypeSelectList = JobTypeSelectList;
+                                model.SkillSelectList = SkillSelectList;
+                                model.RankSelectList = RankSelectList;
+                                model.CitySelectList = CitySelectList;
+                                return View(model);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", @"Số dư của tài khoản này không đủ để hiển thị tin");
+                            model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+                            model.JobPost = jobs;
+                            model.JobTypeSelectList = JobTypeSelectList;
+                            model.SkillSelectList = SkillSelectList;
+                            model.RankSelectList = RankSelectList;
+                            model.CitySelectList = CitySelectList;
+                            return View(model);
+                        }
+                    }
+                    else
+                    {
+                        if (jobs.Hot != null)
+                        {
+                            if (jobs.Hot < DateTime.Now)
+                            {
+                                jobs.Hot = DateTime.Now.AddDays(model.Date);
+                            }
+                            else
+                            {
+                                jobs.Hot = jobs.Hot?.AddDays(model.Date);
+                            }
+                        }
+                        else
+                        {
+                            jobs.Hot = DateTime.Now.AddDays(model.Date);
+                        }
+                    }
+                    
                 }
                 _unitOfWork.Save();
                 return RedirectToAction("ListJobPost");

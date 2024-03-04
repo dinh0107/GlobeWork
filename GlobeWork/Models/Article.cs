@@ -53,6 +53,7 @@ namespace GlobeWork.Models
         public virtual Employer Employer { get; set; }
         public virtual Admin Admin { get; set; }
         public virtual StudyAbroadCategory StudyAbroadCategory { get; set; }
+        [Display(Name ="Loại bài viết")]
         public TypeArticle TypeArticle { get; set; }
 
         public Article()

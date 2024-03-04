@@ -38,7 +38,7 @@
             </div>
             <div class="company-detail-overview">
                 <div class="box-detail">
-                    <h1 class="company-detail-name ">@Model.Job.Company.Name <span class="tag-name">@Model.Job.Company.City.Name</span></h1>
+                    <h2 class="company-detail-name ">@Model.Job.Company.Name <span class="tag-name">@Model.Job.Company.City.Name</span></h2>
                     <div class="company-subdetail">
                         <a href="@Model.Job.Company.WebsiteUrl" target="_blank">
                             <i class="fa-light fa-globe"></i>
@@ -84,11 +84,11 @@
             </div>
         </div>
         <div class="row custom-row">
-            <div class="col-lg-8">
+            <div class="col-xl-8">
                 <div class="job-detail__box--left ">
-                    <div class="job-detail__name">
+                    <h1 class="job-detail__name">
                         @Model.Job.Name
-                    </div>
+                    </h1>
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="media section-info">
@@ -314,7 +314,7 @@
                     }
                 }
             </div>
-            <div class="col-lg-4">
+            <div class="col-xl-4">
                 @if (Model.JobCompanys.Any())
                 {
                     <div class="job-detail__box--right ">

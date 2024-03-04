@@ -26,7 +26,7 @@
                     <i class="far fa-location mx-2"></i>
                 </div>
             </div>
-            <div class="group-search shadow">
+            <div class="group-search shadow w-custom">
                 <select class="select2 select-nn" name="type">
                     <option value="">Hình thức làm việc</option>
                     @foreach (var item in Model.jobTypes)
@@ -35,7 +35,7 @@
                     }
                 </select>
             </div>
-            <div class="group-search shadow">
+            <div class="group-search shadow w-custom">
                 <select class="select2 select-nn" name="wage">
                     <option value="">Tất cả mức lương</option>
                     @foreach (var item in Model.Wages)

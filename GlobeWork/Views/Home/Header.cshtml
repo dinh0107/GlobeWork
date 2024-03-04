@@ -153,10 +153,6 @@
                                 <i class="fa-regular fa-heart"></i>
                                 Việc làm đã lưu
                             </a>
-                            @*<a href="@Url.Action("ChangePassword", "User")" class="navbar-btn">
-                                <i class="icon fa-regular fa-lock"></i>
-                                Đổi mật khẩu
-                            </a>*@
                             <a href="@Url.Action("Logout", "User")" class="navbar-btn">
                                 <i class="icon fa-regular fa-arrow-right-from-bracket"></i>
                                 Đăng xuất
@@ -164,7 +160,231 @@
                         </div>
                     </div>
                 }
+                <div class="toggle-icon">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
             </div>
         </div>
     </div>
-</header>   
+</header>
+<div class="box-menu-repon">
+    <div class="container">
+        <small class="mb-2 d-block">Dành cho ứng viên</small>
+        <ul class="ul-reset ul-repon">
+            @if (id > 0)
+            {
+                <li>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="media align-items-center">
+                            @if (avatar == "")
+                            {
+                                <img src="~/Content/images/avatar-default.jpg" alt="@FullName" class="fix-size-img" />
+                            }
+                            else
+                            {
+                                <img src="@Path.Combine("/images/user/", avatar)" alt="@FullName"  class="fix-size-img"/>
+                            }
+                            <div class="media-body">
+                                <span class="name-user-mb">@FullName</span>
+                                <div class="email-user-mb">
+                                    @email
+                                </div>
+                            </div>
+                        </div>
+                        @if (Model.Articles.Any())
+                        {
+                            <div class="icon-reponsive">
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        }
+                    </div>
+                    @if (Model.Articles.Any())
+                    {
+                        <ul class="ul-reset ul-reponsive">
+                            <li>
+                                <a href="@Url.Action("UserProfile", "Home" , new {url = url })"  class="link-user">
+                                    <i class="icon fa-regular fa-pen-to-square"></i>
+                                    Thông tin cá nhân
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("ListApply", "User")" class="link-user">
+                                    <i class="fa-regular fa-handshake"></i>
+                                    Công việc đã ứng tuyển
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("ListFollow", "User")" class="link-user">
+                                    <i class="fal fa-briefcase"></i>
+                                    Công ty đã theo dõi
+                                </a>
+
+                            </li>
+                            <li>
+                                <a href="@Url.Action("ListLike", "User")" class="link-user">
+                                    <i class="fa-regular fa-heart"></i>
+                                    Việc làm đã lưu
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Logout", "User")" class="link-user">
+                                    <i class="icon fa-regular fa-arrow-right-from-bracket"></i>
+                                    Đăng xuất
+                                </a>
+                            </li>
+                        </ul>
+                    }
+                </li>
+            }
+            else
+            {
+                <li>
+                    <div class="d-flex justify-content-between">
+                        <a href="@Url.Action("Contact")" class="link-repon">Đăng nhập</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="d-flex justify-content-between">
+                        <a href="@Url.Action("Contact")" class="link-repon">Đăng kí tài khoản mới</a>
+                    </div>
+                </li>
+            }
+            <li>
+                <div class="d-flex justify-content-between">
+                    <a href="javascripts:;" class="link-repon">Giới thiệu</a>
+                    @if (Model.Articles.Any())
+                    {
+                        <div class="icon-reponsive">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    }
+                </div>
+                @if (Model.Articles.Any())
+                {
+                    <ul class="ul-reset ul-reponsive">
+                        @foreach (var item in Model.Articles)
+                        {
+                            <li>
+                                <a href="@Url.Action("ArticleDetail", new {url = item.Url})">@item.Subject</a>
+                            </li>
+                        }
+                    </ul>
+                }
+            </li>
+            <li>
+                <div class="d-flex justify-content-between">
+                    <a href="javascripts:;" class="link-repon">Việc làm</a>
+                    <div class="icon-reponsive">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+                <ul class="ul-reset ul-reponsive">
+                    <li>
+                        <a href="@Url.Action("Job")">
+                            Tìm việc làm (search)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("JobHot")">
+                            Việc làm hot
+                        </a>
+                    </li>
+                    @foreach (var item in Model.Careers)
+                    {
+                        <li>
+                            <a href="@Url.Action("JobCategory" , new {url = item.Code})">
+                                @item.Name
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </li>
+            <li>
+                <div class="d-flex justify-content-between">
+                    <a class="link-repon" href="@Url.Action("StudyAbroad")">Du học</a>
+                    <div class="icon-reponsive">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+                <ul class="ul-reset ul-reponsive">
+                    @foreach (var item in Model.StudyAbroadCategories.Where(a => a.ParentId == null))
+                    {
+                        <li class="d-flex justify-content-between">
+                            <a class="link-repon" href="@Url.Action("StudyAbroadCategory", new {url = item.Url})">
+                                @if (item.Image != null)
+                                {
+                                    <img src="@Path.Combine("/images/category/", item.Image)" class="flag mr-1" alt="@item.CategoryName" />
+                                }
+                                @item.CategoryName
+                            </a>
+                            @if (Model.StudyAbroadCategories.Any(a => a.ParentId == item.Id))
+                            {
+                                <div class="icon-study">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            }
+                        </li>
+                        if (Model.StudyAbroadCategories.Any(a => a.ParentId == item.Id))
+                        {
+                            <li class="study-repon">
+                                <ul class="ul-reset">
+                                    @foreach (var child in Model.StudyAbroadCategories.Where(a => a.ParentId == item.Id))
+                                    {
+                                        <li class="mb-0">
+                                            <a href="@Url.Action("StudyAbroadCategory", new {url = child.Url})">@child.CategoryName</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+
+                    }
+                </ul>
+            </li>
+            <li>
+                <div class="d-flex justify-content-between">
+                    <a href="@Url.Action("ListCompany")" class="link-repon">Doanh nghiệp</a>
+                </div>
+            </li>
+            @if (id == 0)
+            {
+                <li>
+                    <div class="d-flex justify-content-between">
+                        <a href="@Url.Action("Login" , "User")" class="link-repon">Hồ sơ CV</a>
+                    </div>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <div class="d-flex justify-content-between">
+                        <a href="@Url.Action("UserProfile", "Home" , new {url = url })" class="link-repon">Hồ sơ CV</a>
+                    </div>
+                </li>
+            }
+            <li>
+                <div class="d-flex justify-content-between">
+                    <a href="@Url.Action("ListCompany")" class="link-repon">Doanh nghiệp</a>
+                </div>
+            </li>
+            <li>
+                <div class="d-flex justify-content-between">
+                    <a href="@Url.Action("StudyAbroadHot")" class="link-repon">Săn học bổng</a>
+                </div>
+            </li>
+            <li>
+                <div class="d-flex justify-content-between">
+                    <a href="@Url.Action("Contact")" class="link-repon">Liên hệ</a>
+                </div>
+            </li>
+        </ul>
+        <small class="my-2 d-block">Dành cho nhà tuyển dụng</small>
+        <ul class="ul-reset ul-repon">
+            <li>
+                <div class="d-flex justify-content-between">
+                    <a href="@Url.Action("Contact")" class="link-repon">Đăng tuyển</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

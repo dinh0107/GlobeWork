@@ -37,6 +37,14 @@
             <td class="form_text">@Html.EditorFor(model => model.Article.Body)</td>
         </tr>
         <tr>
+            <td class="form_name">@Html.LabelFor(model => model.DateHot)</td>
+            <td class="form_text pt-3">@Html.EditorFor(model => model.DateHot)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.TruTien)</td>
+            <td class="form_text pt-3">@Html.CheckBoxFor(model => model.TruTien)</td>
+        </tr>
+        <tr>
             <td class="form_name">@Html.LabelFor(model => model.Article.Menu)</td>
             <td class="form_text">@Html.CheckBoxFor(model => model.Article.Menu)</td>
         </tr>

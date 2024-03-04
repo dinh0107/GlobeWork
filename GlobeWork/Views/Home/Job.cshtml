@@ -34,7 +34,7 @@
                     <i class="far fa-location mx-2"></i>
                 </div>
             </div>
-            <div class="group-search">
+            <div class="group-search w-custom">
                 <select class="select2 select-nn" name="careerId">
                     <option value="">Ngành nghề</option>
                     @foreach (var item in Model.Careers)
@@ -43,7 +43,7 @@
                     }
                 </select>
             </div>
-            <div class="group-search">
+            <div class="group-search w-custom">
                 <select class="select2 select-nn" name="wage">
                     <option value="">Tất cả mức lương</option>
                     @foreach (var item in Model.Wages)
@@ -88,7 +88,7 @@
             </h2>
             <a href="@Url.Action("JobHot")" class="view-all">Xem tất cả</a>
         </div>
-        <div class="d-flex align-items-center justify-content-between mt-3">
+        <div class="d-flex align-items-center justify-content-between mt-3 gap-9">
             <div class="sort-contruy w-25 form-control border">
                 <span>
                     <i class="fa-solid fa-bars-filter"></i>

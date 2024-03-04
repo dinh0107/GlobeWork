@@ -94,6 +94,14 @@
                 <td class="form_text pt-3">@Html.EditorFor(model => model.StudyAbroad.Health)</td>
             </tr>
             <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Date)</td>
+                <td class="form_text pt-3">@Html.EditorFor(model => model.Date)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.TruTien)</td>
+                <td class="form_text pt-3">@Html.CheckBoxFor(model => model.TruTien)</td>
+            </tr>
+            <tr>
                 <td class="form_name">@Html.LabelFor(model => model.StudyAbroad.LearningProblems)</td>
                 <td class="form_text">@Html.EditorFor(model => model.StudyAbroad.LearningProblems)</td>
             </tr>

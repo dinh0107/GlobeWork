@@ -48,12 +48,11 @@
         nextArrow: '<button class="next-slie"><i class="fal fa-chevron-circle-right"></i></button>',
         responsive: [
             {
-                breakpoint: 1024,
+                breakpoint: 1044,
                 settings: {
-                    slidesToShow: 6,
-                    slidesToScroll: 3,
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
                     infinite: true,
-                    dots: false
                 }
             },
             {

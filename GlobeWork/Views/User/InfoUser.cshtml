@@ -170,7 +170,7 @@
          contentType: "application/json",
          data: JSON.stringify(formData),
          success: function (response) {
-             console.log(response)
+             console.log(JSON.stringify(formData))
              new Notify({
                  status: 'success',
                  text: "Cập nhật thông tin thành công",
@@ -185,7 +185,17 @@
                  type: 3,
                  position: 'right bottom'
              });
-             $(".close-info").click()
+             var jsonData = JSON.stringify(formData);
+             var parsedData = JSON.parse(jsonData);
+
+             $("#Description").empty();
+             $(".company-detail-name").empty();
+             $("#classtify").empty();
+             $(".company-detail-name").text(parsedData.FullName);
+             $("#classtify").text(parsedData.Classtify);
+             $("#Description").text(parsedData.Description);
+             $(".close-info").click();
+             $(".cat-user").click();
          },
          error: function (error) {
              new Notify({

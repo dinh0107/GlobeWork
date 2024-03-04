@@ -25,5 +25,6 @@ namespace GlobeWork.ViewModel
         public IEnumerable<StudyAbroadCategory> StudyAbroadCategories { get; set; }
         [Display(Name = "Số ngày"), Required(ErrorMessage = "Hãy nhập thứ tự"), RegularExpression(@"\d+", ErrorMessage = "Chỉ nhập số nguyên")]
         public int DateHot { get; set; }
+        public bool TruTien { get; set; }
     }
 }

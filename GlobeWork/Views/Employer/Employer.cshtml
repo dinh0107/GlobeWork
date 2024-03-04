@@ -149,21 +149,6 @@
     <script src="~/Scripts/virtual-select.min.js"></script>
     <script>
         User();
-        //$("[data-item=city]").on("change", function (data) {
-        //    const id = $(this).val();
-        //    var items = [];
-        //    items.push("<option value>Chọn quận huyện</option>");
-        //    if (id !== "") {
-        //        $.getJSON("/User/GetDistrict", { cityId: id }, function (data) {
-        //            $.each(data, function (key, val) {
-        //                items.push("<option value='" + val.Id + "'>" + val.Name + "</option>");
-        //            });
-        //            $("[data-item=district]").html(items.join(""));
-        //        });
-        //    } else {
-        //        $("[data-item=district]").html(items.join(""));
-        //    }
-        //});
         VirtualSelect.init({
             ele: '.v-select',
             search: true,

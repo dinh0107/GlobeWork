@@ -136,6 +136,9 @@ namespace GlobeWork.ViewModel
         public SelectList RankSelectList { get; set; }
         public SelectList JobTypeSelectList { get; set; }
         public SelectList CitySelectList { get; set; }
+        [Display(Name = "Số ngày hiển thị nổi bật"), RegularExpression(@"\d+", ErrorMessage = "Chỉ nhập số nguyên dương"), UIHint("NumberBox")]
+        public int Date { get; set;}
+        public bool TruTien { get; set; }
     }
 
     public class ListJobPostViewModel

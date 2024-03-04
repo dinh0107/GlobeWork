@@ -50,9 +50,8 @@
             </div>
             <div class="login-social-list">
                 <a href="@ViewBag.GoogleUrl" class="google"><i class="fa-brands fa-google mr-2"></i>Google</a>
-                @*<a href="@ViewBag.FacebookUrl" class="facebook"><i class="fa-brands fa-facebook mr-2"></i>Facebook</a>*@
-                <a href="javascript:void(0);" onclick="fbLogin();" id="fbLink" class="google"><i class="fa-brands fa-google mr-2"></i>Google</a>
-                <a href="@ViewBag.Linkedin" class="linkedin"><i class="fa-brands fa-linkedin mr-2"></i>Linkedin</a>
+                <a href="@ViewBag.FacebookUrl" class="facebook"><i class="fa-brands fa-facebook mr-2"></i>Facebook</a>
+                <a href="@ViewBag.Url" class="linkedin"><i class="fa-brands fa-linkedin mr-2"></i>Linkedin</a>
             </div>
             <label class="checkbox-wrapper-42 agreement-login mt-3 align-items-start">
                 <input id="cbx-43" type="checkbox" checked />
@@ -68,38 +67,12 @@
         <div class="text-center">
             <strong> Bạn gặp khó khăn khi tạo tài khoản?</strong>
             <br />
-            Vui lòng gọi tới số <a href="tel" class="text-success">024 6660 5588</a> (giờ hành chính).
+            Vui lòng gọi tới số <a href="tel:@config.Hotline" class="text-success">@config.Hotline</a> (giờ hành chính).
         </div>
     </div>
-</div>
-<fb:login-button config_id="1316406012362663"
-                 onlogin="checkLoginState();">
-</fb:login-button>
-<div id="status">
 </div>
 @section scripts{
     <script>
         User();
-
-        window.fbAsyncInit = function () {
-            FB.init({
-                appId: '178635401080061',
-                cookie: true,
-                xfbml: true,
-                version: 'v19.0'
-            });
-            FB.AppEvents.logPageView();
-        };
-
-        (function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) { return; }
-            js = d.createElement(s); js.id = id;
-            js.src = "https://connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-        FB.getLoginStatus(function (response) {
-            statusChangeCallback(response);
-        });
     </script>
 }

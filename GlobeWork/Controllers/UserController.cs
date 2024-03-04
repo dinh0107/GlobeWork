@@ -1,8 +1,9 @@
-﻿    using Helpers;
+﻿using Helpers;
 using GlobeWork.DAL;
 using GlobeWork.Models;
 using GlobeWork.Filters;
 using System;
+using System.Net;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,22 +12,31 @@ using GoogleAuthentication.Services;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using System.Web.Security;
-using System.Net;
 using RestSharp;
-using Newtonsoft.Json;
 using GlobeWork.ViewModel;
-using System.Collections.Generic;
-using Microsoft.Ajax.Utilities;
 using System.IO;
 using System.Drawing;
 using PagedList;
-using System.Runtime.ConstrainedExecution;
-using Com.CloudRail.SI.ServiceCode.Commands;
+using System.Collections.Generic;
+using System.Net.Http;
+using Microsoft.Ajax.Utilities;
+
 namespace GlobeWork.Controllers
 {
     [MemberFilter, RoutePrefix("user")]
     public class UserController : Controller
     {
+        private const string LinkedInClientId = "86aar6msj716ck";
+        private const string LinkedInClientSecret = "86aar6msj716ck";
+        private const string RedirectUri = "https://localhost:44327/User/CallBackLinked";
+        private static readonly HttpClient _httpClient = new HttpClient();
+        public string code = "AQWYllV6BcuSfHDRtpXCd0yY-YlAj_W3iIEbKVXvgDyhf_D2cLq-HjDp92McPFw_pktGvDNG0FVdXD6oDL9N4g4M8Y05-dtK2FNGobhO-lnop-uE0L9Azm3Nx4irqeAbVqhNQJdgRzFBS1HJlBPVXmPgIu32oQq1Joi_IpVvqbjbMccThKf4MDBS3AuJ14A2dCUBWpFNdDv8r8ZDaKFezc1gk0ZxyVxPG6WynYFwlo31aceQAXgvBan4f9cX4xER02iiJT1m-CQNszUFEwIHWdtqnjCPi90wSSoDIuzkjnhQ8XYOUSCo-bwv2QTYNg02Lb5AursP5cm3coZuPbYn20rR8Q3ORA";
+        public ActionResult Authenticate()
+        {
+            var authUrl = $"https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id={LinkedInClientId}&redirect_uri={RedirectUri}&scope=r_liteprofile%20r_emailaddress";
+            return Redirect(authUrl);
+        }
+
         // GET: User
         private readonly UnitOfWork _unitOfWork = new UnitOfWork();
         private int Id => Convert.ToInt32(RouteData.Values["Id"]);
@@ -48,12 +58,14 @@ namespace GlobeWork.Controllers
                 redirect_uri = host + "/User/FacebookRedirect",
                 scope = "public_profile,email"
             });
+
             //Google
             var clientId = "65707280933-nr9hupgoj3pbqavfc479hll1igo0jfkk.apps.googleusercontent.com";
             var url = host + "/User/CallBackGoogle";
             var respon = GoogleAuth.GetAuthUrl(clientId, url);
+
             // Linkend
-            ViewBag.Linkedin = LinkedinLogin.LinkedinPackage.RedirectToLinkedinLoginUrl("7896gkl097iy60", "https://localhost:44327/User/CallBackLinked");
+            ViewBag.Url = $"https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id={LinkedInClientId}&redirect_uri={RedirectUri}&scope=openid,profile,email,w_member_social";
             ViewBag.GoogleUrl = respon;
             ViewBag.FacebookUrl = facebookUrl;
             return View();
@@ -64,27 +76,30 @@ namespace GlobeWork.Controllers
             if (ModelState.IsValid)
             {
                 var user = _unitOfWork.UserRepository.Get(a => a.Email == model.Email).SingleOrDefault();
-                if (user == null || !HtmlHelpers.VerifyHash(model.Password, "SHA256", user.Password))
-                {
-                    ModelState.AddModelError("", @"Tên đăng nhập hoặc mật khẩu không chính xác.");
-                    return View(model);
-                }
                 if (!user.Active)
                 {
                     ModelState.AddModelError("", @"Tài khoản tạm thời bị khóa. Vui lòng liên hệ với quản trị viên.");
                     return View(model);
                 }
-                var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url;
-                var ticket = new FormsAuthenticationTicket(2, user.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
-                    userData, FormsAuthentication.FormsCookiePath);
-                var encTicket = FormsAuthentication.Encrypt(ticket);
-                Response.Cookies.Add(new HttpCookie(".ASPXAUTHMEMBER", encTicket));
-                if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
-                        && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                if (user != null || HtmlHelpers.VerifyHash(model.Password, "SHA256", user.Password))
                 {
-                    return Redirect(returnUrl);
+                    var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url;
+                    var ticket = new FormsAuthenticationTicket(2, user.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
+                        userData, FormsAuthentication.FormsCookiePath);
+                    var encTicket = FormsAuthentication.Encrypt(ticket);
+                    Response.Cookies.Add(new HttpCookie(".ASPXAUTHMEMBER", encTicket));
+                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
+                            && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    return RedirectToAction("Index", "Home", new { result = "success" });
                 }
-                return RedirectToAction("Index", "Home", new { result = "success" });
+                else
+                {
+                    ModelState.AddModelError("", @"Tên đăng nhập hoặc mật khẩu không chính xác.");
+                    return View(model);
+                }
             }
             return View(model);
         }
@@ -219,24 +234,39 @@ namespace GlobeWork.Controllers
             }
         }
         [OverrideActionFilters]
-        public ActionResult CallBackLinked(string code, string state)
+        public async Task<ActionResult> CallBackLinked(string code = "AQWYllV6BcuSfHDRtpXCd0yY-YlAj_W3iIEbKVXvgDyhf_D2cLq-HjDp92McPFw_pktGvDNG0FVdXD6oDL9N4g4M8Y05-dtK2FNGobhO-lnop-uE0L9Azm3Nx4irqeAbVqhNQJdgRzFBS1HJlBPVXmPgIu32oQq1Joi_IpVvqbjbMccThKf4MDBS3AuJ14A2dCUBWpFNdDv8r8ZDaKFezc1gk0ZxyVxPG6WynYFwlo31aceQAXgvBan4f9cX4xER02iiJT1m-CQNszUFEwIHWdtqnjCPi90wSSoDIuzkjnhQ8XYOUSCo-bwv2QTYNg02Lb5AursP5cm3coZuPbYn20rR8Q3ORA")
         {
-            var host = Request.Url.Scheme + "://" + Request.Url.Host + ":" + Request.Url.Port;
-            try
+            using (var client = new HttpClient())
             {
-                var client = new RestClient("https://www.linkedin.com/oauth/v2/accessToken");
-                var request = new RestRequest(Method.Post.ToString());
-                ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
-                request.AddParameter("grant_type", "authorization_code");
-                request.AddParameter("code", Request.QueryString["code"].ToString());
-                request.AddParameter("redirect_uri", "https://localhost:44327/User/CallBackLinked");
-                request.AddParameter("client_id", "7896gkl097iy60");
-                request.AddParameter("client_secret", "ClgYHvkUDssxb30f");
+                var tokenEndpoint = "https://www.linkedin.com/oauth/v2/accessToken";
+                var content = new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string, string>("grant_type", "authorization_code"),
+                    new KeyValuePair<string, string>("code", code),
+                    new KeyValuePair<string, string>("redirect_uri", RedirectUri),
+                    new KeyValuePair<string, string>("client_id", LinkedInClientId),
+                    new KeyValuePair<string, string>("client_secret", LinkedInClientSecret)
+                });
+
+                var response = await client.PostAsync(tokenEndpoint, content);
+                var tokenResponseContent = await response.Content.ReadAsStringAsync();
+                var tokenResponse = JObject.Parse(tokenResponseContent);
+
+                var accessToken = tokenResponse["access_token"].ToString();
+
+                var profileEndpoint = "https://api.linkedin.com/v2/userinfo";
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+                var profileResponse = await client.GetAsync(profileEndpoint);
+                var profileDataContent = await profileResponse.Content.ReadAsStringAsync();
+                var profileData = JObject.Parse(profileDataContent);
+
+                var email = profileData["emailAddress"].ToString();
+                var firstName = profileData["firstName"].ToString();
+                var lastName = profileData["lastName"].ToString();
+                var id = profileData["id"].ToString();
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+
             return View();
         }
         [Route("dang-xuat")]

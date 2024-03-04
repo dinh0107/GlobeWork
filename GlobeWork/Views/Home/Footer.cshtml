@@ -11,7 +11,7 @@
 <footer>
     <div class="container">
         <div class="row">
-            <div class="col-lg-3">
+            <div class="col-xl-3 order-xl-0 order-1">
                 <div class="content-detail">
                     @Html.Raw(config.InfoFooter)
                 </div>
@@ -28,7 +28,7 @@
                     <img src="~/Content/images/bct.png" alt="Bộ công thương" class="bct" />
                 </a>
             </div>
-            <div class="col-lg-9">
+            <div class="col-xl-9 order-xl-1 order-0">
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="footer-title mt-3">
@@ -76,11 +76,10 @@
                             Đối tác
                         </div>
                         <ul class="ul-reset menu-footer">
-                            <li><a href="#">JHL Group</a></li>
-                            <li><a href="#">Về chúng tôi</a></li>
-                            <li><a href="#">Về chúng tôi</a></li>
-                            <li><a href="#">Về chúng tôi</a></li>
-                            <li><a href="#">Về chúng tôi</a></li>
+                            @foreach (var item in Model.Parters)
+                            {
+                                <li><a href="@item.Url" target="_blank">@item.Title</a></li>
+                            }
                         </ul>
                     </div>
                 </div>
