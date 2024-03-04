@@ -156,6 +156,12 @@ namespace GlobeWork.Controllers
             {
                 return false;
             }
+            var advises = _unitOfWork.AdviseRepository.GetQuery(a => a.UserId == userId).ToList();
+            foreach (var advise in advises)
+            {
+                _unitOfWork.AdviseRepository.Delete(advise);
+            }
+            _unitOfWork.Save();
             _unitOfWork.UserRepository.Delete(user);
             _unitOfWork.Save();
             return true;

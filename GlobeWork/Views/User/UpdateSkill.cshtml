@@ -49,7 +49,48 @@
 </form>
 @Scripts.Render("~/bundles/jqueryval")
 <script>
-    
+    $(".update-skill").submit(function (e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.post("/User/UpdateSkill", formData, function (data) {
+            if (data.success) {
+                new Notify({
+                    status: 'success',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+                $(".close").click()
+                setTimeout(function () {
+                    location.reload();
+                }, 1500);
+            } else {
+                new Notify({
+                    status: 'error',
+                    text: data.message,
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            }
+        });
+    });
+
     function DeleteSkill(id) {
         $.post("/User/RemoveSkill", { id: id }, function (data) {
             if (data.success) {

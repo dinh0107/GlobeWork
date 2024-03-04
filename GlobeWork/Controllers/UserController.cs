@@ -83,7 +83,7 @@ namespace GlobeWork.Controllers
                 }
                 if (user != null || HtmlHelpers.VerifyHash(model.Password, "SHA256", user.Password))
                 {
-                    var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url;
+                    var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url + "|" + user.AvatarSocial;
                     var ticket = new FormsAuthenticationTicket(2, user.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
                         userData, FormsAuthentication.FormsCookiePath);
                     var encTicket = FormsAuthentication.Encrypt(ticket);
@@ -118,18 +118,19 @@ namespace GlobeWork.Controllers
                 code = code
             });
             fb.AccessToken = result.access_token;
-            dynamic me = fb.Get("/me?fields=name,email");
+            dynamic me = fb.Get("/me?fields=name,email,picture");
             string name = me.name;
             string email = me.email;
             string id = me.id;
-            string avatar = me.avatar;
+            string avatar = me.picture.data.url;
             var user = _unitOfWork.UserRepository.GetQuery(a => a.FaceBookId == id).FirstOrDefault();
             if (user == null)
             {
                 var Insertuser = new User
                 {
                     Username = "",
-                    Avatar = avatar,
+                    Avatar = null,
+                    AvatarSocial = avatar,
                     Cover = null,
                     FaceBookId = id,
                     Email = email,
@@ -145,7 +146,7 @@ namespace GlobeWork.Controllers
                     Insertuser.Url += "-" + Insertuser.Id;
                     _unitOfWork.Save();
                 }
-                var userData = Insertuser.Avatar + "|" + Insertuser.Id + "|" + Insertuser.Email + "|" + Insertuser.FullName + "|" + Insertuser.Url;
+                var userData = Insertuser.Avatar + "|" + Insertuser.Id + "|" + Insertuser.Email + "|" + Insertuser.FullName + "|" + Insertuser.Url + "|" + Insertuser.AvatarSocial;
                 var ticket = new FormsAuthenticationTicket(2, Insertuser.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
                     userData, FormsAuthentication.FormsCookiePath);
                 var encTicket = FormsAuthentication.Encrypt(ticket);
@@ -154,7 +155,7 @@ namespace GlobeWork.Controllers
             }
             else
             {
-                var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url;
+                var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url + "|" + user.AvatarSocial;
                 var ticket = new FormsAuthenticationTicket(2, user.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
                     userData, FormsAuthentication.FormsCookiePath);
                 var encTicket = FormsAuthentication.Encrypt(ticket);
@@ -179,12 +180,13 @@ namespace GlobeWork.Controllers
             var userProfile = await GoogleAuth.GetProfileResponseAsync(token.AccessToken.ToString());
             JObject jsonObject = JObject.Parse(userProfile);
             string id = jsonObject["id"]?.ToString();
+            string picture = jsonObject["picture"] ?.ToString();
             string email = jsonObject["email"]?.ToString();
             var count = _unitOfWork.UserRepository.GetQuery(a => a.Email == email).Count();
             if (count >= 1)
             {
                 var user = _unitOfWork.UserRepository.GetQuery(a => a.Email == email).FirstOrDefault();
-                var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url;
+                var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url + "|" + user.AvatarSocial;
                 var ticket = new FormsAuthenticationTicket(2, user.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
                     userData, FormsAuthentication.FormsCookiePath);
                 var encTicket = FormsAuthentication.Encrypt(ticket);
@@ -200,6 +202,7 @@ namespace GlobeWork.Controllers
                     {
                         Username = "",
                         Avatar = null,
+                        AvatarSocial = picture,
                         Cover = null,
                         GoogleId = id,
                         Email = email,
@@ -215,7 +218,7 @@ namespace GlobeWork.Controllers
                         Insertuser.Url += "-" + Insertuser.Id;
                         _unitOfWork.Save();
                     }
-                    var userData = Insertuser.Avatar + "|" + Insertuser.Id + "|" + Insertuser.Email + "|" + Insertuser.FullName + "|" + Insertuser.Url;
+                    var userData = Insertuser.Avatar + "|" + Insertuser.Id + "|" + Insertuser.Email + "|" + Insertuser.FullName + "|" + Insertuser.Url + "|" + Insertuser.AvatarSocial;
                     var ticket = new FormsAuthenticationTicket(2, Insertuser.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
                         userData, FormsAuthentication.FormsCookiePath);
                     var encTicket = FormsAuthentication.Encrypt(ticket);
@@ -224,7 +227,7 @@ namespace GlobeWork.Controllers
                 }
                 else
                 {
-                    var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url;
+                    var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url + "|" + user.AvatarSocial;
                     var ticket = new FormsAuthenticationTicket(2, user.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
                         userData, FormsAuthentication.FormsCookiePath);
                     var encTicket = FormsAuthentication.Encrypt(ticket);

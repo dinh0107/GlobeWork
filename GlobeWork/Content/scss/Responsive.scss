@@ -300,6 +300,18 @@
         bottom: 1.5rem;
         justify-content: center;
     }
+
+    .video iframe {
+        width: 100%;
+        aspect-ratio: auto;
+        height: 500px;
+    }
+
+    .intro {
+        position: relative;
+        height: 13.9125rem;
+        overflow: hidden;
+    }
 }
 
 @include maxWidth(900px) {

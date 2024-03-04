@@ -1271,6 +1271,15 @@ namespace GlobeWork.Controllers
             }
             return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
         }
+        public ActionResult ViewAndEx(string url)
+        {
+            var user = _unitOfWork.UserRepository.GetQuery(a => a.Url == url).FirstOrDefault();
+            if(user == null)
+            {
+                return RedirectToAction("Index");
+            }
+            return View(user);  
+        }
         public PartialViewResult AdviseForm()
         {
             var model = new AdviseViewModel

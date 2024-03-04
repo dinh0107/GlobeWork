@@ -32,6 +32,10 @@
 
                         <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/user/", Model.User.Avatar)" alt="@Model.User.FullName" class="img-responsive lazyload" style="object-fit:cover">
                     }
+                    else if (Model.User.AvatarSocial != null)
+                    {
+                        <img src="@Model.User.AvatarSocial" alt="@Model.User.FullName" class="img-responsive">
+                    }
                     else
                     {
                         <img src="~/Content/images/avatar-default.jpg" alt="@Model.User.FullName" class="img-responsive">
@@ -151,7 +155,7 @@
                                 </div>
                             </div>
                         }
-                        <a href="#" class="converPDF">Tải xuống PDF</a>
+                        <a href="@Url.Action("ViewAndEx", new {url = Model.User.Url})" class="converPDF">Tải xuống PDF</a>
                         <a href="#" data-toggle="modal" data-target="#share">Chia sẻ profile</a>
                     </div>
                 </div>

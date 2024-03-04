@@ -33,6 +33,10 @@ namespace GlobeWork.Filters
                     {
                         filterContext.RouteData.Values["Url"] = arrData[4];
                     }
+                    if (arrData.Length > 5)
+                    {
+                        filterContext.RouteData.Values["AvatarSocial"] = arrData[5];
+                    }
                 }
             }
             else
@@ -56,6 +60,7 @@ namespace GlobeWork.Filters
                 filterContext.RouteData.Values["Email"] = "";
                 filterContext.RouteData.Values["FullName"] = "";
                 filterContext.RouteData.Values["Url"] = "";
+                filterContext.RouteData.Values["AvatarSocial"] = "";
             }
             else
             {
@@ -80,6 +85,10 @@ namespace GlobeWork.Filters
                     if (arrData.Length > 4)
                     {
                         filterContext.RouteData.Values["Url"] = arrData[4];
+                    }
+                    if (arrData.Length > 5)
+                    {
+                        filterContext.RouteData.Values["AvatarSocial"] = arrData[5];
                     }
                 }
             }

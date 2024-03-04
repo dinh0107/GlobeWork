@@ -7,16 +7,16 @@
 }
 <div class="container">
     <div class="row py-3">
-        <div class="col-lg-8">
+        <div class="col-xl-8 order-xl-0 order-1">
             <div class="recruitment bg-white shadow">
                 @if (Model.Likes.Any())
                 {
                     foreach (var item in Model.Likes)
                     {
-                        <div class="job bg-white detail-job  ">
+                        <div class="job bg-white detail-job">
                             <div class="media ">
                                 <div>
-                                    <a href="@Url.Action("JobDetail", new {url = item.JobPost.Url})" class="job-name custom-w" data-tooltip="@item.JobPost.Name" data-tooltip-position="top">@item.JobPost.Name</a>
+                                    <a href="@Url.Action("JobDetail","Home", new {url = item.JobPost.Url})" class="job-name custom-w" data-tooltip="@item.JobPost.Name" data-tooltip-position="top">@item.JobPost.Name</a>
                                     <div class="company-name">
                                         @item.JobPost.Company.Name
                                     </div>
@@ -74,9 +74,16 @@
                         </div>
                     }
                 }
+                else
+                {
+                    <div class="none-suitable-job__content mt-3 shadow-none">
+                        <img src="https://static.topcv.vn/v4/image/job-list/none-result.png" alt="None suitable job">
+                        <span>Bạn chưa lưu tin nào</span>
+                    </div>
+                }
             </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-xl-4 d-xl-block d-none">
             <div class="info-box bg-white shadow rounded">
                 <div class="media">
                     @if (Model.User.Avatar != null)
@@ -87,15 +94,15 @@
                     {
                         <img src="~/Content/images/avatar-default.jpg" alt="@Model.User.FullName" class="right-avatar" />
                     }
-                <div class="media-body ml-2">
-                    <span>Chào bạn chở lại</span>
-                    <div class="name-user">
-                        @Model.User.FullName
+                    <div class="media-body ml-2">
+                        <span>Chào bạn chở lại</span>
+                        <div class="name-user">
+                            @Model.User.FullName
+                        </div>
+                        <div class="account-type vip mt-2">
+                            Tài khoản đã xác thực
+                        </div>
                     </div>
-                    <div class="account-type vip mt-2">
-                        Tài khoản đã xác thực
-                    </div>
-                </div>
                 </div>
             </div>
         </div>

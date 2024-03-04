@@ -365,6 +365,10 @@
     <Compile Include="Migrations\202402251442583_ad2.Designer.cs">
       <DependentUpon>202402251442583_ad2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202403040653080_avatar-social.cs" />
+    <Compile Include="Migrations\202403040653080_avatar-social.Designer.cs">
+      <DependentUpon>202403040653080_avatar-social.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Advise.cs" />
@@ -479,6 +483,12 @@
     <Content Include="Content\login.min.css" />
     <Content Include="Content\owl.carousel.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\scss\CV.css">
+      <DependentUpon>CV.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\scss\CV.min.css">
+      <DependentUpon>CV.css</DependentUpon>
+    </Content>
     <Content Include="Content\scss\Responsive.css">
       <DependentUpon>Responsive.scss</DependentUpon>
     </Content>
@@ -1441,6 +1451,7 @@
     <Content Include="Content\scss\_variables.scss" />
     <Content Include="Content\scss\_mixins.scss" />
     <Content Include="Content\scss\Responsive.scss" />
+    <Content Include="Content\scss\CV.scss" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\isotope.pkgd.min.js" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
@@ -1781,6 +1792,8 @@
     <Content Include="Views\Vcms\Parter.cshtml" />
     <Content Include="Views\Vcms\ListParter.cshtml" />
     <Content Include="Views\Vcms\UpdatePartner.cshtml" />
+    <Content Include="Views\Shared\_LayoutCV.cshtml" />
+    <Content Include="Views\Home\ViewAndEx.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1806,6 +1819,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202402251442583_ad2.resx">
       <DependentUpon>202402251442583_ad2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403040653080_avatar-social.resx">
+      <DependentUpon>202403040653080_avatar-social.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

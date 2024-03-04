@@ -92,8 +92,8 @@
             </div>
         </div>
         <div class="row custom-row">
-            <div class="col-lg-4">
-                <div class="employer-left">
+            <div class="col-xl-4 order-xl-0 order-1">
+                <div class="employer-left mt-xl-0 mt-3">
                     <div class="employer-title">Giới thiệu</div>
                     @if (Model.Company.Introduct != null)
                     {
@@ -209,8 +209,26 @@
                         }
                     </div>
                 </div>
+                <div class="employer-left mt-3 d-xl-none d-block">
+                    <div class="employer-right mt-3">
+                        <div class="employer-title">Sản phẩm và dịch vụ</div>
+                        @if (Model.Company.Product != null)
+                        {
+                            <div class="content-detail">
+                                @Html.Raw(Model.Company.Product)
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="none-suitable-job__content shadow-none">
+                                <img src="https://static.topcv.vn/v4/image/job-list/none-result.png" alt="None suitable job">
+                                <span>Chưa có thông tin sản phẩm và dịch vụ</span>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-8">
+            <div class="col-xl-8 order-xl-1 order-0">
                 <div class="employer-right">
                     <div class="employer-title">Tin tuyển dụng</div>
                     <form action="@Url.Action("Employer")" class="form-row employ-form">
@@ -308,7 +326,7 @@
                         </div>
                     }
                 </div>
-                <div class="employer-right mt-3">
+                <div class="employer-right mt-3 d-xl-block d-none">
                     <div class="employer-title">Sản phẩm và dịch vụ</div>
                     @if (Model.Company.Product != null)
                     {

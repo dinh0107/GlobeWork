@@ -45,6 +45,7 @@ namespace GlobeWork.Models
         //Linkedin Info
         public string LinkedinId { get; set; }
         public string Token { get; set; }
+        public string AvatarSocial { get; set; }
         public DateTime CreateDate { get; set; }
         public TypeRegister TypeRegister { get; set; }
         public virtual Skill Skill { get; set; }
@@ -54,6 +55,7 @@ namespace GlobeWork.Models
         public virtual ICollection<Certificate> Certificates { get; set; }
         public virtual ICollection<Project> Projects { get; set; }
         public virtual ICollection<UserSkill> UserSkill { get; set; }
+        public virtual ICollection<Activity> Activities { get; set; }
         public virtual ICollection<ApplyJob> ApplyJobs { get; set; }
         public virtual ICollection<UserViewLog> ViewLogs { get; set; }
         public User()

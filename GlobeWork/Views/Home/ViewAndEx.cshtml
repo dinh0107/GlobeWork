@@ -1,0 +1,249 @@
+﻿@model GlobeWork.Models.User
+@{
+    Layout = "~/Views/Shared/_LayoutCV.cshtml";
+}
+<div class="resume">
+    <div class="resume_left">
+        <div class="resume_profile">
+            @if (Model.Avatar != null)
+            {
+                <img src="@Path.Combine("/images/user/", Model.Avatar)" alt="profile_pic">
+            }
+            else if (Model.AvatarSocial != null)
+            {
+                <img src="@Model.AvatarSocial" alt="profile_pic">
+            }
+            else
+            {
+                <img src="~/Content/images/avatar-default.jpg" alt="profile_pic">
+            }
+        </div>
+        <div class="resume_content">
+            <div class="resume_item resume_info">
+                <div class="title">
+                    <p class="bold">@Model.FullName</p>
+                    <p class="regular">@Model.Classtify</p>
+                </div>
+                <ul>
+                    @if (Model.Address != null)
+                    {
+                        <li>
+                            <div class="icon">
+                                <i class="fas fa-map-signs"></i>
+                            </div>
+                            <div class="data">
+                                @Model.Address
+                            </div>
+                        </li>
+                    }
+                    @if (Model.Phone != null)
+                    {
+                        <li>
+                            <div class="icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="data">
+                                @Model.Phone
+                            </div>
+                        </li>
+                    }
+
+                    @if (Model.Address != null)
+                    {
+                        <li>
+                            <div class="icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="data">
+                                @Model.Email
+                            </div>
+                        </li>
+                    }
+
+
+                    @*<li>
+                    <div class="icon">
+                        <i class="fab fa-weebly"></i>
+                    </div>
+                    <div class="data">
+                        www.stephen.com
+                    </div>
+                </li>*@
+
+
+                </ul>
+            </div>
+            @if (Model.UserSkill.Any())
+            {
+                <div class="resume_item resume_skills">
+                    <div class="title">
+                        <p class="bold">Kỹ năng</p>
+                    </div>
+                    <ul>
+                        @foreach (var item in Model.UserSkill)
+                        {
+                            <li>
+                                <div class="skill_name">
+                                    @item.Name
+                                </div>
+                                <div class="star">
+                                    <i class="fa-solid fa-star @if (item.Star >= 1) { @Html.Raw("active") }"></i>
+                                    <i class="fa-solid fa-star @if (item.Star >= 2) { @Html.Raw("active") }"></i>
+                                    <i class="fa-solid fa-star @if (item.Star >= 3) { @Html.Raw("active") }"></i>
+                                    <i class="fa-solid fa-star @if (item.Star >= 4) { @Html.Raw("active") }"></i>
+                                    <i class="fa-solid fa-star @if (item.Star >= 5) { @Html.Raw("active") }"></i>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            @*<div class="resume_item resume_social">
+            <div class="title">
+                <p class="bold">Social</p>
+            </div>
+            <ul>
+                <li>
+                    <div class="icon">
+                        <i class="fab fa-facebook-square"></i>
+                    </div>
+                    <div class="data">
+                        <p class="semi-bold">Facebook</p>
+                        <p>Stephen@facebook</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="icon">
+                        <i class="fab fa-twitter-square"></i>
+                    </div>
+                    <div class="data">
+                        <p class="semi-bold">Twitter</p>
+                        <p>Stephen@twitter</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="icon">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <div class="data">
+                        <p class="semi-bold">Youtube</p>
+                        <p>Stephen@youtube</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="icon">
+                        <i class="fab fa-linkedin"></i>
+                    </div>
+                    <div class="data">
+                        <p class="semi-bold">Linkedin</p>
+                        <p>Stephen@linkedin</p>
+                    </div>
+                </li>
+            </ul>
+        </div>*@
+        </div>
+    </div>
+    <div class="resume_right">
+        <div class="resume_item resume_about">
+            <div class="title">
+                <p class="bold">Giới thiệu</p>
+            </div>
+            <p>@Model.Description</p>
+        </div>
+        <div class="resume_item resume_work">
+            <div class="title">
+                <p class="bold">Kinh nghiệm</p>
+            </div>
+            <ul>
+                @foreach (var item in Model.Experiences)
+                {
+                    <li>
+                        <div class="date">@item.StartDate - @item.EndDate</div>
+                        <div class="info">
+                            <p class="semi-bold">@item.Company</p>
+                            <p class="classtify">@item.Position</p>
+                            <p>@item.Description</p>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="resume_item resume_education">
+            <div class="title">
+                <p class="bold">Học vấn</p>
+            </div>
+            <ul>
+                @foreach (var item in Model.Educations)
+                {
+                    <li>
+                        <div class="date">@item.StartDate - @item.EndDate</div>
+                        <div class="info">
+                            <p class="semi-bold">@item.School</p>
+                            <p class="classtify">@item.Majors</p>
+                            <p>@item.Description</p>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="resume_item resume_education">
+            <div class="title">
+                <p class="bold">Chứng chỉ</p>
+            </div>
+            <ul>
+                @foreach (var item in Model.Certificates)
+                {
+                    <li>
+                        <div class="date">@item.StartDate - @item.EndDate</div>
+                        <div class="info">
+                            <p class="semi-bold">@item.Name</p>
+                            <p class="classtify">@item.Description</p>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="resume_item resume_education">
+            <div class="title">
+                <p class="bold">Dự án</p>
+            </div>
+            <ul>
+                @foreach (var item in Model.Projects)
+                {
+                    <li>
+                        <div class="date">@item.StartDate - @item.EndDate</div>
+                        <div class="info">
+                            <strong class="semi-bold">@item.Name</strong>
+                            <p class="semi-bold">@item.Postion</p>
+                            <p class="semi-bold">@item.Member</p>
+                            <p class="semi-bold">@item.Tech</p>
+                            <p class="classtify">@item.Description</p>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+        @if (Model.Activities.Any())
+        {
+            <div class="resume_item resume_education">
+                <div class="title">
+                    <p class="bold">Hoạt động xã hội</p>
+                </div>
+                <ul>
+                    @foreach (var item in Model.Activities)
+                    {
+                        <li>
+                            <div class="date">@item.StartDate - @item.EndDate</div>
+                            <div class="info">
+                                <strong class="semi-bold">@item.Name</strong>
+                                <p class="semi-bold">@item.Position</p>
+                                <p>@item.Description</p>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+</div>

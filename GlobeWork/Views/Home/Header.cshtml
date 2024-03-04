@@ -6,6 +6,7 @@
     var id = Convert.ToInt32(ViewContext.RouteData.Values["Id"]);
     var avatar = ViewContext.RouteData.Values["Avatar"].ToString();
     var url = ViewContext.RouteData.Values["Url"].ToString();
+    var avatarSocial = ViewContext.RouteData.Values["AvatarSocial"].ToString();
     var email = ViewContext.RouteData.Values["Email"].ToString();
 }
 <header class="shadow">
@@ -110,7 +111,7 @@
                     <div class="navbar-right__item group media">
                         @if (avatar == "")
                         {
-                            <img src="~/Content/images/avatar-default.jpg" alt="@FullName" />
+                            <img src="@avatarSocial" alt="@FullName" />
                         }
                         else
                         {
@@ -123,7 +124,7 @@
                             <div class="media align-items-center">
                                 @if (avatar == "")
                                 {
-                                    <img src="~/Content/images/avatar-default.jpg" alt="@FullName" />
+                                    <img src="@avatarSocial" alt="@FullName" />
                                 }
                                 else
                                 {
@@ -178,7 +179,7 @@
                         <div class="media align-items-center">
                             @if (avatar == "")
                             {
-                                <img src="~/Content/images/avatar-default.jpg" alt="@FullName" class="fix-size-img" />
+                                <img src="@avatarSocial" alt="@FullName" class="fix-size-img" />
                             }
                             else
                             {
@@ -240,12 +241,12 @@
             {
                 <li>
                     <div class="d-flex justify-content-between">
-                        <a href="@Url.Action("Contact")" class="link-repon">Đăng nhập</a>
+                        <a href="@Url.Action("Login", "User")" class="link-repon">Đăng nhập</a>
                     </div>
                 </li>
                 <li>
                     <div class="d-flex justify-content-between">
-                        <a href="@Url.Action("Contact")" class="link-repon">Đăng kí tài khoản mới</a>
+                        <a href="@Url.Action("Register","User")" class="link-repon">Đăng kí tài khoản mới</a>
                     </div>
                 </li>
             }
@@ -382,7 +383,7 @@
         <ul class="ul-reset ul-repon">
             <li>
                 <div class="d-flex justify-content-between">
-                    <a href="@Url.Action("Contact")" class="link-repon">Đăng tuyển</a>
+                    <a href="@Url.Action("EmployerLogin", "Employer")" class="link-repon">Đăng tuyển</a>
                 </div>
             </li>
         </ul>
