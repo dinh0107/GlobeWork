@@ -2,7 +2,7 @@
 @{
     Layout = "~/Views/Shared/_LayoutCV.cshtml";
 }
-<div class="resume">
+<div class="resume" id="content-to-print">
     <div class="resume_left">
         <div class="resume_profile">
             @if (Model.Avatar != null)
@@ -62,13 +62,13 @@
 
 
                     @*<li>
-                    <div class="icon">
-                        <i class="fab fa-weebly"></i>
-                    </div>
-                    <div class="data">
-                        www.stephen.com
-                    </div>
-                </li>*@
+                            <div class="icon">
+                                <i class="fab fa-weebly"></i>
+                            </div>
+                            <div class="data">
+                                www.stephen.com
+                            </div>
+                        </li>*@
 
 
                 </ul>
@@ -100,130 +100,153 @@
             }
 
             @*<div class="resume_item resume_social">
-            <div class="title">
-                <p class="bold">Social</p>
-            </div>
-            <ul>
-                <li>
-                    <div class="icon">
-                        <i class="fab fa-facebook-square"></i>
+                    <div class="title">
+                        <p class="bold">Social</p>
                     </div>
-                    <div class="data">
-                        <p class="semi-bold">Facebook</p>
-                        <p>Stephen@facebook</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="icon">
-                        <i class="fab fa-twitter-square"></i>
-                    </div>
-                    <div class="data">
-                        <p class="semi-bold">Twitter</p>
-                        <p>Stephen@twitter</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="icon">
-                        <i class="fab fa-youtube"></i>
-                    </div>
-                    <div class="data">
-                        <p class="semi-bold">Youtube</p>
-                        <p>Stephen@youtube</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="icon">
-                        <i class="fab fa-linkedin"></i>
-                    </div>
-                    <div class="data">
-                        <p class="semi-bold">Linkedin</p>
-                        <p>Stephen@linkedin</p>
-                    </div>
-                </li>
-            </ul>
-        </div>*@
+                    <ul>
+                        <li>
+                            <div class="icon">
+                                <i class="fab fa-facebook-square"></i>
+                            </div>
+                            <div class="data">
+                                <p class="semi-bold">Facebook</p>
+                                <p>Stephen@facebook</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="icon">
+                                <i class="fab fa-twitter-square"></i>
+                            </div>
+                            <div class="data">
+                                <p class="semi-bold">Twitter</p>
+                                <p>Stephen@twitter</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="icon">
+                                <i class="fab fa-youtube"></i>
+                            </div>
+                            <div class="data">
+                                <p class="semi-bold">Youtube</p>
+                                <p>Stephen@youtube</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="icon">
+                                <i class="fab fa-linkedin"></i>
+                            </div>
+                            <div class="data">
+                                <p class="semi-bold">Linkedin</p>
+                                <p>Stephen@linkedin</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>*@
         </div>
     </div>
     <div class="resume_right">
-        <div class="resume_item resume_about">
-            <div class="title">
-                <p class="bold">Giới thiệu</p>
+        @if (Model.Description != null)
+        {
+            <div class="resume_item resume_about">
+                <div class="title">
+                    <p class="bold">Giới thiệu</p>
+                </div>
+                <p>@Model.Description</p>
             </div>
-            <p>@Model.Description</p>
-        </div>
-        <div class="resume_item resume_work">
-            <div class="title">
-                <p class="bold">Kinh nghiệm</p>
+        }
+        @if (Model.Experiences.Any())
+        {
+            <div class="resume_item resume_work">
+                <div class="title">
+                    <p class="bold">Kinh nghiệm</p>
+                </div>
+                <ul>
+                    @foreach (var item in Model.Experiences)
+                    {
+                        <li>
+                            <div class="date">@item.StartDate - @item.EndDate</div>
+                            <div class="info">
+                                <p class="semi-bold">@item.Company</p>
+                                <p class="classtify">@item.Position</p>
+                                <p>@item.Description</p>
+                            </div>
+                        </li>
+                    }
+                </ul>
             </div>
-            <ul>
-                @foreach (var item in Model.Experiences)
-                {
-                    <li>
-                        <div class="date">@item.StartDate - @item.EndDate</div>
-                        <div class="info">
-                            <p class="semi-bold">@item.Company</p>
-                            <p class="classtify">@item.Position</p>
-                            <p>@item.Description</p>
-                        </div>
-                    </li>
-                }
-            </ul>
-        </div>
-        <div class="resume_item resume_education">
-            <div class="title">
-                <p class="bold">Học vấn</p>
+        }
+
+        @if (Model.Educations.Any())
+        {
+            <div class="resume_item resume_education">
+                <div class="title">
+                    <p class="bold">Học vấn</p>
+                </div>
+                <ul>
+                    @foreach (var item in Model.Educations)
+                    {
+                        <li>
+                            <div class="date">@item.StartDate - @item.EndDate</div>
+                            <div class="info">
+                                <p class="semi-bold">@item.School</p>
+                                <p class="classtify">@item.Majors</p>
+                                <p>@item.Description</p>
+                            </div>
+                        </li>
+                    }
+
+
+                </ul>
             </div>
-            <ul>
-                @foreach (var item in Model.Educations)
-                {
-                    <li>
-                        <div class="date">@item.StartDate - @item.EndDate</div>
-                        <div class="info">
-                            <p class="semi-bold">@item.School</p>
-                            <p class="classtify">@item.Majors</p>
-                            <p>@item.Description</p>
-                        </div>
-                    </li>
-                }
-            </ul>
-        </div>
-        <div class="resume_item resume_education">
-            <div class="title">
-                <p class="bold">Chứng chỉ</p>
+        }
+
+        @if (Model.Certificates.Any())
+        {
+            <div class="resume_item resume_education">
+                <div class="title">
+                    <p class="bold">Chứng chỉ</p>
+                </div>
+                <ul>
+                    @foreach (var item in Model.Certificates)
+                    {
+                        <li>
+                            <div class="date">@item.StartDate - @item.EndDate</div>
+                            <div class="info">
+                                <p class="semi-bold">@item.Name</p>
+                                <p class="classtify">@item.Description</p>
+                            </div>
+                        </li>
+                    }
+
+
+                </ul>
             </div>
-            <ul>
-                @foreach (var item in Model.Certificates)
-                {
-                    <li>
-                        <div class="date">@item.StartDate - @item.EndDate</div>
-                        <div class="info">
-                            <p class="semi-bold">@item.Name</p>
-                            <p class="classtify">@item.Description</p>
-                        </div>
-                    </li>
-                }
-            </ul>
-        </div>
-        <div class="resume_item resume_education">
-            <div class="title">
-                <p class="bold">Dự án</p>
+        }
+
+        @if (Model.Projects.Any())
+        {
+            <div class="resume_item resume_education">
+                <div class="title">
+                    <p class="bold">Dự án</p>
+                </div>
+                <ul>
+                    @foreach (var item in Model.Projects)
+                    {
+                        <li>
+                            <div class="date">@item.StartDate - @item.EndDate</div>
+                            <div class="info">
+                                <strong class="semi-bold">@item.Name</strong>
+                                <p class="semi-bold">@item.Postion</p>
+                                <p class="semi-bold">@item.Member</p>
+                                <p class="semi-bold">@item.Tech</p>
+                                <p class="classtify">@item.Description</p>
+                            </div>
+                        </li>
+                    }
+                </ul>
             </div>
-            <ul>
-                @foreach (var item in Model.Projects)
-                {
-                    <li>
-                        <div class="date">@item.StartDate - @item.EndDate</div>
-                        <div class="info">
-                            <strong class="semi-bold">@item.Name</strong>
-                            <p class="semi-bold">@item.Postion</p>
-                            <p class="semi-bold">@item.Member</p>
-                            <p class="semi-bold">@item.Tech</p>
-                            <p class="classtify">@item.Description</p>
-                        </div>
-                    </li>
-                }
-            </ul>
-        </div>
+        }
+
         @if (Model.Activities.Any())
         {
             <div class="resume_item resume_education">
@@ -247,3 +270,35 @@
         }
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script>
+        var fileName = "@Model.FullName";
+    //    html2canvas(document.getElementById('content-to-print'), {
+    //        allowTaint: true,
+    //        useCORS: true,
+    //        scrollY: -window.scrollY
+    //    }).then(function (canvas) {
+    //        let imgData = canvas.toDataURL('image/png');
+
+    //        let pdf = new jsPDF('p', 'mm', 'a4');
+    //        pdf.addImage(imgData, 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
+
+    //        pdf.save(fileName + ".pdf");
+    //    });
+
+    //var fileName = convertToSlug(fullName);
+    var element = document.getElementById('content-to-print');
+    html2canvas(element).then((canvas) => {
+        let imgWidth = 1400; // Chiều rộng mong muốn của hình ảnh trong tệp PDF
+        let imgHeight = canvas.height * imgWidth / canvas.width; // Tính toán chiều cao tương ứng dựa trên tỉ lệ
+
+        let pdf = new jsPDF('p', 'px', [imgWidth, imgHeight]);
+        let imgData = canvas.toDataURL('image/png');
+
+        pdf.addImage(imgData, 'PNG', 50, 50, imgWidth, imgHeight);
+        //pdf.addPage(); // Thêm một trang mới
+
+        pdf.save(fileName + ".pdf");
+    });
+</script>

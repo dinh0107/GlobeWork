@@ -155,7 +155,7 @@
                                 </div>
                             </div>
                         }
-                        <a href="@Url.Action("ViewAndEx", new {url = Model.User.Url})" class="converPDF">Tải xuống PDF</a>
+                        <a href="@Url.Action("ViewAndEx", new {url = Model.User.Url})" class="convertPDF">Tải xuống PDF</a>
                         <a href="#" data-toggle="modal" data-target="#share">Chia sẻ profile</a>
                     </div>
                 </div>
@@ -614,28 +614,8 @@
         //});
         ProfileJs();
         ProfileAction();
-        $(".converPDF").click(function () {
-        var element = document.getElementById('element-to-print');
-        if (!element) {
-            console.error("Không tìm thấy phần tử có id là 'element-to-print'");
-            return;
-        }
-        var fullName = "@Model.User.Url";
-        var fileName = convertToSlug(fullName);
+        
 
-            html2canvas(element).then((canvas) => {
-                let imgWidth = 1400; // Chiều rộng mong muốn của hình ảnh trong tệp PDF
-                let imgHeight = canvas.height * imgWidth / canvas.width; // Tính toán chiều cao tương ứng dựa trên tỉ lệ
-
-                let pdf = new jsPDF('p', 'px', [imgWidth, imgHeight]);
-                let imgData = canvas.toDataURL('image/png');
-
-                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-                //pdf.addPage(); // Thêm một trang mới
-
-                pdf.save(fileName + ".pdf");
-            });
-        });
         function convertToSlug(text) {
             text = text.toLowerCase();
             var from = "àáảãạăắằẳẵặâấầẩẫậèéẻẽẹêếềểễệìíỉĩịòóỏõọôốồổỗộơớờởỡợùúủũụưứừửữựỳýỷỹỵđ";
