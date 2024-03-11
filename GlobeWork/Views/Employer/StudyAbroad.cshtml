@@ -6,7 +6,6 @@
 @using (Html.BeginForm("StudyAbroad", "Employer", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
     <div class="contents-header">
         <h2>@ViewBag.Title</h2>
         <div class="btn-group d-dl">
@@ -26,6 +25,7 @@
                     Thông tin chung
                 </h3>
             </div>
+            @Html.ValidationSummary(true)
             <div class="box-body">
                 <div class="row">
                     <div class="form-group col-12">
@@ -89,13 +89,14 @@
                         <label>
                             Hạn nhận hồ sơ <i class="text-danger">*</i>
                         </label>
-                        @Html.TextBoxFor(a => a.StudyAbroad.ExpirationDate, new { @class = "form-control datetimepicker", @placeholder = "Chọn ngày hết hạn nhận hồ sơ" })
+                        @* @Html.TextBoxFor(a => a.StudyAbroad.ExpirationDate, new { @class = "form-control datetimepicker", @placeholder = "Chọn ngày hết hạn nhận hồ sơ" })*@
+                        <input type="text" name="StudyAbroad.ExpirationDate" class="form-control datetimepicker" placeholder="Chọn ngày hết hạn nhận hồ sơ" autocomplete="off" />
                     </div>
                     <div class="form-group col-4">
                         <label>
                             Trình độ học vấn, bằng cấp <i class="text-danger">*</i>
                         </label>
-                        @Html.TextBoxFor(a => a.StudyAbroad.LearningProblems, new { @class = "form-control" , @placeholder = "Trình độ học vấn, bằng cấp" })
+                        @Html.TextBoxFor(a => a.StudyAbroad.LearningProblems, new { @class = "form-control", @placeholder = "Trình độ học vấn, bằng cấp" })
                         @Html.ValidationMessageFor(a => a.StudyAbroad.LearningProblems)
                     </div>
                 </div>
