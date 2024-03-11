@@ -465,6 +465,29 @@ header {
 .list-hotjob .previous-slie {
   right: 4%;
 }
+.list-hotjob .slick-dots {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 1rem 0;
+  list-style-type: none;
+}
+.list-hotjob .slick-dots li {
+  margin: 0 0.25rem;
+}
+.list-hotjob .slick-dots button {
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  padding: 0;
+  border: none;
+  border-radius: 100%;
+  background-color: #f3f5f7;
+  text-indent: -9999px;
+}
+.list-hotjob .slick-dots li.slick-active button {
+  background-color: #66BC46;
+}
 
 .job-avt {
   width: 100%;
@@ -706,6 +729,29 @@ header {
 }
 .list-career .next-career {
   right: 0;
+}
+.list-career .slick-dots {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 1rem 0;
+  list-style-type: none;
+}
+.list-career .slick-dots li {
+  margin: 0 0.25rem;
+}
+.list-career .slick-dots button {
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  padding: 0;
+  border: none;
+  border-radius: 100%;
+  background-color: #f3f5f7;
+  text-indent: -9999px;
+}
+.list-career .slick-dots li.slick-active button {
+  background-color: #66BC46;
 }
 
 .thuml-img {

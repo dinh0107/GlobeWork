@@ -39,9 +39,9 @@ function HomeJs() {
             {
                 breakpoint: 1044,
                 settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                    rows: 3,
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    rows: 2,
                     infinite: true,
                     dots: false
                 }
@@ -49,16 +49,11 @@ function HomeJs() {
             {
                 breakpoint: 600,
                 settings: {
-                    slidesToShow: 3,
+                    slidesToShow: 1,
                     slidesToScroll: 1,
-                    slidesToShow: 3,
-                }
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3
+                    rows: 1,
+                    arrows: false,
+                    dots: true,
                 }
             }
         ]
@@ -122,14 +117,18 @@ function HomeJs() {
                 breakpoint: 600,
                 settings: {
                     slidesToShow: 2,
-                    slidesToScroll: 2
+                    slidesToScroll: 2,
+                    dots: true,
+                    arrows: false,
                 }
             },
             {
                 breakpoint: 480,
                 settings: {
                     slidesToShow: 1,
-                    slidesToScroll: 1
+                    slidesToScroll: 1,
+                    dots: true,
+                    arrows: false,
                 }
             }
         ]
@@ -150,25 +149,28 @@ function HomeJs() {
             {
                 breakpoint: 1024,
                 settings: {
-                    slidesToShow: 6,
-                    slidesToScroll: 3,
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
                     infinite: true,
                     dots: false
                 }
             },
             {
-                breakpoint: 600,
+                breakpoint: 768,
                 settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 1,
-                    slidesToShow: 3,
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    dots: true,
+                    arrows: false,
                 }
             },
             {
                 breakpoint: 480,
                 settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    dots: true,
+                    arrows: false,
                 }
             }
         ]
@@ -690,8 +692,8 @@ function CompanyJs() {
             {
                 breakpoint: 1024,
                 settings: {
-                    slidesToShow: 6,
-                    slidesToScroll: 3,
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
                     infinite: true,
                     dots: false
                 }
@@ -699,16 +701,9 @@ function CompanyJs() {
             {
                 breakpoint: 600,
                 settings: {
-                    slidesToShow: 3,
+                    slidesToShow: 1,
                     slidesToScroll: 1,
-                    slidesToShow: 3,
-                }
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3
+                    dots: true
                 }
             }
         ]

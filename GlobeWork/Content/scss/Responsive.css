@@ -106,7 +106,7 @@
     grid-area: 1/1/2/7;
   }
   .list-keyword {
-    width: 66%;
+    width: 45%;
   }
   .group-select {
     gap: 1.25rem;
@@ -245,5 +245,33 @@
     position: relative;
     height: 13.9125rem;
     overflow: hidden;
+  }
+  .slogan {
+    font-size: 1.5rem;
+  }
+  .sub-slogan {
+    font-size: 0.75rem;
+    line-height: 3;
+  }
+  .filter-parent {
+    grid-template-columns: repeat(6, 2fr);
+  }
+  .half .bg {
+    display: none;
+  }
+  .half .contents {
+    width: 100%;
+  }
+  .navs-employer {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    margin-top: 25px;
+    padding-bottom: 33px;
+  }
+}
+@media (max-width: 600px) {
+  .hot-keyword > span {
+    display: none;
   }
 }

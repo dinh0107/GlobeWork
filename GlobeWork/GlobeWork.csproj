@@ -495,12 +495,6 @@
     <Content Include="Content\scss\Responsive.min.css">
       <DependentUpon>Responsive.css</DependentUpon>
     </Content>
-    <Content Include="Content\scss\style2.css">
-      <DependentUpon>style2.scss</DependentUpon>
-    </Content>
-    <Content Include="Content\scss\style2.min.css">
-      <DependentUpon>style2.css</DependentUpon>
-    </Content>
     <Content Include="Content\simple-notify.min.css" />
     <Content Include="Content\slick.css" />
     <Content Include="Content\style.css" />
