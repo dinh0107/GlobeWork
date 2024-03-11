@@ -495,6 +495,12 @@
     <Content Include="Content\scss\Responsive.min.css">
       <DependentUpon>Responsive.css</DependentUpon>
     </Content>
+    <Content Include="Content\scss\Responsive2.css">
+      <DependentUpon>Responsive2.scss</DependentUpon>
+    </Content>
+    <Content Include="Content\scss\Responsive2.min.css">
+      <DependentUpon>Responsive2.css</DependentUpon>
+    </Content>
     <Content Include="Content\simple-notify.min.css" />
     <Content Include="Content\slick.css" />
     <Content Include="Content\style.css" />
@@ -1446,6 +1452,7 @@
     <Content Include="Content\scss\_mixins.scss" />
     <Content Include="Content\scss\Responsive.scss" />
     <Content Include="Content\scss\CV.scss" />
+    <Content Include="Content\scss\Responsive2.scss" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\isotope.pkgd.min.js" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />

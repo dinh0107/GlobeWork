@@ -270,6 +270,11 @@
     padding-bottom: 33px;
   }
 }
+@media (max-width: 900px) {
+  .sidebar {
+    width: 40%;
+  }
+}
 @media (max-width: 600px) {
   .hot-keyword > span {
     display: none;

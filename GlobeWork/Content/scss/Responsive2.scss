@@ -1,0 +1,16 @@
+@import "mixins";
+@import "variables";
+
+@include maxWidth(1024px) {
+    .sidebar {
+        width: 40%;
+    }
+}
+
+@include maxWidth(900px) {
+    
+}
+
+@include maxWidth(600px) {
+
+}
