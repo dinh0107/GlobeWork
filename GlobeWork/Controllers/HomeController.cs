@@ -1163,7 +1163,7 @@ namespace GlobeWork.Controllers
                                 model.ApplyJob.FileUpload = Path.Combine(imgPath, imgFileName);
                             }
                         }
-                    }
+                    }   
                     switch (model.Type)
                     {
                         case 0:
