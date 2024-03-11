@@ -19,48 +19,52 @@
     {
         @Html.ValidationSummary(true)
         @Html.HiddenFor(a => a.Id)
-        <table class="form_table">
-            <tr>
-                <td class="form_name">Email</td>
-                <td class="form_text">@Html.TextBoxFor(a => a.EmailRegister)</td>
-                @Html.ValidationMessageFor(a => a.EmailRegister)
+<table class="form_table">
+    <tr>
+        <td class="form_name">Email</td>
+        <td class="form_text">@Html.TextBoxFor(a => a.EmailRegister)</td>
+        @Html.ValidationMessageFor(a => a.EmailRegister)
 
-            </tr>
-            <tr>
-                <td class="form_name">Điện thoại</td>
-                <td class="form_text">@Html.TextBoxFor(a => a.Phone)</td>
-                @Html.ValidationMessageFor(a => a.Phone)
-            </tr>
-            <tr>
-                <td class="form_name">Ảnh</td>
-                <td class="form_text">
-                    @Html.TextBoxFor(a => a.Avatar, new { type = "file" })
-                </td>
-            </tr>
+    </tr>
+    <tr>
+        <td class="form_name">Điện thoại</td>
+        <td class="form_text">@Html.TextBoxFor(a => a.Phone)</td>
+        @Html.ValidationMessageFor(a => a.Phone)
+    </tr>
+    <tr>
+        <td class="form_name">Ảnh</td>
+        <td class="form_text">
+            @Html.TextBoxFor(a => a.Avatar, new { type = "file" })
+        </td>
+    </tr>
 
-            @if (Model.Avatar != null)
-            {
-                <tr>
-                    <td class="form_name"></td>
-                    <td class="form_text">
-                        <input type="hidden" name="Avatar" value="@Model.Avatar" />
-                        <img src="@Path.Combine("/images/user/", Model.Avatar)" width="150" />
-                    </td>
-                </tr>
-            }
+    @if (Model.Avatar != null)
+    {
+        <tr>
+            <td class="form_name"></td>
+            <td class="form_text">
+                <input type="hidden" name="Avatar" value="@Model.Avatar" />
+                <img src="@Path.Combine("/images/user/", Model.Avatar)" width="150" />
+            </td>
+        </tr>
+    }
 
-            <tr>
-                <td class="form_name">Mật khẩu</td>
-                <td class="form_text">@Html.PasswordFor(a => a.Password, new { placeholder = "Để trống nếu không thay đổi" })</td>
-            </tr>
-            <tr>
-                <td class="form_name">Ngày đăng ký</td>
-                <td class="form_text">@Model.CreateDate.ToString("dd/MM/yyyy HH:mm")</td>
-            </tr>
-            <tr>
-                <td class="form_name"></td>
-                <td class="form_text"><input type="submit" class="btn quick-link" value="Cập nhật" /></td>
-            </tr>
-        </table>}
+    <tr>
+        <td class="form_name">Mật khẩu</td>
+        <td class="form_text">@Html.PasswordFor(a => a.Password, new { placeholder = "Để trống nếu không thay đổi" })</td>
+    </tr>
+    <tr>
+        <td class="form_name">Hoạt động</td>
+        <td class="form_text">@Html.CheckBoxFor(a => a.Active)</td>
+    </tr>
+    <tr>
+        <td class="form_name">Ngày đăng ký</td>
+        <td class="form_text">@Model.CreateDate.ToString("dd/MM/yyyy HH:mm")</td>
+    </tr>
+    <tr>
+        <td class="form_name"></td>
+        <td class="form_text"><input type="submit" class="btn quick-link" value="Cập nhật" /></td>
+    </tr>
+</table>}
 </div>
 

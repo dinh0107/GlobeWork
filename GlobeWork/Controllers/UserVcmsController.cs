@@ -86,6 +86,7 @@ namespace GlobeWork.Controllers
                 CreateDate = user.CreateDate,
                 EmailRegister = user.Email,
                 Phone = user.Phone,
+                Active = user.Active
             };
             ViewBag.Result = result;
             return View(model);
@@ -141,6 +142,7 @@ namespace GlobeWork.Controllers
                     }
                     user.Phone = model.Phone;
                     user.Avatar = model.Avatar;
+                    user.Active = model.Active;
                     _unitOfWork.Save();
                     return RedirectToAction("ListUser", new { result = 1 });
                 }

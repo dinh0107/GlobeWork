@@ -78,6 +78,8 @@ namespace GlobeWork.ViewModel
         public string Password { get; set; }
         [Display(Name = "Số điện thoại"), Phone(ErrorMessage = "Số điện thoại không hợp lệ")]
         public string Phone { get; set; }
+        [Display(Name = "Hoạt động")]
+        public bool Active { get; set; }
         [StringLength(50, ErrorMessage = "Tối đa 50 ký tự"), Display(Name = "Địa chỉ email"), EmailAddress(ErrorMessage = "Email không chính xác"), Required(ErrorMessage = "Bạn vui lòng nhập email")]
         public string EmailRegister { get; set; }
         [StringLength(500)]

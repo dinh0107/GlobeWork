@@ -76,30 +76,30 @@ namespace GlobeWork.Controllers
             if (ModelState.IsValid)
             {
                 var user = _unitOfWork.UserRepository.Get(a => a.Email == model.Email).SingleOrDefault();
+                if (user == null || !HtmlHelpers.VerifyHash(model.Password, "SHA256", user.Password))
+                {
+                    ModelState.AddModelError("", @"Tên đăng nhập hoặc mật khẩu không chính xác.");
+                    return View(model);
+                }
                 if (!user.Active)
                 {
                     ModelState.AddModelError("", @"Tài khoản tạm thời bị khóa. Vui lòng liên hệ với quản trị viên.");
                     return View(model);
                 }
-                if (user != null || HtmlHelpers.VerifyHash(model.Password, "SHA256", user.Password))
+
+                var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url + "|" + user.AvatarSocial;
+                var ticket = new FormsAuthenticationTicket(2, user.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
+                    userData, FormsAuthentication.FormsCookiePath);
+                var encTicket = FormsAuthentication.Encrypt(ticket);
+                Response.Cookies.Add(new HttpCookie(".ASPXAUTHMEMBER", encTicket));
+
+                if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
+                        && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
                 {
-                    var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url + "|" + user.AvatarSocial;
-                    var ticket = new FormsAuthenticationTicket(2, user.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
-                        userData, FormsAuthentication.FormsCookiePath);
-                    var encTicket = FormsAuthentication.Encrypt(ticket);
-                    Response.Cookies.Add(new HttpCookie(".ASPXAUTHMEMBER", encTicket));
-                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
-                            && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
-                    {
-                        return Redirect(returnUrl);
-                    }
-                    return RedirectToAction("Index", "Home", new { result = "success" });
+                    return Redirect(returnUrl);
                 }
-                else
-                {
-                    ModelState.AddModelError("", @"Tên đăng nhập hoặc mật khẩu không chính xác.");
-                    return View(model);
-                }
+
+                return RedirectToAction("Index", "Home", new { result = "success" });
             }
             return View(model);
         }
