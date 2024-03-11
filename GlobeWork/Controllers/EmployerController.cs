@@ -1288,6 +1288,9 @@ namespace GlobeWork.Controllers
                 {
                     ModelState.AddModelError("", @"Hãy chọn 1 hình ảnh.");
                     model.StudyAbroadCategories = StudyAbroadCategories();
+                    model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+                    model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+
                     return View(model);
                 }
                 else
@@ -1296,6 +1299,7 @@ namespace GlobeWork.Controllers
                     {
                         ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg, svg");
                         model.StudyAbroadCategories = StudyAbroadCategories();
+                        model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
                         return View(model);
                     }
 
@@ -1303,6 +1307,7 @@ namespace GlobeWork.Controllers
                     {
                         ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
                         model.StudyAbroadCategories = StudyAbroadCategories();
+                        model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
                         return View(model);
                     }
                     var imgPath = "/images/studyAbroad/" + DateTime.Now.ToString("yyyy/MM/dd");

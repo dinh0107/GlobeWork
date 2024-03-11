@@ -83,7 +83,21 @@
                             </li>
                         </ul>
                     </li>
-                    <li><a href="@Url.Action("ListCompany")">Doanh nghiệp</a></li>
+                    <li>
+                        <a href="@Url.Action("ListCompany")">Doanh nghiệp</a>
+                        <ul class="sub-menu shadow">
+                            <li>
+                                <a href="@Url.Action("ListCompany")">
+                                   Danh sách công ty
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("CompanyTop")">
+                                    Top công ty
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     @if (id == 0)
                     {
                         <li><a href="@Url.Action("Login" , "User")">Hồ sơ CV</a></li>
