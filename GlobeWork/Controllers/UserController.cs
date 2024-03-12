@@ -59,14 +59,7 @@ namespace GlobeWork.Controllers
                 scope = "public_profile,email"
             });
 
-            //Google
-            var clientId = "65707280933-nr9hupgoj3pbqavfc479hll1igo0jfkk.apps.googleusercontent.com";
-            var url = host + "/User/CallBackGoogle";
-            var respon = GoogleAuth.GetAuthUrl(clientId, url);
-
-            // Linkend
             ViewBag.Url = $"https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id={LinkedInClientId}&redirect_uri={RedirectUri}&scope=openid,profile,email,w_member_social";
-            ViewBag.GoogleUrl = respon;
             ViewBag.FacebookUrl = facebookUrl;
             return View();
         }
@@ -104,6 +97,15 @@ namespace GlobeWork.Controllers
             return View(model);
         }
 
+        [Route("google") , OverrideActionFilters]
+        public ActionResult LoginGoogle()
+        {
+            var host = Request.Url.Scheme + "://" + Request.Url.Host + ":" + Request.Url.Port;
+            var clientId = "65707280933-nr9hupgoj3pbqavfc479hll1igo0jfkk.apps.googleusercontent.com";
+            var url = host + "/User/CallBackGoogle";
+            var authUrl = GoogleAuth.GetAuthUrl(clientId, url);
+            return Redirect(authUrl);
+        }
         [OverrideActionFilters]
         public ActionResult FacebookRedirect(string code, string returnUrl)
         {
