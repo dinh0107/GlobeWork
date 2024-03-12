@@ -527,8 +527,6 @@ header.header-employer {
 }
 
 .profile-tabs {
-    display: flex;
-    gap: 0.625rem;
 
     ul {
         display: flex;
@@ -540,10 +538,10 @@ header.header-employer {
     }
 
     a {
+        width: 100%;
         display: flex;
         align-items: center;
         gap: 0.625rem;
-        width: 14.5rem;
         padding: 0.625rem 1.25rem;
         border-radius: 3px;
         background-color: #f5f8fa;
@@ -555,12 +553,6 @@ header.header-employer {
         background-color: $green;
     }
 
-    > div {
-        flex-grow: 1;
-        padding: 0.75rem;
-        border-radius: 3px;
-        background-color: #f5f8fa;
-    }
 }
 
 .form-content {

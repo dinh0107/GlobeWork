@@ -18,5 +18,9 @@
   {
     "outputFile": "Content/scss/CV.css",
     "inputFile": "Content/scss/CV.scss"
+  },
+  {
+    "outputFile": "Content/scss/Responsive2.css",
+    "inputFile": "Content/scss/Responsive2.scss"
   }
 ]

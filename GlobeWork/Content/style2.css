@@ -498,10 +498,6 @@ header.header-employer logo {
   margin-bottom: 0;
 }
 
-.profile-tabs {
-  display: flex;
-  gap: 0.625rem;
-}
 .profile-tabs ul {
   display: flex;
   flex-direction: column;
@@ -511,10 +507,10 @@ header.header-employer logo {
   padding: 0;
 }
 .profile-tabs a {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 0.625rem;
-  width: 14.5rem;
   padding: 0.625rem 1.25rem;
   border-radius: 3px;
   background-color: #f5f8fa;
@@ -523,12 +519,6 @@ header.header-employer logo {
 .profile-tabs li.ui-tabs-active a {
   color: #fff;
   background-color: #66BC46;
-}
-.profile-tabs > div {
-  flex-grow: 1;
-  padding: 0.75rem;
-  border-radius: 3px;
-  background-color: #f5f8fa;
 }
 
 .form-content {
