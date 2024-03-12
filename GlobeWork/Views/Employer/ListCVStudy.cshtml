@@ -10,8 +10,8 @@
 </div>
 <div class="container py-3">
     <div class="box-content">
-        <form class="box-header form-row mb-3" action="@Url.Action("ListCVStudy")" method="get">
-            <div class="col">
+        <form class="box-header form-row mb-n3" action="@Url.Action("ListCVStudy")" method="get">
+            <div class="col-lg-4 mb-3">
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text"><i class="fa-regular fa-magnifying-glass"></i></div>
@@ -19,7 +19,7 @@
                     @Html.TextBoxFor(a => a.Name, new { @class = "form-control", @placeholder = "Tìm kiếm theo tên" })
                 </div>
             </div>
-            <div class="col">
+            <div class="col-lg-4 mb-3">
                 <div class="input-group flex-nowrap">
                     <div class="input-group-prepend">
                         <div class="input-group-text">Trạng thái hiển thị:</div>
@@ -32,7 +32,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-lg-4 mb-3">
                 <button type="submit" class="btn btn-success">
                     Tìm kiếm
                 </button>
@@ -45,11 +45,11 @@
                 <div class="vitae media" data-id="@item.Id">
                     @if (item.User.Avatar != null)
                     {
-                        <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/user/", item.User.Avatar)" class="lazyload" />
+                        <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/user/", item.User.Avatar)" class="lazyload d-none d-lg-block" />
                     }
                     else
                     {
-                        <img src="~/Content/images/avatar-default.jpg" />
+                        <img class="d-none d-lg-block" src="~/Content/images/avatar-default.jpg" />
                     }
                     <div class="media-body">
                         <div class="apply-name">
@@ -71,7 +71,7 @@
                             else if (item.Status == GlobeWork.Models.ApplyJobStatus.NoActive)
                             {
                                 <li class="tag error">
-                                   Chưa phù hợp
+                                    Chưa phù hợp
                                 </li>
                             }
                             <li>
@@ -121,7 +121,7 @@
                                 <i class="fa-solid fa-xmark"></i>
                             </a>
                         }
-                        <a href="javascript:;" onclick="DeleteApply(@item.Id)" class="bg-success" data-tooltip="Phù hợp" data-tooltip-position="top right">
+                        <a href="javascript:;" onclick="DeleteApply(@item.Id)" class="bg-success" data-tooltip="Xóa khỏi danh sách" data-tooltip-position="top right">
                             <i class="fas fa-trash-alt"></i>
                         </a>
 

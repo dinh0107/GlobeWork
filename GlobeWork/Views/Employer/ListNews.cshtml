@@ -11,8 +11,8 @@
 </div>
 <div class="container py-4">
     <div class="box-content">
-        <form class="box-header form-row" action="@Url.Action("ListNews")" method="get">
-            <div class="col">
+        <form class="box-header form-row mb-n3" action="@Url.Action("ListNews")" method="get">
+            <div class="col-lg-4 mb-3">
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text"><i class="fa-regular fa-magnifying-glass"></i></div>
@@ -20,7 +20,7 @@
                     @Html.TextBoxFor(a => a.Name , new {@class = "form-control" , @placeholder = "Tìm kiếm theo tiêu đề hoặc mã tin" })
                 </div>
             </div>
-            <div class="col">
+            <div class="col-lg-4 mb-3">
                 <div class="input-group flex-nowrap">
                     <div class="input-group-prepend">
                         <div class="input-group-text">Trạng thái hiển thị:</div>
@@ -38,17 +38,17 @@
                     </select>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-lg-4 mb-3">
                 <button type="submit" class="btn btn-success">
                     Tìm kiếm
                 </button>
             </div>
         </form>
-        <div class="box-body">
+        <div class="box-body table-responsive">
             <table class="table">
                 <thead>
                     <tr>
-                        <th style="width:50%">
+                        <th style="width:50%; min-width: 268px;">
                             Tin tuyển dụng
                         </th>
                         <th class="text-center">

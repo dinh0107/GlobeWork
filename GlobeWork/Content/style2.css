@@ -955,10 +955,13 @@ header.header-employer logo {
   display: flex;
   gap: 6px;
   align-items: baseline;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
 }
 .vitae .media-body.des {
-  height: 12rem;
-  width: 18rem;
+  width: 10rem;
   flex: auto;
   overflow-y: auto;
 }

@@ -1029,11 +1029,12 @@ $timeColo: #2d7cf1;
         display: flex;
         gap: 6px;
         align-items: baseline;
+        @include truncate(1);
     }
 
+
     .media-body.des {
-        height: 12rem;
-        width: 18rem;
+        width: 10rem;
         flex: auto;
         overflow-y: auto;
     }
