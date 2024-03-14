@@ -59,6 +59,11 @@ namespace GlobeWork.Controllers
                 scope = "public_profile,email"
             });
 
+            var clientId = "210791883193-qmklssj3bdnq1vhnftqcgvhtbriugr5s.apps.googleusercontent.com";
+            var url = host + "/user/signin-google";
+            var response = GoogleAuth.GetAuthUrl(clientId, url);
+            ViewBag.response = response;
+
             ViewBag.Url = $"https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id={LinkedInClientId}&redirect_uri={RedirectUri}&scope=openid,profile,email,w_member_social";
             ViewBag.FacebookUrl = facebookUrl;
             return View();
@@ -97,11 +102,11 @@ namespace GlobeWork.Controllers
             return View(model);
         }
 
-        [Route("google") , OverrideActionFilters]
+        [Route("signin-google") , OverrideActionFilters]
         public ActionResult LoginGoogle()
         {
-            var host = Request.Url.Scheme + "://" + Request.Url.Host + ":" + Request.Url.Port;
-            var clientId = "65707280933-nr9hupgoj3pbqavfc479hll1igo0jfkk.apps.googleusercontent.com";
+            var host = Request.Url?.GetLeftPart(UriPartial.Authority);
+            var clientId = "210791883193-qmklssj3bdnq1vhnftqcgvhtbriugr5s.apps.googleusercontent.com";
             var url = host + "/User/CallBackGoogle";
             var authUrl = GoogleAuth.GetAuthUrl(clientId, url);
             return Redirect(authUrl);
@@ -174,10 +179,10 @@ namespace GlobeWork.Controllers
         [OverrideActionFilters]
         public async Task<ActionResult> CallBackGoogle(string code)
         {
-            var host = Request.Url.Scheme + "://" + Request.Url.Host + ":" + Request.Url.Port;
-            var client_id = "65707280933-nr9hupgoj3pbqavfc479hll1igo0jfkk.apps.googleusercontent.com";
+            var host = Request.Url?.GetLeftPart(UriPartial.Authority);
+            var client_id = "210791883193-qmklssj3bdnq1vhnftqcgvhtbriugr5s.apps.googleusercontent.com";
             var url = host + "/User/CallBackGoogle";
-            var client_secret = "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";
+            var client_secret = "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";
             var token = await GoogleAuth.GetAuthAccessToken(code, client_id, client_secret, url);
             var userProfile = await GoogleAuth.GetProfileResponseAsync(token.AccessToken.ToString());
             JObject jsonObject = JObject.Parse(userProfile);
@@ -188,6 +193,10 @@ namespace GlobeWork.Controllers
             if (count >= 1)
             {
                 var user = _unitOfWork.UserRepository.GetQuery(a => a.Email == email).FirstOrDefault();
+                if(user.Password == null)
+                {
+                    return RedirectToAction("SetPassword", new { id = user.Id });
+                }
                 var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url + "|" + user.AvatarSocial;
                 var ticket = new FormsAuthenticationTicket(2, user.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
                     userData, FormsAuthentication.FormsCookiePath);
@@ -220,15 +229,18 @@ namespace GlobeWork.Controllers
                         Insertuser.Url += "-" + Insertuser.Id;
                         _unitOfWork.Save();
                     }
-                    var userData = Insertuser.Avatar + "|" + Insertuser.Id + "|" + Insertuser.Email + "|" + Insertuser.FullName + "|" + Insertuser.Url + "|" + Insertuser.AvatarSocial;
-                    var ticket = new FormsAuthenticationTicket(2, Insertuser.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
-                        userData, FormsAuthentication.FormsCookiePath);
-                    var encTicket = FormsAuthentication.Encrypt(ticket);
-                    Response.Cookies.Add(new HttpCookie(".ASPXAUTHMEMBER", encTicket));
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("SetPassword" , new {id = Insertuser.Id});
                 }
                 else
                 {
+                    if (!user.Active)
+                    {
+                        ModelState.AddModelError("", @"Tài khoản tạm thời bị khóa. Vui lòng liên hệ với quản trị viên.");
+                    }
+                    if (user.Password == null)
+                    {
+                        return RedirectToAction("SetPassword", new { id = user.Id });
+                    }
                     var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url + "|" + user.AvatarSocial;
                     var ticket = new FormsAuthenticationTicket(2, user.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
                         userData, FormsAuthentication.FormsCookiePath);
@@ -286,6 +298,41 @@ namespace GlobeWork.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Route("dat-mat-khau")]
+        [OverrideActionFilters]
+        public ActionResult SetPassword(int id = 0)
+        {
+            var user = _unitOfWork.UserRepository.GetById(id);
+            if(user == null)
+            {
+                return RedirectToAction("Login");
+            }
+            var model = new SetPasswordSocial
+            {
+                Id = user.Id
+            };
+            return View(model);
+        }
+        [Route("dat-mat-khau")]
+        [HttpPost]
+        [OverrideActionFilters]
+        public ActionResult SetPassword(SetPasswordSocial model)
+        {
+            var user = _unitOfWork.UserRepository.GetById(model.Id);
+            if (user == null)
+            {
+                return RedirectToAction("Login");
+            }
+            user.Password = HtmlHelpers.ComputeHash(model.Password, "SHA256", null);
+            user.Token = HtmlHelpers.RandomCode(50);
+            _unitOfWork.Save();
+            var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url + "|" + user.AvatarSocial;
+            var ticket = new FormsAuthenticationTicket(2, user.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
+                userData, FormsAuthentication.FormsCookiePath);
+            var encTicket = FormsAuthentication.Encrypt(ticket);
+            Response.Cookies.Add(new HttpCookie(".ASPXAUTHMEMBER", encTicket));
+            return RedirectToAction("Index","Home");
+        }
         [OverrideActionFilters, Route("dang-ky")]
         public ActionResult Register()
         {
@@ -652,6 +699,18 @@ namespace GlobeWork.Controllers
             };
             return View(model);
         }
+        [Route("danh-sach-tin-du-hoc-da-luu")]
+        public ActionResult ListLikeStudy(int? page)
+        {
+            var pageNumber = page ?? 1;
+            var study = _unitOfWork.LikeRepository.GetQuery(a => a.UserID == User.Id && a.StudyAbroadId != null, o => o.OrderBy(a => a.Id));
+            var model = new UserLikeViewModel
+            {
+                Likes = study.ToPagedList(pageNumber, 12),
+                User = _unitOfWork.UserRepository.GetById(User.Id),
+            };
+            return View(model);
+        }
         [Route("lich-su-ung-tuyen/json")]
         public JsonResult ListApplyJson()
         {
@@ -670,8 +729,14 @@ namespace GlobeWork.Controllers
         }
 
         [Route("lich-su-ung-tuyen")]
-        public ActionResult ListApply()
+        public ActionResult ListApply(int? id)
         {
+            var noti = _unitOfWork.UserLogRepository.GetById(id);
+            if (noti != null)
+            {
+                noti.Status = true;
+                _unitOfWork.Save();
+            }
             return View(User);
         }
         public PartialViewResult GetApply(int? page, int? status, int? id , int? type)

@@ -557,6 +557,7 @@
     <Content Include="Content\virtual-select.min.css" />
     <Content Include="EmailTemplates\Apply.html" />
     <Content Include="EmailTemplates\ForgotPassword.html" />
+    <Content Include="EmailTemplates\ReceivedCV.html" />
     <Content Include="EmailTemplates\UserApply.html" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -1795,6 +1796,10 @@
     <Content Include="Views\Vcms\UpdatePartner.cshtml" />
     <Content Include="Views\Shared\_LayoutCV.cshtml" />
     <Content Include="Views\Home\ViewAndEx.cshtml" />
+    <Content Include="Views\User\SetPassword.cshtml" />
+    <Content Include="Views\Employer\ForgotPassword.cshtml" />
+    <Content Include="Views\Employer\SetNewPasswordUrl.cshtml" />
+    <Content Include="Views\User\ListLikeStudy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

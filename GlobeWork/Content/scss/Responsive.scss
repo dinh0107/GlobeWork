@@ -12,7 +12,7 @@
 
     .toggle-icon {
         display: block;
-        font-size: 30px;
+        font-size: 1.875rem;
     }
 
     .box-menu-repon {
@@ -29,17 +29,17 @@
 
         li {
             background: #f4f5f5;
-            border-radius: 6px;
-            margin-bottom: 8px;
-            padding: 10px 16px;
+            border-radius: .375rem;
+            margin-bottom: .5rem;
+            padding: 0.875rem 1rem;
             position: relative;
-            margin-bottom: 15px;
+            margin-bottom: .938rem;
 
             a {
                 color: #212f3f;
-                font-size: 14px;
+                font-size: 0.875rem;
                 font-weight: 400;
-                line-height: 20px;
+                line-height: 1.25rem;
                 width: 100%;
                 display: flex;
                 align-items: center;
@@ -50,9 +50,9 @@
     .ul-repon {
         > li {
             background: #fff;
-            border-radius: 6px;
-            padding: 14px 16px;
-            margin-bottom: 8px;
+            border-radius: 0.375rem;
+            padding: 0.875rem 1rem;
+            margin-bottom: 0.5rem;
             align-items: flex-end;
 
             div {
@@ -63,9 +63,9 @@
 
     .link-repon {
         color: #00b14f;
-        font-size: 14px;
+        font-size: 0.875rem;
         font-weight: 600;
-        line-height: 20px;
+        line-height: 1.25rem;
     }
 
     .icon-reponsive, .icon-study {
@@ -116,9 +116,9 @@
 
         i {
             color: #00b14f !important;
-            font-size: 14px !important;
+            font-size: .875rem !important;
             font-weight: 600 !important;
-            line-height: 20px !important;
+            line-height: 1.25rem !important;
         }
     }
 
@@ -135,7 +135,7 @@
     }
 
     .list-keyword {
-        width: 45%;
+        width: 67%;
     }
 
     .group-select {
@@ -148,7 +148,7 @@
     }
 
     .hot-section {
-        padding: 30px 0 60px 0;
+        padding: 1.875rem 0 3.75rem 0;
     }
 
     .list-hotjob {
@@ -171,6 +171,7 @@
 
     .section-filter {
         display: none;
+        color: #A6ACB2;
 
         &.active {
             display: block;
@@ -252,7 +253,7 @@
     }
 
     .checkbox-wrapper-42 .cbx {
-        width: 1.563rem;
+        width: 1.163rem;
         height: 1.163rem;
     }
 
@@ -342,17 +343,315 @@
         padding-bottom: 33px;
     }
 
-   
+    .list-career {
+        .slick-arrow {
+            top: 96%;
+        }
+
+        .previous-career {
+            right: 50%;
+        }
+
+        .next-career {
+            right: 45%;
+        }
+    }
 }
 
 @include maxWidth(900px) {
     .sidebar {
         width: 40%;
     }
+
+    .banner:before {
+        height: 100%;
+        width: 100%;
+        top: 0;
+    }
+
+    .list-banner {
+        img {
+            height: 23.6875rem;
+        }
+    }
+
+    .hot-keyword {
+        display: none;
+    }
+
+    .list-hotjob .next-slie {
+        right: 44%;
+    }
+
+    .list-career .previous-career {
+        right: 51%;
+    }
+
+    .list-career .next-career {
+        right: 43%;
+    }
+
+    .footer-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .menu-footer {
+        display: none;
+    }
+
+    .popupuser {
+        width: 100%;
+    }
 }
 
 @include maxWidth(600px) {
     .hot-keyword > span {
         display: none;
+    }
+
+    .logo {
+        width: 10.125rem;
+    }
+
+    .box-notification {
+        background: unset;
+
+        i {
+            font-size: 1.3rem;
+        }
+    }
+
+    .slogan {
+        font-size: 1.2rem;
+    }
+
+    .sub-slogan {
+        line-height: 2;
+    }
+
+    .filter-banner {
+        margin-top: .6rem;
+    }
+
+    .filter-btn {
+        span {
+            display: none;
+        }
+    }
+
+    .list-banner img {
+        height: 17.6875rem;
+    }
+
+    .hot-section {
+        padding: 30px 0 40px 0;
+    }
+
+    .or {
+        font-size: .8rem;
+    }
+
+    .contents {
+        padding: 1rem 1rem;
+    }
+
+    .login-social-list a {
+        height: 2rem;
+        font-size: 0.75rem;
+    }
+
+    .checkbox-wrapper-42 .lbl {
+        width: 100%;
+    }
+
+    .title-form_sub {
+        font-size: 0.65rem;
+    }
+
+    .font-size-12 {
+        font-size: 0.75rem;
+    }
+
+    .logo-form {
+        width: 100%;
+    }
+
+    .submit-form {
+        font-size: 0.75rem;
+        padding: 0.5rem;
+    }
+
+    .user-form label {
+        font-size: 0.75rem;
+    }
+
+    .user-form input, .user-form select {
+        font-size: 0.75rem;
+    }
+
+    .popupBtn {
+        padding: 0.8rem 1rem;
+        font-size: 0.6rem;
+    }
+
+    .titlepPop-up-sub {
+        font-size: .7rem;
+        width: 80%;
+    }
+
+    .titlepPop-up {
+        font-size: 0.7rem;
+
+        span {
+            font-size: 1.7rem;
+        }
+    }
+
+    .sort-contruy {
+        span {
+            font-size: 0.65rem;
+        }
+
+
+        select {
+            font-size: 0.7rem;
+        }
+    }
+
+    .section-filter.active {
+        font-size: 0.7rem;
+        height: 100%;
+    }
+
+    .list-hotjob .slick-dots button {
+        width: 0.7rem;
+        height: 0.7rem;
+        background-color: #c3c3c3;
+    }
+
+    .list-career .slick-dots button {
+        width: 0.7rem;
+        height: 0.7rem;
+        background-color: #c3c3c3;
+    }
+
+    .hot-section {
+        padding: 30px 0 30px 0;
+    }
+
+    .title {
+        font-size: 1.2rem;
+    }
+
+    .filter-banner_1 {
+        input {
+            font-size: 0.7rem;
+        }
+    }
+
+    .filter-banner {
+        padding: 1.2rem 0.925rem;
+    }
+
+    .filter-btn {
+        font-size: 0.75rem;
+        ;
+    }
+
+    .filter-parent {
+        gap: 1rem;
+    }
+
+    .title-sub {
+        font-size: 0.7125rem;
+    }
+
+    .job-title {
+        font-size: 1rem;
+    }
+
+    .job-sub {
+        font-size: 0.575rem;
+    }
+
+    .item-search {
+        width: 100%;
+        flex: 1;
+    }
+
+    .search-city {
+        padding-left: 0;
+        width: 50%;
+        font-size: 0.65rem;
+
+        &.border-left {
+            /*border-left: 0 !important;*/
+        }
+
+        .select2-container {
+            font-size: 0.75rem;
+        }
+    }
+
+    .group-search {
+        height: auto;
+        font-size: .75rem;
+
+        input, .group-search select {
+            font-size: .75rem;
+        }
+    }
+
+    .box-work-market {
+        display: block;
+        text-align: center;
+    }
+
+    .item-label {
+        font-size: 0.7rem;
+    }
+
+    .number-job-new-today {
+        font-size: 0.75rem;
+    }
+
+    .list-bannerjob img {
+        height: 8.9375rem;
+    }
+
+    .detail-job .job-name {
+        font-size: .8rem;
+        width: 17rem !important;
+    }
+
+    .time-deadline {
+        font-size: 0.65rem;
+    }
+
+    .job-q {
+        font-size: .7rem;
+
+        span {
+            font-size: .7rem;
+        }
+    }
+
+    #frm-search-job {
+        button {
+            height: 2.2rem;
+        }
+
+        gap: 0.75rem;
+    }
+
+    .info-job {
+        font-size: .7rem;
+    }
+
+    .detail-job .company-name {
+        font-size: 0.7125rem;
+        font-weight: 400;
     }
 }

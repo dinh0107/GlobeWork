@@ -136,7 +136,7 @@ header.header-employer {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 99999;
+  z-index: 999;
   height: 4.25rem;
   display: flex;
   background: #fff;
@@ -805,7 +805,7 @@ header.header-employer logo {
 .notification li.header {
   position: sticky;
   top: 0;
-  z-index: 10;
+  /*z-index: 8;*/
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -833,10 +833,6 @@ header.header-employer logo {
 }
 .notification p {
   font-size: 0.85rem;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  -webkit-line-clamp: 2;
   margin-bottom: 0;
 }
 .notification .media-body > i {
@@ -1007,4 +1003,69 @@ header.header-employer logo {
   width: 100px;
   object-fit: cover;
   aspect-ratio: 1.5;
+}
+
+.spinner {
+  position: relative;
+  width: 15.7px;
+  height: 15.7px;
+}
+
+.spinner div {
+  animation: spinner-4t3wzl 1.875s infinite backwards;
+  background-color: #66bc46;
+  border-radius: 50%;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+}
+
+.spinner div:nth-child(1) {
+  animation-delay: 0.15s;
+  background-color: #66BC46;
+}
+
+.spinner div:nth-child(2) {
+  animation-delay: 0.3s;
+  background-color: rgba(102, 188, 70, 0.8);
+}
+
+.spinner div:nth-child(3) {
+  animation-delay: 0.45s;
+  background-color: rgba(102, 188, 70, 0.7);
+}
+
+.spinner div:nth-child(4) {
+  animation-delay: 0.6s;
+  background-color: rgba(102, 188, 70, 0.6);
+}
+
+.spinner div:nth-child(5) {
+  animation-delay: 0.75s;
+  background-color: rgba(102, 188, 70, 0.5);
+}
+
+@keyframes spinner-4t3wzl {
+  0% {
+    transform: rotate(0deg) translateY(-200%);
+  }
+  60%, 100% {
+    transform: rotate(360deg) translateY(-200%);
+  }
+}
+.loading {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6705882353);
+  z-index: 999;
+  top: 0;
+}
+.loading.active {
+  display: flex;
 }

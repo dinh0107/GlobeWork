@@ -143,13 +143,18 @@ namespace GlobeWork.ViewModel
     public class SetNewPasswordViewModel
     {
         public string Token { get; set; }
-        [DisplayName("Mật khẩu"), StringLength(20, MinimumLength = 6, ErrorMessage = "Mật khẩu từ 6 - 20 ký tự")]
+        [DisplayName("Mật khẩu"), Required(ErrorMessage = "Nhập mật khẩu"), StringLength(20, MinimumLength = 6, ErrorMessage = "Mật khẩu từ 6 - 20 ký tự")]
         public string Password { get; set; }
         [DisplayName("Nhập lại mật khẩu"), StringLength(20, MinimumLength = 6, ErrorMessage = "Mật khẩu không trùng khớp")]
         [System.ComponentModel.DataAnnotations.Compare("Password")]
         public string ConfirmPassword { get; set; }
     }
-
+    public class SetPasswordSocial
+    {
+        public int Id { get; set; } 
+        [DisplayName("Mật khẩu"), Required(ErrorMessage = "Nhập mật khẩu"), StringLength(20, MinimumLength = 6, ErrorMessage = "Mật khẩu từ 6 - 20 ký tự")]
+        public string Password { get; set; }
+    }
     public class AdminListCompanyViewModel
     {
         public IPagedList<Company> Companies { get; set; }

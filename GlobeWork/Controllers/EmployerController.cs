@@ -131,6 +131,59 @@ namespace GlobeWork.Controllers
             }
             return RedirectToAction("EmployerLogin", "Employer");
         }
+
+        [OverrideActionFilters, Route("quen-mat-khau")]
+        public ActionResult ForgotPassword(string result = "")
+        {
+            ViewBag.Result = result;
+            return View();
+        }
+
+        [OverrideActionFilters, HttpPost, Route("quen-mat-khau")]
+        public ActionResult ForgotPassword(ForgotPasswordViewModel model)
+        {
+            var email = _unitOfWork.EmployerRepository.GetQuery(a => a.Active && a.Email == model.Email).FirstOrDefault();
+            if (email == null)
+            {
+                return RedirectToAction("ForgotPassword", new { result = "error" });
+            }
+            var setNewPasswordUrl = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("SetNewPasswordUrl", new { token = email.Token });
+            var emailTemp = System.IO.File.ReadAllText(Server.MapPath("/EmailTemplates/ForgotPassword.html"));
+            emailTemp = emailTemp.Replace("[FULLNAME]", email.FullName).Replace("[EMAIL]", model.Email).Replace("[URL]", setNewPasswordUrl);
+            Task.Run(() => HtmlHelpers.SendEmail("gmail", "Yêu cầu lấy lại mật khẩu từ " + Request.Url?.Host, emailTemp, model.Email, ConfigSite.EmailConfigs, ConfigSite.EmailConfigs, ConfigSite.PassWordMail, ConfigSite.Title));
+            return RedirectToAction("ForgotPassword", new { result = "sucsess" });
+        }
+
+        [OverrideActionFilters, Route("dat-lai-mat-khau")]
+        public ActionResult SetNewPasswordUrl(string token, string result = "")
+        {
+            ViewBag.Result = result;
+
+            var model = new SetNewPasswordViewModel
+            {
+                Token = token
+            };
+            return View(model);
+        }
+        [OverrideActionFilters]
+        [Route("dat-lai-mat-khau"), HttpPost, ValidateAntiForgeryToken]
+        public ActionResult SetNewPasswordUrl(SetNewPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = _unitOfWork.EmployerRepository.GetQuery(a => a.Active && a.Token == model.Token).FirstOrDefault();
+                if (user == null)
+                {
+                    return RedirectToAction("Login");
+                }
+                user.Password = HtmlHelpers.ComputeHash(model.Password, "SHA256", null);
+                user.Token = HtmlHelpers.RandomCode(50);
+                _unitOfWork.Save();
+
+                return RedirectToAction("SetNewPasswordUrl", new { result = "sucsess" });
+            }
+            return View(model);
+        }
         #endregion
 
         #region Notify
@@ -805,7 +858,10 @@ namespace GlobeWork.Controllers
             {
                 return RedirectToAction("ListCv");
             }
-            cv.Status = ApplyJobStatus.View;
+            if(cv.Status != ApplyJobStatus.Active || cv.Status != ApplyJobStatus.NoActive)
+            {
+                cv.Status = ApplyJobStatus.View;
+            }
             _unitOfWork.Save();
             return View(cv);
         }

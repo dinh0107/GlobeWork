@@ -168,6 +168,10 @@
                                 <i class="fa-regular fa-heart"></i>
                                 Việc làm đã lưu
                             </a>
+                            <a href="@Url.Action("ListLikeStudy", "User")" class="navbar-btn">
+                                <i class="fa-light fa-plane-departure"></i>
+                                Tin du học đã lưu
+                            </a>
                             <a href="@Url.Action("Logout", "User")" class="navbar-btn">
                                 <i class="icon fa-regular fa-arrow-right-from-bracket"></i>
                                 Đăng xuất
@@ -217,7 +221,7 @@
                     {
                         <ul class="ul-reset ul-reponsive">
                             <li>
-                                <a href="@Url.Action("UserProfile", "Home" , new {url = url })"  class="link-user">
+                                <a href="@Url.Action("UserProfile", "Home" , new {url = url })" class="link-user">
                                     <i class="icon fa-regular fa-pen-to-square"></i>
                                     Thông tin cá nhân
                                 </a>
@@ -239,6 +243,12 @@
                                 <a href="@Url.Action("ListLike", "User")" class="link-user">
                                     <i class="fa-regular fa-heart"></i>
                                     Việc làm đã lưu
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("ListLikeStudy", "User")" class="link-user">
+                                    <i class="fa-light fa-plane-departure"></i>
+                                    Tin du học đã lưu
                                 </a>
                             </li>
                             <li>

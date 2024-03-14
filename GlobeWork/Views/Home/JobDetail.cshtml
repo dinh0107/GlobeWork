@@ -168,7 +168,7 @@
                         }
                         else
                         {
-                            if (Model.Likes.Any())
+                            if (Model.Likes.Any(a => a.JobId == Model.Job.Id))
                             {
                                 <div class="button3 unlike active" data-job="@Model.Job.Id"><i class="fa-solid fa-heart mr-2 heart-detail"></i> Bỏ lưu </div>
 

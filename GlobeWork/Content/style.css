@@ -268,10 +268,23 @@ header {
   min-width: 368px;
   position: relative;
   padding: 0.625rem 0.938rem;
+  overflow: hidden;
 }
 .sub-menu li a {
   font-size: 14px;
   line-height: 1.25rem;
+}
+.sub-menu li a:before {
+  color: #00b14f;
+  position: absolute;
+  content: "\f061";
+  font-family: "Font Awesome 6 Pro";
+  margin-left: auto;
+  right: -100%;
+  transition: all 0.5s;
+}
+.sub-menu li a:hover:before {
+  right: 1rem;
 }
 .sub-menu li a:hover {
   color: #66BC46;
@@ -412,8 +425,8 @@ header {
 .hot-keyword {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   margin-top: 0.825rem;
+  gap: 0.5rem;
 }
 .hot-keyword span {
   color: #fff;
@@ -904,7 +917,7 @@ header {
 }
 .thuml img {
   border-radius: 0.625rem 0.625rem 0rem 0rem;
-  object-fit: cover;
+  object-fit: contain;
   aspect-ratio: 1.5;
   width: 100%;
   transition: all 0.5s;
@@ -2177,6 +2190,7 @@ footer {
   width: 22.8125rem;
   height: 6.375rem;
   margin-bottom: 1.25rem;
+  object-fit: contain;
 }
 
 .title-form {
@@ -3245,7 +3259,7 @@ input, button {
   width: 25rem;
   right: 0;
   opacity: 0;
-  z-index: 2;
+  z-index: 99;
   visibility: hidden;
   transform: translateY(3rem);
   transition: all 0.5s;
@@ -3435,7 +3449,7 @@ input, button {
 }
 .box-notification .notification {
   right: 0;
-  width: 20rem;
+  width: 23rem;
   top: 150%;
 }
 .box-notification .notification.active {
@@ -3683,11 +3697,11 @@ summary {
 #form-contact {
   background: #fff;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  border-top: 5px solid #FF8400;
+  border-top: 5px solid #66BC46;
   padding: 20px;
 }
 #form-contact button {
-  background: #FF8400;
+  background: #66BC46;
   color: #fff;
   padding: 10px;
   text-transform: uppercase;

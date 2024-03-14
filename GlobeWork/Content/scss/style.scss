@@ -293,10 +293,26 @@ header {
         min-width: 368px;
         position: relative;
         padding: 0.625rem 0.938rem;
-
+        overflow:hidden;
         a {
             font-size: 14px;
             line-height: 1.25rem;
+
+            &:before {
+                color: #00b14f;
+                position: absolute;
+                content: "\f061";
+                font-family: "Font Awesome 6 Pro";
+                margin-left: auto;
+                right: -100%;
+                transition: all .5s;
+            }
+
+            &:hover {
+                &:before {
+                    right: 1rem;
+                }
+            }
 
             &:hover {
                 color: $green;
@@ -447,9 +463,8 @@ header {
 .hot-keyword {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     margin-top: .825rem;
-
+    gap:.5rem;
     span {
         color: $white;
         font-size: 0.8125rem;
@@ -942,7 +957,7 @@ header {
 
     img {
         border-radius: 0.625rem 0.625rem 0rem 0rem;
-        object-fit: cover;
+        object-fit: contain;
         aspect-ratio: 1.5;
         width: 100%;
         transition: all .5s;
@@ -2251,6 +2266,7 @@ footer {
     width: 22.8125rem;
     height: 6.375rem;
     margin-bottom: 1.25rem;
+    object-fit:contain;
 }
 
 .title-form {
@@ -3378,7 +3394,7 @@ input, button {
     width: 25rem;
     right: 0;
     opacity: 0;
-    z-index: 2;
+    z-index: 99;
     visibility: hidden;
     transform:translateY(3rem);
     transition:all .5s;
@@ -3584,7 +3600,7 @@ input, button {
 
     .notification {
         right: 0;
-        width: 20rem;
+        width: 23rem;
         top: 150%;
 
         &.active {
@@ -3856,11 +3872,11 @@ summary {
 #form-contact {
     background: #fff;
     box-shadow: 0 4px 30px rgba(0,0,0,.1);
-    border-top: 5px solid $orange;
+    border-top: 5px solid $green;
     padding: 20px;
 
     button {
-        background: $orange;
+        background: $green;
         color: $white;
         padding: 10px;
         text-transform: uppercase;

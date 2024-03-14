@@ -63,7 +63,7 @@
                     <div class="filter-banner_4">
                         <button type="submit" class="btn btn-block filter-btn">
                             <i class="far fa-search"></i>
-                            TÌM KIẾM
+                            <span>TÌM KIẾM</span>
                         </button>
                     </div>
                 </div>
@@ -123,7 +123,7 @@
             </h2>
             <a href="@Url.Action("JobHot")" class="view-all d-xl-block d-none">Xem tất cả</a>
         </div>
-        <div class="d-flex align-items-center justify-content-between mt-3 gap-9">
+        <div class="d-flex align-items-lg-center justify-content-between mt-3 gap-9">
             <div class="sort-contruy w-25 form-control border">
                 <span>
                     <i class="fa-solid fa-bars-filter"></i>
@@ -145,7 +145,7 @@
     </div>
 </section>
 <div class="container">
-    <div class="py-4">
+    <div class="py-xl-4 py-md-5 py-3">
         <h2 class="title">
             Top ngành nghề nổi bật
         </h2>
@@ -248,9 +248,9 @@
                 {
                     <div class="card career-top">
                         <a href="@Url.Action("Employer", new {url = item.Url})" class="thuml">
-                            @if (item.Cover != null)
+                            @if (item.Avatar != null)
                             {
-                                <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Cover)" alt="@item.Name" class="lazyload" />
+                                <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Avatar)" alt="@item.Name" class="lazyload" />
                             }
                             else
                             {

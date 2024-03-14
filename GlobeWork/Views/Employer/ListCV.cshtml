@@ -148,8 +148,8 @@
 @section scripts{
     <script>
         function UpdateApply(id, status) {
+            //$(".loading").addClass("active")
             $.post("/Employer/UpdateStatusCV", { id: id, status: status }, function (data) {
-                console.log(data)
                 if (data.success) {
                     new Notify({
                         status: 'success',
@@ -165,6 +165,7 @@
                         type: 3,
                         position: 'right bottom'
                     });
+                    //$(".loading").removeClass("active")
                     setTimeout(function () {
                         window.location.reload();
                     }, 1500);
@@ -172,6 +173,7 @@
             });
         }
         function DeleteApply(id) {
+            //$(".loading").addClass("active")
             $.post("/Employer/DeleteApply", { id: id }, function (data) {
                 if (data.success) {
                     new Notify({
@@ -188,6 +190,7 @@
                         type: 3,
                         position: 'right bottom'
                     });
+                    //$(".loading").removeClass("active")
                     $(".vitae[data-id='" + id + "']").fadeOut();
                 }
             });

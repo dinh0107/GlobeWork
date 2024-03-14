@@ -2,8 +2,8 @@
 @using PagedList.Mvc
 @using GlobeWork.Utils
 @{
-    ViewBag.Title = "Tin tuyển dụng đã lưu";
-    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ListLike");
+    ViewBag.Title = "Tin du học đã lưu";
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("ListLikeStudy");
 }
 <div class="container">
     <div class="row py-3">
@@ -16,17 +16,17 @@
                         <div class="job bg-white detail-job">
                             <div class="media ">
                                 <div>
-                                    <a href="@Url.Action("JobDetail","Home", new {url = item.JobPost.Url})" class="job-name custom-w" data-tooltip="@item.JobPost.Name" data-tooltip-position="top">@item.JobPost.Name</a>
+                                    <a href="@Url.Action("StudyAbroadDetail","Home", new {url = item.StudyAbroad.Url})" class="job-name custom-w" data-tooltip="@item.StudyAbroad.Name" data-tooltip-position="top">@item.StudyAbroad.Name</a>
                                     <div class="company-name">
-                                        @item.JobPost.Company.Name
+                                        @item.StudyAbroad.Company.Name
                                     </div>
                                 </div>
                                 <div class="media-body time-deadline text-right">
-                                    @if (item.JobPost.ExpirationDate != null)
+                                    @if (item.StudyAbroad.ExpirationDate != null)
                                     {
-                                        if (item.JobPost.ExpirationDate > DateTime.Now)
+                                        if (item.StudyAbroad.ExpirationDate > DateTime.Now)
                                         {
-                                            @:Còn <strong>@Utils.DateCountDown(item.JobPost.ExpirationDate)</strong> để ứng tuyển
+                                            @:Còn <strong>@Utils.DateCountDown(item.StudyAbroad.ExpirationDate)</strong> để ứng tuyển
                                         }
                                         else
                                         {
@@ -41,20 +41,20 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-between mt-1">
                                 <div class="w-75">
-                                    <span class="info-job price">@Html.DisplayFor(a => item.JobPost.Wages)</span>
+                                    <span class="info-job price">@Html.DisplayFor(a => item.StudyAbroad.Wages)</span>
                                     <span class="info-job">
-                                        @if (item.JobPost.Cities.Any())
+                                        @if (item.StudyAbroad.Cities.Any())
                                         {
-                                            if (item.JobPost.Cities.Count > 1)
+                                            if (item.StudyAbroad.Cities.Count > 1)
                                             {
 
-                                                <span data-tooltip="@string.Join(" , ", item.JobPost.Cities.Select(city => city.Name))" data-tooltip-position="top">
-                                                    @item.JobPost.Cities.Count Thành phố
+                                                <span data-tooltip="@string.Join(" , ", item.StudyAbroad.Cities.Select(city => city.Name))" data-tooltip-position="top">
+                                                    @item.StudyAbroad.Cities.Count Thành phố
                                                 </span>
                                             }
                                             else
                                             {
-                                                foreach (var city in item.JobPost.Cities.Take(1))
+                                                foreach (var city in item.StudyAbroad.Cities.Take(1))
                                                 {
                                                     <span data-tooltip="@city.Name" data-tooltip-position="top">
                                                         @city.Name
@@ -70,7 +70,7 @@
                     if (Model.Likes.PageCount > 1)
                     {
                         <div class="text-center">
-                            @Html.PagedListPager(Model.Likes, page => Url.Action("ListLike", new { page }))
+                            @Html.PagedListPager(Model.Likes, page => Url.Action("ListLikeStudy", new { page }))
                         </div>
                     }
                 }

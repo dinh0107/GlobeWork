@@ -11,7 +11,7 @@
 <footer>
     <div class="container">
         <div class="row">
-            <div class="col-xl-3 order-xl-0 order-1">
+            <div class="col-xl-3">
                 <div class="content-detail">
                     @Html.Raw(config.InfoFooter)
                 </div>
@@ -28,11 +28,12 @@
                     <img src="~/Content/images/bct.png" alt="Bộ công thương" class="bct" />
                 </a>
             </div>
-            <div class="col-xl-9 order-xl-1 order-0">
+            <div class="col-xl-9">
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="footer-title mt-3">
                             Về GlobeWork
+                            <i class="fa-light fa-chevron-down d-lg-none d-block"></i>
                         </div>
                         <ul class="ul-reset menu-footer">
                             @foreach (var item in Model.Articles)
@@ -41,9 +42,10 @@
                             }
                         </ul>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-3 ">
                         <div class="footer-title mt-3">
                             Việc làm
+                            <i class="fa-light fa-chevron-down d-lg-none d-block"></i>
                         </div>
                         <ul class="ul-reset menu-footer">
                             @foreach (var item in Model.Careers)
@@ -55,6 +57,7 @@
                     <div class="col-lg-3">
                         <div class="footer-title mt-3">
                             Du học
+                            <i class="fa-light fa-chevron-down d-lg-none d-block"></i>
                         </div>
                         <ul class="ul-reset menu-footer">
                             @foreach (var item in Model.Countries)
@@ -74,6 +77,7 @@
                         </ul>*@
                         <div class="footer-title mt-3">
                             Đối tác
+                            <i class="fa-light fa-chevron-down d-lg-none d-block"></i>
                         </div>
                         <ul class="ul-reset menu-footer">
                             @foreach (var item in Model.Parters)
@@ -87,3 +91,8 @@
         </div>
     </div>
 </footer>
+@section scripts{
+    <script>
+       
+    </script>
+    }

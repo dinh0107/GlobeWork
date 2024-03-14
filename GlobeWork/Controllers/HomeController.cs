@@ -98,7 +98,7 @@ namespace GlobeWork.Controllers
                 Items = items,
                 Banners = banner,
                 Skills = _unitOfWork.SkillRepository.GetQuery(a => a.ShowHome, o => o.OrderBy(a => a.SkillName), 10),
-                Companies = _unitOfWork.CompanyRepository.GetQuery(a => a.Vipdate != null && a.Vipdate > DateTime.Now, o => o.OrderByDescending(a => a.Vipdate), 10),
+                Companies = _unitOfWork.CompanyRepository.GetQuery(a => a.Vipdate != null && a.Vipdate > DateTime.Now || a.ShowHome, o => o.OrderByDescending(a => a.Vipdate), 10),
                 StudyAbroads = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.Hot != null && a.Hot > DateTime.Now), o => o.OrderByDescending(a => a.CreateDate), 10)
             };
             return View(model);
@@ -252,6 +252,8 @@ namespace GlobeWork.Controllers
                 Wage = wage,
                 CareerId = careerId,
                 Likes = like,
+                TotalJob = _unitOfWork.JobPostRepository.GetQuery(a => a.Active).Count(),
+                JobNew = _unitOfWork.JobPostRepository.GetQuery(a => a.Active && a.CreateDate == DateTime.Now).Count(),
                 Banners = _unitOfWork.BannerRepository.GetQuery(a => a.Active && a.GroupId == 3, o => o.OrderBy(a => a.Sort)),
                 Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate)),
                 Cities = _unitOfWork.CityRepository.Get(orderBy: a => a.OrderBy(l => l.Id)),

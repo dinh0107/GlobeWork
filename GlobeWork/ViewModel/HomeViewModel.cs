@@ -127,6 +127,8 @@ namespace GlobeWork.ViewModel
         public int CareerId { get; set; }
         public int CityId { get; set; }
         public int Wage { get; set; }
+        public int TotalJob { get; set; }
+        public int JobNew { get; set; }
         public IEnumerable<Item> Items { get; set; }
         public IEnumerable<KeyValuePair<int, string>> Wages { get; set; }
         public JobHotViewModel()

@@ -41,7 +41,7 @@ function HomeJs() {
                 settings: {
                     slidesToShow: 2,
                     slidesToScroll: 2,
-                    rows: 2,
+                    rows: 3,
                     infinite: true,
                     dots: false
                 }
@@ -188,7 +188,6 @@ function HomeJs() {
                 settings: {
                     slidesToShow: 3,
                     slidesToScroll: 3,
-                    infinite: true,
                 }
             },
             {
@@ -202,7 +201,8 @@ function HomeJs() {
                 breakpoint: 480,
                 settings: {
                     slidesToShow: 1,
-                    slidesToScroll: 1
+                    slidesToScroll: 1,
+                    arrows: false,
                 }
             }
         ]
@@ -504,8 +504,8 @@ function StudyDetai() {
     function handleLikeStudy(button, jobId, isLike) {
         var actionUrl = isLike ? "/Home/LikeStudy" : "/Home/UnStudy";
         var buttonText = isLike ? "Bỏ lưu" : "Lưu tin";
-        var buttonClassToRemove = isLike ? "like" : "unlike";
-        var buttonClassToAdd = isLike ? "unlike" : "like";
+        var buttonClassToRemove = isLike ? "likestudy" : "unlikestudy";
+        var buttonClassToAdd = isLike ? "unlikestudy" : "likestudy";
         $.post(actionUrl, { id: jobId }, function (data) {
             if (data.success) {
                 button.text(buttonText);
@@ -1405,7 +1405,6 @@ function QickStudy() {
             }
         });
     }
-
     $(document).on("click", ".likejob", function () {
         var button = $(this);
         var studyId = button.data("id");
@@ -1505,4 +1504,7 @@ $('.icon-reponsive').click(function () {
 });
 $('.icon-study').click(function () {
     $(this).closest('li').next('.study-repon').slideToggle(); $(this).toggleClass("active");
+});
+$(".footer-title").click(function () {
+    $(this).next(".menu-footer").slideToggle(); 
 });

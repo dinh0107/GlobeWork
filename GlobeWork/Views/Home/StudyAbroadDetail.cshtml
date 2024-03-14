@@ -84,7 +84,7 @@
             </div>
         </div>
         <div class="row custom-row">
-            <div class="col-lg-8">
+            <div class="col-xl-8">
                 <div class="job-detail__box--left ">
                     <h1 class="job-detail__name">
                         @Model.StudyAbroad.Name
@@ -161,14 +161,14 @@
                         }
                         else
                         {
-                            if (Model.Likes.Any())
+                            if (Model.Likes.Any(a => a.StudyAbroadId == Model.StudyAbroad.Id))
                             {
-                                <a href="javascript:;" class="button3 unlike active" data-study="@Model.StudyAbroad.Id"><i class="fa-solid fa-heart mr-2 heart-detail"></i> Bỏ lưu </a>
+                                <a href="javascript:;" class="button3 unlikestudy active" data-study="@Model.StudyAbroad.Id"><i class="fa-solid fa-heart mr-2 heart-detail"></i> Bỏ lưu </a>
 
                             }
                             else
                             {
-                                <a href="javascript:;" class="button3 like" data-study="@Model.StudyAbroad.Id"><i class="fa-regular fa-heart mr-2 heart-detail"></i> Lưu tin </a>
+                                <a href="javascript:;" class="button3 likestudy" data-study="@Model.StudyAbroad.Id"><i class="fa-regular fa-heart mr-2 heart-detail"></i> Lưu tin </a>
                             }
                         }
                     </div>
@@ -250,7 +250,7 @@
                 </div>
 
             </div>
-            <div class="col-lg-4">
+            <div class="col-xl-4">
                 @if (Model.StudyAbroadCompanys.Any())
                 {
                     <div class="job-detail__box--right ">
