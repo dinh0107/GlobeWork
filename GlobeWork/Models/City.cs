@@ -18,7 +18,8 @@ namespace GlobeWork.Models
         public int? ShipFee { get; set; }
         [Display(Name ="Hiện trang chủ")]
         public bool Home { get; set; }
-        public int CounId { get; set; }
+        [Display(Name = "Quốc gia")]
+        public int CountruyId { get; set; }
         public virtual Country Country { get; set; }
         public virtual ICollection<District> Districts { get; set; }
         public virtual ICollection<JobPost> JobPosts { get; set; }

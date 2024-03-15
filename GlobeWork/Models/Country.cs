@@ -9,7 +9,7 @@ namespace GlobeWork.Models
     public class Country
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Hãy nhập tên thành phố"), Display(Name = "Tên thành phố"), StringLength(50, ErrorMessage = "Tối đa 50 ký tự")]
+        [Required(ErrorMessage = "Hãy nhập tên quốc gia"), Display(Name = "Tên quốc gia"), StringLength(50, ErrorMessage = "Tối đa 50 ký tự")]
         public string Name { get; set; }
         [Display(Name = "Thứ tự"), Required(ErrorMessage = "Hãy nhập thứ tự"), RegularExpression(@"\d+", ErrorMessage = "Chỉ nhập số nguyên")]
         public int Sort { get; set; }
@@ -24,6 +24,7 @@ namespace GlobeWork.Models
         [Display(Name = "Trường")]
         public bool School { get; set; }
         public virtual ICollection<City> Cities { get; set; }
+        public virtual ICollection<JobPost> JobPosts { get; set; }
         public virtual ICollection<StudyAbroadCategory> StudyAbroadCategories { get; set; }
     }
 }

@@ -82,7 +82,7 @@
                             Hạn nhận hồ sơ
                         </label>
                         @*@Html.TextBoxFor(a => a.JobPost.ExpirationDate, new { @class = "form-control datetimepicker", @placeholder = "Chọn ngày hết hạn nhận hồ sơ" })*@
-                        <input type="text" name="JobPost.ExpirationDate" class = "form-control datetimepicker" placeholder = "Chọn ngày hết hạn nhận hồ sơ" autocomplete="off"/>
+                        <input type="text" name="JobPost.ExpirationDate" class="form-control datetimepicker" placeholder="Chọn ngày hết hạn nhận hồ sơ" autocomplete="off" />
                     </div>
                     <div class="form-group col-2">
                         <label>
@@ -133,7 +133,7 @@
                         <label>
                             Kỹ năng cần có <i class="text-danger">*</i>
                         </label>
-                        <select class="v-select-multiple"  name="skill" required>
+                        <select class="v-select-multiple" name="skill" required>
                             @foreach (var item in Model.Skills)
                             {
                                 <option value="@item.Id">@item.SkillName</option>
@@ -147,25 +147,35 @@
                         @Html.EnumDropDownListFor(model => model.JobPost.Wages, new { @class = "v-select" })
                     </div>
                     @*<div class="form-group col-3">
+                            <label>
+                                Khoảng lương <i class="text-danger">*</i>
+                            </label>
+                            <div class="input-group">
+                                @Html.TextBoxFor(a => a.JobPost.SalalyMin, new { @class = "form-control input-money", @placeholder = "Từ" })
+                                @Html.TextBoxFor(a => a.JobPost.SalalyMax, new { @class = "form-control input-money", @placeholder = "Đến" })
+                            </div>
+                        </div>*@
+                    <div class="form-group col-3">
                         <label>
-                            Khoảng lương <i class="text-danger">*</i>
+                            Quốc gia <i class="text-danger">*</i>
                         </label>
-                        <div class="input-group">
-                            @Html.TextBoxFor(a => a.JobPost.SalalyMin, new { @class = "form-control input-money", @placeholder = "Từ" })
-                            @Html.TextBoxFor(a => a.JobPost.SalalyMax, new { @class = "form-control input-money", @placeholder = "Đến" })
-                        </div>
-                    </div>*@
-                    <div class="form-group col-6">
-                        <label>
-                            Thành phố <i class="text-danger">*</i>
-                        </label>
-                        <select class="v-select-multiple" name="city" required>
-                            @foreach (var item in Model.Citys)
+                        <select class="v-select" name="JobPost.CounId" required id="CounId">
+                            <option value="">
+                                Quốc gia
+                            </option>
+                            @foreach (var item in Model.Countries)
                             {
                                 <option value="@item.Id">
                                     @item.Name
                                 </option>
                             }
+                        </select>
+                    </div>
+                    <div class="form-group col-3">
+                        <label>
+                            Thành phố <i class="text-danger">*</i>
+                        </label>
+                        <select class="form-control" name="city" required id="city">
                         </select>
                     </div>
                     <div class="form-group col-6">
@@ -255,7 +265,9 @@
 }
 
 @section scripts{
+    <script src="~/Scripts/virtual-select.min.js"></script>
     <script>
+        
         $(function () {
             $("#ListImages").sortable();
             $("#ListImages").disableSelection();
@@ -317,5 +329,40 @@
             monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
             monthNamesShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
         });
+        VirtualSelect.init({
+            ele: '#CounId',
+            search: true,
+        });
+        document.querySelector('#CounId').addEventListener('change', function (data) {
+            const id = $(this).val();
+            console.log(id)
+            var items = [];
+            items.push("<option value>Chọn tỉnh thành phố</option>");
+            $.getJSON("/Employer/GetCitiesJob", { countruyId: id }, function (data) {
+                console.table(data)
+                $.each(data, function (key, val) {
+                    items.push("<option value='" + val.Id + "'>" + val.Name + "</option>");
+                });
+                $("#city").html(items.join(""));
+            });
+        });
+        //document.querySelector('#CounId').addEventListener('change', function () {
+        //    const id = $(this).val();
+        //    console.log(id);
+        //    $.getJSON("/Employer/GetCitiesJob", { countruyId: id }, function (data) {
+        //        console.table(data);
+        //        var options = [];
+        //        $.each(data, function (key, val) {
+        //            options.push({label: val.Name, value: val.Id });
+        //        });
+        //        console.log(options)
+        //        VirtualSelect.init({
+        //            ele: '#city', 
+        //            options: options
+        //        });
+        //        document.querySelector('#city').setOptions(options);
+        //    });
+        //});
+
     </script>
 }

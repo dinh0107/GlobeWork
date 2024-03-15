@@ -31,6 +31,8 @@ namespace GlobeWork.ViewModel
         //public SelectList CitySelectList { get; set; }
         [Display(Name = "Thành phố")]
         public IEnumerable<City>  Citys { get; set; }
+        [Display(Name = "Quốc gia")]
+        public IEnumerable<Country>  Countries { get; set; }
         //public int CityId { get; set; }
         [Display(Name = "Số ngày"), Required(ErrorMessage = "Hãy nhập thứ tự"), RegularExpression(@"\d+", ErrorMessage = "Chỉ nhập số nguyên")]
         public int DateHot { get; set; }

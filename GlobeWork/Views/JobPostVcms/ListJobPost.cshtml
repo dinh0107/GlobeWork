@@ -19,7 +19,6 @@
 }
 <h2>Danh sách việc làm</h2>
 <a class="btn quick-link" href=""></a>
-
 <div class="box_content">
     @using (Html.BeginForm("ListJobPost", "JobPostVcms", FormMethod.Get))
     {
@@ -48,43 +47,29 @@
                 <label>Trạng thái</label>
                 @Html.DropDownListFor(model => model.Status, Model.StatuSelectList, "Tất cả")
             </div>
-            <div class="col-lg-3 mb-lg-0 mb-2">
-                <label>Khoảng thời gian</label>
-                <div class="datepicker-to-from">
-                    <input autocomplete="off" id="date-range" value="@Model.StartTime @Model.EndTime" />
-                    <input type="hidden" id="startTime" name="startTime" class="date-picker" value="">
-                    <input type="hidden" id="endTime" name="endTime" class="date-picker" value="">
-                </div>
+            @*<div class="col-lg-3 mb-lg-0 mb-2">
+            <label>Khoảng thời gian</label>
+            <div class="datepicker-to-from">
+                <input autocomplete="off" id="date-range" value="@Model.StartTime @Model.EndTime" />
+                <input type="hidden" id="startTime" name="startTime" class="date-picker" value="">
+                <input type="hidden" id="endTime" name="endTime" class="date-picker" value="">
             </div>
+        </div>*@
             <div class="col-lg-3 mb-2">
                 <label>Ngành nghề</label>
-                <select class="filter" name="CareerIds">
+                <select class="filter" name="careerId" multiple="multiple">
                     @foreach (var item in Model.Careers)
                     {
-                        if (!string.IsNullOrEmpty(Model.CareerIds))
-                        {
-                            <option value="@item.Id" @if (Model.CareerIds.Split(',').Contains(item.Id.ToString())) { @Html.Raw("selected") } )>@item.Name</option>
-                        }
-                        else
-                        {
-                            <option value="@item.Id">@item.Name</option>
-                        }
+                        <option @if (item.Id == Model.CareerIds) { @Html.Raw("selected") } value="@item.Id">@item.Name</option>
                     }
                 </select>
             </div>
             <div class="col-lg-3 mb-2">
                 <label>Thành phố</label>
-                <select class="filter" name="CityIds" multiple="multiple">
-                    @foreach (var item in Model.CitySelectList)
+                <select class="filter" name="cityIds" multiple="multiple">
+                    @foreach (var item in Model.Cities)
                     {
-                        if (!string.IsNullOrEmpty(Model.CityIds))
-                        {
-                            <option value="@item.Value" @if (Model.CityIds.Split(',').Contains(item.Value)) { @Html.Raw("selected") } )>@item.Text</option>
-                        }
-                        else
-                        {
-                            <option value="@item.Value">@item.Text</option>
-                        }
+                        <option @if (item.Id == Model.CityIds) { @Html.Raw("selected") } value="@item.Id">@item.Name</option>
                     }
                 </select>
             </div>
@@ -136,7 +121,16 @@
                     }
                 </select>
             </div>
-            <div class="col-lg-3 align-self-center">
+            <div class="col-lg-3 mb-2">
+                <label>Nổi bật Từ ngày</label>
+                <div>@Html.TextBoxFor(a => a.StartTime, new { @class = "form_control datepicker", @autocomplete = "off" })</div>
+            </div>
+            <div class="col-lg-3 mb-2">
+                <label>Nổi bật Đến ngày</label>
+                <div>@Html.TextBoxFor(a => a.EndTime, new { @class = "form_control datepicker", @autocomplete = "off" })</div>
+            </div>
+
+            <div class="col-lg-12 align-self-center mb-3">
                 <button type="submit" class="btn-search ">Tìm kiếm</button>
             </div>
         </div>
@@ -154,7 +148,7 @@
                         <th width="8%">Ngày hết hạn</th>
                         <th width="80px">Lượt xem</th>
                         <th width="80px">Đã đăng</th>
-                        <th width="80px">Hiện trang chủ</th>
+                        <th width="80px">Hiên thị nổi bật</th>
                         <th width="120px"></th>
                     </tr>
                     @foreach (var item in Model.JobPosts)
@@ -173,7 +167,6 @@
                                 {
                                     <span>N/A</span>
                                 }
-
                             </td>
                             <td>@item.CreateDate.ToString("dd/MM/yyyy")</td>
                             <td>
@@ -192,9 +185,24 @@
                             </td>
                             <td>@item.View</td>
                             <td>@Html.EditorFor(a => item.Active)</td>
-                            <td>@Html.DisplayFor(a => item.Hot)</td>
                             <td>
+                                @if (item.Hot != null && item.Hot > DateTime.Now)
+                                {
+                                    <span class="alert-success">
+                                        @Html.DisplayFor(a => item.Hot)
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="alert-danger">
+                                        Hết thời gian
+                                    </span>
+                                }
+                            </td>
+                            <td>
+
                                 <a href="javascript:;" onclick="updateJobPost('@item.Id')">Cập nhật - </a>
+
                                 <a href="@Url.Action("UpdateJobPostVcms", new{jobPostId = item.Id})">Sửa</a>
                                 - <a href="javascript:;" onclick="deleteJobPost('@item.Id')" class="red-warring">Xóa</a>
                             </td>
@@ -205,20 +213,20 @@
                         <tr>
                             <td colspan="10">
                                 @Html.PagedListPager(Model.JobPosts, page => Url.Action("ListJobPost", new
-                                {
-                                    page,
-                                    name = Model.Name,
-                                    startTime = Model.StartTime,
-                                    endTime = Model.EndTime,
-                                    status = Model.Status,
-                                    sort = Model.Sort,
-                                    statusTime = Model.StatusTime,
-                                    careerIds = Model.CareerIds,
-                                    cityIds = Model.CityIds,
-                                    rankIds = Model.RankIds,
-                                    jobTypeIds = Model.JobTypeIds,
-                                    skillIds = Model.SkillIds
-                                }))
+                           {
+                               page,
+                               name = Model.Name,
+                               startTime = Model.StartTime,
+                               endTime = Model.EndTime,
+                               status = Model.Status,
+                               sort = Model.Sort,
+                               statusTime = Model.StatusTime,
+                               careerIds = Model.CareerIds,
+                               cityIds = Model.CityIds,
+                               rankIds = Model.RankIds,
+                               jobTypeIds = Model.JobTypeIds,
+                               skillIds = Model.SkillIds,
+                           }));
                             </td>
                         </tr>
                     }

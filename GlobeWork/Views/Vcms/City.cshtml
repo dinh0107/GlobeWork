@@ -17,8 +17,8 @@
         <div class="row">
             <div class="col-lg-8">
                 <table class="form_table">
-                    @*<tr>
-                        <td class="form_name">@Html.LabelFor(model => model.City.CounId)</td>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(model => model.City.CountruyId)</td>
                         <td class="form_text">
                             <select name="CountruyId" class="form_control w300" required="">
                                 @foreach (var countruy in Model.Countries)
@@ -27,7 +27,7 @@
                                 }
                             </select>
                         </td>
-                    </tr>*@
+                    </tr>
                     <tr>
                         <td class="form_name">@Html.LabelFor(model => model.City.Name)</td>
                         <td class="form_text">@Html.EditorFor(model => model.City.Name)</td>

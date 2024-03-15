@@ -23,6 +23,7 @@ namespace GlobeWork.Controllers
         public SelectList SkillSelectList => new SelectList(_unitOfWork.SkillRepository.Get(orderBy: a => a.OrderBy(o => o.SkillName)), "Id", "SkillName");
 
         public IEnumerable<Career> Careers => _unitOfWork.CareerRepository.GetQuery(p => p.Active);
+        public IEnumerable<City> Cities => _unitOfWork.CityRepository.GetQuery(p => p.Active);
 
         public JsonResult GetCities(string city = "")
         {

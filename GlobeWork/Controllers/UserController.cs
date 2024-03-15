@@ -373,6 +373,7 @@ namespace GlobeWork.Controllers
                         Active = true,
                         Avatar = null,
                         Cover = null,
+                        AvatarSocial = null,
                         TypeRegister = TypeRegister.Website,
                         Url = HtmlHelpers.ConvertToUnSign(null, model.FullName),
                     };
@@ -384,7 +385,7 @@ namespace GlobeWork.Controllers
                         user.Url += "-" + user.Id;
                         _unitOfWork.Save();
                     }
-                    var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url;
+                    var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url + "|" + user.AvatarSocial;
                     var ticket = new FormsAuthenticationTicket(2, user.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
                         userData, FormsAuthentication.FormsCookiePath);
                     var encTicket = FormsAuthentication.Encrypt(ticket);

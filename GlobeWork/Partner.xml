@@ -24,4 +24,10 @@
     <Title>VicoGroup</Title>
     <Url>https://vicogroup.vn/</Url>
   </Partner>
+  <Partner>
+    <Id>5</Id>
+    <Sort>1</Sort>
+    <Title>Demo</Title>
+    <Url>duong-van-dinh</Url>
+  </Partner>
 </Text>

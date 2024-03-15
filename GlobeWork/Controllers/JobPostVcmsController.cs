@@ -19,11 +19,11 @@ namespace GlobeWork.Controllers
     {
         public ConfigSite ConfigSite => (ConfigSite)HttpContext.Application["ConfigSite"];
         #region JobPost
-        public ActionResult ListJobPost(string result, int? page, string endTime, string careerIds, string cityIds, string jobTypeIds, string skillIds, string rankIds, string startTime, int? status, int? statusTime, string name, string sort = "date-asc")
+        public ActionResult ListJobPost(string result, int? page, string endTime, int? careerId, int? cityIds, string jobTypeIds, string skillIds, string rankIds, string startTime, int? status, int? statusTime, string name, string sort = "date-asc")
         {
             var pageNumber = page ?? 1;
             var pageSize = 30;
-            var jobPosts = _unitOfWork.JobPostRepository.Get(orderBy: a => a.OrderByDescending(l => l.CreateDate));
+            var jobPosts = _unitOfWork.JobPostRepository.GetQuery(orderBy: q => q.OrderByDescending(a => a.CreateDate));
             if (!string.IsNullOrEmpty(result))
             {
                 ViewBag.Result = result;
@@ -40,6 +40,24 @@ namespace GlobeWork.Controllers
                         break;
                 }
             }
+            if (startTime != null)
+            {
+                if (DateTime.TryParse(startTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var start))
+                {
+                    jobPosts = jobPosts.Where(a => a.Hot != null && DbFunctions.TruncateTime(a.Hot) >= DbFunctions.TruncateTime(start));
+                }
+            }
+
+            if (startTime != null && endTime != null)
+            {
+                if (DateTime.TryParse(startTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var start) &&
+                DateTime.TryParse(endTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var end))
+                {
+                    jobPosts = jobPosts.Where(a => a.Hot != null &&
+                                                     DbFunctions.TruncateTime(a.Hot) >= DbFunctions.TruncateTime(start) &&
+                                                     DbFunctions.TruncateTime(a.Hot) <= DbFunctions.TruncateTime(end));
+                }
+            }
             if (statusTime != null)
             {
                 switch (statusTime)
@@ -48,24 +66,10 @@ namespace GlobeWork.Controllers
                         jobPosts = jobPosts.Where(a => a.ExpirationDate > DateTime.Now || a.ExpirationDate == null);
                         break;
                     case 1:
-                        jobPosts = jobPosts.Where(a => a.ExpirationDate <  DateTime.Now);
+                        jobPosts = jobPosts.Where(a => a.ExpirationDate < DateTime.Now);
                         break;
                 }
             }
-
-            if (endTime != null && startTime != null)
-            {
-
-                if (DateTime.TryParse(startTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var start))
-                {
-                    jobPosts = jobPosts.Where(a => DbFunctions.TruncateTime(a.CreateDate) >= DbFunctions.TruncateTime(start));
-                }
-                if (DateTime.TryParse(endTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var end))
-                {
-                    jobPosts = jobPosts.Where(a => DbFunctions.TruncateTime(a.CreateDate) <= DbFunctions.TruncateTime(end));
-                }
-            }
-
             switch (sort)
             {
                 case "sort-asc":
@@ -88,12 +92,6 @@ namespace GlobeWork.Controllers
                     break;
             }
 
-            //if (!string.IsNullOrEmpty(careerIds))
-            //{
-            //    var tmp = careerIds.Split(',').Select(int.Parse).Cast<int?>().ToList();
-            //    jobPosts = jobPosts.Where(a => a.Careers.Any(c => tmp.Contains(c.Id)));
-            //}
-
             if (!string.IsNullOrEmpty(skillIds))
             {
                 var tmp = skillIds.Split(',').Select(int.Parse).Cast<int?>().ToList();
@@ -112,10 +110,13 @@ namespace GlobeWork.Controllers
                 jobPosts = jobPosts.Where(a => tmp.Contains(a.RankId));
             }
 
-            if (!string.IsNullOrEmpty(cityIds))
+            if (cityIds != null)
             {
-                var tmp = cityIds.Split(',').Select(int.Parse).Cast<int?>().ToList();
-                jobPosts = jobPosts.Where(a => tmp.Contains(a.CityId));
+                jobPosts = jobPosts.Where(a => a.CityId == cityIds);
+            }
+            if (careerId != null)
+            {
+                jobPosts = jobPosts.Where(a => a.CareerId == careerId);
             }
 
             var model = new ListJobPostViewModel
@@ -126,7 +127,8 @@ namespace GlobeWork.Controllers
                 JobTypeSelectList = JobTypeSelectList,
                 Careers = Careers,
                 CitySelectList = CitySelectList,
-                CareerIds = careerIds,
+                Cities = Cities,
+                CareerIds = careerId,
                 CityIds = cityIds,
                 SkillIds = skillIds,
                 RankIds = rankIds,

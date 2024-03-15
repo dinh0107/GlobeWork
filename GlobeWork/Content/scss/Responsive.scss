@@ -356,9 +356,19 @@
             right: 45%;
         }
     }
+
+    .ul-studyAbroad {
+        margin-bottom: 1.25rem;
+    }
+
+    
 }
 
 @include maxWidth(900px) {
+    .filter-btn {
+        font-size: 0.75rem;
+    }
+
     .sidebar {
         width: 40%;
     }
@@ -403,6 +413,10 @@
 
     .popupuser {
         width: 100%;
+    }
+
+    .title-model {
+        margin-top:1rem;
     }
 }
 
@@ -542,7 +556,7 @@
     }
 
     .title {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
 
     .filter-banner_1 {
@@ -653,5 +667,24 @@
     .detail-job .company-name {
         font-size: 0.7125rem;
         font-weight: 400;
+    }
+
+    .group-info span.hot {
+        display: none;
+    }
+    /*.ul-studyAbroad {
+        display: none;
+    }*/
+    .title-company-search {
+        font-size: 1.4rem;
+    }
+
+    .company-form {
+        width: 100%;
+        font-size: .875rem;
+    }
+
+    .company-title {
+        font-size: 1.25rem;
     }
 }

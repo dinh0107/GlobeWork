@@ -24,6 +24,8 @@ namespace GlobeWork.Models
         public string Image { get; set; }
         [Display(Name = "Banner"), StringLength(500)]
         public string Banner { get; set; }
+        [Display(Name ="Săn học bổng")]
+        public bool Scholarship { get; set; }
         [Display(Name = "Quốc gia"), Required(ErrorMessage = "Hãy nhập chọn Quốc gia")]
         public int CountryId { get; set; }
         public virtual ICollection<StudyAbroad> StudyAbroads { get; set; }

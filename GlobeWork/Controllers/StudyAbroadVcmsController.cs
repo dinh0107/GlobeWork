@@ -21,11 +21,11 @@ namespace GlobeWork.Controllers
         public ConfigSite ConfigSite => (ConfigSite)HttpContext.Application["ConfigSite"];
         private IEnumerable<StudyAbroadCategory> StudyAbroadCategories() => _unitOfWork.StudyAbroadCategoryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort));
         #region StudyAbroad
-        public ActionResult ListStudyAbroad(string result, int? page, string endTime, string careerIds, string countruyIds, string startTime, int? status, int? statusTime, string name, string sort = "date-asc")
+        public ActionResult ListStudyAbroad(string result, int? page, string EndTime, string careerIds, string StartTime, int? status, int? statusTime, string name, string sort = "date-asc")
         {
             var pageNumber = page ?? 1;
             var pageSize = 30;
-            var study = _unitOfWork.StudyAbroadRepository.Get(orderBy: a => a.OrderByDescending(l => l.CreateDate));
+            var study = _unitOfWork.StudyAbroadRepository.GetQuery(orderBy: a => a.OrderByDescending(l => l.CreateDate));
             if (!string.IsNullOrEmpty(result))
             {
                 ViewBag.Result = result;
@@ -54,17 +54,23 @@ namespace GlobeWork.Controllers
                         break;
                 }
             }
-
-            if (endTime != null && startTime != null)
+            if (StartTime != null)
+            {
+                if (DateTime.TryParse(StartTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var start))
+                {
+                    study = study.Where(a => a.Hot != null && DbFunctions.TruncateTime(a.Hot) >= DbFunctions.TruncateTime(start));
+                }
+            }
+            if (EndTime != null && StartTime != null)
             {
 
-                if (DateTime.TryParse(startTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var start))
+                if (DateTime.TryParse(StartTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var start))
                 {
-                    study = study.Where(a => DbFunctions.TruncateTime(a.CreateDate) >= DbFunctions.TruncateTime(start));
+                    study = study.Where(a => a.Hot != null && DbFunctions.TruncateTime(a.Hot) >= DbFunctions.TruncateTime(start));
                 }
-                if (DateTime.TryParse(endTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var end))
+                if (DateTime.TryParse(EndTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var end))
                 {
-                    study = study.Where(a => DbFunctions.TruncateTime(a.CreateDate) <= DbFunctions.TruncateTime(end));
+                    study = study.Where(a => a.Hot != null && DbFunctions.TruncateTime(a.Hot) <= DbFunctions.TruncateTime(end));
                 }
             }
 
@@ -102,8 +108,8 @@ namespace GlobeWork.Controllers
                 Sort = sort,
                 Status = status,
                 StatusTime = statusTime,
-                StartTime = startTime,
-                EndTime = endTime,
+                StartTime = StartTime,
+                EndTime = EndTime,
                 Countries = _unitOfWork.CountryRepository.Get(orderBy: a => a.OrderByDescending(l => l.Name)),
             };
             return View(model);

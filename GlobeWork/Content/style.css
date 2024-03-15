@@ -3762,3 +3762,22 @@ summary {
 .grid-study-1 {
   grid-area: 1/1/2/7;
 }
+
+.jobInCategory-bg {
+  margin-top: 1rem;
+  background: url(/Content/images/banner-footer.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 2rem;
+  border-radius: 0.5rem;
+}
+.jobInCategory-bg h1 {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.875rem;
+  margin: initial;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+}

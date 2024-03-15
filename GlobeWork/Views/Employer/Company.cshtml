@@ -139,7 +139,7 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         @Html.LabelFor(a => a.Company.EstablishmentDate)
-                                        @Html.TextBoxFor(model => model.Company.EstablishmentDate, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker" })
+                                        <input type="text" placeholder="Ngày thành lập" class="form-control datepicker" name="Company.EstablishmentDate" />
                                     </div>
                                 </div>
                                 <div class="col-lg-6">

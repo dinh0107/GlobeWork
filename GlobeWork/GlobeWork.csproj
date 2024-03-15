@@ -369,6 +369,18 @@
     <Compile Include="Migrations\202403040653080_avatar-social.Designer.cs">
       <DependentUpon>202403040653080_avatar-social.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202403140805344_Scholarship.cs" />
+    <Compile Include="Migrations\202403140805344_Scholarship.Designer.cs">
+      <DependentUpon>202403140805344_Scholarship.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202403151316426_city.cs" />
+    <Compile Include="Migrations\202403151316426_city.Designer.cs">
+      <DependentUpon>202403151316426_city.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202403151354074_update-some-db.cs" />
+    <Compile Include="Migrations\202403151354074_update-some-db.Designer.cs">
+      <DependentUpon>202403151354074_update-some-db.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Advise.cs" />
@@ -1800,6 +1812,8 @@
     <Content Include="Views\Employer\ForgotPassword.cshtml" />
     <Content Include="Views\Employer\SetNewPasswordUrl.cshtml" />
     <Content Include="Views\User\ListLikeStudy.cshtml" />
+    <Content Include="Views\Home\Hunting.cshtml" />
+    <Content Include="Views\Home\JobInCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1828,6 +1842,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202403040653080_avatar-social.resx">
       <DependentUpon>202403040653080_avatar-social.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403140805344_Scholarship.resx">
+      <DependentUpon>202403140805344_Scholarship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403151316426_city.resx">
+      <DependentUpon>202403151316426_city.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403151354074_update-some-db.resx">
+      <DependentUpon>202403151354074_update-some-db.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

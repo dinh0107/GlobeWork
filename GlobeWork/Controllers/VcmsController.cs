@@ -854,6 +854,7 @@ namespace GlobeWork.Controllers
             _unitOfWork.Save();
             return RedirectToAction("ListCountruy", new { result = "update" });
         }
+        [HttpPost]
         public bool DeleteCountruy(int id)
         {
             var countruy = _unitOfWork.CountryRepository.GetById(id);
@@ -884,8 +885,13 @@ namespace GlobeWork.Controllers
         [ChildActionOnly]
         public PartialViewResult ListCity()
         {
-            var cities = _unitOfWork.CityRepository.Get(orderBy: q => q.OrderBy(c => c.CounId));
-            return PartialView("ListCity", cities);
+            var cities = _unitOfWork.CityRepository.Get(orderBy: q => q.OrderBy(c => c.CountruyId));
+            var model = new ListCityViewModel
+            {
+                Citys = cities,
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active , o => o.OrderBy(a => a.Id))
+            };
+            return PartialView(model);
         }
         public ActionResult City()
         {
@@ -901,7 +907,7 @@ namespace GlobeWork.Controllers
         {
             if (ModelState.IsValid)
             {
-                model.City.CounId = Convert.ToInt32(fc["CountruyId"]);
+                model.City.CountruyId = Convert.ToInt32(fc["CountruyId"]);
                 model.City.Country = _unitOfWork.CountryRepository.GetById(Convert.ToInt32(fc["CountruyId"]));
                 _unitOfWork.CityRepository.Insert(model.City);
                 _unitOfWork.Save();
@@ -940,7 +946,7 @@ namespace GlobeWork.Controllers
                 city.Sort = model.City.Sort;
                 city.Active = model.City.Active;
                 city.Home = model.City.Home;
-                city.CounId = Convert.ToInt32(fc["CountruyId"]);
+                city.CountruyId = Convert.ToInt32(fc["CountruyId"]);
                 city.Country = _unitOfWork.CountryRepository.GetById(Convert.ToInt32(fc["CountruyId"]));
                 _unitOfWork.Save();
                 return RedirectToAction("City");

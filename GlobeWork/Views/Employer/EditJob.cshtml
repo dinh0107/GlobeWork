@@ -147,11 +147,41 @@
                         </label>
                         @Html.EnumDropDownListFor(model => model.JobPost.Wages, new { @class = "v-select" })
                     </div>
-                    <div class="form-group col-6">
+                    @*<div class="form-group col-6">
+            <label>
+                Thành phố <i class="text-danger">*</i>
+            </label>
+            <select class="v-select-multiple" name="city" multiple required>
+                @foreach (var item in Model.Citys)
+                {
+                    var isSelected = Model.JobPost.Cities.Any(a => a.Id == item.Id);
+                    <option @(isSelected ? "selected" : "") value="@item.Id">
+                        @item.Name
+                    </option>
+                }
+            </select>
+        </div>*@
+                <div class="form-group col-3">
+                    <label>
+                        Quốc gia <i class="text-danger">*</i>
+                    </label>
+                    <select class="v-select" name="JobPost.CounId" required id="CounId">
+                        <option value="">
+                            Quốc gia
+                        </option>
+                        @foreach (var item in Model.Countries)
+                        {
+                            <option @if (Model.JobPost.CounId == item.Id) { @Html.Raw("selected") } value="@item.Id">
+                                @item.Name
+                            </option>
+                        }
+                    </select>
+                </div>
+                    <div class="form-group col-3">
                         <label>
                             Thành phố <i class="text-danger">*</i>
                         </label>
-                        <select class="v-select-multiple" name="city" multiple required>
+                        <select class="form-control" id="city" name="city"  required>
                             @foreach (var item in Model.Citys)
                             {
                                 var isSelected = Model.JobPost.Cities.Any(a => a.Id == item.Id);
@@ -332,6 +362,24 @@
             minDate: 1,
             monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
             monthNamesShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+        });
+
+        VirtualSelect.init({
+            ele: '#CounId',
+            search: true,
+        });
+        document.querySelector('#CounId').addEventListener('change', function (data) {
+            const id = $(this).val();
+            console.log(id)
+            var items = [];
+            items.push("<option value>Chọn tỉnh thành phố</option>");
+            $.getJSON("/Employer/GetCitiesJob", { countruyId: id }, function (data) {
+                console.table(data)
+                $.each(data, function (key, val) {
+                    items.push("<option value='" + val.Id + "'>" + val.Name + "</option>");
+                });
+                $("#city").html(items.join(""));
+            });
         });
     </script>
 }

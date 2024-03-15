@@ -34,7 +34,6 @@
             </div>
             <div class="col-lg-3">
                 <button type="submit" class="btn-search mb-3">Tìm kiếm</button>
-                <button type="submit" name="submit" value="delete" class="btn-search bg-danger mb-3">Xóa tất cả @Model.ApplyJobs.TotalItemCount</button>
             </div>
         </div>
     </form>
@@ -74,7 +73,16 @@
                             <p class="mb-2">
                                 Email: @item.User.Email
                             </p>
-                            <p class="mb-2">Ngày sinh: @item.User.DateOfBirth.Value.ToString("dd/MM/yyyy")</p>
+                            <p class="mb-2">
+                                Ngày sinh: @if (item.User.DateOfBirth != null)
+                                {
+                                    @item.User.DateOfBirth.Value.ToString("dd/MM/yyyy")
+                                }
+                                else
+                                {
+                                    @:Đang cập nhật
+                                }
+                            </p>
                             @if (item.User.Phone != null)
                             {
                                 <p class="mb-2">Số điện thoại: @item.User.Phone</p>

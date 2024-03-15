@@ -906,6 +906,7 @@ namespace GlobeWork.Controllers
                 JobTypes = _unitOfWork.JobTypeRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate)),
                 Ranks = _unitOfWork.RankRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate)),
                 Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)),
+                Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)),
                 Skills = _unitOfWork.SkillRepository.Get(orderBy: a => a.OrderBy(l => l.Id)),
                 JobPost = new JobPost
                 {
@@ -928,6 +929,7 @@ namespace GlobeWork.Controllers
                 model.JobPost.JobTypeId = Convert.ToInt32(fc["JobTypeId"]);
                 //model.JobPost.CityId = Convert.ToInt32(fc["CityId"]);
                 model.JobPost.Image = fc["Pictures"];
+                model.JobPost.Country = _unitOfWork.CountryRepository.GetById(model.JobPost.CounId);
                 var company = _unitOfWork.CompanyRepository.GetQuery(a => a.EmployerId == User.Id).FirstOrDefault();
                 if (company == null)
                 {
@@ -1049,6 +1051,7 @@ namespace GlobeWork.Controllers
                 Ranks = _unitOfWork.RankRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate)),
                 Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)),
                 Skills = _unitOfWork.SkillRepository.Get(orderBy: a => a.OrderBy(l => l.Id)),
+                Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)),
             };
             return View(model);
         }
@@ -1069,6 +1072,7 @@ namespace GlobeWork.Controllers
                 jobs.CareerId = Convert.ToInt32(fc["CareerId"]);
                 jobs.JobTypeId = Convert.ToInt32(fc["JobTypeId"]);
                 //jobs.CityId = Convert.ToInt32(fc["CityId"]);
+                jobs.Country = _unitOfWork.CountryRepository.GetById(model.JobPost.CounId);
                 jobs.Image = fc["Pictures"] == "" ? null : fc["Pictures"];
                 jobs.CompanyId = User.Id;
                 jobs.Name = model.JobPost.Name;
@@ -1894,6 +1898,12 @@ namespace GlobeWork.Controllers
         {
             var cities = _unitOfWork.CityRepository
                 .GetQuery(a => a.Active && a.Name.ToLower().Contains(city.ToLower()), q => q.OrderBy(a => a.Sort)).Select(a => new { a.Id, a.Name });
+            return Json(cities, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetCitiesJob(int? countruyId)
+        {
+            var cities = _unitOfWork.CityRepository
+                .GetQuery(a => a.Active && a.CountruyId == countruyId, q => q.OrderBy(a => a.Sort)).Select(a => new { a.Id, a.Name });
             return Json(cities, JsonRequestBehavior.AllowGet);
         }
 

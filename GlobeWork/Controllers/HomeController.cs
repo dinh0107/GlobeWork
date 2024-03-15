@@ -43,7 +43,8 @@ namespace GlobeWork.Controllers
             {
                 Articles = article,
                 StudyAbroadCategories = cat,
-                Careers = career
+                Careers = career,
+                Scholarship = _unitOfWork.StudyAbroadCategoryRepository.GetQuery(a => a.Active && a.Scholarship, o => o.OrderBy(a => a.Sort))
             };
             return PartialView(model);
         }
@@ -154,9 +155,9 @@ namespace GlobeWork.Controllers
                         break;
                 }
             }
-            if(exp != null)
+            if (exp != null)
             {
-                switch(exp)
+                switch (exp)
                 {
                     case 0:
                         job = job.Where(a => a.Experiences == Experience.Chuaco);
@@ -482,6 +483,99 @@ namespace GlobeWork.Controllers
             return View(model);
         }
 
+        [Route("job/viec-lam-theo-nganh-nghe")]
+        public ActionResult JobInCategory(int? page, string keyword, int wage = 0, int level = 0, int careerId = 0, int cityId = 0)
+        {
+            var pageNumber = page ?? 1;
+            var job = _unitOfWork.JobPostRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                job = job.Where(a => a.Name.Contains(keyword));
+            }
+            if (level > 0)
+            {
+                job = job.Where(a => a.RankId == level);
+            }
+            if (careerId > 0)
+            {
+                job = job.Where(a => a.CareerId == careerId);
+            }
+            if (cityId > 0)
+            {
+                job = job.Where(a => a.Cities.Any(l => l.Id == cityId));
+            }
+            switch (wage)
+            {
+                case 1:
+                    job = job.Where(a => a.Wages == Wage.Duoi10);
+                    break;
+                case 2:
+                    job = job.Where(a => a.Wages == Wage.Tu10den15);
+                    break;
+                case 3:
+                    job = job.Where(a => a.Wages == Wage.Tu15den20);
+                    break;
+                case 4:
+                    job = job.Where(a => a.Wages == Wage.Tu20den25);
+                    break;
+                case 5:
+                    job = job.Where(a => a.Wages == Wage.Tu25den30);
+                    break;
+                case 6:
+                    job = job.Where(a => a.Wages == Wage.Tu30den50);
+                    break;
+                case 7:
+                    job = job.Where(a => a.Wages == Wage.Tren50);
+                    break;
+                case 8:
+                    job = job.Where(a => a.Wages == Wage.ThoaThuan);
+                    break;
+            }
+            var like = _unitOfWork.LikeRepository.GetQuery(a => a.UserID == User.Id);
+            var caree = _unitOfWork.CareerRepository.GetById(careerId);
+            var model = new JobInCategoryViewModel
+            {
+                JobPosts = job.ToPagedList(pageNumber, 9),
+                Keywords = keyword,
+                CareerId = careerId,
+                Level = level,
+                Wage = wage,
+                CityId = cityId,
+                Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate)),
+                Career = caree,
+                Cities = _unitOfWork.CityRepository.Get(orderBy: a => a.OrderBy(l => l.Id)),
+                Likes = like
+            };
+            return View(model);
+        }
+
+        public ActionResult JobInWage(int? page , string keyword, string sort = "high-to-low")
+        {
+            var pageNumber = page ?? 1;
+            var job = _unitOfWork.JobPostRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                job = job.Where(a => a.Name.Contains(keyword));
+            }
+            switch(sort)
+            {
+                case "low-to-high":
+                    job = job.OrderBy(a => a.Wages);
+                    break;
+                case "high-to-low":
+                    job = job.OrderByDescending(a => a.Wages);
+                    break;
+            }
+            var model = new JobInWageViewModel
+            {
+                JobPosts = job.ToPagedList(pageNumber , 9),
+                Sort = sort ,
+                Keywords = keyword,
+
+
+            };
+            return View(model);
+        }
         #region Action Job
         [HttpPost]
         public JsonResult Follow(int id)
@@ -958,7 +1052,23 @@ namespace GlobeWork.Controllers
             };
             return View(model);
         }
-
+        [Route("san-hoc-bong/{url}")]
+        public ActionResult Hunting(int? page, string url)
+        {
+            var pageNumber = page ?? 1;
+            var cat = _unitOfWork.StudyAbroadCategoryRepository.GetQuery(a => a.Active && a.Url == url).FirstOrDefault();
+            if (cat == null)
+            {
+                return RedirectToAction("Index");
+            }
+            var hunting = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && a.CategoryId == cat.Id && a.Scholarship, o => o.OrderByDescending(a => a.CreateDate));
+            var model = new HuntingViewModel
+            {
+                StudyAbroads = hunting.ToPagedList(pageNumber, 9),
+                StudyAbroadCategory = cat
+            };
+            return View(model);
+        }
 
         [Route("du-hoc/nganh/{url}")]
         public ActionResult StudyCareer(int? page, string url)
@@ -996,7 +1106,7 @@ namespace GlobeWork.Controllers
         }
         #endregion
 
-        [Route("bai-viet/{url}.hmtl")]
+        [Route("bai-viet/{url}.html")]
         public ActionResult ArticleDetail(string url)
         {
             var article = _unitOfWork.ArticleRepository.GetQuery(a => a.Active && a.Url == url).FirstOrDefault();
@@ -1165,7 +1275,7 @@ namespace GlobeWork.Controllers
                                 model.ApplyJob.FileUpload = Path.Combine(imgPath, imgFileName);
                             }
                         }
-                    }   
+                    }
                     switch (model.Type)
                     {
                         case 0:
@@ -1276,11 +1386,11 @@ namespace GlobeWork.Controllers
         public ActionResult ViewAndEx(string url)
         {
             var user = _unitOfWork.UserRepository.GetQuery(a => a.Url == url).FirstOrDefault();
-            if(user == null)
+            if (user == null)
             {
                 return RedirectToAction("Index");
             }
-            return View(user);  
+            return View(user);
         }
         public PartialViewResult AdviseForm()
         {

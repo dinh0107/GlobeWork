@@ -35,27 +35,41 @@
                         }
                     </li>
                     <li>
-                        <a href="#">Việc làm</a>
+                        <a href="@Url.Action("Job")">Việc làm</a>
                         <ul class="sub-menu shadow">
                             <li>
                                 <a href="@Url.Action("Job")">
                                     Tìm việc làm (search)
                                 </a>
                             </li>
-                            <hr />
                             <li>
                                 <a href="@Url.Action("JobHot")">
                                     Việc làm hot
                                 </a>
                             </li>
-                            @foreach (var item in Model.Careers)
-                            {
-                                <li>
-                                    <a href="@Url.Action("JobCategory" , new {url = item.Code})">
-                                        @item.Name
-                                    </a>
-                                </li>
-                            }
+                            <li>
+                                <a href="@Url.Action("JobInCategory")">
+                                    Việc làm theo ngành nghề
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("JobHot")">
+                                    Việc làm theo quốc gia
+                                </a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("JobHot")">
+                                    Việc làm theo mức lương
+                                </a>
+                            </li>
+                            @*@foreach (var item in Model.Careers)
+        {
+            <li>
+                <a href="@Url.Action("JobCategory" , new {url = item.Code})">
+                    @item.Name
+                </a>
+            </li>
+        }*@
                         </ul>
                     </li>
                     <li>
@@ -84,11 +98,11 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="@Url.Action("ListCompany")">Doanh nghiệp</a>
+                        <a href="@Url.Action("ListCompany")">Công ty</a>
                         <ul class="sub-menu shadow">
                             <li>
                                 <a href="@Url.Action("ListCompany")">
-                                   Danh sách công ty
+                                    Danh sách công ty
                                 </a>
                             </li>
                             <li>
@@ -106,7 +120,22 @@
                     {
                         <li><a href="@Url.Action("UserProfile", "Home" , new {url = url })">Hồ sơ CV</a></li>
                     }
-                    <li><a href="@Url.Action("StudyAbroadHot")">Săn học bổng</a></li>
+                    <li>
+                        <a href="@Url.Action("StudyAbroadHot")">Săn học bổng</a>
+                        @if (Model.Scholarship.Any())
+                        {
+                            <ul class="sub-menu shadow">
+                                @foreach (var item in Model.Scholarship)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Hunting" , new {url = item.Url})">
+                                            @item.CategoryName
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </li>
                     <li><a href="@Url.Action("Contact")">Liên hệ</a></li>
                 </ul>
             </div>
@@ -122,62 +151,70 @@
                 else
                 {
                     @Html.Action("Notify", "User")
-                    <div class="navbar-right__item group media">
-                        @if (avatar == "")
+            <div class="navbar-right__item group media">
+                @if (avatar != "")
+                {
+                    <img src="@Path.Combine("/images/user/", avatar)" alt="@FullName" />
+                }
+                else if (avatarSocial != "")
+                {
+                    <img src="@avatarSocial" alt="@FullName" />
+                }
+                else
+                {
+                    <img src="~/Content/images/avatar-default.jpg" alt="@FullName" />
+                }
+                <div class="media-body">
+                    @FullName
+                </div>
+                <div class="navbar__item__dropdown-menu shadow">
+                    <div class="media align-items-center">
+                        @if (avatar != "")
+                        {
+                            <img src="@Path.Combine("/images/user/", avatar)" alt="@FullName" />
+                        }
+                        else if (avatarSocial != "")
                         {
                             <img src="@avatarSocial" alt="@FullName" />
                         }
                         else
                         {
-                            <img src="@Path.Combine("/images/user/", avatar)" alt="@FullName" />
+                            <img src="~/Content/images/avatar-default.jpg" alt="@FullName" />
                         }
                         <div class="media-body">
-                            @FullName
-                        </div>
-                        <div class="navbar__item__dropdown-menu shadow">
-                            <div class="media align-items-center">
-                                @if (avatar == "")
-                                {
-                                    <img src="@avatarSocial" alt="@FullName" />
-                                }
-                                else
-                                {
-                                    <img src="@Path.Combine("/images/user/", avatar)" alt="@FullName" />
-                                }
-                                <div class="media-body">
-                                    <span class="name">@FullName</span>
-                                    <div class="email">
-                                        @email
-                                    </div>
-                                </div>
+                            <span class="name">@FullName</span>
+                            <div class="email">
+                                @email
                             </div>
-                            <hr />
-                            <a href="@Url.Action("UserProfile", "Home" , new {url = url })" class="navbar-btn">
-                                <i class="icon fa-regular fa-pen-to-square"></i>
-                                Thông tin cá nhân
-                            </a>
-                            <a href="@Url.Action("ListApply", "User")" class="navbar-btn">
-                                <i class="fa-regular fa-handshake"></i>
-                                Công việc đã ứng tuyển
-                            </a>
-                            <a href="@Url.Action("ListFollow", "User")" class="navbar-btn">
-                                <i class="fal fa-briefcase"></i>
-                                Công ty đã theo dõi
-                            </a>
-                            <a href="@Url.Action("ListLike", "User")" class="navbar-btn">
-                                <i class="fa-regular fa-heart"></i>
-                                Việc làm đã lưu
-                            </a>
-                            <a href="@Url.Action("ListLikeStudy", "User")" class="navbar-btn">
-                                <i class="fa-light fa-plane-departure"></i>
-                                Tin du học đã lưu
-                            </a>
-                            <a href="@Url.Action("Logout", "User")" class="navbar-btn">
-                                <i class="icon fa-regular fa-arrow-right-from-bracket"></i>
-                                Đăng xuất
-                            </a>
                         </div>
                     </div>
+                    <hr />
+                    <a href="@Url.Action("UserProfile", "Home" , new {url = url })" class="navbar-btn">
+                        <i class="icon fa-regular fa-pen-to-square"></i>
+                        Thông tin cá nhân
+                    </a>
+                    <a href="@Url.Action("ListApply", "User")" class="navbar-btn">
+                        <i class="fa-regular fa-handshake"></i>
+                        Công việc đã ứng tuyển
+                    </a>
+                    <a href="@Url.Action("ListFollow", "User")" class="navbar-btn">
+                        <i class="fal fa-briefcase"></i>
+                        Công ty đã theo dõi
+                    </a>
+                    <a href="@Url.Action("ListLike", "User")" class="navbar-btn">
+                        <i class="fa-regular fa-heart"></i>
+                        Việc làm đã lưu
+                    </a>
+                    <a href="@Url.Action("ListLikeStudy", "User")" class="navbar-btn">
+                        <i class="fa-light fa-plane-departure"></i>
+                        Tin du học đã lưu
+                    </a>
+                    <a href="@Url.Action("Logout", "User")" class="navbar-btn">
+                        <i class="icon fa-regular fa-arrow-right-from-bracket"></i>
+                        Đăng xuất
+                    </a>
+                </div>
+            </div>
                 }
                 <div class="toggle-icon">
                     <i class="fa-solid fa-bars"></i>
@@ -195,13 +232,17 @@
                 <li>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="media align-items-center">
-                            @if (avatar == "")
+                            @if (avatar != "")
                             {
-                                <img src="@avatarSocial" alt="@FullName" class="fix-size-img" />
+                                <img src="@Path.Combine("/images/user/", avatar)" alt="@FullName" class="fix-size-img"/>
+                            }
+                            else if (avatarSocial != "")
+                            {
+                                <img src="@avatarSocial" alt="@FullName" class="fix-size-img"/>
                             }
                             else
                             {
-                                <img src="@Path.Combine("/images/user/", avatar)" alt="@FullName"  class="fix-size-img"/>
+                                <img src="~/Content/images/avatar-default.jpg" alt="@FullName" class="fix-size-img"/>
                             }
                             <div class="media-body">
                                 <span class="name-user-mb">@FullName</span>

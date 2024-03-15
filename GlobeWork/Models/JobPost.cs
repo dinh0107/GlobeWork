@@ -70,14 +70,16 @@ namespace GlobeWork.Models
         public int JobTypeId { get; set; }
         [ForeignKey("Career")]
         public int CareerId { get; set; }
+        public int CounId { get; set; }
         public virtual Company Company { get; set; }
-        public virtual ICollection<City> Cities { get; set; }
         public virtual JobType JobType { get; set; }
         public virtual Rank Rank { get; set; }
         public virtual Career  Career { get; set; }
+        public virtual Country  Country { get; set; }
         public virtual ICollection<Candidate> Candidates { get; set; }
         public virtual ICollection<Skill> Skills { get; set; }
         public virtual ICollection<ApplyJob> ApplyJobs { get; set; }
+        public virtual ICollection<City> Cities { get; set; }
         public virtual ICollection<Like> Likes { get; set; }
         [Display(Name = "Mức lương")]
         public Wage Wages { get; set; }

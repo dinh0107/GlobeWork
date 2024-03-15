@@ -42,6 +42,7 @@ namespace GlobeWork.DAL
         public DbSet<Advise> Advises { get; set; }
         public DbSet<UserSkill> UserSkills { get; set; }
         public DbSet<Activity>  Activities { get; set; }
+        public DbSet<Parter>  Parters { get; set; }
 
     }
 }

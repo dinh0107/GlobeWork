@@ -172,4 +172,9 @@ namespace GlobeWork.ViewModel
         [Display(Name = "Giá hiển thị bài viết nổi bật"), UIHint("MoneyBox"), DisplayFormat(DataFormatString = "{0:N0}đ")]
         public string PriceArticle { get; set; }
     }
+    public class ListCityViewModel
+    {
+        public IEnumerable<Country> Countries { get; set; }
+        public IEnumerable<City> Citys { get; set; }
+    }
 }
