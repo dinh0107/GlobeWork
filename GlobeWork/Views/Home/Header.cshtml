@@ -16,7 +16,7 @@
                 <a href="/">
                     @if (config.Image != null)
                     {
-                        <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/configs/", config.Image)" alt="Logo" class="logo lazyload" />
+                        <img src="@Path.Combine("/images/configs/", config.Image)" alt="Logo" class="logo" />
                     }
                 </a>
                 <ul class="ul-reset menu-nav">
