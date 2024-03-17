@@ -1190,112 +1190,153 @@ namespace GlobeWork.Controllers
         #endregion
 
         #region Parter 
-        public ActionResult ListParter()
+        public ActionResult ListParter(int? page, string name)
         {
-            string xmlFilePath = Server.MapPath("~/Partner.xml");
-            XDocument xmlDoc = XDocument.Load(xmlFilePath);
-
-            List<Parter> items = xmlDoc.Root.Elements("Partner")
-                .Select(item => new Parter
-                {
-                    Id = (int)item.Element("Id"),
-                    Sort = (int)item.Element("Sort"),
-                    Title = item.Element("Title").Value,
-                    Url = item.Element("Url").Value
-                })
-                .ToList();
-
-            return View(items);
+            var pageNumber = page ?? 1;
+            var partner = _unitOfWork.ParterRepository.Get(orderBy: a => a.OrderBy(l => l.Sort));
+            if (!string.IsNullOrEmpty(name))
+            {
+                partner = partner.Where(a => a.Name.Contains(name));
+            }
+            var model = new ListPartnerViewModel {
+                Partners = partner.ToPagedList(pageNumber, 9),
+                Name = name
+            };
+            return View(model);
         }
 
         public ActionResult Parter()
         {
-            return View();
+            var Parter = new Partner
+            {
+                Sort = 1
+            };
+            return View(Parter);
         }
         [HttpPost]
-        public ActionResult Parter(Parter newPartner)
+        public ActionResult Parter(Partner model)
         {
-            string xmlFilePath = Server.MapPath("~/Partner.xml");
-            XDocument xmlDoc = XDocument.Load(xmlFilePath);
+            if (ModelState.IsValid)
+            {
+                var file = Request.Files["Image"];
+                if (file == null || file.ContentLength <= 0)
+                {
+                    ModelState.AddModelError("", @"Hãy chọn 1 hình ảnh.");
+                    return View(model);
+                }
 
-            int maxId = xmlDoc.Descendants("Partner")
-                             .Select(p => (int)p.Element("Id"))
-                             .DefaultIfEmpty(0)
-                             .Max();
+                if (!HtmlHelpers.CheckFileExt(file.FileName, "jpg|jpeg|png|gif|svg"))
+                {
+                    ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg, svg");
+                    return View(model);
+                }
 
-            XElement newElement = new XElement("Partner",
-                                        new XElement("Id", maxId + 1),
-                                        new XElement("Sort", newPartner.Sort),
-                                        new XElement("Title", newPartner.Title),
-                                        new XElement("Url", newPartner.Url));
+                if (file.ContentLength > 4000 * 1024)
+                {
+                    ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
+                    return View(model);
+                }
 
-            xmlDoc.Root.Add(newElement);
-            xmlDoc.Save(xmlFilePath);
+                var imgPath = "/images/partner/" + DateTime.Now.ToString("yyyy/MM/dd");
+                HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
+                var imgFileName = HtmlHelpers.ConvertToUnSign(null, Path.GetFileNameWithoutExtension(file.FileName)) + "-" + DateTime.Now.Millisecond + Path.GetExtension(file.FileName);
 
-            return RedirectToAction("ListParter");
+                model.Image = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
+                file.SaveAs(Server.MapPath(Path.Combine(imgPath, imgFileName)));
+
+                _unitOfWork.ParterRepository.Insert(model);
+                _unitOfWork.Save();
+                return RedirectToAction("ListParter");
+            }
+            return View(model);
         }
 
         public ActionResult UpdatePartner(int id)
         {
-            string xmlFilePath = Server.MapPath("~/Partner.xml");
-            XDocument xmlDoc = XDocument.Load(xmlFilePath);
-
-            XElement partnerToDelete = xmlDoc.Descendants("Partner")
-                                             .FirstOrDefault(p => (int)p.Element("Id") == id);
-            if (partnerToDelete == null)
+            var partner = _unitOfWork.ParterRepository.GetById(id);
+            if(partner == null)
             {
-                return RedirectToAction("ListParter");
+                return RedirectToAction("Parter");
             }
-            Parter partner = new Parter
-            {
-                Id = (int)partnerToDelete.Element("Id"),
-                Sort = (int)partnerToDelete.Element("Sort"),
-                Title = partnerToDelete.Element("Title").Value,
-                Url = partnerToDelete.Element("Url").Value
-            };
             return View(partner);
         }
         [HttpPost]
-        public ActionResult UpdatePartner(Parter updatedPartner)
+        public ActionResult UpdatePartner(Partner model)
         {
-            string xmlFilePath = Server.MapPath("~/Partner.xml");
-            XDocument xmlDoc = XDocument.Load(xmlFilePath);
-
-            XElement partnerToUpdate = xmlDoc.Descendants("Partner")
-                                             .FirstOrDefault(p => (int)p.Element("Id") == updatedPartner.Id);
-
-            if (partnerToUpdate != null)
+            if (ModelState.IsValid)
             {
-                partnerToUpdate.SetElementValue("Sort", updatedPartner.Sort);
-                partnerToUpdate.SetElementValue("Title", updatedPartner.Title);
-                partnerToUpdate.SetElementValue("Url", updatedPartner.Url);
-                xmlDoc.Save(xmlFilePath);
-                return RedirectToAction("ListParter");
+                var isPost = true;
+
+                var partner = _unitOfWork.ParterRepository.GetById(model.Id);
+
+                var file = Request.Files["Image"];
+                if (file != null && file.ContentLength > 0)
+                {
+                    if (!HtmlHelpers.CheckFileExt(file.FileName, "jpg|jpeg|png|gif|svg"))
+                    {
+                        ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg, svg");
+                        isPost = false;
+                    }
+                    else
+                    {
+                        if (file.ContentLength > 4000 * 1024)
+                        {
+                            ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
+                            isPost = false;
+                        }
+                        else
+                        {
+                            var imgPath = "/images/partner/" + DateTime.Now.ToString("yyyy/MM/dd");
+                            HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
+                            //var imgFileName = DateTime.Now.ToFileTimeUtc() + Path.GetExtension(file.FileName);
+                            var imgFileName = HtmlHelpers.ConvertToUnSign(null, Path.GetFileNameWithoutExtension(file.FileName)) + "-" + DateTime.Now.Millisecond + Path.GetExtension(file.FileName);
+                            partner.Image = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
+                            file.SaveAs(Server.MapPath(Path.Combine(imgPath, imgFileName)));
+                        }
+                    }
+                }
+
+                if (isPost)
+                {
+                    partner.Name = model.Name;
+                    partner.Sort = model.Sort;
+                    partner.Url = model.Url;
+                    partner.Footer = model.Footer;
+                    partner.Active = model.Active;
+                    _unitOfWork.ParterRepository.Update(partner);
+                    _unitOfWork.Save();
+                    return RedirectToAction("ListParter", new { result = "update" });
+                }
             }
-            return RedirectToAction("ListParter");
+            return View(model);
         }
 
         [HttpPost]
         public bool DeletePartner(int id)
         {
-            string xmlFilePath = Server.MapPath("~/Partner.xml");
-            XDocument xmlDoc = XDocument.Load(xmlFilePath);
-
-            XElement partnerToDelete = xmlDoc.Descendants("Partner")
-                                             .FirstOrDefault(p => (int)p.Element("Id") == id);
-            if(partnerToDelete == null)
+            var partner = _unitOfWork.ParterRepository.GetById(id);
+            if(partner == null)
             {
                 return false;
             }
-            if (partnerToDelete != null)
-            {
-                partnerToDelete.Remove();
-                xmlDoc.Save(xmlFilePath);
-            }
+            _unitOfWork.ParterRepository.Delete(partner);
+            _unitOfWork.Save();
             return true;
         }
 
         #endregion
+
+        [HttpPost]
+        public bool UpdateCity(int id)
+        {
+            var city = _unitOfWork.CityRepository.Get();
+            foreach(var item in city)
+            {
+                item.CountruyId = id;
+            }
+            _unitOfWork.Save();
+            return true;
+        }
         protected override void Dispose(bool disposing)
         {
             _unitOfWork.Dispose();

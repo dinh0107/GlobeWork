@@ -39,6 +39,8 @@ namespace GlobeWork.Models
         public string Image { get; set; }
         [Display(Name = "Thứ tự"), Required(ErrorMessage = "Hãy nhập thứ tự"), RegularExpression(@"\d+", ErrorMessage = "Chỉ nhập số nguyên"), UIHint("NumberBox")]
         public int Sort { get; set; }
+        [Display(Name = "Hiện chân trang")]
+        public bool Footer { get; set; }
         [Display(Name = "Hoạt động")]
         public bool Active { get; set; }
     }

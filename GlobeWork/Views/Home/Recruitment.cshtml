@@ -193,7 +193,7 @@
             @if (Model.JobPosts.PageCount > 1)
             {
                 <div class="text-center">
-                    @Html.PagedListPager(Model.JobPosts, page => Url.Action("Recruitment", new { page, url = Model.Url, name = Model.Name, careerId = Model.CareerId, cityId = Model.CityId }))
+                    @Html.PagedListPager(Model.JobPosts, page => Url.Action("Recruitment", new { page, url = Model.Url, name = Model.Name, careerId = Model.CareerId, cityId = Model.CityId }), new PagedListRenderOptions { MaximumPageNumbersToDisplay = 5 })
                 </div>
             }
         </div>

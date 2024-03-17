@@ -29,17 +29,24 @@
             }
         </table>
     </div>
-
 }
-
 <script src="~/Scripts/jquery.maskMoney.min.js"></script>
 <script type="text/javascript">
-    $(function () {
-        $(".input-number").maskMoney({
-            precision: 0,
-            thousands: ','
+    //$(function () {
+    //    $(".input-number").maskMoney({
+    //        precision: 0,
+    //        thousands: ','
+    //    });
+    //});
+    function UpdateCity(id) {
+        $.post("/Vcms/UpdateCity", { id: id }, function (data) {
+            if (data) {
+                alert("Bạn xóa thành công thành phố này");
+            } else {
+                alert("Quá trình thực hiện xảy ra lỗi. Hãy thử lại.");
+            }
         });
-    });
+    }
 
     function deleteCity(id) {
         if (confirm("Bạn có chắc chắn xóa thành phố này không?")) {

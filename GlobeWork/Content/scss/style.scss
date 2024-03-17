@@ -163,7 +163,7 @@ img {
 }
 
 .pagination > li > a, .pagination > li > span {
-    color: $black;
+    color: $black !important;
 }
 
 .pagination > .active > a {

@@ -78,7 +78,7 @@
                                 <p class="my-2">
                                     Tiêu đề tuyển dụng: <strong>@item.Name</strong>
                                 </p>
-                                <button class="btn btn-primary">Xem CV ứng tuyển</button>
+                                <a href="@Url.Action("ListCVStudy", new {jobId = item.Id})" class="btn btn-primary">Xem CV ứng tuyển</a>
                             </td>
                             <td class="text-center align-middle">
                                 <ul class="tools-group">

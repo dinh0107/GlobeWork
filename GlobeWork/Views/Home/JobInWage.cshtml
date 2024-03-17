@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Việc làm theo mức lương";
+    ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("JobInWage");
+}
+<div class="container">
+    <div class="jobInCategory-bg">
+        <h1 class="jobInCategory-title">
+            Việc làm theo mức lương
+        </h1>
+    </div>
+    <hr />
+    <div class="d-flex justify-content-end">
+        <select class="form-control sort-wage" name="sort">
+            <option value="low-to-high">
+                Thấp đến cao
+            </option>
+            <option value="high-to-low">
+                Cao đến thấp
+            </option>
+        </select>
+    </div>
+    <div class="py-3" id="list-item-sort">
+        @Html.Action("GetJobInWage")
+    </div>
+</div>
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@section scripts{
+    <script src="~/Scripts/select2.js"></script>
+    <script>
+        $('.select2').select2();
+        Details();
+        ActionDetail();
+        QickLike();
+
+    </script>
+}

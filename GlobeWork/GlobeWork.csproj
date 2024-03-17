@@ -381,6 +381,14 @@
     <Compile Include="Migrations\202403151354074_update-some-db.Designer.cs">
       <DependentUpon>202403151354074_update-some-db.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202403171447116_update-partner.cs" />
+    <Compile Include="Migrations\202403171447116_update-partner.Designer.cs">
+      <DependentUpon>202403171447116_update-partner.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202403171512545_update-partner-footer.cs" />
+    <Compile Include="Migrations\202403171512545_update-partner-footer.Designer.cs">
+      <DependentUpon>202403171512545_update-partner-footer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Advise.cs" />
@@ -1814,6 +1822,9 @@
     <Content Include="Views\User\ListLikeStudy.cshtml" />
     <Content Include="Views\Home\Hunting.cshtml" />
     <Content Include="Views\Home\JobInCategory.cshtml" />
+    <Content Include="Views\Home\JobInWage.cshtml" />
+    <Content Include="Views\Home\GetJobInWage.cshtml" />
+    <Content Include="Views\Home\JobInCountruy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1851,6 +1862,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202403151354074_update-some-db.resx">
       <DependentUpon>202403151354074_update-some-db.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403171447116_update-partner.resx">
+      <DependentUpon>202403171447116_update-partner.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403171512545_update-partner-footer.resx">
+      <DependentUpon>202403171512545_update-partner-footer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

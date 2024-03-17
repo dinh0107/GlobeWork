@@ -43,10 +43,10 @@ namespace GlobeWork.DAL
         private GenericRepository<Contact> _contactRepository;
         private GenericRepository<UserSkill> _userSkillRepository;
         private GenericRepository<Activity> _activityRepository;
-        private GenericRepository<Parter> _parterRepository;
+        private GenericRepository<Partner> _parterRepository;
 
-        public GenericRepository<Parter> ParterRepository =>
-               _parterRepository ?? (_parterRepository = new GenericRepository<Parter>(_context));
+        public GenericRepository<Partner> ParterRepository =>
+               _parterRepository ?? (_parterRepository = new GenericRepository<Partner>(_context));
         public GenericRepository<Activity> ActivityRepository =>
                 _activityRepository ?? (_activityRepository = new GenericRepository<Activity>(_context));
         public GenericRepository<UserSkill> UserSkillRepository =>

@@ -968,6 +968,7 @@ namespace GlobeWork.Controllers
                             model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
                             model.JobTypes = _unitOfWork.JobTypeRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate));
                             model.Ranks = _unitOfWork.RankRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate));
+                            model.Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
                             model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
                             model.Skills = _unitOfWork.SkillRepository.Get(orderBy: a => a.OrderBy(l => l.Id));
                             return View(model);
@@ -981,6 +982,7 @@ namespace GlobeWork.Controllers
                         model.Ranks = _unitOfWork.RankRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate));
                         model.Skills = _unitOfWork.SkillRepository.Get(orderBy: a => a.OrderBy(l => l.Id));
                         model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                        model.Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
                         return View(model);
                     }
                 }
@@ -1030,7 +1032,7 @@ namespace GlobeWork.Controllers
             model.Ranks = _unitOfWork.RankRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate));
             model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
             model.Skills = _unitOfWork.SkillRepository.Get(orderBy: a => a.OrderBy(l => l.Id));
-
+            model.Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
             return View(model);
         }
 
@@ -1169,6 +1171,7 @@ namespace GlobeWork.Controllers
                             model.Ranks = _unitOfWork.RankRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate));
                             model.Skills = _unitOfWork.SkillRepository.Get(orderBy: a => a.OrderBy(l => l.Id));
                             model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            model.Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
                             return View(model);
                         }
                     }
@@ -1180,6 +1183,7 @@ namespace GlobeWork.Controllers
                         model.Ranks = _unitOfWork.RankRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate));
                         model.Skills = _unitOfWork.SkillRepository.Get(orderBy: a => a.OrderBy(l => l.Id));
                         model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                        model.Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
                         return View(model);
                     }
                 }
@@ -1197,6 +1201,7 @@ namespace GlobeWork.Controllers
             model.Ranks = _unitOfWork.RankRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate));
             model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
             model.Skills = _unitOfWork.SkillRepository.Get(orderBy: a => a.OrderBy(l => l.Id));
+            model.Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
             return View(model);
         }
         [HttpPost]

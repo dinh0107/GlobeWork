@@ -50,7 +50,7 @@
                     if (Model.Companies.PageCount > 1)
                     {
                         <div class="text-center col-12">
-                            @Html.PagedListPager(Model.Companies, page => Url.Action("SearchCompany", new { page, name = Model.Name }))
+                            @Html.PagedListPager(Model.Companies, page => Url.Action("SearchCompany", new { page, name = Model.Name }), new PagedListRenderOptions { MaximumPageNumbersToDisplay = 5 })
                         </div>
                     }
                 }

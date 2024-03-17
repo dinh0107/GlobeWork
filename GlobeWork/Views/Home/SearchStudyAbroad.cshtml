@@ -61,7 +61,10 @@
                                     <span><i class="fa-solid fa-briefcase-blank"></i> @Html.DisplayFor(a => item.Wages)</span>
                                     <span><i class="fa-sharp fa-solid fa-location-dot"></i> @item.StudyAbroadCategory.Country.Name</span>
                                     <span><i class="fa-regular fa-calendar-days"></i> @Utils.DateVn(item.CreateDate)</span>
-                                    <span class="hot"><i class="fa-solid fa-thumbs-up mr-1"></i> Nổi bật</span>
+                                    @if (item.Hot >= DateTime.Now)
+                                    {
+                                        <span class="hot"><i class="fa-solid fa-thumbs-up mr-1"></i> Nổi bật</span>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -70,7 +73,7 @@
                 if (Model.StudyAbroads.PageCount > 1)
                 {
                     <div class="text-center col-12">
-                        @Html.PagedListPager(Model.StudyAbroads, page => Url.Action("SearchStudyAbroad", new { page, name = Model.Name , countruyId = Model.CountruyId , companyId = Model.CompanyId }))
+                        @Html.PagedListPager(Model.StudyAbroads, page => Url.Action("SearchStudyAbroad", new { page, name = Model.Name , countruyId = Model.CountruyId , companyId = Model.CompanyId }), new PagedListRenderOptions { MaximumPageNumbersToDisplay = 5 })
                     </div>
                 }
             }

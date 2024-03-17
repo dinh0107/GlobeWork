@@ -175,7 +175,7 @@
                         <label>
                             Thành phố <i class="text-danger">*</i>
                         </label>
-                        <select class="form-control" name="city" required id="city">
+                        <select name="city" required id="city" multiple="">
                         </select>
                     </div>
                     <div class="form-group col-6">
@@ -333,36 +333,37 @@
             ele: '#CounId',
             search: true,
         });
-        document.querySelector('#CounId').addEventListener('change', function (data) {
-            const id = $(this).val();
-            console.log(id)
-            var items = [];
-            items.push("<option value>Chọn tỉnh thành phố</option>");
-            $.getJSON("/Employer/GetCitiesJob", { countruyId: id }, function (data) {
-                console.table(data)
-                $.each(data, function (key, val) {
-                    items.push("<option value='" + val.Id + "'>" + val.Name + "</option>");
-                });
-                $("#city").html(items.join(""));
-            });
-        });
-        //document.querySelector('#CounId').addEventListener('change', function () {
+        //document.querySelector('#CounId').addEventListener('change', function (data) {
         //    const id = $(this).val();
-        //    console.log(id);
+        //    console.log(id)
+        //    var items = [];
+        //    items.push("<option value>Chọn tỉnh thành phố</option>");
         //    $.getJSON("/Employer/GetCitiesJob", { countruyId: id }, function (data) {
-        //        console.table(data);
-        //        var options = [];
+        //        console.table(data)
         //        $.each(data, function (key, val) {
-        //            options.push({label: val.Name, value: val.Id });
+        //            items.push("<option value='" + val.Id + "'>" + val.Name + "</option>");
         //        });
-        //        console.log(options)
-        //        VirtualSelect.init({
-        //            ele: '#city', 
-        //            options: options
-        //        });
-        //        document.querySelector('#city').setOptions(options);
+        //        $("#city").html(items.join(""));
         //    });
         //});
+
+        document.querySelector('#CounId').addEventListener('change', function () {
+            const id = $(this).val();
+            console.log(id);
+            $.getJSON("/Employer/GetCitiesJob", { countruyId: id }, function (data) {
+                console.table(data);
+                var options = [];
+                $.each(data, function (key, val) {
+                    options.push({label: val.Name, value: val.Id });
+                });
+                console.log(options)
+                VirtualSelect.init({
+                    ele: '#city', 
+                    options: options
+                });
+                document.querySelector('#city').setOptions(options);
+            });
+        });
 
     </script>
 }

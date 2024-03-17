@@ -95,7 +95,7 @@
             if (Model.StudyAbroads.PageCount > 1)
             {
                 <div class="text-center">
-                    @Html.PagedListPager(Model.StudyAbroads, page => Url.Action("StudyAbroadCategoryUrl", new { page, url = Model.StudyAbroadCategory.Url }))
+                    @Html.PagedListPager(Model.StudyAbroads, page => Url.Action("StudyAbroadCategoryUrl", new { page, url = Model.StudyAbroadCategory.Url }), new PagedListRenderOptions { MaximumPageNumbersToDisplay = 5 })
                 </div>
             }
         }

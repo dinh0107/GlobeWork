@@ -150,6 +150,11 @@ namespace GlobeWork.ViewModel
         public IPagedList<Country> Countries { get; set; }
         public string Name { get; set; }
     }
+    public class ListPartnerViewModel
+    {
+        public IPagedList<Partner> Partners  { get; set; }
+        public string Name { get; set; }
+    }
     public class InsertCityViewModel
     {
         public City City { get; set; }

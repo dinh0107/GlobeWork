@@ -1,25 +1,42 @@
-﻿@using GlobeWork.Models;
-@model List<Parter>
+﻿@model GlobeWork.ViewModel.ListPartnerViewModel
+@using GlobeWork.Models;
+
 @{
     ViewBag.Title = "Danh sách tiêu đề";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<a class="btn quick-link" href="@Url.Action("Parter")"><i class="fal fa-plus-circle mr-1"></i>Thêm đối tác</a>
-<div class="box_content mt-3">
+<h2>Danh sách đối tác</h2>
+<a class="btn quick-link" href="@Url.Action("Parter")"><i class="fal fa-plus-circle mr-1"></i> Thêm mới đối tác</a>
+<div class="box_content">
     <table class="list_table tablecenter" id="list-cat">
         <tr>
             <th>STT</th>
             <th>Tên</th>
-            <th style="max-width:300px;">Mô tả</th>
+            <th>Ảnh</th>
+            <th style="max-width:300px;">Đường dẫn</th>
+            <th>Chân trang</th>
+            <th>Hoạt động</th>
             <th style="width:200px;"></th>
         </tr>
-        @foreach (var cat in Model)
+        @foreach (var cat in Model.Partners)
         {
             <tr data-id="@cat.Id">
                 <td>@cat.Sort</td>
-                <td>@Html.ActionLink(cat.Title, "UpdatePartner", new { id = cat.Id })</td>
+                <td>@Html.ActionLink(cat.Name, "UpdatePartner", new { id = cat.Id })</td>
+                <td>
+                    @if (cat.Image != null)
+                    {
+                        <img class="img-border" src="@Path.Combine("/images/partner/",  cat.Image)" />
+                    }
+                </td>
                 <td>
                     @cat.Url
+                </td>
+                <td>
+                    @Html.DisplayFor(a => cat.Footer)
+                </td>
+                <td>
+                    @Html.DisplayFor(a => cat.Active)
                 </td>
                 <td>
                     @Html.ActionLink("Sửa", "UpdatePartner", new { id = cat.Id })-
@@ -53,4 +70,4 @@
             }
         }
     </script>
-    }
+}

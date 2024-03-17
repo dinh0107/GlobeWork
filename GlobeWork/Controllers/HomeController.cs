@@ -22,6 +22,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using Antlr.Runtime;
 using System.Data.Entity;
+using GlobeWork.Migrations;
 
 namespace GlobeWork.Controllers
 {
@@ -51,19 +52,6 @@ namespace GlobeWork.Controllers
         [ChildActionOnly]
         public PartialViewResult Footer()
         {
-            string xmlFilePath = Server.MapPath("~/Partner.xml");
-            XDocument xmlDoc = XDocument.Load(xmlFilePath);
-
-            List<Parter> items = xmlDoc.Root.Elements("Partner")
-                .Select(item => new Parter
-                {
-                    Id = (int)item.Element("Id"),
-                    Sort = (int)item.Element("Sort"),
-                    Title = item.Element("Title").Value,
-                    Url = item.Element("Url").Value
-                })
-                .ToList();
-
             var career = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.Footer, o => o.OrderBy(a => a.Sort));
             var article = _unitOfWork.ArticleRepository.GetQuery(a => a.Active && a.Footer, o => o.OrderByDescending(a => a.CreateDate));
             var countruy = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.Footer, o => o.OrderBy(a => a.Sort));
@@ -72,7 +60,7 @@ namespace GlobeWork.Controllers
                 Careers = career,
                 Articles = article,
                 Countries = countruy,
-                Parters = items,
+                Parters = _unitOfWork.ParterRepository.GetQuery(a => a.Active && a.Footer , o => o.OrderBy(a => a.Sort)),
             };
             return PartialView(model);
         }
@@ -548,16 +536,20 @@ namespace GlobeWork.Controllers
             };
             return View(model);
         }
-
-        public ActionResult JobInWage(int? page , string keyword, string sort = "high-to-low")
+        [Route("job/viec-lam-theo-muc-luong")]
+        public ActionResult JobInWage()
+        {
+            return View();
+        }
+        public PartialViewResult GetJobInWage(int? page, string keyword, string sort = "")
         {
             var pageNumber = page ?? 1;
-            var job = _unitOfWork.JobPostRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+            var job = _unitOfWork.JobPostRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.Wages));
             if (!string.IsNullOrEmpty(keyword))
             {
                 job = job.Where(a => a.Name.Contains(keyword));
             }
-            switch(sort)
+            switch (sort)
             {
                 case "low-to-high":
                     job = job.OrderBy(a => a.Wages);
@@ -566,13 +558,78 @@ namespace GlobeWork.Controllers
                     job = job.OrderByDescending(a => a.Wages);
                     break;
             }
+            var like = _unitOfWork.LikeRepository.GetQuery(a => a.UserID == User.Id);
             var model = new JobInWageViewModel
             {
-                JobPosts = job.ToPagedList(pageNumber , 9),
-                Sort = sort ,
+                JobPosts = job.ToPagedList(pageNumber, 9),
+                Sort = sort,
                 Keywords = keyword,
-
-
+                Likes = like,
+            };
+            return PartialView(model);
+        }
+        [Route("job/viec-lam-theo-quoc-gia")]
+        public ActionResult JobInCountruy(int? page, string keyword, int wage = 0, int level = 0, int careerId = 0, int countruyId = 0)
+        {
+            var pageNumber = page ?? 1;
+            var job = _unitOfWork.JobPostRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                job = job.Where(a => a.Name.Contains(keyword));
+            }
+            if (level > 0)
+            {
+                job = job.Where(a => a.RankId == level);
+            }
+            if (careerId > 0)
+            {
+                job = job.Where(a => a.CareerId == careerId);
+            }
+            if (countruyId > 0)
+            {
+                job = job.Where(a => a.CounId == countruyId);
+            }
+            switch (wage)
+            {
+                case 1:
+                    job = job.Where(a => a.Wages == Wage.Duoi10);
+                    break;
+                case 2:
+                    job = job.Where(a => a.Wages == Wage.Tu10den15);
+                    break;
+                case 3:
+                    job = job.Where(a => a.Wages == Wage.Tu15den20);
+                    break;
+                case 4:
+                    job = job.Where(a => a.Wages == Wage.Tu20den25);
+                    break;
+                case 5:
+                    job = job.Where(a => a.Wages == Wage.Tu25den30);
+                    break;
+                case 6:
+                    job = job.Where(a => a.Wages == Wage.Tu30den50);
+                    break;
+                case 7:
+                    job = job.Where(a => a.Wages == Wage.Tren50);
+                    break;
+                case 8:
+                    job = job.Where(a => a.Wages == Wage.ThoaThuan);
+                    break;
+            }
+            var like = _unitOfWork.LikeRepository.GetQuery(a => a.UserID == User.Id);
+            var caree = _unitOfWork.CareerRepository.GetById(careerId);
+            var model = new JobInCountruyViewModel
+            {
+                JobPosts = job.ToPagedList(pageNumber, 9),
+                Keywords = keyword,
+                CareerId = careerId,
+                Level = level,
+                Wage = wage,
+                CountryId = countruyId,
+                Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate)),
+                Career = caree,
+                Countries = _unitOfWork.CountryRepository.Get(orderBy: a => a.OrderBy(l => l.Id)),
+                Likes = like
             };
             return View(model);
         }
@@ -987,6 +1044,10 @@ namespace GlobeWork.Controllers
             {
                 study = study.Where(a => a.StudyAbroadCategory.CountryId == countruyId);
             }
+            if (!string.IsNullOrEmpty(name))
+            {
+                study = study.Where(a => a.Name.Contains(name));
+            }
             var like = _unitOfWork.LikeRepository.GetQuery(a => a.UserID == User.Id);
             var model = new AllStudyAbroadViewModel
             {
@@ -1053,7 +1114,7 @@ namespace GlobeWork.Controllers
             return View(model);
         }
         [Route("san-hoc-bong/{url}")]
-        public ActionResult Hunting(int? page, string url)
+        public ActionResult Hunting(int? page, string url , string name, int countruyId = 0)
         {
             var pageNumber = page ?? 1;
             var cat = _unitOfWork.StudyAbroadCategoryRepository.GetQuery(a => a.Active && a.Url == url).FirstOrDefault();
@@ -1061,11 +1122,23 @@ namespace GlobeWork.Controllers
             {
                 return RedirectToAction("Index");
             }
-            var hunting = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && a.CategoryId == cat.Id && a.Scholarship, o => o.OrderByDescending(a => a.CreateDate));
+            var hunting = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && a.CategoryId == cat.Id && a.TypeStudyAbroad == TypeStudyAbroad.Scholarship, o => o.OrderByDescending(a => a.CreateDate));
+            if (countruyId > 0)
+            {
+                hunting = hunting.Where(a => a.StudyAbroadCategory.CountryId == countruyId);
+            }
+            if (!string.IsNullOrEmpty(name))
+            {
+                hunting = hunting.Where(a => a.Name.Contains(name));
+            }
+            var like = _unitOfWork.LikeRepository.GetQuery(a => a.UserID == User.Id);
             var model = new HuntingViewModel
             {
                 StudyAbroads = hunting.ToPagedList(pageNumber, 9),
-                StudyAbroadCategory = cat
+                StudyAbroadCategory = cat,
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort)),
+                CountruyId = countruyId,
+                Likes = like
             };
             return View(model);
         }

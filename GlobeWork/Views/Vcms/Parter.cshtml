@@ -1,24 +1,39 @@
-﻿@model GlobeWork.Models.Parter
+﻿@model GlobeWork.Models.Partner
 @{
     ViewBag.Title = "Cập nhật đối tác";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<div class="box_content mt-3">
-    @using (Html.BeginForm("Parter", "Vcms", FormMethod.Post))
+<h2>Thêm mới đối tác</h2>
+<a class="btn quick-link" href="@Url.Action("ListParter")"><i class="far fa-list mr-1"></i> Danh sách đối tác</a>
+<div class="box_content">
+    @using (Html.BeginForm("Parter", "Vcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.ValidationSummary(true)
     <table class="form_table form-table-cat">
+
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Name)</td>
+            <td class="form_text">@Html.EditorFor(model => model.Name)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Image)</td>
+            <td class="form_text">@Html.TextBoxFor(model => model.Image, new { type = "file" }) <span class="red-warring">Chấp nhận ảnh jpg, png, gif, jpeg < 4MB</span></td>
+        </tr>
         <tr>
             <td class="form_name">@Html.LabelFor(model => model.Sort)</td>
             <td class="form_text">@Html.EditorFor(model => model.Sort)</td>
         </tr>
         <tr>
-            <td class="form_name">@Html.LabelFor(model => model.Title)</td>
-            <td class="form_text">@Html.EditorFor(model => model.Title)</td>
-        </tr>
-        <tr>
             <td class="form_name">@Html.LabelFor(model => model.Url)</td>
             <td class="form_text">@Html.EditorFor(model => model.Url)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Footer)</td>
+            <td class="form_text">@Html.CheckBoxFor(model => model.Footer)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Active)</td>
+            <td class="form_text">@Html.CheckBoxFor(model => model.Active, new { @checked = "checked" })</td>
         </tr>
         <tr>
             <td class="form_name"></td>

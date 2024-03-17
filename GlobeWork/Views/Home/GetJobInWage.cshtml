@@ -1,0 +1,97 @@
+﻿@model GlobeWork.ViewModel.JobInWageViewModel
+@using PagedList.Mvc
+@using GlobeWork.Utils
+@{ 
+    var date = DateTime.Now;
+    var email = ViewContext.RouteData.Values["Email"].ToString();
+}
+@if (Model.JobPosts.Any())
+{
+    @*<div class="job-q mb-3">
+        Hiện tại đang tuyển dụng <span>@Model.JobPosts.Count()</span> vị trí
+    </div>*@
+    foreach (var item in Model.JobPosts)
+    {
+        <div class="job bg-white detail-job active ">
+            <div class="media ">
+                <div>
+                    <a href="@Url.Action("JobDetail", new {url = item.Url})" class="job-name custom-w" data-tooltip="@item.Name" data-tooltip-position="top">@item.Name</a>
+                    <div class="company-name">
+                        @item.Company.Name
+                    </div>
+                </div>
+                <div class="media-body time-deadline text-right">
+                    @if (item.ExpirationDate != null)
+                    {
+                        if (item.ExpirationDate > DateTime.Now)
+                        {
+                            @:Còn <strong>@Utils.DateCountDown(item.ExpirationDate)</strong> để ứng tuyển
+                        }
+                        else
+                        {
+                            @:Hết thời gian ứng tuyển
+                        }
+                    }
+                    else
+                    {
+                        @:Luôn tuyển
+                    }
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-between mt-1">
+                <div class="w-75">
+                    <span class="info-job price">@Html.DisplayFor(a => item.Wages)</span>
+                    <span class="info-job">
+                        @if (item.Cities.Any())
+                        {
+                            if (item.Cities.Count > 1)
+                            {
+
+                                <span data-tooltip="@string.Join(" , ", item.Cities.Select(city => city.Name))" data-tooltip-position="top">
+                                    @item.Cities.Count Thành phố
+                                </span>
+                            }
+                            else
+                            {
+                                foreach (var city in item.Cities.Take(1))
+                                {
+                                    <span data-tooltip="@city.Name" data-tooltip-position="top">
+                                        @city.Name
+                                    </span>
+                                }
+                            }
+                        }
+                    </span>
+                </div>
+                @if (email == "")
+                {
+                    <a href="@Url.Action("Login", "User" , new {returnUrl = Url.Action("JobInCategory")})" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                }
+                else
+                {
+                    if (Model.Likes.Any(a => a.JobId == item.Id))
+                    {
+                        <a href="javascripts:;" class="heart active unlikejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                    }
+                    else
+                    {
+                        <a href="javascripts:;" class="heart likejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                    }
+                }
+            </div>
+        </div>
+    }
+    if (Model.JobPosts.PageCount > 1)
+    {
+        <div class="text-center">
+            @Html.PagedListPager(Model.JobPosts, page => Url.Action("JobInWage", new { page, keyword = Model.Keywords, careerId = Model.CareerId, cityId = Model.CityId, wage = Model.Wage , Sort = Model.Sort }), new PagedListRenderOptions { MaximumPageNumbersToDisplay = 5 })
+        </div>
+    }
+}
+else
+{
+    <div class="none-suitable-job__content">
+        <img src="https://static.topcv.vn/v4/image/job-list/none-result.png" alt="None suitable job">
+        <span>Chưa tìm thấy việc làm phù hợp với yêu cầu của bạn</span>
+    </div>
+}

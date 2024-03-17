@@ -1069,3 +1069,7 @@ header.header-employer logo {
 .loading.active {
   display: flex;
 }
+
+.sort-wage {
+  width: 200px;
+}

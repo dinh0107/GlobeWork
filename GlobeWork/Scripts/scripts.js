@@ -1508,3 +1508,10 @@ $('.icon-study').click(function () {
 $(".footer-title").click(function () {
     $(this).next(".menu-footer").slideToggle(); 
 });
+$('.sort-wage').change(function () {
+    var val = $(this).val();
+    $.post("/Home/GetJobInWage", { sort: val }, function (response) {
+        $("#list-item-sort").empty();
+        $("#list-item-sort").html(response);
+    })
+})

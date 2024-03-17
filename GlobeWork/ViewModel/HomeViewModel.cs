@@ -20,7 +20,7 @@ namespace GlobeWork.ViewModel
         public IEnumerable<Article> Articles { get; set; }
         public IEnumerable<Career> Careers { get; set; }
         public IEnumerable<Country>  Countries { get; set; }
-        public IEnumerable<Parter> Parters { get; set; }
+        public IEnumerable<Partner> Parters { get; set; }
     }
     public class HomeViewModel
     {
@@ -234,6 +234,34 @@ namespace GlobeWork.ViewModel
             };
         }
     }
+    public class JobInCountruyViewModel
+    {
+        public Career Career { get; set; }
+        public IPagedList<JobPost> JobPosts { get; set; }
+        public IEnumerable<Like> Likes { get; set; }
+        public IEnumerable<Career> Careers { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
+        public IEnumerable<KeyValuePair<int, string>> Wages { get; set; }
+        public string Keywords { get; set; }
+        public int Level { get; set; }
+        public int Wage { get; set; }
+        public int CountryId { get; set; }
+        public int CareerId { get; set; }
+        public JobInCountruyViewModel()
+        {
+            Wages = new Dictionary<int, string>
+            {
+                { 1, "Dưới 10 triệu" },
+                { 2, "Từ 10 - 15 triệu" },
+                { 3, "Từ 15 - 20 triệu" },
+                { 4, "Từ 20 - 25 triệu" },
+                { 5, "Từ 25 - 30 triệu" },
+                { 6, "Từ 30 - 50 triệu" },
+                { 7, "Trên 50 triệu" },
+                { 8, "Thỏa thuận" },
+            };
+        }
+    }
     public class JobInWageViewModel
     {
         public Career Career { get; set; }
@@ -243,6 +271,10 @@ namespace GlobeWork.ViewModel
         public IEnumerable<Career> Careers { get; set; }
         public IEnumerable<City> Cities { get; set; }
         public string Keywords { get; set; }
+        public int Level { get; set; }
+        public int Wage { get; set; }
+        public int CityId { get; set; }
+        public int CareerId { get; set; }
     }
     public class ApplyViewModel
     {
@@ -350,6 +382,11 @@ namespace GlobeWork.ViewModel
     public class HuntingViewModel
     {
         public IPagedList<StudyAbroad> StudyAbroads { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
         public StudyAbroadCategory StudyAbroadCategory  { get; set; }
+        public string Name { get; set; }
+        public int CountruyId { get; set; }
+
+        public IEnumerable<Like> Likes { get; set; }
     }
 }
