@@ -21,17 +21,17 @@
                 <label>Email</label>
                 @Html.TextBoxFor(a => a.Email, new { @class = "form_control" })
             </div>
-            <div class="col-lg-3 mb-lg-0 mb-2">
-                <label>Khoảng thời gian</label>
-                <div class="datepicker-to-from">
-                    <input autocomplete="off" id="date-range" value="@Model.StartTime @Model.EndTime" />
-                    <input type="hidden" id="startTime" name="startTime" class="date-picker" value="">
-                    <input type="hidden" id="endTime" name="endTime" class="date-picker" value="">
-                </div>
+            @*<div class="col-lg-3 mb-lg-0 mb-2">
+            <label>Khoảng thời gian</label>
+            <div class="datepicker-to-from">
+                <input autocomplete="off" id="date-range" value="@Model.StartTime @Model.EndTime" />
+                <input type="hidden" id="startTime" name="startTime" class="date-picker" value="">
+                <input type="hidden" id="endTime" name="endTime" class="date-picker" value="">
             </div>
+        </div>*@
             <div class="col-lg-3 mb-3">
                 <label>Ngành nghề</label>
-                <select class="filter" name="CareerIds" multiple="multiple">
+                <select class="filter" name="CareerIds" @*multiple="multiple"*@>
                     @foreach (var item in Model.CareerSelectList)
                     {
                         <option value="@item.Value" @if (Model.CareerIds.Contains(Convert.ToInt32(item.Value))) { @Html.Raw("selected") } )>@item.Text</option>
@@ -40,7 +40,7 @@
             </div>
             <div class="col-lg-3 mb-3">
                 <label>Thành phố</label>
-                <select class="filter" name="CityIds" multiple="multiple">
+                <select class="filter" name="CityIds" @*multiple="multiple"*@>
                     @foreach (var item in Model.CitySelectList)
                     {
                         <option value="@item.Value" @if (Model.CityIds.Contains(Convert.ToInt32(item.Value))) { @Html.Raw("selected") } )>@item.Text</option>
@@ -56,11 +56,22 @@
                     </option>
                 </select>
             </div>
-            <div class="col-3 align-self-center">
-                <div class="form-group">
-                    <button type="submit" class="btn-search">Tìm kiếm</button>
-                </div>
+            <div class="col-lg-3 mb-2">
+                <label>Nổi bật Từ ngày</label>
+                <div>@Html.TextBoxFor(a => a.StartTime, new { @class = "form_control datepicker", @autocomplete = "off" })</div>
             </div>
+            <div class="col-lg-3 mb-2">
+                <label>Nổi bật Đến ngày</label>
+                <div>@Html.TextBoxFor(a => a.EndTime, new { @class = "form_control datepicker", @autocomplete = "off" })</div>
+            </div>
+            <div class="col-lg-3 d-flex align-items-center">
+                <button type="submit" class="btn-search">Tìm kiếm</button>
+            </div>
+                @*<div class="col-3 align-self-center">
+                    <div class="form-group">
+                        <button type="submit" class="btn-search">Tìm kiếm</button>
+                    </div>
+                </div>*@
         </div>
     </form>
     <p>Có tổng số <strong>@Model.Companies.TotalItemCount</strong> công ty</p>

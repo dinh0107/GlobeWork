@@ -20,7 +20,7 @@ namespace GlobeWork.Controllers
     {
         #region User
         public ActionResult ListUser(int? page, string startTime, string endTime, int? status, string email, string name, int? typeUser)
-        {
+        {   
 
             var pageNumber = page ?? 1;
             var pageSize = 30;
@@ -28,7 +28,7 @@ namespace GlobeWork.Controllers
             var users = _unitOfWork.UserRepository.GetQuery(orderBy: q => q.OrderByDescending(p => p.Id)).AsNoTracking();
             if (!string.IsNullOrEmpty(name))
             {
-                users = users.Where(p => p.Username.ToLower().Contains(name.ToLower()));
+                users = users.Where(p => p.Email.ToLower().Contains(email.ToLower()));
             }
             if (!string.IsNullOrEmpty(email))
             {
@@ -181,6 +181,10 @@ namespace GlobeWork.Controllers
             if (!string.IsNullOrEmpty(email))
             {
                 users = users.Where(a => a.Email.Contains(email));
+            }
+            if (!string.IsNullOrEmpty(name))
+            {
+                users = users.Where(a => a.FullName.Contains(name));
             }
             if (status != null)
             {
@@ -347,17 +351,18 @@ namespace GlobeWork.Controllers
             {
                 companies = companies.Where(a => a.Email.Contains(email));
             }
-            if (endTime != null && startTime != null)
-            {
+            //if (DateTime.TryParse(startTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var start))
+            //{
+            //    companies = companies.Where(a => DbFunctions.TruncateTime(a.Employer.CreateDate) >= DbFunctions.TruncateTime(start));
+            //}
 
-                if (DateTime.TryParse(startTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var start))
-                {
-                    companies = companies.Where(a => DbFunctions.TruncateTime(a.Employer.CreateDate) >= DbFunctions.TruncateTime(start));
-                }
-                if (DateTime.TryParse(endTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var end))
-                {
-                    companies = companies.Where(a => DbFunctions.TruncateTime(a.Employer.CreateDate) <= DbFunctions.TruncateTime(end));
-                }
+            if (DateTime.TryParse(startTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var start))
+            {
+                companies = companies.Where(a => DbFunctions.TruncateTime(a.Employer.CreateDate) >= DbFunctions.TruncateTime(start));
+            }
+            if (DateTime.TryParse(endTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var end))
+            {
+                companies = companies.Where(a => DbFunctions.TruncateTime(a.Employer.CreateDate) >= DbFunctions.TruncateTime(end));
             }
 
             if (careerIds != null)

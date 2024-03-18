@@ -6,7 +6,7 @@
 <div class="box_content mt-0">
     <form action="@Url.Action("ListApplyJob")">
         <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-5">
                 <label>Từ khóa</label>
                 @Html.TextBoxFor(model => model.Keyword, new { @placeholder = "Từ khóa" })
             </div>
@@ -24,17 +24,16 @@
                 <label>Trạng thái</label>
                 @Html.DropDownListFor(model => model.Status, Model.StatusSelectList, "Tất cả")
             </div>
-            <div class="col-lg-3 mb-lg-0 mb-2">
-                <label>Khoảng thời gian</label>
-                <div class="datepicker-to-from">
-                    <input autocomplete="off" id="date-range" value="@Model.StartTime @Model.EndTime" />
-                    <input type="hidden" id="startTime" name="startTime" class="date-picker" value="@Model.StartTime">
-                    <input type="hidden" id="endTime" name="endTime" class="date-picker" value="@Model.EndTime">
-                </div>
+            <div class="col-lg-3 mb-2">
+                <label>Nổi bật Từ ngày</label>
+                <div>@Html.TextBoxFor(a => a.StartTime, new { @class = "form_control datepicker", @autocomplete = "off" })</div>
             </div>
-            <div class="col-lg-3">
-                <button type="submit" class="btn-search mb-3">Tìm kiếm</button>
-                <button type="submit" name="submit" value="delete" class="btn-search bg-danger mb-3">Xóa tất cả @Model.ApplyJobs.TotalItemCount</button>
+            <div class="col-lg-3 mb-2">
+                <label>Nổi bật Đến ngày</label>
+                <div>@Html.TextBoxFor(a => a.EndTime, new { @class = "form_control datepicker", @autocomplete = "off" })</div>
+            </div>
+            <div class="col-lg-3 d-flex align-items-center">
+                <button type="submit" class="btn-search">Tìm kiếm</button>
             </div>
         </div>
     </form>

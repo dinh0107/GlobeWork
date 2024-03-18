@@ -40,6 +40,10 @@ namespace GlobeWork.Controllers
                         break;
                 }
             }
+            if (!string.IsNullOrEmpty(name))
+            {
+                jobPosts = jobPosts.Where(a => a.Name.Contains(name));
+            }
             if (startTime != null)
             {
                 if (DateTime.TryParse(startTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var start))
