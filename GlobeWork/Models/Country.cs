@@ -17,12 +17,16 @@ namespace GlobeWork.Models
         public bool Active { get; set; }
         [Display(Name = "Nổi bật")]
         public bool Hot { get; set; }
+        [Display(Name = "Bộ lọc")]
+        public bool Filter { get; set; }
         [Display(Name = "Hiện chân trang")]
         public bool Footer { get; set; }
         [Display(Name = "Học bổng")]
         public bool Scholarship { get; set; }
         [Display(Name = "Trường")]
         public bool School { get; set; }
+        [Display(Name = "Việc làm")]
+        public bool Job { get; set; }
         public virtual ICollection<City> Cities { get; set; }
         public virtual ICollection<JobPost> JobPosts { get; set; }
         public virtual ICollection<StudyAbroadCategory> StudyAbroadCategories { get; set; }

@@ -20,6 +20,14 @@
             <div class="col-lg-3">
                 <label>Tên kỹ năng</label> @Html.TextBoxFor(a => a.Name, new { @class = "w300" })
             </div>
+            <div class="col-lg-3">
+                <label>Loại</label>
+                <select class="w300" onchange = "window.location.href='/Vcms/ListSkill?type='+this.value" >
+                    <option value="">Phân loại</option>
+                    <option value="1" @if(Model.Type == 1) { @Html.Raw("selected") }>Kỹ năng</option>
+                    <option value="2" @if(Model.Type == 2) { @Html.Raw("selected") }>Từ khóa</option>
+                </select>
+            </div>
             <div class="col-lg-3 align-self-center">
                 <button type="submit" class="btn-search">Tìm kiếm</button>
             </div>
@@ -32,6 +40,7 @@
                 <th style="width: 100px">STT</th>
                 <th>Tên cấp bậc</th>
                 <th>CODE</th>
+                <th>Loại</th>
                 <th style="width: 230px"></th>
             </tr>
             @foreach (var skill in Model.Skills)
@@ -40,6 +49,7 @@
                     <td>@i</td>
                     <td class="left">@Html.DisplayFor(model => skill.SkillName)</td>
                     <td>@skill.Code</td>
+                    <td>@Html.DisplayFor(a => skill.TypeSkill)</td>
                     <td>
                         <a href="javascript:;" onclick="updateSkill('@skill.Id')">Cập nhật - </a>
                         @Html.ActionLink("Sửa", "UpdateSkill", new { skillId = skill.Id }) -
@@ -51,7 +61,7 @@
             @if (Model.Skills.PageCount > 1)
             {
                 <tr>
-                    <td colspan="5">@Html.PagedListPager(Model.Skills, page => Url.Action("ListSkill", new { page, name = Model.Name }))</td>
+                    <td colspan="5">@Html.PagedListPager(Model.Skills, page => Url.Action("ListSkill", new { page, name = Model.Name, type = Model.Type }))</td>
                 </tr>
             }
         </tbody>

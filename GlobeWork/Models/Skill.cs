@@ -18,10 +18,18 @@ namespace GlobeWork.Models
         public virtual ICollection<Candidate> Candidates { get; set; }
         public virtual ICollection<JobPost> Posts { get; set; }
         public virtual ICollection<User> Users { get; set; }
-
+        [Display(Name = "Loại")]
+        public TypeSkill TypeSkill { get; set; }
         public Skill()
         {
             CreateDate = DateTime.Now;
         }
+    }
+    public enum TypeSkill
+    {
+        [Display(Name ="Kỹ năng")]
+        Skill,
+        [Display(Name = "Từ khóa nổi bât")]
+        Keyword
     }
 }

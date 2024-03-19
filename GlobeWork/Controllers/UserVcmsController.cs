@@ -411,7 +411,7 @@ namespace GlobeWork.Controllers
             {
                 Company = company,
                 Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name)),
-                Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name)),
+                Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Career),
                 Cities = _unitOfWork.CityRepository.Get(orderBy: o => o.OrderBy(a => a.Sort)),
             };
             return View(model);
@@ -460,7 +460,7 @@ namespace GlobeWork.Controllers
                 }
                 return RedirectToAction("ListCompany");
             }
-            model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+            model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Career);
             return View(model);
         }
         [HttpPost]

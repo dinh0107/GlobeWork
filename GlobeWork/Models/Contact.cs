@@ -17,10 +17,20 @@ namespace GlobeWork.Models
         public string Body { get; set; }
         public DateTime CreateDate { get; set; }
         public string IP { get; set; }
-            public string CourseName { get; set; }
+        public string CourseName { get; set; }
+        public TypeContact TypeContact { get; set; }    
         public Contact()
         {
             CreateDate = DateTime.Now;
         }
+    }
+    public enum TypeContact
+    {
+        [Display(Name ="Ứng viên")]
+        User,
+        [Display(Name ="Nhà tuyển dụng")]
+        Employer,
+        [Display(Name ="Đối tác")]
+        Partner
     }
 }

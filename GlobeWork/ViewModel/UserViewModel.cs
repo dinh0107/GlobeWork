@@ -87,11 +87,11 @@ namespace GlobeWork.ViewModel
         public string Address { get; set; }
         public SelectList CitySelectList { get; set; }
         public SelectList DistrictSelectList { get; set; }
-        [Display(Name = "Thành phố"), Required(ErrorMessage = "Bạn hãy chọn thành phố")]
+        [Display(Name = "Thành phố")/*, Required(ErrorMessage = "Bạn hãy chọn thành phố")*/]
         public int? CityId { get; set; }
         [Display(Name = "Vị trí công tác"), Required(ErrorMessage = "Bạn hãy chọn Vị trí công tác")]
         public int? RankId { get; set; }
-        [Display(Name = "Quận huyện"), Required(ErrorMessage = "Bạn hãy chọn quận huyện")]
+        [Display(Name = "Quận huyện")/*, Required(ErrorMessage = "Bạn hãy chọn quận huyện")*/]
         public int? DistrictId { get; set; }
         [Display(Name = "Số điện thoại"), RegularExpression(@"^\(?(09|03|07|08|05)\)?[-. ]?([0-9]{8})$", ErrorMessage = "Số điện thoại không đúng định dạng!"),
         Required(ErrorMessage = "Hãy nhập số điện thoại"), StringLength(10, ErrorMessage = "Tối đa 20 ký tự"), UIHint("TextBox")]

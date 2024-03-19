@@ -1044,7 +1044,7 @@ footer {
   justify-content: space-between;
 }
 .search-city .select2-container {
-  width: 300px !important;
+  width: 170px !important;
   font-size: 14px;
 }
 .search-city .select2-selection__arrow {
@@ -1056,7 +1056,7 @@ footer {
 }
 
 .item-search {
-  width: 15.625rem;
+  width: 24.625rem;
 }
 
 .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {

@@ -9,7 +9,7 @@
 }
 <section class="banner-job pb-0">
     <div class="container">
-        <form id="frm-search-job" action="@Url.Action("JobInCountruy")">
+        <form id="frm-search-job" action="@Url.Action("JobInCountruy" , new {id = Model.CountryId})">
             <div class="group-search shadow">
                 <div class=" item-search">
                     @Html.TextBoxFor(a => a.Keywords, new { @class = "w-100 form-controlui-autocomplete-input", @placeholder = "Vị trí tuyển dụng", @id = "keyword", @autocomplete = "off" })

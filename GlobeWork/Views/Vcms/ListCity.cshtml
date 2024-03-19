@@ -8,7 +8,7 @@
                 <th>STT</th>
                 @*<th>Quốc gia</th>*@
                 <th>Thành phố</th>
-                <th>Hiện trang chủ</th>
+                @*<th>Hiện trang chủ</th>*@
                 <th>Hoạt động</th>
                 <th></th>
             </tr>
@@ -18,7 +18,7 @@
                     <td><input type="number" name="Sort" value="@city.Sort" class="form_control w100" /></td>
                     @*<td>@city.Country.Name</td>*@
                     <td>@city.Name</td>
-                    <td>@Html.EditorFor(a => city.Home, new { htmlAttributes = new { id = "Home" } })</td>
+                    @*<td>@Html.EditorFor(a => city.Home, new { htmlAttributes = new { id = "Home" } })</td>*@
                     <td>@Html.EditorFor(a => city.Active, new { htmlAttributes = new { id = "Active" } })</td>
                     <td>
                         <a href="javascript:;" onclick="updateCity('@city.Id')">Cập nhật - </a>
@@ -38,16 +38,38 @@
     //        thousands: ','
     //    });
     //});
-    function UpdateCity(id) {
-        $.post("/Vcms/UpdateCity", { id: id }, function (data) {
+    //function UpdateCity(id) {
+    //    $.post("/Vcms/UpdateCity", { id: id }, function (data) {
+    //        if (data) {
+    //            alert("Bạn xóa thành công thành phố này");
+    //        } else {
+    //            alert("Quá trình thực hiện xảy ra lỗi. Hãy thử lại.");
+    //        }
+    //    });
+    //}
+    function updateCity(id) {
+        var divId = $("tr[data-id='" + id + "']");
+        var sort = divId.find("input[name=Sort]").val();
+        var active = divId.find("input#Active").prop("checked");
+        if (sort == "") {
+            alert("Bạn hãy nhập số thứ tự");
+        }
+
+        $.post("/Vcms/QickUpdateCity", { id: id, sort: sort, active: active }, function (data) {
             if (data) {
-                alert("Bạn xóa thành công thành phố này");
+                $.toast({
+                    text: 'Cập nhật thành công',
+                    position: 'bottom-right',
+                    icon: 'success',
+                })
             } else {
-                alert("Quá trình thực hiện xảy ra lỗi. Hãy thử lại.");
+                $.toast({
+                    text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                    icon: 'error',
+                })
             }
         });
     }
-
     function deleteCity(id) {
         if (confirm("Bạn có chắc chắn xóa thành phố này không?")) {
             $.post("/Vcms/DeleteCity", { cityId: id }, function (data) {
@@ -71,29 +93,29 @@
         });
     }
 
-    function updateCity(id) {
-        var divId = $("tr[data-id='" + id + "']");
-        var sort = divId.find("input[name=Sort]").val();
-        var active = divId.find("input#Active").prop("checked");
-        var home = divId.find("input#Home").prop("checked");
+    //function updateCity(id) {
+    //    var divId = $("tr[data-id='" + id + "']");
+    //    var sort = divId.find("input[name=Sort]").val();
+    //    var active = divId.find("input#Active").prop("checked");
+    //    var home = divId.find("input#Home").prop("checked");
 
-        if (sort == "") {
-            alert("Bạn hãy nhập số thứ tự");
-        }
+    //    if (sort == "") {
+    //        alert("Bạn hãy nhập số thứ tự");
+    //    }
 
-        $.post("/Vcms/UpdateCity", { cityId: id, sort, active, home }, function (data) {
-            if (data) {
-                $.toast({
-                    text: 'Cập nhật thành công',
-                    position: 'bottom-right',
-                    icon: 'success',
-                })
-            } else {
-                $.toast({
-                    text: 'Quá trình thực hiện không thành công. Hãy thử lại',
-                    icon: 'error',
-                })
-            }
-        });
-    }
+    //    $.post("/Vcms/UpdateCity", { cityId: id, sort, active, home }, function (data) {
+    //        if (data) {
+    //            $.toast({
+    //                text: 'Cập nhật thành công',
+    //                position: 'bottom-right',
+    //                icon: 'success',
+    //            })
+    //        } else {
+    //            $.toast({
+    //                text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+    //                icon: 'error',
+    //            })
+    //        }
+    //    });
+    //}
 </script>

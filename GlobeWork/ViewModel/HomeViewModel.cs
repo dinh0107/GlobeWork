@@ -10,6 +10,7 @@ namespace GlobeWork.ViewModel
     public class HeaderViewModel
     {
         public IEnumerable<Article> Articles { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
         public IEnumerable<StudyAbroadCategory> StudyAbroadCategories { get; set; }
         public IEnumerable<Career> Careers { get; set; }
         public IEnumerable<StudyAbroadCategory> Scholarship { get; set; }
@@ -27,7 +28,7 @@ namespace GlobeWork.ViewModel
         public IEnumerable<Item> Items { get; set; }
        public IEnumerable<Career> Careers { get; set; }
        public IEnumerable<Career> SearchCareers { get; set; }
-       public IEnumerable<City> Cities { get; set; }
+       public IEnumerable<Country> Countries { get; set; }
        public IEnumerable<JobType> JobTypes { get; set; }
        public IEnumerable<Rank> Ranks { get; set; }
        public IEnumerable<Banner> Banners { get; set; }
@@ -37,7 +38,7 @@ namespace GlobeWork.ViewModel
     }
     public class GetFilterViewModel
     {
-        public IEnumerable<City> Cities { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
         public IEnumerable<Career> Careers { get; set; }
         public IEnumerable<KeyValuePair<int, string>> Wage { get; set; }
         public IEnumerable<KeyValuePair<int, string>> Experience { get; set; }
@@ -120,7 +121,7 @@ namespace GlobeWork.ViewModel
         public IPagedList<JobPost> JobPosts { get; set; }
         public IEnumerable<Like> Likes { get; set; }
         public IEnumerable<Follow> Follows { get; set; }
-        public IEnumerable<City> Cities { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
         public IEnumerable<Career> Careers { get; set; }
         public IEnumerable<Banner> Banners { get; set; }
         public IEnumerable<Career> CareerHot { get; set; }
@@ -153,14 +154,14 @@ namespace GlobeWork.ViewModel
         public IPagedList<JobPost> JobPosts { get; set; }
         public IEnumerable<Like> Likes { get; set; }
         public IEnumerable<Follow> Follows { get; set; }
-        public IEnumerable<City> Cities { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
         public IEnumerable<Career> Careers { get; set; }
         public IEnumerable<Banner> Banners { get; set; }
         public IEnumerable<Career> CareerHot { get; set; }
         public string Keyword { get; set; }
         public int CareerId { get; set; }
         public int CompanyId { get; set; }
-        public int CityId { get; set; }
+        public int CountruyId { get; set; }
         public int Wage { get; set; }
         public IEnumerable<KeyValuePair<int, string>> Wages { get; set; }
         public SearchViewModel()
@@ -182,7 +183,7 @@ namespace GlobeWork.ViewModel
     {
         public Career Career { get; set; }
         public IPagedList<JobPost> JobPosts { get; set; }
-        public IEnumerable<City> Cities { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
         public IEnumerable<Like> Likes { get; set; }
         public IEnumerable<JobType> jobTypes { get; set; }
         public string Name { get; set; }
@@ -212,7 +213,7 @@ namespace GlobeWork.ViewModel
         public IPagedList<JobPost> JobPosts { get; set; }
         public IEnumerable<Like> Likes { get; set; }
         public IEnumerable<Career> Careers { get; set; }
-        public IEnumerable<City> Cities { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
         public IEnumerable<KeyValuePair<int, string>> Wages { get; set; }
         public string Keywords { get; set; }
         public int Level { get; set; }

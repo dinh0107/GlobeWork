@@ -12,7 +12,7 @@
     </div>*@
     foreach (var item in Model.JobPosts)
     {
-        <div class="job bg-white detail-job active ">
+        <div class="job bg-white detail-job @if (item.Hot > DateTime.Now) {@Html.Raw("active") } ">
             <div class="media ">
                 <div>
                     <a href="@Url.Action("JobDetail", new {url = item.Url})" class="job-name custom-w" data-tooltip="@item.Name" data-tooltip-position="top">@item.Name</a>

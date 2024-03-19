@@ -389,6 +389,26 @@
     <Compile Include="Migrations\202403171512545_update-partner-footer.Designer.cs">
       <DependentUpon>202403171512545_update-partner-footer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202403180426403_countruy-filter.cs" />
+    <Compile Include="Migrations\202403180426403_countruy-filter.Designer.cs">
+      <DependentUpon>202403180426403_countruy-filter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202403180707487_add-countruy-company.cs" />
+    <Compile Include="Migrations\202403180707487_add-countruy-company.Designer.cs">
+      <DependentUpon>202403180707487_add-countruy-company.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202403190216221_update-coutruy-t.cs" />
+    <Compile Include="Migrations\202403190216221_update-coutruy-t.Designer.cs">
+      <DependentUpon>202403190216221_update-coutruy-t.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202403190254131_career.cs" />
+    <Compile Include="Migrations\202403190254131_career.Designer.cs">
+      <DependentUpon>202403190254131_career.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202403190658067_uppdate-some-data.cs" />
+    <Compile Include="Migrations\202403190658067_uppdate-some-data.Designer.cs">
+      <DependentUpon>202403190658067_uppdate-some-data.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Advise.cs" />
@@ -998,7 +1018,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\LinkedInProfileResponse\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -1038,6 +1057,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202403171512545_update-partner-footer.resx">
       <DependentUpon>202403171512545_update-partner-footer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403180426403_countruy-filter.resx">
+      <DependentUpon>202403180426403_countruy-filter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403180707487_add-countruy-company.resx">
+      <DependentUpon>202403180707487_add-countruy-company.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403190216221_update-coutruy-t.resx">
+      <DependentUpon>202403190216221_update-coutruy-t.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403190254131_career.resx">
+      <DependentUpon>202403190254131_career.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403190658067_uppdate-some-data.resx">
+      <DependentUpon>202403190658067_uppdate-some-data.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

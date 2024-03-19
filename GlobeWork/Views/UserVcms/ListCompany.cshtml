@@ -126,8 +126,12 @@
                         <td>@Html.CheckBoxFor(a => company.Employer.Active, new{id = "active"})</td>
                         <td>
                             <a href="javascript:;" onclick="updateCompany('@company.EmployerId')">Cập nhật</a>
-                            - <a href="@Url.Action("EditCompany", new{companyId = company.EmployerId})">Sửa</a>
-                            - <a href="javascript:;" onclick="deleteCompany('@company.EmployerId')" class="red-warring">Xóa</a>
+                            <br />
+                            <br />
+                            <a href="@Url.Action("EditCompany", new{companyId = company.EmployerId})">Sửa</a>
+                            <br />
+                            <br />
+                            <a href="javascript:;" onclick="deleteCompany('@company.EmployerId')" class="red-warring">Xóa</a>
                         </td>
                     </tr>
                 }

@@ -178,11 +178,12 @@ namespace GlobeWork.Controllers
             var model = new CreatePostViewModel
             {
                 CitySelectList = CitySelectList,
-                Careers = Careers,
+                Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Career),
                 JobTypeSelectList = JobTypeSelectList,
                 SkillSelectList = SkillSelectList,
                 RankSelectList = RankSelectList,
                 JobPost = jobPost,
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort)),
                 Date = 0,
             };
             return View(model);
@@ -298,7 +299,7 @@ namespace GlobeWork.Controllers
                         else
                         {
                             ModelState.AddModelError("", @"Số dư của tài khoản này không đủ để hiển thị tin");
-                            model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+                            model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Career, o => o.OrderByDescending(a => a.CreateDate));
                             model.JobPost = jobs;
                             model.JobTypeSelectList = JobTypeSelectList;
                             model.SkillSelectList = SkillSelectList;
@@ -330,7 +331,7 @@ namespace GlobeWork.Controllers
                 _unitOfWork.Save();
                 return RedirectToAction("ListJobPost");
             }
-            model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+            model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Career, o => o.OrderByDescending(a => a.CreateDate));
             model.JobPost = jobs;
             model.JobTypeSelectList = JobTypeSelectList;
             model.SkillSelectList = SkillSelectList;
@@ -541,6 +542,13 @@ namespace GlobeWork.Controllers
             return true;
         }
         #endregion
+
+        public JsonResult GetCitiesJob(int? countruyId)
+        {
+            var cities = _unitOfWork.CityRepository
+                .GetQuery(a => a.Active && a.CountruyId == countruyId, q => q.OrderBy(a => a.Sort)).Select(a => new { a.Id, a.Name });
+            return Json(cities, JsonRequestBehavior.AllowGet);
+        }
 
         protected override void Dispose(bool disposing)
         {

@@ -40,6 +40,7 @@ namespace GlobeWork.ViewModel
     public class InserCompanyEmployerViewModel
     {
         public Company Company { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
         public IEnumerable<Career> Careers { get; set; }
         public IEnumerable<JobType> JobTypes { get; set; }
         public IEnumerable<Rank> Ranks { get; set; }

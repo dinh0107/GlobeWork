@@ -19,6 +19,14 @@
             <div class="col-lg-3">
                 <label>Tên ngành nghề</label> @Html.TextBoxFor(a => a.Name, new { @class = "w300" })
             </div>
+            <div class="col-lg-3">
+                <label>Loại</label>
+                <select class="w300" onchange="window.location.href='/Vcms/ListCareers?type='+this.value">
+                    <option value="">Phân loại</option>
+                    <option value="1" @if (Model.Type == 1) { @Html.Raw("selected") }>Ngành nghề</option>
+                    <option value="2" @if (Model.Type == 2) { @Html.Raw("selected") }>Lĩnh vực hoạt động</option>
+                </select>
+            </div>
             <div class="col-lg-3 align-self-center">
                 <button type="submit" class="btn-search">Tìm kiếm</button>
             </div>
@@ -31,6 +39,7 @@
                 <th style="width: 50px">Hình ảnh</th>
                 <th style="width: 400px">Tên ngành nghề</th>
                 <th>CODE</th>
+                <th>Loại</th>
                 <th style="width: 100px">Nổi bật</th>
                 <th style="width: 100px">Menu</th>
                 <th style="width: 100px">Hoạt động</th>
@@ -42,6 +51,7 @@
                     <td>@Html.DisplayFor(model => career.Image)</td>
                     <td class="left">@Html.DisplayFor(model => career.Name)</td>
                     <td>@career.Code</td>
+                    <td>@Html.DisplayFor(a => career.TypeCareer)</td>
                     <td>@Html.EditorFor(model => career.Hot)</td>
                     <td>@Html.EditorFor(model => career.Menu)</td>
                     <td>@Html.EditorFor(model => career.Active)</td>

@@ -15,11 +15,11 @@
                     @Html.TextBoxFor(a => a.Keyword, new { @class = "w-100 form-controlui-autocomplete-input", @placeholder = "Vị trí tuyển dụng", @id = "keyword", @autocomplete = "off" })
                 </div>
                 <div class="search-city border-left">
-                    <select class="select2" name="cityId">
-                        <option value="">Khu vực Tỉnh / Thành phố</option>
-                        @foreach (var item in Model.Cities)
+                    <select class="select2" name="countruyId">
+                        <option value="">Quốc gia</option>
+                        @foreach (var item in Model.Countries)
                         {
-                            <option @if (item.Id == Model.CityId) { @Html.Raw("selected") } value="@item.Id">@item.Name</option>
+                            <option @if (item.Id == Model.CountruyId) { @Html.Raw("selected") } value="@item.Id">@item.Name</option>
                         }
                     </select>
                     <i class="far fa-location mx-2"></i>
@@ -128,7 +128,7 @@
             if (Model.JobPosts.PageCount > 1)
             {
                 <div class="text-center">
-                    @Html.PagedListPager(Model.JobPosts, page => Url.Action("Search", new { page, keyword = Model.Keyword, careerId = Model.CareerId, cityId = Model.CityId, wage = Model.Wage, companyId = Model.CompanyId }))
+                    @Html.PagedListPager(Model.JobPosts, page => Url.Action("Search", new { page, keyword = Model.Keyword, careerId = Model.CareerId, countruyId = Model.CountruyId, wage = Model.Wage, companyId = Model.CompanyId }))
                 </div>
             }
         }

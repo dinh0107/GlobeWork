@@ -132,6 +132,7 @@ namespace GlobeWork.ViewModel
         public string MinSalary { get; set; }
         public string MaxSalary { get; set; }
         public IEnumerable<Career> Careers { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
         public SelectList SkillSelectList { get; set; }
         public SelectList RankSelectList { get; set; }
         public SelectList JobTypeSelectList { get; set; }

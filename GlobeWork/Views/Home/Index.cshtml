@@ -39,9 +39,9 @@
                     </div>
                     <div class="filter-banner_2">
                         <div class="form-control d-flex align-items-center justify-content-between">
-                            <select class="border-0 form-control ouline-none select2" name="cityId">
-                                <option value="">Khu vực</option>
-                                @foreach (var item in Model.Cities)
+                            <select class="border-0 form-control ouline-none select2" name="countruyId">
+                                <option value="">Quốc gia</option>
+                                @foreach (var item in Model.Countries)
                                 {
                                     <option value="@item.Id">@item.Name</option>
                                 }

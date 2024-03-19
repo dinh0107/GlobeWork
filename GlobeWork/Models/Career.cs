@@ -41,11 +41,21 @@ namespace GlobeWork.Models
         public virtual ICollection<Candidate> Candidates { get; set; }
         public virtual ICollection<Company> Companies { get; set; }
         public virtual ICollection<StudyAbroad> StudyAbroads { get; set; }
-
+        [Display(Name = "Phân loại")]
+        public TypeCareer TypeCareer { get; set; }
         public Career()
         {
             CreateDate = DateTime.Now;
             Active = true;
         }
+    }
+    public enum TypeCareer
+    {
+        [Display(Name = "Ngành nghề")]
+        Career,
+        [Display(Name = "Lĩnh vực hoạt động")]
+        Activity,
+        //[Display(Name = "Lĩnh vực hoạt động")]
+
     }
 }

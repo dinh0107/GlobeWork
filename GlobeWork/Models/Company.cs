@@ -17,7 +17,7 @@ namespace GlobeWork.Models
         [Display(Name = "Mô tả"), UIHint("EditorBox")]
         public string Body { get; set; }
         [Display(Name = "Ngày thành lập")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        //[DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime EstablishmentDate { get; set; }
         [Display(Name = "Hiện trang chủ")]
         public bool ShowHome { get; set; }
@@ -49,7 +49,9 @@ namespace GlobeWork.Models
 
         [ForeignKey("City")]
         public int? CityId { get; set; }
+        public int? CountryId { get; set; }
         public virtual City City { get; set; }
+        public virtual Country Country { get; set; }
         public virtual ICollection<Career> Careers { get; set; }
         public virtual Employer Employer { get; set; }
         public virtual ICollection<JobPost> JobPosts { get; set; }

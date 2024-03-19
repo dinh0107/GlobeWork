@@ -229,7 +229,7 @@ header.header-employer {
         top: 0;
         @include flex-item(space-between, center);
         padding: .5rem 1rem;
-        z-index: 999;
+        z-index: 9;
         background-color: $white;
         border-bottom: 1px solid #cdcdcd;
 

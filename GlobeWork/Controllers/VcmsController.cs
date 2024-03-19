@@ -405,20 +405,33 @@ namespace GlobeWork.Controllers
         #endregion
 
         #region Career
-        public ActionResult ListCareers(int? page, string name, string result = "")
+        public ActionResult ListCareers(int? page, string name, int type = 0 ,string result = "")
         {
             ViewBag.Result = result;
             var pageNumber = page ?? 1;
             var pageSize = 15;
-            var careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+            var careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderByDescending(a => a.CreateDate));
             if (!string.IsNullOrEmpty(name))
             {
                 careers = careers.Where(a => a.Name.ToLower().Contains(name.ToLower()));
+            }
+            if (type > 0)
+            {
+                switch (type)
+                {
+                    case 1:
+                        careers = careers.Where(a => a.TypeCareer == TypeCareer.Career);
+                        break;
+                    case 2:
+                        careers = careers.Where(a => a.TypeCareer == TypeCareer.Activity);
+                        break;
+                }
             }
             var model = new ListCareerViewModel
             {
                 Careers = careers.ToPagedList(pageNumber, pageSize),
                 Name = name,
+                Type = type
             };
             return View(model);
         }
@@ -571,7 +584,7 @@ namespace GlobeWork.Controllers
             return true;
         }
         [HttpPost]
-        public bool QuickUpdateCareer(bool active = false, bool home = false, bool hot = false, bool menu = false ,int careerId = 0)
+        public bool QuickUpdateCareer(bool active = false, bool home = false, bool hot = false, bool menu = false, int careerId = 0)
         {
             var career = _unitOfWork.CareerRepository.GetById(careerId);
             if (career == null)
@@ -706,21 +719,34 @@ namespace GlobeWork.Controllers
         #endregion
 
         #region Skill
-        public ActionResult ListSkill(int? page, string name, string result = "")
+        public ActionResult ListSkill(int? page, string name, int type = 0, string result = "")
         {
             ViewBag.Result = result;
             var pageNumber = page ?? 1;
             var pageSize = 15;
 
-            var skills = _unitOfWork.SkillRepository.Get(orderBy: o => o.OrderBy(a => a.SkillName));
+            var skills = _unitOfWork.SkillRepository.Get(orderBy: o => o.OrderByDescending(a => a.CreateDate));
             if (!string.IsNullOrEmpty(name))
             {
                 skills = skills.Where(a => a.SkillName.ToLower().Contains(name.ToLower()));
             }
+            if (type > 0)
+            {
+                switch (type)
+                {
+                    case 1:
+                        skills = skills.Where(a => a.TypeSkill == TypeSkill.Skill);
+                        break;
+                    case 2:
+                        skills = skills.Where(a => a.TypeSkill == TypeSkill.Keyword);
+                        break;
+                }
+            }
             var model = new ListSkillViewModel
             {
                 Skills = skills.ToPagedList(pageNumber, pageSize),
-                Name = name
+                Name = name,
+                Type = type
             };
             return View(model);
 
@@ -736,8 +762,15 @@ namespace GlobeWork.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.Code = HtmlHelpers.ConvertToUnSign(null, model.Code ?? model.SkillName);
                 _unitOfWork.SkillRepository.Insert(model);
                 _unitOfWork.Save();
+                var count = _unitOfWork.SkillRepository.GetQuery(a => a.Code == model.Code).Count();
+                if (count > 1)
+                {
+                    model.Code += "-" + model.Id;
+                    _unitOfWork.Save();
+                }
                 return RedirectToAction("CreateSkill", new { result = 0 });
             }
             return View(model);
@@ -754,11 +787,17 @@ namespace GlobeWork.Controllers
         [HttpPost]
         public ActionResult UpdateSkill(Skill model)
         {
-
             if (ModelState.IsValid)
             {
+                model.Code = HtmlHelpers.ConvertToUnSign(null, model.Code ?? model.SkillName);
                 _unitOfWork.SkillRepository.Update(model);
                 _unitOfWork.Save();
+                var count = _unitOfWork.SkillRepository.GetQuery(a => a.Code == model.Code).Count();
+                if (count > 1)
+                {
+                    model.Code += "-" + model.Id;
+                    _unitOfWork.Save();
+                }
                 return RedirectToAction("ListSkill", new { result = "update" });
             }
             return View(model);
@@ -790,17 +829,17 @@ namespace GlobeWork.Controllers
         #endregion
 
         #region Countruy
-        public ActionResult  ListCountruy(int? page , string name , string result ="")
+        public ActionResult ListCountruy(int? page, string name, string result = "")
         {
             ViewBag.Result = result;
-            var pageNumber  = page ?? 1;
+            var pageNumber = page ?? 1;
             var pageSize = 10;
             var countruy = _unitOfWork.CountryRepository.Get(orderBy: a => a.OrderBy(l => l.Sort));
             if (!string.IsNullOrEmpty(name))
             {
                 countruy = countruy.Where(a => a.Name.ToLower().Contains(name.ToLower()));
             }
-            var model = new ListCountruyViewModel   
+            var model = new ListCountruyViewModel
             {
                 Countries = countruy.ToPagedList(pageNumber, pageSize),
                 Name = name
@@ -813,24 +852,24 @@ namespace GlobeWork.Controllers
             {
                 Sort = 1,
             };
-           return View(countruy);
+            return View(countruy);
 
         }
         [HttpPost]
         public ActionResult Countruy(Country country)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _unitOfWork.CountryRepository.Insert(country);
                 _unitOfWork.Save();
-                return RedirectToAction("ListCountruy", new { result  = "success" } );
+                return RedirectToAction("ListCountruy", new { result = "success" });
             }
             return View(country);
         }
         public ActionResult EditCountruy(int id = 0)
         {
             var countruy = _unitOfWork.CountryRepository.GetById(id);
-            if(countruy == null)
+            if (countruy == null)
             {
                 return RedirectToAction("ListCountruy");
             }
@@ -849,7 +888,9 @@ namespace GlobeWork.Controllers
             countruy.Active = model.Active;
             countruy.Footer = model.Footer;
             countruy.Hot = model.Hot;
+            countruy.Job = model.Job;
             countruy.School = model.School;
+            countruy.Filter = model.Filter;
             countruy.Scholarship = model.Scholarship;
             _unitOfWork.Save();
             return RedirectToAction("ListCountruy", new { result = "update" });
@@ -867,7 +908,7 @@ namespace GlobeWork.Controllers
             return true;
         }
         [HttpPost]
-        public bool UpdateCountruy(int id , bool active, int sort)
+        public bool UpdateCountruy(int id, bool active, int sort)
         {
             var countruy = _unitOfWork.CountryRepository.GetById(id);
             if (countruy == null)
@@ -889,7 +930,7 @@ namespace GlobeWork.Controllers
             var model = new ListCityViewModel
             {
                 Citys = cities,
-                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active , o => o.OrderBy(a => a.Id))
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Id))
             };
             return PartialView(model);
         }
@@ -898,12 +939,12 @@ namespace GlobeWork.Controllers
             var model = new InsertCityViewModel
             {
                 City = new City { Sort = 1, Active = true },
-                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active , o => o.OrderBy(c => c.Sort)),
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(c => c.Sort)),
             };
             return View(model);
         }
         [HttpPost]
-        public ActionResult City(InsertCityViewModel model , FormCollection fc)
+        public ActionResult City(InsertCityViewModel model, FormCollection fc)
         {
             if (ModelState.IsValid)
             {
@@ -933,7 +974,7 @@ namespace GlobeWork.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult EditCity(InsertCityViewModel model , FormCollection fc)
+        public ActionResult EditCity(InsertCityViewModel model, FormCollection fc)
         {
             var city = _unitOfWork.CityRepository.GetById(model.City.Id);
             if (city == null)
@@ -966,12 +1007,27 @@ namespace GlobeWork.Controllers
             _unitOfWork.Save();
             return true;
         }
+        [HttpPost]
+        public JsonResult QickUpdateCity(int sort = 1, bool active = false, int id = 0)
+        {
+            var city = _unitOfWork.CityRepository.GetById(id);
+            if (city == null)
+            {
+                return Json(new { success = false, message = "Thành phố không tồn tại." });
+            }
+
+            city.Active = active;
+            city.Sort = sort;
+            _unitOfWork.Save();
+
+            return Json(new { success = true, message = "Cập nhật thành công." });
+        }
         #endregion
 
         #region StudyAbroad
         public PartialViewResult ListCat()
         {
-            var cate = _unitOfWork.StudyAbroadCategoryRepository.Get(orderBy: a => a.OrderBy( l => l.Sort)) ;
+            var cate = _unitOfWork.StudyAbroadCategoryRepository.Get(orderBy: a => a.OrderBy(l => l.Sort));
             return PartialView(cate);
         }
         public ActionResult StudyAbroadCategory()
@@ -990,9 +1046,9 @@ namespace GlobeWork.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult StudyAbroadCategory(InsertStudyAbroadCategoryViewModel model , FormCollection fc)
+        public ActionResult StudyAbroadCategory(InsertStudyAbroadCategoryViewModel model, FormCollection fc)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 for (var i = 0; i < Request.Files.Count; i++)
                 {
@@ -1022,19 +1078,19 @@ namespace GlobeWork.Controllers
                 _unitOfWork.StudyAbroadCategoryRepository.Insert(model.StudyAbroadCategory);
                 _unitOfWork.Save();
                 var cat = _unitOfWork.StudyAbroadCategoryRepository.GetQuery(a => a.Url == model.StudyAbroadCategory.Url).Count();
-                if(cat > 1)
+                if (cat > 1)
                 {
                     model.StudyAbroadCategory.Url += "-" + model.StudyAbroadCategory.Id;
                     _unitOfWork.Save();
                 }
-                return RedirectToAction("StudyAbroadCategory", new {result = "success"});
+                return RedirectToAction("StudyAbroadCategory", new { result = "success" });
             }
             return View(model);
         }
         public ActionResult EditCategory(int id = 0)
         {
             var cat = _unitOfWork.StudyAbroadCategoryRepository.GetById(id);
-            if(cat == null)
+            if (cat == null)
             {
                 return RedirectToAction("StudyAbroadCategory");
             }
@@ -1049,7 +1105,7 @@ namespace GlobeWork.Controllers
         [HttpPost]
         public ActionResult EditCategory(InsertStudyAbroadCategoryViewModel category, FormCollection fc)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 for (var i = 0; i < Request.Files.Count; i++)
                 {
@@ -1111,7 +1167,7 @@ namespace GlobeWork.Controllers
         public bool DeleteCategory(int id)
         {
             var cat = _unitOfWork.StudyAbroadCategoryRepository.GetById(id);
-            if(cat == null)
+            if (cat == null)
             {
                 return false;
             }
@@ -1120,7 +1176,7 @@ namespace GlobeWork.Controllers
             return true;
         }
         [HttpPost]
-        public bool UpdateCategory(int id = 0 , bool active = false, bool menu = false , int sort = 0)
+        public bool UpdateCategory(int id = 0, bool active = false, bool menu = false, int sort = 0)
         {
             var cat = _unitOfWork.StudyAbroadCategoryRepository.GetById(id);
             if (cat == null)
@@ -1198,7 +1254,8 @@ namespace GlobeWork.Controllers
             {
                 partner = partner.Where(a => a.Name.Contains(name));
             }
-            var model = new ListPartnerViewModel {
+            var model = new ListPartnerViewModel
+            {
                 Partners = partner.ToPagedList(pageNumber, 9),
                 Name = name
             };
@@ -1254,7 +1311,7 @@ namespace GlobeWork.Controllers
         public ActionResult UpdatePartner(int id)
         {
             var partner = _unitOfWork.ParterRepository.GetById(id);
-            if(partner == null)
+            if (partner == null)
             {
                 return RedirectToAction("Parter");
             }
@@ -1315,7 +1372,7 @@ namespace GlobeWork.Controllers
         public bool DeletePartner(int id)
         {
             var partner = _unitOfWork.ParterRepository.GetById(id);
-            if(partner == null)
+            if (partner == null)
             {
                 return false;
             }
@@ -1326,17 +1383,17 @@ namespace GlobeWork.Controllers
 
         #endregion
 
-        [HttpPost]
-        public bool UpdateCity(int id)
-        {
-            var city = _unitOfWork.CityRepository.Get();
-            foreach(var item in city)
-            {
-                item.CountruyId = id;
-            }
-            _unitOfWork.Save();
-            return true;
-        }
+        //[HttpPost]
+        //public bool UpdateCity(int id)
+        //{
+        //    var city = _unitOfWork.CityRepository.Get();
+        //    foreach(var item in city)
+        //    {
+        //        item.CountruyId = id;
+        //    }
+        //    _unitOfWork.Save();
+        //    return true;
+        //}
         protected override void Dispose(bool disposing)
         {
             _unitOfWork.Dispose();
