@@ -7,7 +7,7 @@ namespace GlobeWork.Models
     public class Skill
     {
         public int Id { get; set; }
-        [Display(Name = "Kỹ năng"), StringLength(50, ErrorMessage = "Tối đa 50 ký tự")]
+        [Display(Name = "Từ khóa"), StringLength(50, ErrorMessage = "Tối đa 50 ký tự")]
         public string SkillName { get; set; }
         [Display(Name = "Hiện trang chủ")]
         public bool ShowHome { get; set; }
@@ -27,9 +27,9 @@ namespace GlobeWork.Models
     }
     public enum TypeSkill
     {
-        [Display(Name ="Kỹ năng")]
+        [Display(Name = "Từ khóa công việc")]
         Skill,
-        [Display(Name = "Từ khóa nổi bât")]
+        [Display(Name = "Từ khóa nổi bật")]
         Keyword
     }
 }

@@ -43,6 +43,7 @@ namespace GlobeWork.DAL
         public DbSet<UserSkill> UserSkills { get; set; }
         public DbSet<Activity>  Activities { get; set; }
         public DbSet<Partner>  Parters { get; set; }
+        public DbSet<RequestDeposit>  RequestDeposits { get; set; }
 
     }
 }

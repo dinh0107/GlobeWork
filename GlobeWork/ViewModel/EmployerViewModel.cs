@@ -109,4 +109,9 @@ namespace GlobeWork.ViewModel
         [DisplayFormat(DataFormatString = "{0:N0} VNĐ")]
         public decimal TongNap { get; set; }
     }
+    public class CampaignsViewModel
+    {
+        public IPagedList<JobPost> JobPosts { get; set; }
+        public string Keyword { get; set; }
+    }
 }

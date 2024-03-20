@@ -1,14 +1,14 @@
 ﻿@model GlobeWork.Models.Skill
 @{ ViewBag.Title = "Cập nhật kỹ năng";
     Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
-<h2>Cập nhật kỹ năng</h2>
+<h2>Cập nhật Từ khóa</h2>
 @if (ViewBag.Result == "success")
 {
-    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật kỹ năng thành công</strong></div>}
+    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật Từ khóa thành công</strong></div>}
 @if (ViewBag.Result == "update")
 {
-    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật kỹ năng thành công</strong></div>}
-<a class="btn quick-link" id="create-skill" href="@Url.Action("ListSkill")"><i class="far fa-list mr-1"></i> Danh sách kỹ năng</a>
+    <div id="AlertBox" class="alert alert-success"><strong>Cập nhật Từ khóa thành công</strong></div>}
+<a class="btn quick-link" id="create-skill" href="@Url.Action("ListSkill")"><i class="far fa-list mr-1"></i> Danh sách Từ khóa</a>
 <div class="box_content px-300">
     @using (Html.BeginForm("UpdateSkill", "Vcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {

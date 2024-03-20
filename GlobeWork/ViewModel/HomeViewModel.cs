@@ -96,11 +96,11 @@ namespace GlobeWork.ViewModel
         public IPagedList<JobPost> JobPosts { get; set; }
         public IEnumerable<Like> Likes { get; set; }
         public IEnumerable<Follow> Follows { get; set; }
-        public IEnumerable<City> Cities { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
         public IEnumerable<Career> Careers { get; set; }
         public string Name { get; set; }
         public int CareerId { get; set; }
-        public int CityId { get; set; }
+        public int CountryId { get; set; }
         public string Url { get; set; }
     }
     public class CompanyStudyViewModel
@@ -109,11 +109,11 @@ namespace GlobeWork.ViewModel
         public IPagedList<StudyAbroad> StudyAbroads { get; set; }
         public IEnumerable<Like> Likes { get; set; }
         public IEnumerable<Follow> Follows { get; set; }
-        public IEnumerable<City> Cities { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
         public IEnumerable<Career> Careers { get; set; }
         public string Name { get; set; }
         public int CareerId { get; set; }
-        public int CityId { get; set; }
+        public int CountryId { get; set; }
         public string Url { get; set; }
     }
     public class JobHotViewModel

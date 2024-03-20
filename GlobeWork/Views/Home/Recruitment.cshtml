@@ -64,7 +64,7 @@
                 <div class="box-follow">
                     @if (email == "")
                     {
-                        <a href="@Url.Action("Login","User")" class="btn btn-follow">
+                        <a href="#" data-target="#qick-form" data-toggle="modal" class="btn btn-follow">
                             <i class="fa-light fa-plus"></i> Theo dõi công ty
                         </a>
                     }
@@ -100,10 +100,10 @@
                 @Html.TextBoxFor(a => a.Name, new { @class = "grid-form1 form-control", @placeholder = "Tên công việc, ví trí bạn muốn ứng tuyển..." })
                 <div class="grid-form2 form-control">
                     <select class="v-select custom-slected" name="cityId">
-                        <option value="">Khu vực</option>
-                        @foreach (var item in Model.Cities)
+                        <option value="">Quốc gia</option>
+                        @foreach (var item in Model.Countries)
                         {
-                            <option @if (Model.CityId == item.Id) { @Html.Raw("selected") } value="@item.Id">@item.Name</option>
+                            <option @if (Model.CountryId == item.Id) { @Html.Raw("selected") } value="@item.Id">@item.Name</option>
                         }
                     </select>
                     <i class="far fa-location mx-2"></i>
@@ -174,7 +174,7 @@
                         </div>
                         @if (email == "")
                         {
-                            <a href="@Url.Action("Login", "User")" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                            <a href="#" data-target="#qick-form" data-toggle="modal" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
                         }
                         else
                         {
@@ -193,7 +193,7 @@
             @if (Model.JobPosts.PageCount > 1)
             {
                 <div class="text-center">
-                    @Html.PagedListPager(Model.JobPosts, page => Url.Action("Recruitment", new { page, url = Model.Url, name = Model.Name, careerId = Model.CareerId, cityId = Model.CityId }), new PagedListRenderOptions { MaximumPageNumbersToDisplay = 5 })
+                    @Html.PagedListPager(Model.JobPosts, page => Url.Action("Recruitment", new { page, url = Model.Url, name = Model.Name, careerId = Model.CareerId, cityId = Model.CountryId }), new PagedListRenderOptions { MaximumPageNumbersToDisplay = 5 })
                 </div>
             }
         </div>

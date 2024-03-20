@@ -409,6 +409,10 @@
     <Compile Include="Migrations\202403190658067_uppdate-some-data.Designer.cs">
       <DependentUpon>202403190658067_uppdate-some-data.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202403200809274_RequestDeposit.cs" />
+    <Compile Include="Migrations\202403200809274_RequestDeposit.Designer.cs">
+      <DependentUpon>202403200809274_RequestDeposit.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Advise.cs" />
@@ -429,6 +433,8 @@
     <Compile Include="Models\JobPost.cs" />
     <Compile Include="Models\JobType.cs" />
     <Compile Include="Models\Rank.cs" />
+    <Compile Include="Models\RequestDeposit.cs" />
+    <Compile Include="Models\Service.cs" />
     <Compile Include="Models\Skill.cs" />
     <Compile Include="Models\StudyAbroad.cs" />
     <Compile Include="Models\StudyAbroadCategory.cs" />
@@ -1015,6 +1021,10 @@
     <Content Include="Views\Home\JobInWage.cshtml" />
     <Content Include="Views\Home\GetJobInWage.cshtml" />
     <Content Include="Views\Home\JobInCountruy.cshtml" />
+    <Content Include="Views\Employer\Campaigns.cshtml" />
+    <Content Include="Views\UserVcms\History.cshtml" />
+    <Content Include="Views\Home\QickLogin.cshtml" />
+    <Content Include="Views\Home\QickRegister.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1072,6 +1082,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202403190658067_uppdate-some-data.resx">
       <DependentUpon>202403190658067_uppdate-some-data.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403200809274_RequestDeposit.resx">
+      <DependentUpon>202403200809274_RequestDeposit.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

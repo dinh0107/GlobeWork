@@ -145,6 +145,13 @@ namespace GlobeWork.ViewModel
         [Display(Name = "Số tiền"), UIHint("MoneyBox"), DisplayFormat(DataFormatString = "{0:N0}đ")]
         public string Price { get; set; }
     }
+    public class HistotyEmployerViewModel
+    {
+        public IPagedList<EmployerLog> EmployerLogs { get; set; }
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
+        public int Id { get; set; }
+    }
     public class ListCountruyViewModel
     {
         public IPagedList<Country> Countries { get; set; }

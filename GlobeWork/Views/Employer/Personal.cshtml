@@ -27,13 +27,13 @@
                                     <label for="Avatar" class="form-group form-avartar">
                                         @if (Model.Employer.Avatar != null)
                                         {
-                                            <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/employer/", Model.Employer.Avatar)" class="lazyload" />
+                                            <img id="avatarPreview" src="~/Content/images/base64.gif" data-src="@Url.Content(Path.Combine("/images/employer/", Model.Employer.Avatar))" class="lazyload" />
                                         }
                                         else
                                         {
-                                            <img src="~/Content/images/avatar-default.jpg" />
+                                            <img id="avatarPreview" src="~/Content/images/avatar-default.jpg" />
                                         }
-                                        @Html.TextBoxFor(a => a.Employer.Avatar, new { type = "file" })
+                                        @Html.TextBoxFor(a => a.Employer.Avatar, new { type = "file", id = "avatarInput" })
                                     </label>
                                 </div>
                                 <div class="col-lg-6">
@@ -98,6 +98,24 @@
 </div>
 @section scripts{
     <script>
+        $(document).ready(function () {
+            $('#avatarInput').change(function () {
+                previewAvatar(this);
+            });
+        });
+
+        function previewAvatar(input) {
+            var preview = $('#avatarPreview')[0];
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.src = "~/Content/images/avatar-default.jpg";
+            }
+        }
     @if (ViewBag.Result == "success")
     {
         <Text>

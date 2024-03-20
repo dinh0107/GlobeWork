@@ -1,0 +1,98 @@
+﻿@model GlobeWork.ViewModel.HistotyEmployerViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Lịch sử nạp tiền";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    .overflow-x-auto {
+        overflow-x: auto;
+    }
+</style>
+<h2>Lịch sử nạp tiền</h2>
+<div class="box_content m-0">
+    <form action="@Url.Action("History" , new {id = Model.Id})">
+        <div class="row">
+            <div class="col-lg-3 mb-2">
+                <label>Nổi bật Từ ngày</label>
+                <div>@Html.TextBoxFor(a => a.StartTime, new { @class = "form_control datepicker", @autocomplete = "off" })</div>
+            </div>
+            <div class="col-lg-3 mb-2">
+                <label>Nổi bật Đến ngày</label>
+                <div>@Html.TextBoxFor(a => a.EndTime, new { @class = "form_control datepicker", @autocomplete = "off" })</div>
+            </div>
+
+            <div class="col-lg-3 align-self-center">
+                <button type="submit" class="btn-search ">Tìm kiếm</button>
+            </div>
+        </div>
+    </form>
+    <p>Có tổng số <strong>@Model.EmployerLogs.TotalItemCount</strong> Lịch sử</p>
+    <div class="overflow-x-auto">
+        <form id="productList">
+            <table class="list_table tablecenter table-striped">
+                <tbody>
+                    <tr>
+                        <th width="15%">Ngày</th>
+                        <th width="80%">Số tiền</th>
+                        <th width="50px"></th>
+                    </tr>
+                    @foreach (var item in Model.EmployerLogs)
+                    {
+                        <tr data-id="@item.Id">
+                            <td>
+                                @item.CreateDate
+                            </td>
+                            <td>
+                                @Html.DisplayFor(a => item.Amount)
+                            </td>
+                            <td>
+                                <a href="javascript:;" onclick="deleteLog('@item.Id')" class="red-warring">Xóa</a>
+                            </td>
+                        </tr>
+                    }
+                    @if (Model.EmployerLogs.PageCount > 1)
+                    {
+                        <tr>
+                            <td colspan="10">
+                                @Html.PagedListPager(Model.EmployerLogs, page => Url.Action("History", new
+                           {
+                               page,
+                               startTime = Model.StartTime,
+                               endTime = Model.EndTime,
+                           }));
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </form>
+
+    </div>
+</div>
+@section scripts
+{
+    <script src="~/Scripts/jquery.daterangepicker.js"></script>
+    <script type="text/javascript">
+        function deleteLog(id) {
+            if (confirm("Bạn có chắc chắn muốn xóa này không?")) {
+                $.post("/UserVcms/DeleteHistory", { Id: id }, function (data) {
+                    if (data) {
+                        $.toast({
+                            text: 'Xóa thành công',
+                            position: 'bottom-right',
+                            icon: 'success',
+                        })
+                        $("tr[data-id='" + id + "']").fadeOut();
+                    }
+                    else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            icon: 'error',
+                        })
+                    }
+                });
+            }
+        }
+    </script>
+}

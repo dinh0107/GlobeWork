@@ -335,7 +335,7 @@ function Details() {
 
     $(".apply-form").submit(function (e) {
         e.preventDefault(); 
-        var buttonElement = $(".button1");
+        var buttonElement = $(".apply-btn");
         var formData = new FormData($(this)[0]); 
         $.ajax({
             url: "/Home/Apply", 
@@ -738,19 +738,19 @@ function articleDetail() {
     });
 }
 function User() {
-    $('.type-input').click(function () {
-        var input = $(this).prev('input');
-
-        if (input.attr('type') === 'password') {
-            input.attr('type', 'text');
-            $(this).find('i').removeClass('fa-eye').addClass('fa-eye-slash ');
-        } else {
-            input.attr('type', 'password');
-            $(this).find('i').removeClass('fa-eye-slash').addClass('fa-eye');
-        }
-    });
+   
 }
+$('.type-input').click(function () {
+    var input = $(this).prev('input');
 
+    if (input.attr('type') === 'password') {
+        input.attr('type', 'text');
+        $(this).find('i').removeClass('fa-eye').addClass('fa-eye-slash ');
+    } else {
+        input.attr('type', 'password');
+        $(this).find('i').removeClass('fa-eye-slash').addClass('fa-eye');
+    }
+});
 
 function ProfileJs() {
     $('.change-info').click(function (e) {
@@ -1515,3 +1515,81 @@ $('.sort-wage').change(function () {
         $("#list-item-sort").html(response);
     })
 })
+
+
+$(".qick-login").submit(function (e) {
+    e.preventDefault();
+    const formData = $(this).serializeArray();
+    $.post("/Home/Login", formData, function (data) {
+        if (data.success) {
+            new Notify({
+                status: 'success',
+                text: data.message,
+                effect: 'slide',
+                speed: 600,
+                showIcon: true,
+                showCloseButton: true,
+                autoclose: true,
+                autotimeout: 3000,
+                gap: 10,
+                distance: 20,
+                type: 3,
+                position: 'right bottom'
+            });
+            window.location.reload();
+        } else {
+            new Notify({
+                status: 'error',
+                text: data.message,
+                effect: 'slide',
+                speed: 600,
+                showIcon: true,
+                showCloseButton: true,
+                autoclose: true,
+                autotimeout: 3000,
+                gap: 10,
+                distance: 20,
+                type: 3,
+                position: 'right bottom'
+            });
+        }
+    })
+});
+$(".qick-regis").submit(function (e) {
+    e.preventDefault();
+    const formData = $(this).serializeArray();
+    $.post("/Home/Register", formData, function (data) {
+        if (data.success) {
+            new Notify({
+                status: 'success',
+                text: data.message,
+                effect: 'slide',
+                speed: 600,
+                showIcon: true,
+                showCloseButton: true,
+                autoclose: true,
+                autotimeout: 3000,
+                gap: 10,
+                distance: 20,
+                type: 3,
+                position: 'right bottom'
+            });
+            window.location.reload();
+        } else {
+            new Notify({
+                status: 'error',
+                text: data.message,
+                effect: 'slide',
+                speed: 600,
+                showIcon: true,
+                showCloseButton: true,
+                autoclose: true,
+                autotimeout: 3000,
+                gap: 10,
+                distance: 20,
+                type: 3,
+                position: 'right bottom'
+            });
+        }
+    })
+});

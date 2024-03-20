@@ -303,7 +303,7 @@ namespace GlobeWork.Controllers
             var model = new PublicMoneyViewModel
             {
                 Id = user.Id,
-                Price = user.Amount.ToString("N0"),
+                //Price = user.Amount.ToString("N0"),
             };
             return PartialView(model);
         }
@@ -322,6 +322,50 @@ namespace GlobeWork.Controllers
                 _unitOfWork.Save();
             }
             return RedirectToAction("ListEmployer");
+        }
+
+        public ActionResult History(int? page, int id , string startTime, string endTime )
+        {
+            var pageNumber = page ?? 1;
+            var pageSize = 30;
+            var log = _unitOfWork.EmployerLogRepository.GetQuery(a => a.UserId == id && a.EmployerLogType == EmployerLogType.PublicMoney, o => o.OrderByDescending(a => a.CreateDate));
+            if (startTime != null)
+            {
+                if (DateTime.TryParse(startTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var start))
+                {
+                    log = log.Where(a => a.CreateDate != null && DbFunctions.TruncateTime(a.CreateDate) >= DbFunctions.TruncateTime(start));
+                }
+            }
+
+            if (startTime != null && endTime != null)
+            {
+                if (DateTime.TryParse(startTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var start) &&
+                DateTime.TryParse(endTime, new CultureInfo("vi-VN"), DateTimeStyles.None, out var end))
+                {
+                    log = log.Where(a => a.CreateDate != null &&
+                                                     DbFunctions.TruncateTime(a.CreateDate) >= DbFunctions.TruncateTime(start) &&
+                                                     DbFunctions.TruncateTime(a.CreateDate) <= DbFunctions.TruncateTime(end));
+                }
+            }
+            var model = new HistotyEmployerViewModel{
+                EmployerLogs = log.ToPagedList(pageNumber , pageSize),
+                StartTime = startTime,
+                EndTime = endTime,
+                Id = id,
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public bool DeleteHistory(int id)
+        {
+            var log = _unitOfWork.EmployerLogRepository.GetById(id);
+            if(log == null)
+            {
+                return false;
+            }
+            _unitOfWork.EmployerLogRepository.Delete(log);
+            _unitOfWork.Save();
+            return true;
         }
         #endregion
 

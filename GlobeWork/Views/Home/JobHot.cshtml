@@ -55,7 +55,13 @@
             </div>
             foreach (var item in Model.JobPosts)
             {
-                <div class="job bg-white detail-job active ">
+                <div class="job bg-white detail-job @if (item.Hot != null && item.Hot >= DateTime.Now) { @Html.Raw("active") } ">
+                    @*@if (item.Hot != null && item.Hot >= DateTime.Now)
+                    {
+                        <div class="hot-job" data-tooltip="Việc làm tốt nhất" data-tooltip-position="top">
+                            <i class="fab fa-hotjar mr-1"></i> Hot
+                        </div>
+                    }*@
                     <div class="media ">
                         <div>
                             <a href="@Url.Action("JobDetail", new {url = item.Url})" class="job-name custom-w" data-tooltip="@item.Name" data-tooltip-position="top">@item.Name</a>
@@ -108,7 +114,7 @@
                         </div>
                         @if (email == "")
                         {
-                            <a href="@Url.Action("Login", "User" , new {returnUrl = Url.Action("JobHot")})" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                            <a href="#" data-target="#qick-form" data-toggle="modal" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
                         }
                         else
                         {

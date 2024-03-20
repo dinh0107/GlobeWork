@@ -91,6 +91,35 @@
         </div>
     </div>
 </footer>
+<div class="modal fade bd-example-modal-lg" id="qick-form" tabindex="-1" role="dialog" aria-labelledby="qick-form" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header qick-action pl-5 mb-2 align-items-center">
+                <ul class="nav nav-pills " id="pills-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active pl-0" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Đăng nhập</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Đăng ký</a>
+                    </li>
+                </ul>
+                <button type="button" class="close mr-2" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="tab-content px-5 pb-4" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                        @Html.Action("QickLogin")
+                    </div>
+                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                        @Html.Action("QickRegister")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @section scripts{
     <script>
        

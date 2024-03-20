@@ -23,6 +23,7 @@ using System.Threading.Tasks;
 using Antlr.Runtime;
 using System.Data.Entity;
 using GlobeWork.Migrations;
+using System.Web.Security;
 
 namespace GlobeWork.Controllers
 {
@@ -106,7 +107,7 @@ namespace GlobeWork.Controllers
 
         public PartialViewResult GetJob(int? wage, int? exp, int cityId = 0, int careerId = 0)
         {
-            var job = _unitOfWork.JobPostRepository.GetQuery(a => a.Active && a.Hot != null && a.Hot > DateTime.Now);
+            var job = _unitOfWork.JobPostRepository.GetQuery(a => a.Active  , o => o.OrderByDescending(a => a.Hot)).Take(60);
             if (cityId > 0)
             {
                 job = job.Where(a => a.CounId == cityId);
@@ -262,7 +263,7 @@ namespace GlobeWork.Controllers
                 return RedirectToAction("Index", "Home");
             }
             var jobCompany = _unitOfWork.JobPostRepository.GetQuery(a => a.Active && (a.CompanyId == job.CompanyId && a.Id != job.Id), o => o.OrderByDescending(a => a.CreateDate), 3);
-            var jobRelated = _unitOfWork.JobPostRepository.GetQuery(a => a.Active && (a.CareerId == job.CareerId && a.Id != job.Id), o => o.OrderByDescending(a => a.CreateDate), 5);
+            var jobRelated = _unitOfWork.JobPostRepository.GetQuery(a => a.Active && (a.CounId == job.CounId && a.Id != job.Id), o => o.OrderByDescending(a => a.Hot), 10);
             var jobCareers = job.Company.Careers.Select(c => c.Id).ToList();
             var companyRelate = _unitOfWork.CompanyRepository.GetQuery(a => a.EmployerId != job.Company.EmployerId && a.Careers.Any(c => jobCareers.Contains(c.Id))).Take(5);
             var follow = _unitOfWork.FollowRepository.GetQuery(a => a.UserId == User.Id);
@@ -286,7 +287,7 @@ namespace GlobeWork.Controllers
         public ActionResult JobHot(int? page, string name = "", int cityId = 0, int careerId = 0, int wage = 0)
         {
             var pageNumber = page ?? 1;
-            var job = _unitOfWork.JobPostRepository.GetQuery(a => a.Active && (a.Hot != null && a.Hot > DateTime.Now), o => o.OrderByDescending(a => a.Hot));
+            var job = _unitOfWork.JobPostRepository.GetQuery(a => a.Active , o => o.OrderByDescending(a => a.Hot));
             if (!string.IsNullOrEmpty(name))
             {
                 job = job.Where(a => a.Name.ToLower().Contains(name.ToLower()));
@@ -329,7 +330,7 @@ namespace GlobeWork.Controllers
             var like = _unitOfWork.LikeRepository.GetQuery(a => a.UserID == User.Id);
             var model = new JobHotViewModel
             {
-                JobPosts = job.ToPagedList(pageNumber, 9),
+                JobPosts = job.ToPagedList(pageNumber, 15),
                 Name = name,
                 CityId = cityId,
                 Wage = wage,
@@ -809,7 +810,7 @@ namespace GlobeWork.Controllers
             }
             if (cityId > 0)
             {
-                job = job.Where(a => a.Cities.Any(l => l.Id == cityId));
+                job = job.Where(a => a.CounId == cityId);
             }
             var follow = _unitOfWork.FollowRepository.GetQuery(a => a.UserId == User.Id && a.CompanyId == company.EmployerId);
             var like = _unitOfWork.LikeRepository.GetQuery(a => a.UserID == User.Id);
@@ -821,10 +822,10 @@ namespace GlobeWork.Controllers
                 Likes = like,
                 Name = name,
                 CareerId = careerId,
-                CityId = cityId,
+                CountryId = cityId,
                 Url = url,
                 Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate)),
-                Cities = _unitOfWork.CityRepository.Get(orderBy: a => a.OrderBy(l => l.Id))
+                Countries = _unitOfWork.CountryRepository.Get(orderBy: a => a.OrderBy(l => l.Id))
             };
             return View(model);
         }
@@ -903,7 +904,7 @@ namespace GlobeWork.Controllers
             }
             if (cityId > 0)
             {
-                study = study.Where(a => a.Cities.Any(l => l.Id == cityId));
+                study = study.Where(a => a.StudyAbroadCategory.CountryId == cityId);
             }
             var follow = _unitOfWork.FollowRepository.GetQuery(a => a.UserId == User.Id && a.CompanyId == company.EmployerId);
             var like = _unitOfWork.LikeRepository.GetQuery(a => a.UserID == User.Id);
@@ -914,10 +915,10 @@ namespace GlobeWork.Controllers
                 Follows = follow,
                 Likes = like,
                 Name = name,
-                CityId = cityId,
+                CountryId = cityId,
                 Url = url,
                 Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate)),
-                Cities = _unitOfWork.CityRepository.Get(orderBy: a => a.OrderBy(l => l.Id))
+                Countries = _unitOfWork.CountryRepository.Get(orderBy: a => a.OrderBy(l => l.Id))
             };
             return View(model);
         }
@@ -1532,6 +1533,87 @@ namespace GlobeWork.Controllers
             }
             return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
         }
+
+
+        public PartialViewResult QickLogin()
+        {
+            return PartialView();
+        }
+        [HttpPost , ValidateAntiForgeryToken]
+        public JsonResult Login(UserLoginModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = _unitOfWork.UserRepository.Get(a => a.Email == model.Email).SingleOrDefault();
+                if (user == null || !HtmlHelpers.VerifyHash(model.Password, "SHA256", user.Password))
+                {
+                    ModelState.AddModelError("", @"Tên đăng nhập hoặc mật khẩu không chính xác.");
+                    return Json(new { success = false, message = "Tên đăng nhập hoặc mật khẩu không chính xác." });
+                }
+                if (!user.Active)
+                {
+                    ModelState.AddModelError("", @"Tài khoản tạm thời bị khóa. Vui lòng liên hệ với quản trị viên.");
+                    return Json(new { success = false, message = "Tài khoản tạm thời bị khóa. Vui lòng liên hệ với quản trị viên." });
+                }
+
+                var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url + "|" + user.AvatarSocial;
+                var ticket = new FormsAuthenticationTicket(2, user.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
+                    userData, FormsAuthentication.FormsCookiePath);
+                var encTicket = FormsAuthentication.Encrypt(ticket);
+                Response.Cookies.Add(new HttpCookie(".ASPXAUTHMEMBER", encTicket));
+                return Json(new { success = true, redirectUrl = Url.Action("Index", "Home") });
+            }
+            return Json(new { success = false, message = "Vui lòng nhập đủ thông tin" });
+        }
+        [HttpPost, ValidateAntiForgeryToken]
+        public JsonResult Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var checkUser = _unitOfWork.UserRepository.GetQuery(a => a.Email.Equals(model.Email)).SingleOrDefault();
+                if (checkUser != null)
+                {
+                    ModelState.AddModelError("", @"Email đã được sử dụng!! Vui lòng nhập Email khác");
+                    return Json(new { success = false, message = "Email đã được sử dụng!! Vui lòng nhập Email khác" });
+                }
+                else
+                {
+                    var hashPass = HtmlHelpers.ComputeHash(model.Password, "SHA256", null);
+                    var user = new User
+                    {
+                        FullName = model.FullName,
+                        Password = hashPass,
+                        Email = model.Email,
+                        Active = true,
+                        Avatar = null,
+                        Cover = null,
+                        AvatarSocial = null,
+                        TypeRegister = TypeRegister.Website,
+                        Url = HtmlHelpers.ConvertToUnSign(null, model.FullName),
+                    };
+                    _unitOfWork.UserRepository.Insert(user);
+                    _unitOfWork.Save();
+                    var count = _unitOfWork.UserRepository.GetQuery(a => a.Url == user.Url).Count();
+                    if (count > 1)
+                    {
+                        user.Url += "-" + user.Id;
+                        _unitOfWork.Save();
+                    }
+                    var userData = user.Avatar + "|" + user.Id + "|" + user.Email + "|" + user.FullName + "|" + user.Url + "|" + user.AvatarSocial;
+                    var ticket = new FormsAuthenticationTicket(2, user.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
+                        userData, FormsAuthentication.FormsCookiePath);
+                    var encTicket = FormsAuthentication.Encrypt(ticket);
+                    Response.Cookies.Add(new HttpCookie(".ASPXAUTHMEMBER", encTicket));
+                    return Json(new { success = true, message = "Đăng ký thành công" });
+                }
+            }
+            return Json(new { success = false, message = "Vui lòng nhập đủ thông tin" });
+        }
+        public PartialViewResult QickRegister()
+        {
+            return PartialView();
+        }
+
         protected override void Dispose(bool disposing)
         {
             _unitOfWork.Dispose();

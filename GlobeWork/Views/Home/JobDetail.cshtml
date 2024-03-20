@@ -1,5 +1,6 @@
 ﻿@model GlobeWork.ViewModel.JobDetailViewModel
 @using Helpers;
+@using GlobeWork.Utils 
 @{
     ViewBag.Title = Model.Job.Name;
     ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("JobDetail", new { url = Model.Job.Url });
@@ -11,6 +12,11 @@
     var email = ViewContext.RouteData.Values["Email"].ToString();
     var request = Request.Url;
 }
+<style>
+    header{
+        position:initial;
+    }
+</style>
 <div class="bg-light py-4">
     <div class="container">
         <div class="company-cover-inner">
@@ -61,7 +67,7 @@
                     </a>
                     @if (email == "")
                     {
-                        <a href="@Url.Action("Login","User" , new {returnUrl = Url.Action("JobDetail", new { url = Model.Job.Url })})" class="btn btn-follow">
+                        <a href="#" data-target="#qick-form" data-toggle="modal" class="btn btn-follow">
                             <i class="fa-light fa-plus"></i> Theo dõi công ty
                         </a>
                     }
@@ -90,7 +96,7 @@
                         @Model.Job.Name
                     </h1>
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-4 col-md-4">
                             <div class="media section-info">
                                 <div class="section-info__icon">
                                     <i class="fa-sharp fa-solid fa-coins"></i>
@@ -101,7 +107,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-4 col-md-4">
                             <div class="media section-info">
                                 <div class="section-info__icon">
                                     <i class="fa-sharp fa-solid fa-location-dot"></i>
@@ -121,7 +127,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-4 col-md-4">
                             <div class="media section-info">
                                 <div class="section-info__icon">
                                     <i class="fa-solid fa-book-open-cover"></i>
@@ -153,18 +159,18 @@
                             }
                             else
                             {
-                                <div class="button1" data-toggle="modal" data-target="#exampleModalCenter" data-action="@Url.Action("ApplyForm", "Home")" data-id="@Model.Job.Id">Nộp hồ sơ</div>
+                                <div class="button1 apply-btn" data-toggle="modal" data-target="#exampleModalCenter" data-action="@Url.Action("ApplyForm", "Home")" data-id="@Model.Job.Id">Nộp hồ sơ</div>
                             }
                         }
                         else
                         {
-                            <a href="@Url.Action("Login", "User")" class="button1">Nộp hồ sơ</a>
+                            <a href="#" data-target="#qick-form" data-toggle="modal" class="button1">Nộp hồ sơ</a>
                         }
 
                         <div class="button2" data-toggle="modal" data-target="#Advise">Cần tư vấn</div>
                         @if (email == "")
                         {
-                            <a href="@Url.Action("Login","User" , new {returnUrl = Url.Action("JobDetail", new { url = Model.Job.Url })})" class="button3"><i class="fa-regular fa-heart mr-2"></i> Lưu tin </a>
+                            <a href="#" data-toggle="modal" data-target="#qick-form" class="button3"><i class="fa-regular fa-heart mr-2"></i> Lưu tin </a>
                         }
                         else
                         {
@@ -204,7 +210,7 @@
                         }
                     </div>
                 </div>
-                <div class="job-detail__box--left my-3">
+                <div class="job-detail__box--left my-3 job-section  " id="detail-job">
                     <div class="job-detail__information-detail--title">
                         Chi tiết tin tuyển dụng
                     </div>
@@ -258,7 +264,146 @@
                             @Html.Raw(Model.Job.WorkLocation)
                         </div>
                     }
+                <div class="box-ac">
+                    <div class="detail-title-box">
+                        Cách thức ứng tuyển
+                    </div>
+                    <div class="job-description__item--content">
+                        Ứng viên nộp hồ sơ trực tuyến bằng cách bấm <strong>Ứng tuyển</strong> ngay dưới đây.
+                    </div>
+                    <div class="job-detail__information-detail--actions-button box-apply-current">
+                        @if (email != "")
+                        {
+                            if (Model.ApplyJobs.Any())
+                            {
+                                <a href="#" class="job-detail__info--actions-button" data-toggle="modal">
+                                    Đã ứng tuyển
+                                </a>
+                            }
+                            else
+                            {
+                                <a href="#" class="job-detail__info--actions-button apply-btn" data-toggle="modal" data-target="#exampleModalCenter">
+                                    Ứng tuyển ngay
+                                </a>
+                            }
+                        }
+                        else
+                        {
+                            <a href="#" class="job-detail__info--actions-button" data-toggle="modal" data-target="#qick-form">
+                                Ứng tuyển ngay
+                            </a>
+                        }
+
+                        @if (email == "")
+                        {
+                            <div id="box-save-job-1257219" class="box-save-job  job-saved ">
+                                <a href="#" data-toggle="modal" data-target="#qick-form" class="job-detail__info--actions-button button-white" id="save-job">
+                                    Lưu tin
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            if (Model.Likes.Any(a => a.JobId == Model.Job.Id))
+                            {
+                                <div id="box-save-job-1257219" class="box-save-job  job-saved ">
+                                    <button data-toggle="modal" data-job="@Model.Job.Id"  class="job-detail__info--actions-button button-white unlike" id="save-job">
+                                        Bỏ lưu
+                                    </button>
+                                </div>
+                            }
+                            else
+                            {
+                                <div id="box-save-job-1257219" class="box-save-job  job-saved ">
+                                    <button data-toggle="modal" data-job="@Model.Job.Id"  class="job-detail__info--actions-button button-white like" id="save-job">
+                                        Lưu tin
+                                    </button>
+                                </div>
+                            }
+                        }
+                    </div>
                 </div>
+                </div>
+                @if (Model.JobPosts.Any())
+                {
+                    <div class="job-detail__box--left my-3 job-section" id="job-relate">
+                        <div class="job-detail__information-detail--title mb-3">
+                            Việc làm liên quan
+                        </div>
+                        @foreach (var item in Model.JobPosts)
+                        {
+                            <div class="job bg-white detail-job @if (item.Hot != null && item.Hot >= DateTime.Now) { @Html.Raw("active") } mb-2">
+                                <div class="media ">
+                                    <div>
+                                        <a href="@Url.Action("JobDetail", new {url = item.Url})" class="job-name" data-tooltip="@item.Name" data-tooltip-position="top">@item.Name</a>
+                                        <div class="company-name">
+                                            @item.Company.Name
+                                        </div>
+                                    </div>
+                                    <div class="media-body time-deadline text-right">
+                                        @if (item.ExpirationDate != null)
+                                        {
+                                            if (item.ExpirationDate > DateTime.Now)
+                                            {
+                                                @:Còn <strong>@Utils.DateCountDown(item.ExpirationDate)</strong> để ứng tuyển
+                                            }
+                                            else
+                                            {
+                                                @:Hết thời gian ứng tuyển
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @:Luôn tuyển
+                                        }
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between mt-1">
+                                    <div class="w-75">
+                                        <span class="info-job price">@Html.DisplayFor(a => item.Wages)</span>
+                                        <span class="info-job">
+                                            @if (item.Cities.Any())
+                                            {
+                                                if (item.Cities.Count > 1)
+                                                {
+
+                                                    <span data-tooltip="@string.Join(" , ", item.Cities.Select(city => city.Name))" data-tooltip-position="top">
+                                                        @item.Cities.Count Thành phố
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    foreach (var city in item.Cities.Take(1))
+                                                    {
+                                                        <span data-tooltip="@city.Name" data-tooltip-position="top">
+                                                            @city.Name
+                                                        </span>
+                                                    }
+                                                }
+                                            }
+                                        </span>
+                                    </div>
+                                    @if (email == "")
+                                    {
+                                        <a href="#" data-toggle="modal" data-target="#qick-form" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                                    }
+                                    else
+                                    {
+                                        if (Model.Likes.Any(a => a.JobId == item.Id))
+                                        {
+                                            <a href="javascripts:;" class="heart active unlikejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                                        }
+                                        else
+                                        {
+                                            <a href="javascripts:;" class="heart likejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+
                 @if (Model.Companies.Any())
                 {
                     <div class="job-detail__information-detail--title mt-3 mb-4">
@@ -287,7 +432,7 @@
                             </div>
                             @if (email == "")
                             {
-                                <a href="@Url.Action("Login","User" , new {returnUrl = Url.Action("JobDetail", new { url = Model.Job.Url })})" class="fl-samefield">
+                                <a href="#" data-toggle="modal" data-target="#qick-form" class="fl-samefield">
                                     @*<i class="fa-light fa-plus mr-2"></i>*@ Theo dõi
                                 </a>
                             }
@@ -307,9 +452,9 @@
                                 }
                             }
 
-                            <div class="tag-i">
-                                TOP 10
-                            </div>
+                            @*<div class="tag-i">
+                        TOP 10
+                    </div>*@
                         </div>
                     }
                 }
@@ -386,7 +531,7 @@
                                 </div>
                                 @if (email == "")
                                 {
-                                    <a href="@Url.Action("Login","User" , new {returnUrl = Url.Action("JobDetail", new { url = Model.Job.Url })})" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                                    <a href="#" data-toggle="modal" data-target="#qick-form" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
                                 }
                                 else
                                 {
@@ -405,82 +550,7 @@
                     </div>
                 }
 
-                @if (Model.JobPosts.Any())
-                {
-                    <div class="job-detail__box--right mt-3">
-                        <div class="job-detail__box--right-title">
-                            Việc làm liên quan
-                        </div>
-                        <form class="job-search-box" action="@Url.Action("Search")">
-                            <input type="text" name="keyword" required placeholder="Tên công việc, vị trí bạn muốn ứng tuyển..." />
-                            <button type="submit"><i class="fas fa-search"></i></button>
-                        </form>
-                        <hr />
-                        @foreach (var item in Model.JobPosts)
-                        {
-                            <div class="job-in-company pt-0 mb-3">
-                                <div class="media align-items-center">
-                                    <div class="company-avata border rounded rounded-circle">
-                                        @if (item.Company.Avatar != null)
-                                        {
-                                            <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Company.Avatar)" alt="@item.Company.Name" class="lazyload rounded-circle" />
-                                        }
-                                        else
-                                        {
-                                            <img src="~/Content/images/avatar-default.jpg" alt="@item.Company.Name" class="lazyload rounded-circle" />
-                                        }
-                                    </div>
-                                    <div class="media-body ml-2">
-                                        <a href="@Url.Action("JobDetail", new {url = item.Url})" class="job-in-company-name mt-0">@item.Name</a>
-                                        <div class="company-job-name">
-                                            @item.Company.Name
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="info-job-company resize-h">
-                                    <div class="info-job-company1 price">@Html.DisplayFor(a => item.Wages)</div>
-                                    <div class="info-job-company2">
-                                        @if (item.Cities.Any())
-                                        {
-                                            if (item.Cities.Count > 1)
-                                            {
-
-                                                <span data-tooltip="@string.Join(" , ", item.Cities.Select(city => city.Name))" data-tooltip-position="top">
-                                                    @item.Cities.Count Thành phố
-                                                </span>
-                                            }
-                                            else
-                                            {
-                                                foreach (var city in item.Cities.Take(1))
-                                                {
-                                                    <span data-tooltip="@city.Name" data-tooltip-position="top">
-                                                        @city.Name
-                                                    </span>
-                                                }
-                                            }
-                                        }
-                                    </div>
-                                </div>
-                                @if (email == "")
-                                {
-                                    <a href="@Url.Action("Login", "User")" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
-                                }
-                                else
-                                {
-                                    if (Model.Likes.Any(a => a.JobId == item.Id))
-                                    {
-                                        <a href="javascripts:;" class="heart active unlikejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
-                                    }
-                                    else
-                                    {
-                                        <a href="javascripts:;" class="heart likejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
-                                    }
-                                }
-                            </div>
-                        }
-                        @*<a href="" class="view-more-job">Xem thêm công việc<i class="fal fa-long-arrow-right ml-2"></i></a>*@
-                    </div>
-                }
+                
                 <div class="job-detail__box--right mt-3">
                     <div class="job-detail__box--right-title">
                         Chia sẻ công ty tới bạn bè
@@ -513,6 +583,70 @@
         </div>
     </div>
 </div>
+<div class="job-detail-fixed-menu" id="job-detail-fixed-menu" style="display: none;">
+    <div class="container">
+        <div class="job-detail-fixed-menu__left">
+            <div class="job-detail-fixed-menu__tabs">
+                <a href="#detail-job" class="job-detail-fixed-menu__tabs--item active" id="fixed-menu-tab-job-info">
+                    Chi tiết tin tuyển dụng
+                </a>
+                <a href="#job-relate" class="job-detail-fixed-menu__tabs--item" id="fixed-menu-tab-job-similar">
+                    Việc làm liên quan
+                </a>
+            </div>
+            <div class="job-detail-fixed-menu__actions" id="job-detail-fixed-menu-actions">
+                @if (email != "")
+                {
+                    if (Model.ApplyJobs.Any())
+                    {
+                        <a href="#" class="job-detail-fixed-menu__actions--button open-apply-modal" data-toggle="modal" data-target="">
+                            <span class="button-icon">
+                                <i class="fa-light fa-paper-plane"></i>
+                            </span>
+                            Đã ứng tuyển
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" class="job-detail-fixed-menu__actions--button open-apply-modal apply-btn" data-toggle="modal" data-target="#exampleModalCenter">
+                            <span class="button-icon">
+                                <i class="fa-light fa-paper-plane"></i>
+                            </span>
+                            Ứng tuyển ngay
+                        </a>
+                    }
+                }
+                else
+                {
+                    <a href="#" class="job-detail-fixed-menu__actions--button open-apply-modal" data-toggle="modal" data-target="#qick-form">
+                        <span class="button-icon">
+                            <i class="fa-light fa-paper-plane"></i>
+                        </span>
+                        Ứng tuyển ngay
+                    </a>
+                }
+                @*@if (Model.ApplyJobs.Any())
+        {
+            <a href="#" class="job-detail-fixed-menu__actions--button open-apply-modal">
+                <span class="button-icon">
+                    <i class="fa-light fa-paper-plane"></i>
+                </span>
+            </a>
+        }
+        else
+        {
+            <a href="#" class="job-detail-fixed-menu__actions--button open-apply-modal" data-toggle="modal" data-target="#exampleModalCenter">
+                <span class="button-icon">
+                    <i class="fa-light fa-paper-plane"></i>
+                </span>
+                Ứng tuyển ngay
+            </a>
+        }*@
+
+            </div>
+        </div>
+    </div>
+</div>
 @* Apply form *@
 <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -540,6 +674,7 @@
         </div>
     </div>
 </div>
+
 
 @* Advise form *@
 @if (id > 0)
@@ -579,6 +714,24 @@
         Details()
         ActionDetail()
         QickLike()
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 300) {
+                $('#job-detail-fixed-menu').addClass('show');
+            } else {
+                $('#job-detail-fixed-menu').removeClass('show');
+            }
+        });
+        $(window).scroll(function () {
+            var scrollDistance = $(window).scrollTop();
+            $('.job-section').each(function (i) {
+                var sectionTop = $(this).offset().top - 300; // Adjusted by 400px
+                if (sectionTop <= scrollDistance) {
+                    $('.job-detail-fixed-menu__tabs--item').removeClass('active');
+                    $('.job-detail-fixed-menu__tabs--item').eq(i).addClass('active');
+                }
+            });
+        }).scroll();
+
         $('input[type="radio"]').change(function () {
             var checkedValue = $('input[type="radio"]:checked').val();
             if (checkedValue === '1') {

@@ -32,6 +32,7 @@
                 <th style="width: 100px">STT</th>
                 <th style="width: 700px">Tên</th>
                 <th>Hoạt động</th>
+                <th>Bộ lọc</th>
                 <th>Việc làm</th>
                 <th style="width: 130px"></th>
             </tr>
@@ -45,6 +46,7 @@
                         <strong>@country.Name</strong>
                     </td>
                     <td>@Html.DisplayFor(model => country.Active)</td>
+                    <td>@Html.DisplayFor(model => country.Filter)</td>
                     <td>@Html.DisplayFor(model => country.Job)</td>
                     <td>
                         @Html.ActionLink("Sửa", "EditCountruy", new { id = country.Id }) -

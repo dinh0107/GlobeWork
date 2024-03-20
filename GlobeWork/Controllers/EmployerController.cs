@@ -311,20 +311,29 @@ namespace GlobeWork.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult Company(InserCompanyEmployerViewModel model, FormCollection fc)
         {
-            var company = _unitOfWork.CompanyRepository.GetQuery(a => a.EmployerId == User.Id).FirstOrDefault();
-            if (company == null)
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                var isPost = true;
+                var avatar = Request.Files["Company.Avatar"];
+                var cover = Request.Files["Company.Cover"];
+                if (avatar != null && avatar.ContentLength > 0)
                 {
-                    var isPost = true;
-                    var avatar = Request.Files["Company.Avatar"];
-                    var cover = Request.Files["Company.Cover"];
-                    if (avatar != null && avatar.ContentLength > 0)
+                    if (avatar.ContentType != "image/jpeg" & avatar.ContentType != "image/png" && avatar.ContentType != "image/gif")
                     {
-                        if (avatar.ContentType != "image/jpeg" & avatar.ContentType != "image/png" && avatar.ContentType != "image/gif")
+                        isPost = false;
+                        ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg");
+                        model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                        model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                        model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
+                        model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                        return View(model);
+                    }
+                    else
+                    {
+                        if (avatar.ContentLength > 4000 * 1024)
                         {
                             isPost = false;
-                            ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg");
+                            ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
                             model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                             model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                             model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
@@ -333,35 +342,35 @@ namespace GlobeWork.Controllers
                         }
                         else
                         {
-                            if (avatar.ContentLength > 4000 * 1024)
-                            {
-                                isPost = false;
-                                ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
-                                model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
-                                model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
-                                model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
-                                model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
-                                return View(model);
-                            }
-                            else
-                            {
-                                var imgPath = "/images/company/" + DateTime.Now.ToString("yyyy/MM/dd");
-                                HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
-                                var imgFileName = DateTime.Now.ToFileTimeUtc() + Path.GetExtension(avatar.FileName);
-                                model.Company.Avatar = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
-                                var newImage = System.Drawing.Image.FromStream(avatar.InputStream);
-                                var fixSizeImage = HtmlHelpers.FixedSize(newImage, 600, 600, false);
-                                HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
-                                avatar.SaveAs(Server.MapPath(Path.Combine(imgPath, imgFileName)));
-                            }
+                            var imgPath = "/images/company/" + DateTime.Now.ToString("yyyy/MM/dd");
+                            HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
+                            var imgFileName = DateTime.Now.ToFileTimeUtc() + Path.GetExtension(avatar.FileName);
+                            model.Company.Avatar = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
+                            var newImage = System.Drawing.Image.FromStream(avatar.InputStream);
+                            var fixSizeImage = HtmlHelpers.FixedSize(newImage, 600, 600, false);
+                            HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
+                            avatar.SaveAs(Server.MapPath(Path.Combine(imgPath, imgFileName)));
                         }
                     }
-                    if (cover != null && cover.ContentLength > 0)
+                }
+                if (cover != null && cover.ContentLength > 0)
+                {
+                    if (cover.ContentType != "image/jpeg" & cover.ContentType != "image/png" && cover.ContentType != "image/gif")
                     {
-                        if (cover.ContentType != "image/jpeg" & cover.ContentType != "image/png" && cover.ContentType != "image/gif")
+                        isPost = false;
+                        ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg");
+                        model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                        model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                        model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
+                        model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                        return View(model);
+                    }
+                    else
+                    {
+                        if (cover.ContentLength > 4000 * 1024)
                         {
                             isPost = false;
-                            ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg");
+                            ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
                             model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                             model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                             model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
@@ -370,64 +379,42 @@ namespace GlobeWork.Controllers
                         }
                         else
                         {
-                            if (cover.ContentLength > 4000 * 1024)
-                            {
-                                isPost = false;
-                                ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
-                                model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
-                                model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
-                                model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
-                                model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
-                                return View(model);
-                            }
-                            else
-                            {
-                                var imgPath = "/images/company/" + DateTime.Now.ToString("yyyy/MM/dd");
-                                HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
-                                var imgFileName = DateTime.Now.ToFileTimeUtc() + Path.GetExtension(cover.FileName);
-                                model.Company.Cover = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
-                                var newImage = System.Drawing.Image.FromStream(cover.InputStream);
-                                var fixSizeImage = HtmlHelpers.FixedSize(newImage, 1200, 1200, false);
-                                HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
-                                cover.SaveAs(Server.MapPath(Path.Combine(imgPath, imgFileName)));
-                            }
+                            var imgPath = "/images/company/" + DateTime.Now.ToString("yyyy/MM/dd");
+                            HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
+                            var imgFileName = DateTime.Now.ToFileTimeUtc() + Path.GetExtension(cover.FileName);
+                            model.Company.Cover = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
+                            var newImage = System.Drawing.Image.FromStream(cover.InputStream);
+                            var fixSizeImage = HtmlHelpers.FixedSize(newImage, 1200, 1200, false);
+                            HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
+                            cover.SaveAs(Server.MapPath(Path.Combine(imgPath, imgFileName)));
                         }
                     }
-                    if (isPost)
+                }
+                if (isPost)
+                {
+                    if (model.DateHot > 0)
                     {
-                        if (model.DateHot > 0)
+                        if (User.Amount != 0)
                         {
-                            if (User.Amount != 0)
+                            int amountToSubtract = Convert.ToInt32((ConfigSite.PriceCompany ?? 30000) * model.DateHot);
+                            string formattedAmountToSubtract = amountToSubtract.ToString("#,0") + "đ";
+                            if (amountToSubtract < User.Amount)
                             {
-                                int amountToSubtract = Convert.ToInt32((ConfigSite.PriceCompany ?? 30000) * model.DateHot);
-                                string formattedAmountToSubtract = amountToSubtract.ToString("#,0") + "đ";
-                                if (amountToSubtract < User.Amount)
+                                User.Amount -= amountToSubtract;
+                                Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + "</strong> để hiển thị tin <strong>Công ty</strong>" + "<strong class='text-danger'>" + model.DateHot + "</strong> ngày ở mục nổi bật", EmployerLogType.Deduction, User.Id, amountToSubtract);
+                                model.Company.Vipdate = DateTime.Now.AddDays(model.DateHot);
+                                //Update cookie
+                                HttpCookie cookie = Request.Cookies[".ASPXAUTHEMPLOYER"];
+                                if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
                                 {
-                                    User.Amount -= amountToSubtract;
-                                    Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + "</strong> để hiển thị tin <strong>Công ty</strong>" + "<strong class='text-danger'>" + model.DateHot + "</strong> ngày ở mục nổi bật", EmployerLogType.Deduction, User.Id, amountToSubtract);
-                                    model.Company.Vipdate = DateTime.Now.AddDays(model.DateHot);
-                                    //Update cookie
-                                    HttpCookie cookie = Request.Cookies[".ASPXAUTHEMPLOYER"];
-                                    if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
-                                    {
-                                        var userData = User.Avatar + "|" + User.Id + "|" + User.Email + "|" + User.FullName + "|" + User.Amount;
-                                        var ticket = new FormsAuthenticationTicket(2, User.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
-                                            userData, FormsAuthentication.FormsCookiePath);
-                                        var encTicket = FormsAuthentication.Encrypt(ticket);
-                                        HttpCookie updatedCookie = new HttpCookie(".ASPXAUTHEMPLOYER");
-                                        updatedCookie.Value = encTicket;
-                                        updatedCookie.Expires = DateTime.Now.AddDays(30);
-                                        Response.SetCookie(updatedCookie);
-                                    }
-                                }
-                                else
-                                {
-                                    ModelState.AddModelError("", @"Số tiền trong tài khoản của bạn không đủ vui lòng nạp tiền để tiếp tục sử dụng");
-                                    model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
-                                    model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
-                                    model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
-                                    model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
-                                    return View(model);
+                                    var userData = User.Avatar + "|" + User.Id + "|" + User.Email + "|" + User.FullName + "|" + User.Amount;
+                                    var ticket = new FormsAuthenticationTicket(2, User.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
+                                        userData, FormsAuthentication.FormsCookiePath);
+                                    var encTicket = FormsAuthentication.Encrypt(ticket);
+                                    HttpCookie updatedCookie = new HttpCookie(".ASPXAUTHEMPLOYER");
+                                    updatedCookie.Value = encTicket;
+                                    updatedCookie.Expires = DateTime.Now.AddDays(30);
+                                    Response.SetCookie(updatedCookie);
                                 }
                             }
                             else
@@ -440,38 +427,61 @@ namespace GlobeWork.Controllers
                                 return View(model);
                             }
                         }
-                        model.Company.EmployerId = User.Id;
-                        model.Company.Url = HtmlHelpers.ConvertToUnSign(null, model.Company.Url ?? model.Company.Name);
-                        model.Company.CityId = Convert.ToInt32(fc["city"]);
-                        _unitOfWork.CompanyRepository.Insert(model.Company);
-                        _unitOfWork.Save();
-                        var careers = fc["career"];
-                        if (!string.IsNullOrEmpty(careers))
+                        else
                         {
-                            var listCareer = careers.Split((',')).Select(int.Parse).ToList();
-                            if (model.Company.Careers == null)
-                            {
-                                model.Company.Careers = new List<Career>();
-                            }
-                            foreach (var item in listCareer)
-                            {
-                                var careerItem = _unitOfWork.CareerRepository.GetById(item);
-                                model.Company.Careers.Add(careerItem);
-                            }
-                            _unitOfWork.Save();
+                            ModelState.AddModelError("", @"Số tiền trong tài khoản của bạn không đủ vui lòng nạp tiền để tiếp tục sử dụng");
+                            model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                            model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                            model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
+                            model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            return View(model);
                         }
-                        var urlCount = _unitOfWork.CompanyRepository.GetQuery(a => a.Url == model.Company.Url).Count();
-                        if (urlCount > 1)
-                        {
-                            model.Company.Url += "-" + model.Company.EmployerId;
-                            _unitOfWork.Save();
-                        }
-                        return RedirectToAction("Company", new { result = "success" });
                     }
-
+                    model.Company.EmployerId = User.Id;
+                    model.Company.Url = HtmlHelpers.ConvertToUnSign(null, model.Company.Url ?? model.Company.Name);
+                    model.Company.CityId = Convert.ToInt32(fc["city"]);
+                    _unitOfWork.CompanyRepository.Insert(model.Company);
+                    _unitOfWork.Save();
+                    var careers = fc["career"];
+                    if (!string.IsNullOrEmpty(careers))
+                    {
+                        var listCareer = careers.Split((',')).Select(int.Parse).ToList();
+                        if (model.Company.Careers == null)
+                        {
+                            model.Company.Careers = new List<Career>();
+                        }
+                        foreach (var item in listCareer)
+                        {
+                            var careerItem = _unitOfWork.CareerRepository.GetById(item);
+                            model.Company.Careers.Add(careerItem);
+                        }
+                        _unitOfWork.Save();
+                    }
+                    var urlCount = _unitOfWork.CompanyRepository.GetQuery(a => a.Url == model.Company.Url).Count();
+                    if (urlCount > 1)
+                    {
+                        model.Company.Url += "-" + model.Company.EmployerId;
+                        _unitOfWork.Save();
+                    }
+                    return RedirectToAction("Company", new { result = "success" });
                 }
+
             }
-            else
+            model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+            model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+            model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
+            model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+            return View(model);
+        }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult UpdateCompany(InserCompanyEmployerViewModel model, FormCollection fc)
+        {
+            var company = _unitOfWork.CompanyRepository.GetQuery(a => a.EmployerId == model.Company.EmployerId).FirstOrDefault();
+            if(company == null)
+            {
+                return RedirectToAction("Company");
+            }
+            if (ModelState.IsValid)
             {
                 var avatar = Request.Files["Company.Avatar"];
                 var cover = Request.Files["Company.Cover"];
@@ -481,6 +491,7 @@ namespace GlobeWork.Controllers
                     {
                         ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg");
                         model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                        model.Company = company;
                         model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                         model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
                         model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
@@ -516,6 +527,7 @@ namespace GlobeWork.Controllers
                     {
                         ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg");
                         model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                        model.Company = company;
                         model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                         model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
                         model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
@@ -527,6 +539,7 @@ namespace GlobeWork.Controllers
                         {
                             ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
                             model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+                            model.Company = company;
                             model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                             model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
                             model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
@@ -644,6 +657,7 @@ namespace GlobeWork.Controllers
                 return RedirectToAction("Company", new { result = "update" });
             }
             model.Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
+            model.Company = company;
             model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
             model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
             model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
@@ -1860,6 +1874,23 @@ namespace GlobeWork.Controllers
         }
         #endregion
 
+        #region SearchCv
+        public ActionResult Campaigns(int? page , string keywords= "")
+        {
+            var pageNumber = page ?? 1;
+            var job = _unitOfWork.JobPostRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+            if (!string.IsNullOrEmpty(keywords))
+            {
+                job = job.Where(a => a.Name.Contains(keywords));
+            }
+            var model = new CampaignsViewModel
+            {
+                JobPosts = job.ToPagedList(pageNumber, 9),
+                Keyword = keywords
+            };
+            return View(model);
+        }
+        #endregion
         public ActionResult OrderTracking()
         {
             return View();

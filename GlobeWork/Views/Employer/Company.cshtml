@@ -2,10 +2,16 @@
 @{
     ViewBag.Title = "Công ty";
     Layout = "~/Views/Shared/_EmployerLayout.cshtml";
-    var date = Model.Company?.EstablishmentDate ?? null;
+    var date = Model.Company?.EstablishmentDate;
+    var formattedDate = date.HasValue ? date.Value.ToString("dd/MM/yyyy") : "";
     var id = Model.Company?.CityId ?? 0;
+    var action = "Company";
+    if(Model.Company != null)
+    {
+        action = "UpdateCompany";
+    }
 }
-@using (Html.BeginForm("Company", "Employer", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm(action, "Employer", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="contents-header">
         <h2>@ViewBag.Title</h2>
@@ -33,14 +39,7 @@
                                 @Html.HiddenFor(a => a.Company.EmployerId)
                                 <div class="company-cover-inner">
                                     <div class="cover-wrapper d-block position-relative">
-                                        @if (Model.Company.Cover != null)
-                                        {
-                                            <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", Model.Company.Cover)" class="lazyload">
-                                        }
-                                        else
-                                        {
-                                            <img src="~/Content/images/cover-null.png" class="lazyload">
-                                        }
+                                        <img id="coverImage" src="@(Model.Company.Cover != null ? Path.Combine("/images/company/", Model.Company.Cover) : "/Content/images/cover-null.png")" class="lazyload">
                                         <label for="Cover" class="change-cover">
                                             <i class="fa-solid fa-camera"></i> Chỉnh sửa ảnh bìa
                                         </label>
@@ -48,14 +47,7 @@
                                     </div>
                                     <div class="company-logo custom-h">
                                         <div class="company-image-logo shadow d-block position-relative overflow-hidden">
-                                            @if (Model.Company.Avatar != null)
-                                            {
-                                                <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", Model.Company.Avatar)" class="img-responsive lazyload">
-                                            }
-                                            else
-                                            {
-                                                <img src="~/Content/images/avatar-default.jpg" class="img-responsive">
-                                            }
+                                            <img src="@(Model.Company.Avatar != null ? Path.Combine("/images/company/", Model.Company.Avatar) : "/Content/images/avatar-default.jpg")" class="img-responsive">
                                             <label for="Avatar" class="change-avater">
                                                 <i class="fa-solid fa-camera"></i>
                                             </label>
@@ -138,7 +130,7 @@
                                     <div class="form-group">
                                         @*@Html.LabelFor(a => a.Company.EstablishmentDate)*@
                                         <label>Ngày thành lập</label>
-                                        <input type="text" placeholder="Ngày thành lập" class="form-control datepicker" name="Company.EstablishmentDate" value="@date" autocomplete="off" />
+                                        <input type="text" placeholder="Ngày thành lập" class="form-control datepicker" name="Company.EstablishmentDate" value="@formattedDate" autocomplete="off" />
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -238,6 +230,26 @@
 <link href="~/Content/datepicker.css" rel="stylesheet" />
 @section scripts{
     <script>
+        $('#Cover').change(function () {
+            var input = this;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#coverImage').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
+        $('#Avatar').change(function () {
+            var input = this;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('.img-responsive').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
         $(".datepicker").datepicker({
             dateFormat: 'dd/mm/yy',
             changeMonth: true,

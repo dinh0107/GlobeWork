@@ -37,7 +37,7 @@
                     <th>Số dư</th>
                     <th>Chức danh</th>
                     <th>Kích hoạt</th>
-                    <th style="width: 140px;"></th>
+                    <th style="width: 300px;"></th>
                 </tr>
                 @foreach (var user in Model.Employers)
                 {
@@ -51,6 +51,8 @@
                         <td>@Html.DisplayFor(a => user.Active)</td>
                         <td>
                             <a href="javascript:;" onclick="loadOrder(@user.Id)">Nạp tiền</a>
+                            -
+                            <a href="@Url.Action("History", new {id = user.Id})">Lịch sử</a>
                             -
                             <a href="@Url.Action("EditEmployer", new{userId = user.Id})">Sửa</a>
                             - <a href="javascript:;" onclick="deleteUser('@user.Id')" class="red-warring">Xóa</a>

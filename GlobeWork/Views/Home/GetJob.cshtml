@@ -8,9 +8,12 @@
         @foreach (var item in Model.JobPosts)
         {
             <div class="job border bg-white hot">
-                <div class="hot-job" data-tooltip="Việc làm tốt nhất" data-tooltip-position="top">
-                    <i class="fab fa-hotjar mr-1"></i> Hot
-                </div>
+                @if (item.Hot != null && item.Hot >= DateTime.Now)
+                {
+                    <div class="hot-job" data-tooltip="Việc làm tốt nhất" data-tooltip-position="top">
+                        <i class="fab fa-hotjar mr-1"></i> Hot
+                    </div>
+                }
                 <div class="media align-items-center">
                     <div class="rounded-circle border thuml-job">
                         @if (item.Company.Avatar != null)
@@ -28,8 +31,8 @@
                             @item.Company.Name
                         </div>
                         @*<div class="discount-job">
-                                Đơn hàng giảm phí 25 triệu
-                            </div>*@
+                    Đơn hàng giảm phí 25 triệu
+                </div>*@
                     </div>
                 </div>
                 <div class="d-flex align-items-center justify-content-between mt-3">
@@ -59,7 +62,7 @@
                     </div>
                     @if (email == "")
                     {
-                        <a href="@Url.Action("Login", "User")" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                        <a href="#" data-target="#qick-form" data-toggle="modal" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
                     }
                     else
                     {

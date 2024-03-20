@@ -64,7 +64,7 @@
                 <div class="box-follow">
                     @if (email == "")
                     {
-                        <a href="@Url.Action("Login","User")" class="btn btn-follow">
+                        <a href="#" data-target="#qick-form" data-toggle="modal" class="btn btn-follow">
                             <i class="fa-light fa-plus"></i> Theo dõi công ty
                         </a>
                     }
@@ -120,7 +120,7 @@
                         </div>
                         <div class="media-body ml-3">
                             <div class="year">
-                                @Html.DisplayFor(a => Model.Company.EstablishmentDate)
+                                @Model.Company.EstablishmentDate.ToString("dd/MM/yyyy")
                             </div>
                             <div class="info-employ-sub">
                                 Năm thành lập công ty
@@ -183,21 +183,21 @@
                     <hr />
                     <ul class="ul-reset company-contact">
                         <li>
-                            <a href="tel:@Model.Company.Phone">
+                            <a href="tel:@Model.Company.Phone" class="d-flex">
                                 <i class="fa-solid fa-phone"></i>
-                                @(Model.Company.Phone != null ? Model.Company.Phone : "Đang cập nhật")
+                                <span>@(Model.Company.Phone != null ? Model.Company.Phone : "Đang cập nhật")</span>
                             </a>
                         </li>
                         <li>
-                            <a href="@Model.Company.WebsiteUrl" target="_blank">
+                            <a href="@Model.Company.WebsiteUrl" target="_blank" class="d-flex">
                                 <i class="fa-sharp fa-solid fa-globe"></i>
-                                @(Model.Company.WebsiteUrl != null ? Model.Company.WebsiteUrl : "Đang cập nhật")
+                                <span>@(Model.Company.WebsiteUrl != null ? Model.Company.WebsiteUrl : "Đang cập nhật")</span>
                             </a>
                         </li>
                         <li>
                             <a href="" class="d-flex">
                                 <i class="fa-solid fa-location-dot"></i>
-                                @(Model.Company.Address != null ? Model.Company.Address : "Đang cập nhật")
+                                <span>@(Model.Company.Address != null ? Model.Company.Address : "Đang cập nhật")</span>
                             </a>
                         </li>
                     </ul>
@@ -299,7 +299,7 @@
                                     </div>
                                     @if (email == "")
                                     {
-                                        <a href="@Url.Action("Login", "User")" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                                        <a href="#" data-target="#qick-form" data-toggle="modal" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
                                     }
                                     else
                                     {

@@ -284,6 +284,12 @@
   }
 }
 @media (max-width: 900px) {
+  .job-detail-fixed-menu__left {
+    width: 100%;
+  }
+  .section-info {
+    margin-bottom: 1rem;
+  }
   .filter-btn {
     font-size: 0.75rem;
   }
@@ -326,6 +332,9 @@
   }
 }
 @media (max-width: 600px) {
+  .job-detail-fixed-menu__tabs--item.active {
+    display: none;
+  }
   .hot-keyword > span {
     display: none;
   }
@@ -525,5 +534,97 @@
   }
   .company-title {
     font-size: 1.25rem;
+  }
+  .cover-wrapper img {
+    height: 8.4375rem;
+  }
+  .company-image-logo {
+    width: 8.5625rem;
+    height: 8.5625rem;
+  }
+  .box-detail {
+    margin-top: 1rem;
+    position: relative;
+  }
+  .company-detail-name {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: flex;
+    gap: 0.325rem;
+    text-transform: uppercase;
+    align-items: center;
+    flex-direction: column-reverse;
+  }
+  .company-detail-name {
+    font-size: 1.1rem;
+    gap: 0.325rem;
+    text-align: center;
+  }
+  .company-subdetail {
+    flex-direction: column;
+  }
+  .company-detail-overview {
+    height: 23.6875rem;
+  }
+  .box-follow {
+    margin-top: 1.2rem;
+    flex-direction: column;
+  }
+  .tag-name {
+    display: none;
+  }
+  .box-follow a {
+    width: 11.5rem;
+    height: 3rem;
+    font-size: 0.9rem;
+  }
+  .company-detail-overview {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .company-subdetail a {
+    text-align: center;
+  }
+  .job-detail__name {
+    font-size: 1rem;
+  }
+  .section-info {
+    margin-bottom: 1rem;
+  }
+  .job-detail__info--section-content-value, .job-detail__info--section-content-title {
+    font-size: 0.9rem;
+  }
+  .button1 {
+    grid-area: 1/1/2/7;
+  }
+  .button2 {
+    grid-area: 2/1/3/4;
+  }
+  .button3 {
+    grid-area: 2/4/3/7;
+  }
+  .button-list {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+  .samefield-name {
+    font-size: 0.9rem;
+  }
+  .job-qtity {
+    font-size: 0.65rem;
+  }
+  .fl-samefield {
+    height: 2rem;
+    font-size: 0.8375rem;
+  }
+  .info-job-company {
+    flex-wrap: wrap;
+  }
+  .info-job-company div {
+    font-size: 0.65rem !important;
+  }
+  .job-in-company-name {
+    font-size: 0.9rem;
   }
 }
