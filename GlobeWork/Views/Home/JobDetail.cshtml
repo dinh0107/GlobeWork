@@ -237,15 +237,6 @@
                             @Html.Raw(Model.Job.Body)
                         </div>
                     }
-                    @if (Model.Job.Requirement != null)
-                    {
-                        <div class="detail-title-box">
-                            Yêu cầu ứng viên
-                        </div>
-                        <div class="content-detail">
-                            @Html.Raw(Model.Job.Requirement)
-                        </div>
-                    }
                     @if (Model.Job.Benefits != null)
                     {
                         <div class="detail-title-box">
@@ -253,6 +244,15 @@
                         </div>
                         <div class="content-detail">
                             @Html.Raw(Model.Job.Benefits)
+                        </div>
+                    }
+                    @if (Model.Job.Requirement != null)
+                    {
+                        <div class="detail-title-box">
+                            Yêu cầu ứng viên
+                        </div>
+                        <div class="content-detail">
+                            @Html.Raw(Model.Job.Requirement)
                         </div>
                     }
                     @if (Model.Job.WorkLocation != null)
@@ -264,65 +264,65 @@
                             @Html.Raw(Model.Job.WorkLocation)
                         </div>
                     }
-                <div class="box-ac">
-                    <div class="detail-title-box">
-                        Cách thức ứng tuyển
-                    </div>
-                    <div class="job-description__item--content">
-                        Ứng viên nộp hồ sơ trực tuyến bằng cách bấm <strong>Ứng tuyển</strong> ngay dưới đây.
-                    </div>
-                    <div class="job-detail__information-detail--actions-button box-apply-current">
-                        @if (email != "")
-                        {
-                            if (Model.ApplyJobs.Any())
+                    <div class="box-ac">
+                        <div class="detail-title-box">
+                            Cách thức ứng tuyển
+                        </div>
+                        <div class="job-description__item--content">
+                            Ứng viên nộp hồ sơ trực tuyến bằng cách bấm <strong>Ứng tuyển</strong> ngay dưới đây.
+                        </div>
+                        <div class="job-detail__information-detail--actions-button box-apply-current">
+                            @if (email != "")
                             {
-                                <a href="#" class="job-detail__info--actions-button" data-toggle="modal">
-                                    Đã ứng tuyển
-                                </a>
+                                if (Model.ApplyJobs.Any())
+                                {
+                                    <a href="#" class="job-detail__info--actions-button" data-toggle="modal">
+                                        Đã ứng tuyển
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="#" class="job-detail__info--actions-button apply-btn" data-toggle="modal" data-target="#exampleModalCenter">
+                                        Ứng tuyển ngay
+                                    </a>
+                                }
                             }
                             else
                             {
-                                <a href="#" class="job-detail__info--actions-button apply-btn" data-toggle="modal" data-target="#exampleModalCenter">
+                                <a href="#" class="job-detail__info--actions-button" data-toggle="modal" data-target="#qick-form">
                                     Ứng tuyển ngay
                                 </a>
                             }
-                        }
-                        else
-                        {
-                            <a href="#" class="job-detail__info--actions-button" data-toggle="modal" data-target="#qick-form">
-                                Ứng tuyển ngay
-                            </a>
-                        }
 
-                        @if (email == "")
-                        {
-                            <div id="box-save-job-1257219" class="box-save-job  job-saved ">
-                                <a href="#" data-toggle="modal" data-target="#qick-form" class="job-detail__info--actions-button button-white" id="save-job">
-                                    Lưu tin
-                                </a>
-                            </div>
-                        }
-                        else
-                        {
-                            if (Model.Likes.Any(a => a.JobId == Model.Job.Id))
+                            @if (email == "")
                             {
                                 <div id="box-save-job-1257219" class="box-save-job  job-saved ">
-                                    <button data-toggle="modal" data-job="@Model.Job.Id"  class="job-detail__info--actions-button button-white unlike" id="save-job">
-                                        Bỏ lưu
-                                    </button>
+                                    <a href="#" data-toggle="modal" data-target="#qick-form" class="job-detail__info--actions-button button-white" id="save-job">
+                                        Lưu tin
+                                    </a>
                                 </div>
                             }
                             else
                             {
-                                <div id="box-save-job-1257219" class="box-save-job  job-saved ">
-                                    <button data-toggle="modal" data-job="@Model.Job.Id"  class="job-detail__info--actions-button button-white like" id="save-job">
-                                        Lưu tin
-                                    </button>
-                                </div>
+                                if (Model.Likes.Any(a => a.JobId == Model.Job.Id))
+                                {
+                                    <div id="box-save-job-1257219" class="box-save-job  job-saved ">
+                                        <button data-toggle="modal" data-job="@Model.Job.Id" class="job-detail__info--actions-button button-white unlike" id="save-job">
+                                            Bỏ lưu
+                                        </button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div id="box-save-job-1257219" class="box-save-job  job-saved ">
+                                        <button data-toggle="modal" data-job="@Model.Job.Id" class="job-detail__info--actions-button button-white like" id="save-job">
+                                            Lưu tin
+                                        </button>
+                                    </div>
+                                }
                             }
-                        }
+                        </div>
                     </div>
-                </div>
                 </div>
                 @if (Model.JobPosts.Any())
                 {
