@@ -189,4 +189,17 @@ namespace GlobeWork.ViewModel
         public IEnumerable<Country> Countries { get; set; }
         public IEnumerable<City> Citys { get; set; }
     }
+    public class ListServiceViewModel
+    {
+        public IPagedList<Service> Services { get; set; }
+        public string Name { get; set; }
+        public int Type { get; set; }
+        //public IEnumerable<City> Citys { get; set; }
+    }
+    public class ServiceViewModel
+    {
+        public Service Service { get; set; }
+        [Display(Name = "Giá")]
+        public string Amount { get; set; }
+    }
 }

@@ -208,6 +208,11 @@ namespace GlobeWork.ViewModel
         public IEnumerable<JobType> JobTypes { get; set; }
         public IEnumerable<Rank> Ranks { get; set; }
         public IEnumerable<City> Cities { get; set; }
+
+        [Display(Name = "Số ngày hiển thị nổi bật"), RegularExpression(@"\d+", ErrorMessage = "Chỉ nhập số nguyên dương"), UIHint("NumberBox")]
+        public int Date { get; set; }
+        [Display(Name = "Trừ tiền")]
+        public bool TruTien { get; set; }
     }
     public class AdminEditCandidateViewModel
     {

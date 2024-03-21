@@ -1,0 +1,68 @@
+﻿@model GlobeWork.ViewModel.ServiceViewModel
+@{
+    ViewBag.Title = "Thêm mới gói hiển thị";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<style>
+    .form_name {
+        width: 200px;
+    }
+</style>
+<h2>Thêm mới gói hiển thị</h2>
+<a class="btn quick-link" href="@Url.Action("ListService")"><i class="far fa-list mr-1"></i> Danh sách gói hiển thị</a>
+<div class="box_content">
+    @using (Html.BeginForm("Service", "Vcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.ValidationSummary(true)
+        <table class="form_table">
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Service.TypeService)</td>
+                <td class="form_text">@Html.EnumDropDownListFor(model => model.Service.TypeService, new { @class = "form_control w300" })</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Service.Name)</td>
+                <td class="form_text">@Html.EditorFor(model => model.Service.Name)</td>
+            </tr>
+            @*<tr>
+                    <td class="form_name">@Html.LabelFor(model => model.Article.Description)</td>
+                    <td class="form_text">
+                        @Html.EditorFor(model => model.Article.Description)
+                        @Html.ValidationMessageFor(model => model.Article.Description)
+                    </td>
+                </tr>*@
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Amount)</td>
+                <td class="form_text pt-3">@Html.TextBoxFor(model => model.Amount, new { @class = "input-number" })</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Service.IntDate)</td>
+                <td class="form_text">@Html.EditorFor(model => model.Service.IntDate)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Service.Sort)</td>
+                <td class="form_text">@Html.EditorFor(model => model.Service.Sort)</td>
+            </tr>
+            <tr>
+                <td class="form_name">@Html.LabelFor(model => model.Service.Active)</td>
+                <td class="form_text">@Html.CheckBoxFor(model => model.Service.Active, new { @checked = "checked" })</td>
+            </tr>
+            <tr>
+                <td class="form_name"></td>
+                <td class="form_text">
+                    <input type="submit" class="btn quick-link" value="Thêm mới" />
+                </td>
+            </tr>
+        </table>
+    }
+</div>
+@section scripts{
+    <script src="~/Scripts/jquery.maskMoney.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".input-number").maskMoney({
+                precision: 0,
+                thousands: ','
+            });
+        });
+    </script>
+}

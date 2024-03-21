@@ -1383,17 +1383,116 @@ namespace GlobeWork.Controllers
 
         #endregion
 
-        //[HttpPost]
-        //public bool UpdateCity(int id)
-        //{
-        //    var city = _unitOfWork.CityRepository.Get();
-        //    foreach(var item in city)
-        //    {
-        //        item.CountruyId = id;
-        //    }
-        //    _unitOfWork.Save();
-        //    return true;
-        //}
+        public ActionResult ListService(int? page , string name = "" , int type = 0 )
+        {
+            var pageNumber = page ?? 1;
+            var service = _unitOfWork.ServiceRepository.Get(orderBy: a => a.OrderByDescending(o => o.CreateDate));
+            if (!string.IsNullOrEmpty(name))
+            {
+                service = service.Where(a => a.Name.Contains(name));
+            }
+            if(type > 0)
+            {
+                switch(type)
+                {
+                    case 1:
+                        service = service.Where(a => a.TypeService == TypeService.Job);
+                        break;
+                    case 2:
+                        service = service.Where(a => a.TypeService == TypeService.StudyAbroad);
+                        break;
+                    case 3:
+                        service = service.Where(a => a.TypeService == TypeService.Company);
+                        break;
+                }
+            }
+            var model = new ListServiceViewModel
+            {
+                Services = service.ToPagedList(pageNumber , 10),
+                Name = name,
+                Type = type,
+            };
+            return View(model);
+        }
+        public ActionResult Service()
+        {
+            var model = new ServiceViewModel
+            {
+               Service = new Service { Sort = 1, IntDate = 1 , Active = true }
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Service(ServiceViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.Amount != null)
+                {
+                    model.Service.Amount = Convert.ToDecimal(model.Amount.Replace(",", ""));
+                }
+                _unitOfWork.ServiceRepository.Insert(model.Service);
+                _unitOfWork.Save();
+                return RedirectToAction("ListService" , new {result = "success"});
+            }
+            return View(model);
+        }
+        public ActionResult EditService(int id)
+        {
+            var service = _unitOfWork.ServiceRepository.GetById(id);
+            if(service ==  null)
+            {
+                return RedirectToAction("Service");
+            }
+            var model = new ServiceViewModel
+            {
+                Service = service,
+                Amount = service.Amount?.ToString("N0"),
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public ActionResult EditService(ServiceViewModel model)
+        {
+            var service = _unitOfWork.ServiceRepository.GetById(model.Service.Id);
+            if(service == null)
+            {
+                return RedirectToAction("Service");
+            }
+            if (ModelState.IsValid)
+            {
+                if (model.Amount != null)
+                {
+                    service.Amount = Convert.ToDecimal(model.Amount.Replace(",", ""));
+                }
+                else
+                {
+                    service.Amount = null;
+                }
+                service.Name = model.Service.Name;
+                service.IntDate = model.Service.IntDate;
+                service.Sort = model.Service.Sort;
+                service.Active = model.Service.Active;
+                service.TypeService = model.Service.TypeService;
+                _unitOfWork.Save();
+                return RedirectToAction("ListService", new { result = "success" });
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        public bool DeleteService(int id)
+        {
+            var service = _unitOfWork.ServiceRepository.GetById(id);
+            if(service  == null)
+            {
+                return false;   
+            }
+            _unitOfWork.ServiceRepository.Delete(service);
+            _unitOfWork.Save();
+            return true;
+        }
         protected override void Dispose(bool disposing)
         {
             _unitOfWork.Dispose();

@@ -854,7 +854,8 @@ header {
   margin-bottom: 0.625rem;
 }
 .body-support i {
-  margin-right: 0.625rem;
+  width: 1.5rem;
+  text-align: left;
 }
 .body-support span {
   display: -webkit-box;
@@ -1176,6 +1177,7 @@ footer {
   gap: 0.625rem;
   text-transform: uppercase;
   align-items: center;
+  /*@include truncate(1);*/
 }
 
 .tag-name {
@@ -1280,7 +1282,7 @@ footer {
 
 .job-detail__name {
   color: #000;
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 700;
 }
 
@@ -1597,9 +1599,11 @@ footer {
 .list-img .previous-fb {
   left: 0;
   z-index: 1;
+  color: #fff;
 }
 .list-img .next-fb {
   z-index: 1;
+  color: #fff;
   right: 0;
 }
 
@@ -3834,8 +3838,8 @@ summary {
 }
 
 .job-detail-fixed-menu__tabs--item.active, .job-detail-fixed-menu__tabs--item:hover {
-  border-bottom: 2px solid #00b14f;
-  color: #00b14f;
+  border-bottom: 2px solid #66BC46;
+  color: #66BC46;
 }
 
 .job-detail-fixed-menu__actions {
@@ -3923,4 +3927,45 @@ summary {
   border-bottom: 2px solid #66BC46 !important;
   color: #66BC46;
   border-radius: 0;
+}
+
+.price-job {
+  align-items: center;
+  color: #66BC46 !important;
+  display: flex;
+  font-size: 14px;
+  font-weight: 600;
+  justify-content: flex-end;
+  font-style: normal !important;
+}
+
+.apply-url {
+  align-items: center;
+  background: #CCF2DD;
+  border-radius: 3px;
+  /*color: $green;*/
+  display: flex;
+  font-size: 12px;
+  font-weight: 400;
+  height: 28px;
+  line-height: 16px;
+  padding: 6px 16px;
+}
+
+.right-item {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+.right-item .heart {
+  align-items: center;
+  background: #F2FBF6 !important;
+  color: #66BC46;
+  display: inline-flex;
+  font-size: 15px;
+  height: 28px;
+  justify-content: center;
+  padding: 0 8px;
+  white-space: nowrap;
+  width: 28px;
 }

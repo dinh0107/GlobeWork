@@ -1,0 +1,88 @@
+﻿@model GlobeWork.ViewModel.ListServiceViewModel
+@using GlobeWork.Models
+@{
+    var i = 1;
+    ViewBag.Title = "Danh sách gói";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+<h2>Danh sách gói hiển thị</h2>
+<a class="btn quick-link" href="@Url.Action("Service")"><i class="fal fa-plus-circle mr-1"></i>Thêm gói hiển thị</a>
+<div class="box_content">
+    <form action="@Url.Action("ListService")" method="get">
+        <div class="row mb-3">
+            <div class="col-lg-4">
+                <label>Tên đăng nhập</label>
+                @Html.TextBoxFor(a => a.Name, new { @class = "w300 mb-0" })
+            </div>
+            <div class="col-lg-4 align-self-end">
+                <button type="submit" class="btn-search">Tìm kiếm</button>
+            </div>
+        </div>
+    </form>
+    <p>Có tổng số <strong>@Model.Services.TotalItemCount</strong> gói hiển thị</p>
+    <table class="list_table tablecenter table-striped">
+        <tbody>
+            <tr>
+                <th>STT</th>
+                <th>Tên gói</th>
+                <th>Số ngày</th>
+                <th>Giá</th>
+                <th>Loại</th>
+                <th>Hoạt động</th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model.Services)
+            {
+                <tr data-id="@item.Id">
+                    <td>@i</td>
+                    <td class="left">
+                        @item.Name
+                    </td>
+                    <td>@item.IntDate</td>
+                    <td>
+                        @if (item.Amount > 0)
+                        {
+                           @Html.DisplayFor(a => item.Amount)
+                        }
+                        else
+                        {
+                            @:Miễn phí
+                        }
+                    </td>
+                    <td>@Html.DisplayFor(a => item.TypeService)</td>
+                    <td>@Html.DisplayFor(a => item.Active)</td>
+                    <td class="list-icon">
+                        @Html.ActionLink("Sửa", "EditService", new { id = item.Id }) -
+                        @*@Html.ActionLink("Đổi mật khẩu", "UserChangePassword", new { userId = user.Id }) -*@
+                        <a href="javascript:;" class="red-warring" onclick="deleteSv('@item.Id')">Xóa</a>
+                    </td>
+                </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    function deleteSv(id) {
+        if (confirm("Bạn có chắc chắn xóa gói này không?")) {
+            $.post("/Vcms/DeleteService", { id: id }, function (data) {
+                if (data) {
+                    $.toast({
+                        text: 'Xóa thành công',
+                        position: 'bottom-right',
+                        icon: 'success',
+                    })
+                    $("tr[data-id='" + id + "']").fadeOut();
+                } else {
+                    $.toast({
+                        text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                        icon: 'error',
+                    })
+                }
+            });
+        }
+    }
+</script>

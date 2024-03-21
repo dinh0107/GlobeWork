@@ -1,6 +1,6 @@
 ﻿@model GlobeWork.ViewModel.JobDetailViewModel
 @using Helpers;
-@using GlobeWork.Utils 
+@using GlobeWork.Utils
 @{
     ViewBag.Title = Model.Job.Name;
     ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("JobDetail", new { url = Model.Job.Url });
@@ -13,8 +13,8 @@
     var request = Request.Url;
 }
 <style>
-    header{
-        position:initial;
+    header {
+        position: initial;
     }
 </style>
 <div class="bg-light py-4">
@@ -113,16 +113,17 @@
                                     <i class="fa-sharp fa-solid fa-location-dot"></i>
                                 </div>
                                 <div class="media-body">
-                                    <span class="job-detail__info--section-content-title">Địa điểm</span>
+                                    <span class="job-detail__info--section-content-title">Quốc gia</span>
                                     <span class="job-detail__info--section-content-value">
-                                        @foreach (var countruy in Model.Job.Cities)
-                                        {
-                                            @countruy.Name
-                                            if (countruy != Model.Job.Cities.Last())
+                                        @*@foreach (var countruy in Model.Job.Cities)
                                             {
-                                                @: ,
-                                            }
-                                        }
+                                                @countruy.Name
+                                                if (countruy != Model.Job.Cities.Last())
+                                                {
+                                                    @: ,
+                                                }
+                                            }*@
+                                        @Html.DisplayFor(a => Model.Job.Country.Name)
                                     </span>
                                 </div>
                             </div>
@@ -133,7 +134,7 @@
                                     <i class="fa-solid fa-book-open-cover"></i>
                                 </div>
                                 <div class="media-body">
-                                    <span class="job-detail__info--section-content-title">Yêu cầu</span>
+                                    <span class="job-detail__info--section-content-title">Kinh nghiệm</span>
                                     <span class="job-detail__info--section-content-value">@Html.DisplayFor(a => a.Job.Experiences)</span>
                                 </div>
                             </div>
@@ -183,30 +184,6 @@
                             {
                                 <div class="button3 like" data-job="@Model.Job.Id"><i class="fa-regular fa-heart mr-2 heart-detail"></i> Lưu tin </div>
                             }
-                        }
-                    </div>
-                </div>
-                <div class="job-detail__box--left my-3">
-                    <div class="detail-title-box">
-                        Từ khóa công việc
-                    </div>
-                    <div class="d-flex flex-row">
-                        @foreach (var item in Model.Job.Skills)
-                        {
-                            <div class="deadline mr-2">
-                                @item.SkillName
-                            </div>
-                        }
-                    </div>
-                    <div class="detail-title-box">
-                        Khu vực
-                    </div>
-                    <div class="d-flex flex-row">
-                        @foreach (var item in Model.Job.Cities)
-                        {
-                            <div class="deadline mr-2">
-                                @item.Name
-                            </div>
                         }
                     </div>
                 </div>
@@ -322,6 +299,17 @@
                                 }
                             }
                         </div>
+                        <div class="job-description__item--content">
+                            Hạn nộp hồ sơ:
+                            @if (Model.Job.ExpirationDate != null)
+                            {
+                                @Html.DisplayFor(a => a.Job.ExpirationDate)
+                            }
+                            else
+                            {
+                                @:Luôn tuyển
+                            }
+                        </div>
                     </div>
                 </div>
                 @if (Model.JobPosts.Any())
@@ -341,21 +329,9 @@
                                         </div>
                                     </div>
                                     <div class="media-body time-deadline text-right">
-                                        @if (item.ExpirationDate != null)
-                                        {
-                                            if (item.ExpirationDate > DateTime.Now)
-                                            {
-                                                @:Còn <strong>@Utils.DateCountDown(item.ExpirationDate)</strong> để ứng tuyển
-                                            }
-                                            else
-                                            {
-                                                @:Hết thời gian ứng tuyển
-                                            }
-                                        }
-                                        else
-                                        {
-                                            @:Luôn tuyển
-                                        }
+                                        <div class="price-job">
+                                            @Html.DisplayFor(a => item.Wages)
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between mt-1">
@@ -383,21 +359,24 @@
                                             }
                                         </span>
                                     </div>
-                                    @if (email == "")
-                                    {
-                                        <a href="#" data-toggle="modal" data-target="#qick-form" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
-                                    }
-                                    else
-                                    {
-                                        if (Model.Likes.Any(a => a.JobId == item.Id))
+                                    <div class="w-25 right-item">
+                                        <a href="@Url.Action("JobDetail", new {url = item.Url})" class="apply-url">Ứng tuyển</a>
+                                        @if (email == "")
                                         {
-                                            <a href="javascripts:;" class="heart active unlikejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                                            <a href="#" data-tooltip="Phải đăng nhập để lưu tin" data-tooltip-position="top" data-toggle="modal" data-target="#qick-form" class="heart"><i class="fa-regular fa-heart"></i></a>
                                         }
                                         else
                                         {
-                                            <a href="javascripts:;" class="heart likejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                                            if (Model.Likes.Any(a => a.JobId == item.Id))
+                                            {
+                                                <a href="javascripts:;" class="heart active unlikejob" data-id="@item.Id"><i class="fa-regular fa-heart"></i></a>
+                                            }
+                                            else
+                                            {
+                                                <a href="javascripts:;" class="heart likejob" data-id="@item.Id"><i class="fa-regular fa-heart"></i></a>
+                                            }
                                         }
-                                    }
+                                    </div>
                                 </div>
                             </div>
                         }
@@ -453,13 +432,54 @@
                             }
 
                             @*<div class="tag-i">
-                        TOP 10
-                    </div>*@
+                                    TOP 10
+                                </div>*@
                         </div>
                     }
                 }
             </div>
             <div class="col-xl-4">
+                <div class="job-detail__box--right mb-3">
+                    <div class="job-detail__information-detail--title mb-3">
+                        Thông tin chung
+                    </div>
+                    <div class="media section-info mt-3">
+                        <div class="section-info__icon">
+                            <i class="fa-solid fa-ranking-star"></i>
+                        </div>
+                        <div class="media-body">
+                            <span class="job-detail__info--section-content-title">Cấp bậc</span>
+                            <span class="job-detail__info--section-content-value">@Model.Job.Rank.Name</span>
+                        </div>
+                    </div>
+                    <div class="media section-info mt-4">
+                        <div class="section-info__icon">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div class="media-body">
+                            <span class="job-detail__info--section-content-title">Số lượng tuyển</span>
+                            <span class="job-detail__info--section-content-value">@Model.Job.Quantity</span>
+                        </div>
+                    </div>
+                    <div class="media section-info mt-4">
+                        <div class="section-info__icon">
+                            <i class="fa-solid fa-briefcase"></i>
+                        </div>
+                        <div class="media-body">
+                            <span class="job-detail__info--section-content-title">Hình thức làm việc</span>
+                            <span class="job-detail__info--section-content-value">@Model.Job.JobType.Name</span>
+                        </div>
+                    </div>
+                    <div class="media section-info mt-4">
+                        <div class="section-info__icon">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div class="media-body">
+                            <span class="job-detail__info--section-content-title">Giới tính</span>
+                            <span class="job-detail__info--section-content-value">@Model.Job.Gender</span>
+                        </div>
+                    </div>
+                </div>
                 @if (Model.JobCompanys.Any())
                 {
                     <div class="job-detail__box--right ">
@@ -550,7 +570,30 @@
                     </div>
                 }
 
-                
+                <div class="job-detail__box--right mt-3">
+                    <div class="detail-title-box">
+                        Từ khóa công việc
+                    </div>
+                    <div class="d-flex flex-row mt-2">
+                        @foreach (var item in Model.Job.Skills)
+                        {
+                            <div class="deadline mr-2">
+                                @item.SkillName
+                            </div>
+                        }
+                    </div>
+                    <div class="detail-title-box mt-3">
+                        Khu vực
+                    </div>
+                    <div class="d-flex flex-row mt-2">
+                        @foreach (var item in Model.Job.Cities)
+                        {
+                            <div class="deadline mr-2">
+                                @item.Name
+                            </div>
+                        }
+                    </div>
+                </div>
                 <div class="job-detail__box--right mt-3">
                     <div class="job-detail__box--right-title">
                         Chia sẻ công ty tới bạn bè
@@ -626,22 +669,22 @@
                     </a>
                 }
                 @*@if (Model.ApplyJobs.Any())
-        {
-            <a href="#" class="job-detail-fixed-menu__actions--button open-apply-modal">
-                <span class="button-icon">
-                    <i class="fa-light fa-paper-plane"></i>
-                </span>
-            </a>
-        }
-        else
-        {
-            <a href="#" class="job-detail-fixed-menu__actions--button open-apply-modal" data-toggle="modal" data-target="#exampleModalCenter">
-                <span class="button-icon">
-                    <i class="fa-light fa-paper-plane"></i>
-                </span>
-                Ứng tuyển ngay
-            </a>
-        }*@
+                    {
+                        <a href="#" class="job-detail-fixed-menu__actions--button open-apply-modal">
+                            <span class="button-icon">
+                                <i class="fa-light fa-paper-plane"></i>
+                            </span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" class="job-detail-fixed-menu__actions--button open-apply-modal" data-toggle="modal" data-target="#exampleModalCenter">
+                            <span class="button-icon">
+                                <i class="fa-light fa-paper-plane"></i>
+                            </span>
+                            Ứng tuyển ngay
+                        </a>
+                    }*@
 
             </div>
         </div>

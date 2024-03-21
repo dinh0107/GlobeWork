@@ -413,6 +413,14 @@
     <Compile Include="Migrations\202403200809274_RequestDeposit.Designer.cs">
       <DependentUpon>202403200809274_RequestDeposit.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202403210135043_add-service.cs" />
+    <Compile Include="Migrations\202403210135043_add-service.Designer.cs">
+      <DependentUpon>202403210135043_add-service.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202403210238259_add-service-price.cs" />
+    <Compile Include="Migrations\202403210238259_add-service-price.Designer.cs">
+      <DependentUpon>202403210238259_add-service-price.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Advise.cs" />
@@ -453,6 +461,7 @@
     <Compile Include="ViewModel\UserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\accessdenied.css" />
     <Content Include="Content\adminSite.css" />
     <Content Include="Content\adminSite.min.css" />
     <Content Include="Content\admin\bg-login.jpg" />
@@ -1025,6 +1034,10 @@
     <Content Include="Views\UserVcms\History.cshtml" />
     <Content Include="Views\Home\QickLogin.cshtml" />
     <Content Include="Views\Home\QickRegister.cshtml" />
+    <Content Include="Views\Vcms\ListService.cshtml" />
+    <Content Include="Views\Vcms\Service.cshtml" />
+    <Content Include="Views\Vcms\EditService.cshtml" />
+    <Content Include="Views\Home\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1085,6 +1098,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202403200809274_RequestDeposit.resx">
       <DependentUpon>202403200809274_RequestDeposit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403210135043_add-service.resx">
+      <DependentUpon>202403210135043_add-service.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403210238259_add-service-price.resx">
+      <DependentUpon>202403210238259_add-service-price.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

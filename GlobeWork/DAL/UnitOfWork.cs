@@ -45,8 +45,10 @@ namespace GlobeWork.DAL
         private GenericRepository<Activity> _activityRepository;
         private GenericRepository<Partner> _parterRepository;
         private GenericRepository<RequestDeposit> _requestDepositRepository;
+        private GenericRepository<Service> _serviceRepository;
 
-
+        public GenericRepository<Service> ServiceRepository =>
+               _serviceRepository ?? (_serviceRepository = new GenericRepository<Service>(_context));
         public GenericRepository<RequestDeposit> RequestDepositRepository =>
                _requestDepositRepository ?? (_requestDepositRepository = new GenericRepository<RequestDeposit>(_context));
         public GenericRepository<Partner> ParterRepository =>

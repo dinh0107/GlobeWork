@@ -24,6 +24,7 @@ namespace GlobeWork.ViewModel
         public IEnumerable<Skill> Skills { get; set; }
         public IEnumerable<JobType> JobTypes { get; set; }
         public IEnumerable<Rank>  Ranks { get; set; }
+        public IEnumerable<Service> Services { get; set; }
         [Display(Name = "Mức lương tối thiểu"),  DisplayFormat(DataFormatString = "{0:N0}đ")]
         public string SalalyMin { get; set; }
         [Display(Name = "Mức lương tối đa"),  DisplayFormat(DataFormatString = "{0:N0}đ")]

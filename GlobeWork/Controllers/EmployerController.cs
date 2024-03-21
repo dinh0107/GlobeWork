@@ -595,7 +595,7 @@ namespace GlobeWork.Controllers
                         if (amountToSubtract < User.Amount)
                         {
                             User.Amount -= amountToSubtract;
-                            Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + "</strong> để hiển thị tin <strong>Công ty</strong>" + "<strong class='text-danger'>" + model.DateHot + "</strong> ngày ở mục nổi bật", EmployerLogType.Deduction, User.Id, amountToSubtract);
+                            Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + " </strong> để hiển thị <strong>Công ty</strong>" + " <strong class='text-danger'>" + model.DateHot + "</strong> ngày ở mục nổi bật", EmployerLogType.Deduction, User.Id, amountToSubtract);
                             if (company.Vipdate != null)
                             {
                                 if (company.Vipdate < DateTime.Now)
@@ -611,6 +611,7 @@ namespace GlobeWork.Controllers
                             {
                                 company.Vipdate = DateTime.Now.AddDays(model.DateHot);
                             }
+                            _unitOfWork.Save();
                             //Update cookie
                             HttpCookie cookie = Request.Cookies[".ASPXAUTHEMPLOYER"];
                             if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
@@ -926,6 +927,7 @@ namespace GlobeWork.Controllers
                 Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)),
                 Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)),
                 Skills = _unitOfWork.SkillRepository.GetQuery(a => a.TypeSkill == TypeSkill.Skill),
+                Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort)),
                 JobPost = new JobPost
                 {
                     Active = true,
@@ -1071,6 +1073,7 @@ namespace GlobeWork.Controllers
                 Ranks = _unitOfWork.RankRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate)),
                 Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)),
                 Skills = _unitOfWork.SkillRepository.GetQuery(a => a.TypeSkill == TypeSkill.Skill),
+                Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort)),
                 Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)),
             };
             return View(model);
@@ -1092,6 +1095,7 @@ namespace GlobeWork.Controllers
                 jobs.CareerId = Convert.ToInt32(fc["CareerId"]);
                 jobs.JobTypeId = Convert.ToInt32(fc["JobTypeId"]);
                 //jobs.CityId = Convert.ToInt32(fc["CityId"]);
+                jobs.CounId = model.JobPost.CounId;
                 jobs.Country = _unitOfWork.CountryRepository.GetById(model.JobPost.CounId);
                 jobs.Image = fc["Pictures"] == "" ? null : fc["Pictures"];
                 jobs.CompanyId = User.Id;

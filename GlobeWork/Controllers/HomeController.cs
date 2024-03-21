@@ -63,7 +63,7 @@ namespace GlobeWork.Controllers
                 Careers = career,
                 Articles = article,
                 Countries = countruy,
-                Parters = _unitOfWork.ParterRepository.GetQuery(a => a.Active && a.Footer , o => o.OrderBy(a => a.Sort)),
+                Parters = _unitOfWork.ParterRepository.GetQuery(a => a.Active && a.Footer, o => o.OrderBy(a => a.Sort)),
             };
             return PartialView(model);
         }
@@ -80,17 +80,18 @@ namespace GlobeWork.Controllers
             })
             .ToList();
             var banner = _unitOfWork.BannerRepository.GetQuery(a => a.Active && a.GroupId == 1, o => o.OrderBy(a => a.Sort));
+            var count = _unitOfWork.CompanyRepository.GetQuery(a => a.Vipdate > DateTime.Now, o => o.OrderByDescending(a => a.Vipdate), 10).Count();
             var model = new HomeViewModel
             {
                 Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Hot && (a.Active && a.TypeCareer == TypeCareer.Career), o => o.OrderBy(a => a.Sort), 16),
                 SearchCareers = _unitOfWork.CareerRepository.GetQuery(a => a.Active),
-                Countries = _unitOfWork.CountryRepository.Get(a => a.Active , o => o.OrderBy(a => a.Sort)),
+                Countries = _unitOfWork.CountryRepository.Get(a => a.Active, o => o.OrderBy(a => a.Sort)),
                 JobTypes = _unitOfWork.JobTypeRepository.Get(),
                 Ranks = _unitOfWork.RankRepository.Get(),
                 Items = items,
                 Banners = banner,
                 Skills = _unitOfWork.SkillRepository.GetQuery(a => a.ShowHome && a.TypeSkill == TypeSkill.Keyword, o => o.OrderBy(a => a.SkillName), 10),
-                Companies = _unitOfWork.CompanyRepository.GetQuery(a => a.Vipdate != null && a.Vipdate > DateTime.Now || a.ShowHome, o => o.OrderByDescending(a => a.Vipdate), 10),
+                Companies = _unitOfWork.CompanyRepository.GetQuery(a => a.Vipdate > DateTime.Now, o => o.OrderByDescending(a => a.Vipdate), 10),
                 StudyAbroads = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.Hot != null && a.Hot > DateTime.Now), o => o.OrderByDescending(a => a.CreateDate), 10)
             };
             return View(model);
@@ -107,7 +108,7 @@ namespace GlobeWork.Controllers
 
         public PartialViewResult GetJob(int? wage, int? exp, int cityId = 0, int careerId = 0)
         {
-            var job = _unitOfWork.JobPostRepository.GetQuery(a => a.Active  , o => o.OrderByDescending(a => a.Hot)).Take(60);
+            var job = _unitOfWork.JobPostRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.Hot)).Take(60);
             if (cityId > 0)
             {
                 job = job.Where(a => a.CounId == cityId);
@@ -248,7 +249,7 @@ namespace GlobeWork.Controllers
                 JobNew = _unitOfWork.JobPostRepository.GetQuery(a => a.Active && a.CreateDate == DateTime.Now).Count(),
                 Banners = _unitOfWork.BannerRepository.GetQuery(a => a.Active && a.GroupId == 3, o => o.OrderBy(a => a.Sort)),
                 Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Career, o => o.OrderByDescending(a => a.CreateDate)),
-                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active , o => o.OrderBy(a => a.Sort)),
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort)),
                 CareerHot = _unitOfWork.CareerRepository.GetQuery(a => a.Hot && a.Active, o => o.OrderBy(a => a.Sort), 16),
                 Companies = _unitOfWork.CompanyRepository.GetQuery(a => a.Vipdate != null && a.Vipdate > DateTime.Now, o => o.OrderByDescending(a => a.Vipdate), 10),
             };
@@ -260,9 +261,9 @@ namespace GlobeWork.Controllers
             var job = _unitOfWork.JobPostRepository.GetQuery(a => a.Active && a.Url == url).FirstOrDefault();
             if (job == null)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("NotFound", "Home", new { status = 404 });
             }
-            var jobCompany = _unitOfWork.JobPostRepository.GetQuery(a => a.Active && (a.CompanyId == job.CompanyId && a.Id != job.Id), o => o.OrderByDescending(a => a.CreateDate), 3);
+            var jobCompany = _unitOfWork.JobPostRepository.GetQuery(a => a.Active && (a.CompanyId == job.CompanyId && a.Id != job.Id), o => o.OrderByDescending(a => a.CreateDate), 6);
             var jobRelated = _unitOfWork.JobPostRepository.GetQuery(a => a.Active && (a.CounId == job.CounId && a.Id != job.Id), o => o.OrderByDescending(a => a.Hot), 10);
             var jobCareers = job.Company.Careers.Select(c => c.Id).ToList();
             var companyRelate = _unitOfWork.CompanyRepository.GetQuery(a => a.EmployerId != job.Company.EmployerId && a.Careers.Any(c => jobCareers.Contains(c.Id))).Take(5);
@@ -287,7 +288,7 @@ namespace GlobeWork.Controllers
         public ActionResult JobHot(int? page, string name = "", int cityId = 0, int careerId = 0, int wage = 0)
         {
             var pageNumber = page ?? 1;
-            var job = _unitOfWork.JobPostRepository.GetQuery(a => a.Active , o => o.OrderByDescending(a => a.Hot));
+            var job = _unitOfWork.JobPostRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.Hot));
             if (!string.IsNullOrEmpty(name))
             {
                 job = job.Where(a => a.Name.ToLower().Contains(name.ToLower()));
@@ -337,7 +338,7 @@ namespace GlobeWork.Controllers
                 CareerId = careerId,
                 Likes = like,
                 Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Career, o => o.OrderByDescending(a => a.CreateDate)),
-                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active , o => o.OrderBy(a => a.Sort)),
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort)),
             };
             return View(model);
         }
@@ -345,7 +346,11 @@ namespace GlobeWork.Controllers
         public ActionResult Search(int? page, int jobTypeId = 0, int rankId = 0, string keyword = "", int countruyId = 0, int careerId = 0, int wage = 0, int companyId = 0)
         {
             var pageNumber = page ?? 1;
-            var job = _unitOfWork.JobPostRepository.GetQuery(a => a.Active && a.Name.ToLower().Contains(keyword.ToLower()), o => o.OrderByDescending(a => a.Hot));
+            var job = _unitOfWork.JobPostRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.Hot));
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                job = job.Where(a => a.Name.Contains(keyword));
+            }
             if (companyId > 0)
             {
                 job = job.Where(a => a.CompanyId == companyId);
@@ -404,7 +409,7 @@ namespace GlobeWork.Controllers
                 CompanyId = companyId,
                 Likes = like,
                 Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Career, o => o.OrderByDescending(a => a.CreateDate)),
-                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active , o => o.OrderBy(a => a.Sort))
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort))
             };
             return View(model);
         }
@@ -415,7 +420,7 @@ namespace GlobeWork.Controllers
             var category = _unitOfWork.CareerRepository.GetQuery(a => a.Active && (a.Code == url && a.TypeCareer == TypeCareer.Career)).FirstOrDefault();
             if (category == null)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("NotFound", "Home", new { status = 404 });
             }
             var job = _unitOfWork.JobPostRepository.GetQuery(a => a.Active && a.CareerId == category.Id, o => o.OrderByDescending(a => a.Hot));
             if (!string.IsNullOrEmpty(name))
@@ -462,7 +467,7 @@ namespace GlobeWork.Controllers
             {
                 Career = category,
                 JobPosts = job.ToPagedList(pageNumber, 9),
-                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active , o => o.OrderBy(a => a.Active)),
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Active)),
                 jobTypes = _unitOfWork.JobTypeRepository.Get(orderBy: a => a.OrderBy(l => l.Id)),
                 CityId = cityId,
                 Wage = wage,
@@ -534,7 +539,7 @@ namespace GlobeWork.Controllers
                 CityId = cityId,
                 Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Career, o => o.OrderByDescending(a => a.CreateDate)),
                 Career = caree,
-                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active , o => o.OrderBy(a => a.Sort)),
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort)),
                 Likes = like
             };
             return View(model);
@@ -770,7 +775,7 @@ namespace GlobeWork.Controllers
             var company = _unitOfWork.CompanyRepository.GetQuery(a => a.Url == url).FirstOrDefault();
             if (company == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("NotFound", "Home", new { status = 404 });
             }
             var job = _unitOfWork.JobPostRepository.GetQuery(a => a.CompanyId == company.EmployerId, l => l.OrderByDescending(a => a.Hot), 6);
             if (!string.IsNullOrEmpty(name))
@@ -797,7 +802,7 @@ namespace GlobeWork.Controllers
             var company = _unitOfWork.CompanyRepository.GetQuery(a => a.Url == url).FirstOrDefault();
             if (company == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("NotFound", "Home", new { status = 404 });
             }
             var job = _unitOfWork.JobPostRepository.GetQuery(a => a.Active && a.CompanyId == company.EmployerId, o => o.OrderByDescending(a => a.Hot));
             if (!string.IsNullOrEmpty(name))
@@ -824,7 +829,7 @@ namespace GlobeWork.Controllers
                 CareerId = careerId,
                 CountryId = cityId,
                 Url = url,
-                Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate)),
+                Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Career, o => o.OrderByDescending(a => a.CreateDate)),
                 Countries = _unitOfWork.CountryRepository.Get(orderBy: a => a.OrderBy(l => l.Id))
             };
             return View(model);
@@ -849,7 +854,6 @@ namespace GlobeWork.Controllers
                 HotCompanies = hot,
                 Companies = news,
                 Items = items
-
             };
             return View(model);
         }
@@ -895,7 +899,7 @@ namespace GlobeWork.Controllers
             var company = _unitOfWork.CompanyRepository.GetQuery(a => a.Url == url).FirstOrDefault();
             if (company == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("NotFound", "Home", new { status = 404 });
             }
             var study = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && a.CompanyId == company.EmployerId, o => o.OrderByDescending(a => a.Hot));
             if (!string.IsNullOrEmpty(name))
@@ -929,7 +933,7 @@ namespace GlobeWork.Controllers
         public ActionResult StudyAbroad()
         {
             var studyAbroad = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && a.TypeStudyAbroad == TypeStudyAbroad.Scholarship, o => o.OrderByDescending(a => a.Hot), 10);
-            var hot = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && a.Hot >= DateTime.Now, o => o.OrderByDescending(a => a.CreateDate));
+            var hot = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active /*&& a.Hot >= DateTime.Now*/, o => o.OrderByDescending(a => a.Hot)).Take(20);
             var article = _unitOfWork.ArticleRepository.GetQuery(a => a.Active && (a.Hot >= DateTime.Now && a.TypeArticle == TypeArticle.Article), o => o.OrderByDescending(a => a.Hot), 6);
             var model = new StudyAbroadViewModel
             {
@@ -976,7 +980,7 @@ namespace GlobeWork.Controllers
             var cat = _unitOfWork.StudyAbroadCategoryRepository.GetQuery(a => a.Active && a.Url == url).FirstOrDefault();
             if (cat == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("NotFound", "Home", new { status = 404 });
             }
             var study = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && a.CategoryId == cat.Id, o => o.OrderByDescending(a => a.Hot));
             var like = _unitOfWork.LikeRepository.GetQuery(a => a.UserID == User.Id);
@@ -996,7 +1000,7 @@ namespace GlobeWork.Controllers
             var study = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && a.Url == url).FirstOrDefault();
             if (study == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("NotFound", "Home", new { status = 404 });
             }
             var studyCompany = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.Id != study.Id && a.CompanyId == study.CompanyId), o => o.OrderByDescending(a => a.CreateDate), 4);
             var relate = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.Id != study.Id && a.CategoryId == study.CategoryId), o => o.OrderByDescending(a => a.CreateDate), 6);
@@ -1019,7 +1023,11 @@ namespace GlobeWork.Controllers
         public ActionResult SearchStudyAbroad(int? page, string name, int countruyId = 0, int companyId = 0)
         {
             var pageNumber = page ?? 1;
-            var study = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Name.Contains(name), o => o.OrderByDescending(a => a.Hot));
+            var study = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.Hot));
+            if (!string.IsNullOrEmpty(name))
+            {
+                study = study.Where(a => a.Name.Contains(name));
+            }
             if (countruyId > 0)
             {
                 study = study.Where(a => a.StudyAbroadCategory.CountryId == countruyId);
@@ -1090,7 +1098,7 @@ namespace GlobeWork.Controllers
             var countruy = _unitOfWork.CountryRepository.GetById(id);
             if (countruy == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("NotFound", "Home", new { status = 404 });
             }
             var study = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.StudyAbroadCategory.CountryId == countruy.Id && a.TypeStudyAbroad == TypeStudyAbroad.StudyAbroad), o => o.OrderByDescending(a => a.Hot));
             var model = new CountruyStudyAbroadViewModel
@@ -1107,7 +1115,7 @@ namespace GlobeWork.Controllers
             var countruy = _unitOfWork.CountryRepository.GetById(id);
             if (countruy == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("NotFound", "Home", new { status = 404 });
             }
             var study = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.StudyAbroadCategory.CountryId == countruy.Id && a.TypeStudyAbroad == TypeStudyAbroad.Scholarship), o => o.OrderByDescending(a => a.Hot));
             var model = new CountruyStudyAbroadViewModel
@@ -1118,13 +1126,13 @@ namespace GlobeWork.Controllers
             return View(model);
         }
         [Route("san-hoc-bong/{url}")]
-        public ActionResult Hunting(int? page, string url , string name, int countruyId = 0)
+        public ActionResult Hunting(int? page, string url, string name, int countruyId = 0)
         {
             var pageNumber = page ?? 1;
             var cat = _unitOfWork.StudyAbroadCategoryRepository.GetQuery(a => a.Active && a.Url == url).FirstOrDefault();
             if (cat == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("NotFound", "Home", new { status = 404 });
             }
             var hunting = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && a.CategoryId == cat.Id && a.TypeStudyAbroad == TypeStudyAbroad.Scholarship, o => o.OrderByDescending(a => a.Hot));
             if (countruyId > 0)
@@ -1154,7 +1162,7 @@ namespace GlobeWork.Controllers
             var career = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.Code == url).FirstOrDefault();
             if (career == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("NotFound", "Home", new { status = 404 });
             }
             var study = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.CareerId == career.Id && a.TypeStudyAbroad == TypeStudyAbroad.StudyAbroad), o => o.OrderByDescending(a => a.Hot));
             var model = new CountruyStudyAbroadViewModel
@@ -1171,7 +1179,7 @@ namespace GlobeWork.Controllers
             var countruy = _unitOfWork.CountryRepository.GetById(id);
             if (countruy == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("NotFound", "Home", new { status = 404 });
             }
             var article = _unitOfWork.ArticleRepository.GetQuery(a => a.Active && a.StudyAbroadCategory.CountryId == countruy.Id, o => o.OrderByDescending(a => a.Hot));
             var model = new CountruyStudyAbroadViewModel
@@ -1189,7 +1197,7 @@ namespace GlobeWork.Controllers
             var article = _unitOfWork.ArticleRepository.GetQuery(a => a.Active && a.Url == url).FirstOrDefault();
             if (article == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("NotFound", "Home", new { status = 404 });
             }
             article.View += 1;
             _unitOfWork.Save();
@@ -1235,47 +1243,84 @@ namespace GlobeWork.Controllers
             Task.Run(() => HtmlHelpers.SendEmail("gmail", subject, body, ConfigSite.Email, ConfigSite.EmailConfigs, ConfigSite.EmailConfigs, ConfigSite.PassWordMail, ConfigSite.Title));
             return Json(new { status = true, msg = "Gửi liên hệ thành công.\nChúng tôi sẽ liên lạc lại với bạn sớm nhất có thể." });
         }
+
+
         [Route("chi-tiet/{url}.html")]
         public ActionResult UserProfile(string url, int type = 0)
         {
             var detail = _unitOfWork.UserRepository.GetQuery(a => a.Active && a.Url == url).FirstOrDefault();
             if (detail == null)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("NotFound", "Home", new { status = 404 });
             }
+
+            var authCookieUser = Request.Cookies[".ASPXAUTHMEMBER"];
+            var authCookieEmployer = Request.Cookies[".ASPXAUTHEMPLOYER"];
+
+            if (authCookieUser != null)
+            {
+                var ticket = FormsAuthentication.Decrypt(authCookieUser.Value);
+                if (ticket != null)
+                {
+                    var userData = ticket.UserData;
+                    var parts = userData.Split('|');
+                    if (parts.Length > 1)
+                    {
+                        var userId = Convert.ToInt32(parts[1]);
+                        var user = _unitOfWork.UserRepository.GetById(userId);
+                        if (user == null)
+                        {
+                            return RedirectToAction("NotFound", "Home", new { status = 403 });
+                        }
+                        else
+                        {
+                            var isAccount = (user.Id == detail.Id);
+
+                            return PrepareUserProfileView(detail, isAccount, type);
+                        }
+                    }
+                }
+            }
+            else if (authCookieEmployer != null)
+            {
+                var ticket = FormsAuthentication.Decrypt(authCookieEmployer.Value);
+                if (ticket != null)
+                {
+                    var userData = ticket.UserData;
+                    var parts = userData.Split('|');
+                    if (parts.Length > 1)
+                    {
+                        var employerId = Convert.ToInt32(parts[1]);
+                        var apply = _unitOfWork.ApplyJobRepository.GetQuery(a => a.CompanyId == employerId).FirstOrDefault();
+                        if (apply == null)
+                        {
+                            return RedirectToAction("NotFound", "Home", new { status = 403 });
+                        }
+                        else
+                        {
+                            return PrepareUserProfileView(detail, false, type);
+                        }
+                    }
+                }
+            }
+
+            return RedirectToAction("NotFound", "Home", new { status = 403 });
+        }
+
+        private ActionResult PrepareUserProfileView(User detail, bool isAccount, int type)
+        {
             var edu = _unitOfWork.EducationRepository.GetQuery(a => a.UserId == detail.Id, o => o.OrderBy(a => a.Id));
             var exp = _unitOfWork.ExperienceRepository.GetQuery(a => a.UserId == detail.Id, o => o.OrderBy(a => a.Id));
             var skill = _unitOfWork.UserSkillRepository.GetQuery(a => a.UserId == detail.Id, o => o.OrderBy(a => a.Id));
             var cer = _unitOfWork.CertificateRepository.GetQuery(a => a.UserId == detail.Id, o => o.OrderBy(a => a.Id));
             var project = _unitOfWork.ProjectRepository.GetQuery(a => a.UserId == detail.Id, o => o.OrderBy(a => a.Id));
             var activity = _unitOfWork.ActivityRepository.GetQuery(a => a.UserId == detail.Id, o => o.OrderBy(a => a.Id));
-            var isAccount = true;
-            if (User != null)
-            {
-                var profile = _unitOfWork.UserRepository.GetById(User.Id);
-                if (detail != profile)
-                {
-                    isAccount = false;
-                }
-            }
-            else
-            {
-                isAccount = false;
-            }
 
             var viewLogs = _unitOfWork.UserViewLogRepository.GetQuery(a => a.UserId == detail.Id).ToList();
-            // Lấy số lượt xem theo tuần
-            var viewsByWeek = viewLogs
-            .GroupBy(log => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(log.ViewedAt, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday))
-            .Select(group => new { Week = group.Key, ViewCount = group.Count() });
-            // Lấy số lượt xem theo tháng
-            var viewsByMonth = viewLogs
-            .GroupBy(log => new { log.ViewedAt.Year, log.ViewedAt.Month })
-            .Select(group => new { Year = group.Key.Year, Month = group.Key.Month, ViewCount = group.Count() });
-            // Lấy số lượt xem theo năm
-            var viewsByYear = viewLogs
-                .GroupBy(log => log.ViewedAt.Year)
-                .Select(group => new { Year = group.Key, ViewCount = group.Count() });
+            var viewsByWeek = viewLogs.GroupBy(log => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(log.ViewedAt, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday)).Select(group => new { Week = group.Key, ViewCount = group.Count() });
+            var viewsByMonth = viewLogs.GroupBy(log => new { log.ViewedAt.Year, log.ViewedAt.Month }).Select(group => new { Year = group.Key.Year, Month = group.Key.Month, ViewCount = group.Count() });
+            var viewsByYear = viewLogs.GroupBy(log => log.ViewedAt.Year).Select(group => new { Year = group.Key, ViewCount = group.Count() });
+
             var model = new UserInfoViewModel
             {
                 User = detail,
@@ -1295,14 +1340,14 @@ namespace GlobeWork.Controllers
 
             if (type > 0)
             {
-                model.UserViewLog = new UserViewLog();
-                model.UserViewLog.UserId = detail.Id;
-                model.UserViewLog.UserId = detail.Id;
-                _unitOfWork.UserViewLogRepository.Insert(model.UserViewLog);
+                var userViewLog = new UserViewLog { UserId = detail.Id };
+                _unitOfWork.UserViewLogRepository.Insert(userViewLog);
                 _unitOfWork.Save();
             }
+
             return View(model);
         }
+
         public PartialViewResult ApplyForm()
         {
             return PartialView();
@@ -1539,7 +1584,7 @@ namespace GlobeWork.Controllers
         {
             return PartialView();
         }
-        [HttpPost , ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public JsonResult Login(UserLoginModel model)
         {
             if (ModelState.IsValid)
@@ -1614,6 +1659,21 @@ namespace GlobeWork.Controllers
             return PartialView();
         }
 
+        [Route("notfound/{status}")]
+        public ActionResult NotFound(int status)
+        {
+            ViewBag.Status = status;
+            ViewBag.Content = "";
+            if (status == 404)
+            {
+                ViewBag.Content = "Không tìm thấy trang này !!!";
+            }
+            else
+            {
+                ViewBag.Content = "Bạn không có quyền truy cập trang này !!!";
+            }
+            return View();
+        }
         protected override void Dispose(bool disposing)
         {
             _unitOfWork.Dispose();

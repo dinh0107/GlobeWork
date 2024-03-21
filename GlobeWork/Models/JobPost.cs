@@ -74,6 +74,7 @@ namespace GlobeWork.Models
         public virtual Company Company { get; set; }
         public virtual JobType JobType { get; set; }
         public virtual Rank Rank { get; set; }
+        public virtual Service Service { get; set; }
         public virtual Career  Career { get; set; }
         public virtual Country  Country { get; set; }
         public virtual ICollection<Candidate> Candidates { get; set; }
@@ -132,5 +133,7 @@ namespace GlobeWork.Models
         tu4den5,
         [Display(Name = "Trên 5 năm")]
         tren5,
+        [Display(Name = "Không yêu cầu")]
+        khongyeucau,
     }
 }

@@ -8,7 +8,7 @@
     <div class="container">
         <form class="row custom-row" action="@Url.Action("SearchStudyAbroad")">
             <div class="col-lg-7 col-md-9 col-8">
-                <input type="text" name="name" value="" placeholder="Nhập từ khóa" class="form-control font-size-12" required/>
+                <input type="text" name="name" value="" placeholder="Nhập từ khóa" class="form-control font-size-12"/>
             </div>
             <div class="col-lg-3 col-md-3 col-4">
                 <div class="form-control d-flex align-items-center justify-content-between font-size-12">
@@ -118,7 +118,10 @@
                                 <span><i class="fa-solid fa-briefcase-blank"></i> @Html.DisplayFor(a => item.Wages)</span>
                                 <span><i class="fa-sharp fa-solid fa-location-dot"></i> @item.StudyAbroadCategory.Country.Name</span>
                                 <span><i class="fa-regular fa-calendar-days"></i> @Utils.DateVn(item.CreateDate)</span>
-                                <span class="hot"><i class="fa-solid fa-thumbs-up mr-1"></i> Nổi bật</span>
+                                @if (item.Hot >= DateTime.Now)
+                                {
+                                    <span class="hot"><i class="fa-solid fa-thumbs-up mr-1"></i> Nổi bật</span>
+                                }
                             </div>
                         </div>
                     </div>

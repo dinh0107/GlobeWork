@@ -18,6 +18,7 @@ namespace GlobeWork.Controllers
     [Authorize]
     public class UserVcmsController : BaseController
     {
+        public ConfigSite ConfigSite => (ConfigSite)HttpContext.Application["ConfigSite"];
         #region User
         public ActionResult ListUser(int? page, string startTime, string endTime, int? status, string email, string name, int? typeUser)
         {   
@@ -455,7 +456,7 @@ namespace GlobeWork.Controllers
             {
                 Company = company,
                 Ranks = _unitOfWork.RankRepository.Get(orderBy: o => o.OrderBy(a => a.Name)),
-                Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Career),
+                Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Activity),
                 Cities = _unitOfWork.CityRepository.Get(orderBy: o => o.OrderBy(a => a.Sort)),
             };
             return View(model);
@@ -489,6 +490,69 @@ namespace GlobeWork.Controllers
                 if (company.Careers.Any())
                 {
                     company.Careers.Clear();
+                }
+                _unitOfWork.Save();
+                if (model.Date > 0)
+                {
+                    if (model.TruTien)
+                    {
+                        if (company.Employer.Amount > 0)
+                        {
+                            int amountToSubtract = Convert.ToInt32((ConfigSite.PriceJob ?? 30000) * model.Date);
+                            string formattedAmountToSubtract = amountToSubtract.ToString("#,0") + "đ";
+                            if (amountToSubtract < company.Employer.Amount)
+                            {
+                                company.Employer.Amount -= amountToSubtract;
+                                Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + "</strong> để hiển thị <strong> Công ty </strong>" + "<strong class='text-danger'>" + model.Date + "</strong> ngày ở mục nổi bật", EmployerLogType.Deduction, company.Employer.Id, amountToSubtract);
+                                if (company.Vipdate != null)
+                                {
+                                    if (company.Vipdate < DateTime.Now)
+                                    {
+                                        company.Vipdate = DateTime.Now.AddDays(model.Date);
+                                    }
+                                    else
+                                    {
+                                        company.Vipdate = company.Vipdate.AddDays(model.Date);
+                                    }
+                                }
+                                else
+                                {
+                                    company.Vipdate = DateTime.Now.AddDays(model.Date);
+                                }
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", @"Số dư của tài khoản này không đủ để hiển thị tin");
+                                model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Career);
+                                return View(model);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", @"Số dư của tài khoản này không đủ để hiển thị tin");
+                            model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Career);
+                            return View(model);
+                        }
+                    }
+                    else
+                    {
+                        if (company.Vipdate != null)
+                        {
+                            if (company.Vipdate < DateTime.Now)
+                            {
+                                company.Vipdate = DateTime.Now.AddDays(model.Date);
+                            }
+                            else
+                            {
+                                company.Vipdate = company.Vipdate.AddDays(model.Date);
+                            }
+                        }
+                        else
+                        {
+                            company.Vipdate = DateTime.Now.AddDays(model.Date);
+                        }
+                    }
+
                 }
                 _unitOfWork.Save();
                 var careers = fc["career"];

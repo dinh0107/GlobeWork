@@ -44,6 +44,6 @@ namespace GlobeWork.DAL
         public DbSet<Activity>  Activities { get; set; }
         public DbSet<Partner>  Parters { get; set; }
         public DbSet<RequestDeposit>  RequestDeposits { get; set; }
-
+        public DbSet<Service> Services { get; set; }
     }
 }

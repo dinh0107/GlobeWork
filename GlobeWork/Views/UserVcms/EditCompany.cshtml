@@ -67,7 +67,7 @@
                 </div>
                 <div class="item">
                     @Html.LabelFor(a => a.Company.EstablishmentDate)
-                    @Html.TextBoxFor(model => model.Company.EstablishmentDate, "{0:dd/MM/yyyy}", new { @class = "form-control datepicker" })
+                    <input class="form-control datepicker" name="Company.EstablishmentDate" type="text" value="@Model.Company.EstablishmentDate.ToString("dd/MM/yyyy")" >
                 </div>
                 <div class="item">
                     @Html.LabelFor(a => a.Company.Age)
@@ -124,6 +124,15 @@
                         }
                     </select>
                 </div>
+                <div class="item">
+                    <label>Số ngày hiển thị nổi bật</label>
+                    @Html.EditorFor(item => item.Date)
+                    @Html.ValidationMessageFor(a => a.Date)
+                    <div class="item">
+                        @Html.CheckBoxFor(a => a.TruTien)
+                        Trừ tiền
+                    </div>
+                </div>
             </div>
             <div class="col-lg-6">
                 <div class="item">
@@ -131,7 +140,7 @@
                     @Html.TextAreaFor(model => model.Company.GoogleMap, new { @rows = "5" })
                     @Html.ValidationMessageFor(model => model.Company.GoogleMap)
                 </div>
-                
+
             </div>
             <div class="col-6">
                 <div class="item">
@@ -153,7 +162,7 @@
             </h3>
             @Html.EditorFor(model => model.Company.Product)
         </div>
-        
+
         <button type="submit" class="btn btn-search mt-4">Cập nhật thông tin</button>
     }
 </div>
