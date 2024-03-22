@@ -629,6 +629,16 @@
     <Content Include="Scripts\ckeditor\ckeditor.js" />
     <Content Include="Scripts\ckeditor\config.js" />
     <Content Include="Scripts\ckeditor\contents.css" />
+    <Content Include="Scripts\ckeditor\plugins\lineheight\lang\ar.js" />
+    <Content Include="Scripts\ckeditor\plugins\lineheight\lang\de.js" />
+    <Content Include="Scripts\ckeditor\plugins\lineheight\lang\en.js" />
+    <Content Include="Scripts\ckeditor\plugins\lineheight\lang\es.js" />
+    <Content Include="Scripts\ckeditor\plugins\lineheight\lang\fr.js" />
+    <Content Include="Scripts\ckeditor\plugins\lineheight\lang\ko.js" />
+    <Content Include="Scripts\ckeditor\plugins\lineheight\lang\LANG.js" />
+    <Content Include="Scripts\ckeditor\plugins\lineheight\lang\pt.js" />
+    <Content Include="Scripts\ckeditor\plugins\lineheight\plugin.js" />
+    <Content Include="Scripts\ckeditor\plugins\lineheight\readme.txt" />
     <Content Include="Scripts\ckeditor\styles.js" />
     <Content Include="Scripts\ckeditor\user-config.js" />
     <Content Include="Scripts\ckfinder\changelog.txt" />
@@ -679,6 +689,8 @@
     <Content Include="Content\scss\Responsive.scss" />
     <Content Include="Content\scss\CV.scss" />
     <Content Include="Content\scss\Responsive2.scss" />
+    <Content Include="Scripts\ckeditor\plugins\lineheight\LICENSE" />
+    <Content Include="Scripts\ckeditor\plugins\lineheight\README.md" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\isotope.pkgd.min.js" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />

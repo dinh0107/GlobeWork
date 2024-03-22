@@ -18,6 +18,6 @@ CKEDITOR.editorConfig = function( config ) {
     config.filebrowserImageUploadUrl = "/Scripts/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Images";
     config.filebrowserFlashUploadUrl = "/Scripts/ckfinder/core/connector/aspx/connector.aspx?command=QuickUpload&type=Flash";
 
-    config.extraPlugins = "btgrid,accordionList,collapsibleItem,video"; 
+    config.extraPlugins = "btgrid,accordionList,collapsibleItem,lineheight,video"; 
 };
    
