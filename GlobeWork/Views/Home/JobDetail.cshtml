@@ -116,13 +116,13 @@
                                     <span class="job-detail__info--section-content-title">Quốc gia</span>
                                     <span class="job-detail__info--section-content-value">
                                         @*@foreach (var countruy in Model.Job.Cities)
-                                            {
-                                                @countruy.Name
-                                                if (countruy != Model.Job.Cities.Last())
-                                                {
-                                                    @: ,
-                                                }
-                                            }*@
+                                    {
+                                        @countruy.Name
+                                        if (countruy != Model.Job.Cities.Last())
+                                        {
+                                            @: ,
+                                        }
+                                    }*@
                                         @Html.DisplayFor(a => Model.Job.Country.Name)
                                     </span>
                                 </div>
@@ -385,6 +385,7 @@
 
                 @if (Model.Companies.Any())
                 {
+                    var a = 1;
                     <div class="job-detail__information-detail--title mt-3 mb-4">
                         Top công ty cùng lĩnh vực
                     </div>
@@ -431,10 +432,11 @@
                                 }
                             }
 
-                            @*<div class="tag-i">
-                                    TOP 10
-                                </div>*@
+                            <div class="tag-i">
+                            TOP @a
                         </div>
+                        </div>
+                        a++;
                     }
                 }
             </div>
