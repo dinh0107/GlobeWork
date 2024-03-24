@@ -271,6 +271,7 @@ namespace GlobeWork.Controllers
             var like = _unitOfWork.LikeRepository.GetQuery(a => a.UserID == User.Id);
             job.View += 1;
             _unitOfWork.Save();
+            var companyJob = _unitOfWork.CompanyRepository.GetQuery(a => a.EmployerId != job.Company.EmployerId && a.Careers.Any(c => jobCareers.Contains(c.Id))).FirstOrDefault();
             var model = new JobDetailViewModel
             {
                 Job = job,
@@ -279,6 +280,7 @@ namespace GlobeWork.Controllers
                 Companies = companyRelate,
                 Follows = follow,
                 Likes = like,
+                CompanyJob = companyJob,
                 ApplyJobs = _unitOfWork.ApplyJobRepository.GetQuery(a => a.UserId == User.Id && a.JobPostId == job.Id)
             };
             return View(model);
@@ -576,7 +578,7 @@ namespace GlobeWork.Controllers
             };
             return PartialView(model);
         }
-        [Route("job/viec-lam-theo-quoc-gia")]
+        [Route("job/viec-lam-theo-quoc-gia/{countruyId}")]
         public ActionResult JobInCountruy(int? page, string keyword, int wage = 0, int level = 0, int careerId = 0, int countruyId = 0)
         {
             var pageNumber = page ?? 1;
@@ -933,7 +935,7 @@ namespace GlobeWork.Controllers
         public ActionResult StudyAbroad()
         {
             var studyAbroad = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && a.TypeStudyAbroad == TypeStudyAbroad.Scholarship, o => o.OrderByDescending(a => a.Hot), 10);
-            var hot = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active /*&& a.Hot >= DateTime.Now*/, o => o.OrderByDescending(a => a.Hot)).Take(20);
+            var hot = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active /*&& a.Hot >= DateTime.Now*/, o => o.OrderByDescending(a => a.CreateDate)).Take(20);
             var article = _unitOfWork.ArticleRepository.GetQuery(a => a.Active && (a.Hot >= DateTime.Now && a.TypeArticle == TypeArticle.Article), o => o.OrderByDescending(a => a.Hot), 6);
             var model = new StudyAbroadViewModel
             {
@@ -955,7 +957,7 @@ namespace GlobeWork.Controllers
                 return RedirectToAction("Index");
             }
             var study = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.Hot >= DateTime.Now && a.CategoryId == cat.Id), o => o.OrderByDescending(a => a.Hot), 30);
-            var article = _unitOfWork.ArticleRepository.GetQuery(a => a.Active && (a.StudyAbroadCategoryId == cat.Id && a.Hot >= DateTime.Now && a.TypeArticle == TypeArticle.Article), o => o.OrderByDescending(a => a.Hot), 6);
+            var article = _unitOfWork.ArticleRepository.GetQuery(a => a.Active && (a.StudyAbroadCategoryId == cat.Id && a.TypeArticle == TypeArticle.Article), o => o.OrderByDescending(a => a.CreateDate), 6);
             var studyAbroad = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.CategoryId == cat.Id && a.TypeStudyAbroad == TypeStudyAbroad.Scholarship), o => o.OrderByDescending(a => a.Hot), 10);
             var model = new StudyAbroadCategoryViewModel
             {

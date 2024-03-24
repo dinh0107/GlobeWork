@@ -26,82 +26,120 @@
                 </h3>
             </div>
             @Html.ValidationSummary(true)
-            <div class="box-body">
-                <div class="row">
-                    <div class="form-group col-12">
-                        <label>
-                            Tiêu đề tuyển dụng <i class="text-danger">*</i>
-                        </label>
-                        @Html.TextBoxFor(a => a.StudyAbroad.Name, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(a => a.StudyAbroad.Name)
-                    </div>
-                    <div class="form-group col-3">
-                        <label>
-                            Ngành nghề <i class="text-danger">*</i>
-                        </label>
-                        <select class="v-select" name="CareerId">
-                            @foreach (var item in Model.Careers)
-                            {
-                                <option value="@item.Id">
-                                    @item.Name
-                                </option>
-                            }
-                        </select>
-                    </div>
-                    <div class="form-group col-3">
-                        <label>
-                            Danh mục <i class="text-danger">*</i>
-                        </label>
-                        <select class="v-select" name="CategoryId">
-                            @foreach (var item in Model.StudyAbroadCategories.Where(a => a.ParentId == null))
-                            {
-                                <option value="@item.Id">
-                                    @item.CategoryName
-                                </option>
-                                foreach (var child in Model.StudyAbroadCategories.Where(a => a.ParentId == item.Id))
-                                {
-                                    <option value="@child.Id">
-                                        -- @child.CategoryName
-                                    </option>
-                                }
-                            }
-                        </select>
-                    </div>
-                    <div class="form-group col-3">
-                        <label>
-                            Mức lương <i class="text-danger">*</i>
-                        </label>
-                        @Html.EnumDropDownListFor(model => model.StudyAbroad.Wages, new { @class = "v-select" })
-                    </div>
-                    <div class="form-group col-3">
-                        <label>
-                            Sức khỏe <i class="text-danger">*</i>
-                        </label>
-                        @Html.TextBoxFor(a => a.StudyAbroad.Health, new { @class = "form-control ", @placeholder = "Yêu cầu sức khỏe" })
-                    </div>
-                    <div class="form-group col-4">
-                        <label>
-                            Loại tin <i class="text-danger">*</i>
-                        </label>
-                        @Html.EnumDropDownListFor(model => model.StudyAbroad.TypeStudyAbroad, new { @class = "v-select" })
-                    </div>
-                    <div class="form-group col-4">
-                        <label>
-                            Hạn nhận hồ sơ <i class="text-danger">*</i>
-                        </label>
-                        @* @Html.TextBoxFor(a => a.StudyAbroad.ExpirationDate, new { @class = "form-control datetimepicker", @placeholder = "Chọn ngày hết hạn nhận hồ sơ" })*@
-                        <input type="text" name="StudyAbroad.ExpirationDate" class="form-control datetimepicker" placeholder="Chọn ngày hết hạn nhận hồ sơ" autocomplete="off" />
-                    </div>
-                    <div class="form-group col-4">
-                        <label>
-                            Trình độ học vấn, bằng cấp <i class="text-danger">*</i>
-                        </label>
-                        @Html.TextBoxFor(a => a.StudyAbroad.LearningProblems, new { @class = "form-control", @placeholder = "Trình độ học vấn, bằng cấp" })
-                        @Html.ValidationMessageFor(a => a.StudyAbroad.LearningProblems)
-                    </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="form-group col-12">
+                    <label>
+                        Tiêu đề tuyển dụng <i class="text-danger">*</i>
+                    </label>
+                    @Html.TextBoxFor(a => a.StudyAbroad.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(a => a.StudyAbroad.Name)
                 </div>
-
+                <div class="form-group col-3">
+                    <label>
+                        Ngành nghề <i class="text-danger">*</i>
+                    </label>
+                    <select class="v-select" name="CareerId">
+                        @foreach (var item in Model.Careers)
+                        {
+                            <option value="@item.Id">
+                                @item.Name
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group col-3">
+                    <label>
+                        Danh mục <i class="text-danger">*</i>
+                    </label>
+                    <select class="v-select" name="CategoryId">
+                        @foreach (var item in Model.StudyAbroadCategories.Where(a => a.ParentId == null))
+                        {
+                            <option value="@item.Id">
+                                @item.CategoryName
+                            </option>
+                            foreach (var child in Model.StudyAbroadCategories.Where(a => a.ParentId == item.Id))
+                            {
+                                <option value="@child.Id">
+                                    -- @child.CategoryName
+                                </option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group col-3">
+                    <label>
+                        Mức lương <i class="text-danger">*</i>
+                    </label>
+                    @Html.EnumDropDownListFor(model => model.StudyAbroad.Wages, new { @class = "v-select" })
+                </div>
+                <div class="form-group col-3">
+                    <label>
+                        Sức khỏe <i class="text-danger">*</i>
+                    </label>
+                    @Html.TextBoxFor(a => a.StudyAbroad.Health, new { @class = "form-control ", @placeholder = "Yêu cầu sức khỏe" })
+                </div>
+                <div class="form-group col-4">
+                    <label>
+                        Loại tin <i class="text-danger">*</i>
+                    </label>
+                    @Html.EnumDropDownListFor(model => model.StudyAbroad.TypeStudyAbroad, new { @class = "v-select" })
+                </div>
+                <div class="form-group col-4">
+                    <label>
+                        Hạn nhận hồ sơ <i class="text-danger">*</i>
+                    </label>
+                    @* @Html.TextBoxFor(a => a.StudyAbroad.ExpirationDate, new { @class = "form-control datetimepicker", @placeholder = "Chọn ngày hết hạn nhận hồ sơ" })*@
+                    <input type="text" name="StudyAbroad.ExpirationDate" class="form-control datetimepicker" placeholder="Chọn ngày hết hạn nhận hồ sơ" autocomplete="off" />
+                </div>
+                <div class="form-group col-4">
+                    <label>
+                        Trình độ học vấn, bằng cấp <i class="text-danger">*</i>
+                    </label>
+                    @Html.TextBoxFor(a => a.StudyAbroad.LearningProblems, new { @class = "form-control", @placeholder = "Trình độ học vấn, bằng cấp" })
+                    @Html.ValidationMessageFor(a => a.StudyAbroad.LearningProblems)
+                </div>
             </div>
+            <div class="form-group col-2">
+                <div class="btn btn-primary show-service">
+                    Chọn gói hiển thị
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="plans" style="display:none;">
+                    @foreach (var item in Model.Services)
+                    {
+                        <label class="plan basic-plan mb-3" for="basic-@item.Id">
+                            <input type="radio" value="@item.Id" name="StudyAbroad.ServiceId" id="basic-@item.Id" />
+                            <div class="plan-content">
+                                @if (item.Image != null)
+                                {
+                                    <img loading="lazy" src="@Path.Combine("/images/service/", item.Image)" alt="@item.Name" />
+                                }
+                                else
+                                {
+                                    <img loading="lazy" src="~/Content/images/avatar-default.jpg" alt="@item.Name" />
+                                }
+                                <div class="plan-details">
+                                    <span>@item.Name</span>
+                                    <span class="price-service">
+                                        @if (item.Amount > 0)
+                                        {
+                                            @:Giá: @Html.DisplayFor(a => item.Amount)
+                                        }
+                                        else
+                                        {
+                                            @:Miễn phí
+                                        }
+                                    </span>
+                                    <p>@item.Description</p>
+                                </div>
+                            </div>
+                        </label>
+                    }
+                </div>
+            </div>
+        </div>
         </div>
         <div class="box-content mb-4">
             <div class="box-header">

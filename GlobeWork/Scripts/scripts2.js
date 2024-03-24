@@ -351,3 +351,7 @@ $(document).ajaxStart(function () {
 $(document).ajaxStop(function () {
     $(".loading").removeClass("active")
 });
+
+$(".show-service").click(function () {
+    $(".plans").slideToggle();
+})

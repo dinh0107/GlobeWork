@@ -44,7 +44,7 @@
             </div>
             <div class="company-detail-overview">
                 <div class="box-detail">
-                    <h2 class="company-detail-name ">@Model.Job.Company.Name <span class="tag-name">@Model.Job.Company.City.Name</span></h2>
+                    <h2 class="company-detail-name "><span class="nam-compa">@Model.Job.Company.Name</span> <span class="tag-name">@Model.Job.Company.City.Name</span></h2>
                     <div class="company-subdetail">
                         <a href="@Model.Job.Company.WebsiteUrl" target="_blank">
                             <i class="fa-light fa-globe"></i>
@@ -312,6 +312,73 @@
                         </div>
                     </div>
                 </div>
+                <div class="d-lg-none d-block">
+                    <div class="job-detail__box--right mb-3">
+                        <div class="job-detail__information-detail--title mb-4">
+                            Thông tin chung
+                        </div>
+                        <div class="media section-info mt-3">
+                            <div class="section-info__icon">
+                                <i class="fa-solid fa-ranking-star"></i>
+                            </div>
+                            <div class="media-body">
+                                <span class="job-detail__info--section-content-title">Cấp bậc</span>
+                                <span class="job-detail__info--section-content-value">@Model.Job.Rank.Name</span>
+                            </div>
+                        </div>
+                        <div class="media section-info mt-4">
+                            <div class="section-info__icon">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                            <div class="media-body">
+                                <span class="job-detail__info--section-content-title">Số lượng tuyển</span>
+                                <span class="job-detail__info--section-content-value">@Model.Job.Quantity</span>
+                            </div>
+                        </div>
+                        <div class="media section-info mt-4">
+                            <div class="section-info__icon">
+                                <i class="fa-solid fa-briefcase"></i>
+                            </div>
+                            <div class="media-body">
+                                <span class="job-detail__info--section-content-title">Hình thức làm việc</span>
+                                <span class="job-detail__info--section-content-value">@Model.Job.JobType.Name</span>
+                            </div>
+                        </div>
+                        <div class="media section-info mt-4">
+                            <div class="section-info__icon">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div class="media-body">
+                                <span class="job-detail__info--section-content-title">Giới tính</span>
+                                <span class="job-detail__info--section-content-value">@Model.Job.Gender</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="job-detail__box--right mt-3 d-lg-none d-block">
+                        <div class="detail-title-box">
+                            Từ khóa công việc
+                        </div>
+                        <div class="d-flex flex-row mt-2">
+                            @foreach (var item in Model.Job.Skills)
+                            {
+                                <div class="deadline mr-2">
+                                    @item.SkillName
+                                </div>
+                            }
+                        </div>
+                        <div class="detail-title-box mt-3">
+                            Khu vực
+                        </div>
+                        <div class="d-flex flex-row mt-2">
+                            @foreach (var item in Model.Job.Cities)
+                            {
+                                <div class="deadline mr-2">
+                                    @item.Name
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
                 @if (Model.JobPosts.Any())
                 {
                     <div class="job-detail__box--left my-3 job-section" id="job-relate">
@@ -321,7 +388,7 @@
                         @foreach (var item in Model.JobPosts)
                         {
                             <div class="job bg-white detail-job @if (item.Hot != null && item.Hot >= DateTime.Now) { @Html.Raw("active") } mb-2">
-                                <div class="media ">
+                                <div class="media media-mb">
                                     <div>
                                         <a href="@Url.Action("JobDetail", new {url = item.Url})" class="job-name" data-tooltip="@item.Name" data-tooltip-position="top">@item.Name</a>
                                         <div class="company-name">
@@ -441,8 +508,8 @@
                 }
             </div>
             <div class="col-xl-4">
-                <div class="job-detail__box--right mb-3">
-                    <div class="job-detail__information-detail--title mb-3">
+                <div class="job-detail__box--right mb-3 d-lg-block d-none">
+                    <div class="job-detail__information-detail--title mb-4">
                         Thông tin chung
                     </div>
                     <div class="media section-info mt-3">
@@ -482,9 +549,33 @@
                         </div>
                     </div>
                 </div>
+                <div class="job-detail__box--right mt-3 d-lg-block d-none">
+                    <div class="detail-title-box">
+                        Từ khóa công việc
+                    </div>
+                    <div class="d-flex flex-row mt-2">
+                        @foreach (var item in Model.Job.Skills)
+                        {
+                            <div class="deadline mr-2">
+                                @item.SkillName
+                            </div>
+                        }
+                    </div>
+                    <div class="detail-title-box mt-3">
+                        Khu vực
+                    </div>
+                    <div class="d-flex flex-row mt-2">
+                        @foreach (var item in Model.Job.Cities)
+                        {
+                            <div class="deadline mr-2">
+                                @item.Name
+                            </div>
+                        }
+                    </div>
+                </div>
                 @if (Model.JobCompanys.Any())
                 {
-                    <div class="job-detail__box--right ">
+                    <div class="job-detail__box--right mt-3">
                         <div class="job-detail__box--right-title">
                             Việc làm cùng công ty
                         </div>
@@ -496,6 +587,22 @@
                         <hr />
                         @foreach (var item in Model.JobCompanys)
                         {
+                            var tooltip = "";
+                            if (item.ExpirationDate != null)
+                            {
+                                if (item.ExpirationDate > DateTime.Now)
+                                {
+                                    tooltip = "Còn" + @Utils.DateCountDown(item.ExpirationDate) + "để ứng tuyển";
+                                }
+                                else
+                                {
+                                    tooltip = "Hết thời gian ứng tuyển";
+                                }
+                            }
+                            else
+                            {
+                                tooltip = "Luôn tuyển";
+                            }
                             <div class="job-in-company">
                                 <div class="media">
                                     <div class="company-avata border rounded">
@@ -538,16 +645,23 @@
                                             }
                                         }
                                     </div>
-                                    <div class="info-job-company3">Cập nhật @Html.DateVn(item.LastEditDate, 2) </div>
-                                    <div class="info-job-company4 p-3">
+                                    <div class="info-job-company3">Cập nhật @Utils.UpdateDateVn(item.LastEditDate)</div>
+                                    <div class="info-job-company4 p-3" data-tooltip="@tooltip" data-tooltip-position="top">
                                         <i class="fa-solid fa-clock mr-2"></i>
                                         @if (item.ExpirationDate != null)
                                         {
-                                            @:Hạn nộp hồ sơ : @Html.DisplayFor(a => item.ExpirationDate)
+                                            if (item.ExpirationDate > DateTime.Now)
+                                            {
+                                                @:Còn <strong>@Utils.DateCountDown(item.ExpirationDate)</strong> để ứng tuyển
+                                            }
+                                            else
+                                            {
+                                                @:Hết thời gian ứng tuyển
+                                            }
                                         }
                                         else
                                         {
-                                            @:Hạn nộp hồ sơ : Luôn tuyển
+                                            @:Luôn tuyển
                                         }
                                     </div>
                                 </div>
@@ -572,30 +686,85 @@
                     </div>
                 }
 
-                <div class="job-detail__box--right mt-3">
-                    <div class="detail-title-box">
-                        Từ khóa công việc
-                    </div>
-                    <div class="d-flex flex-row mt-2">
-                        @foreach (var item in Model.Job.Skills)
-                        {
-                            <div class="deadline mr-2">
-                                @item.SkillName
-                            </div>
-                        }
-                    </div>
-                    <div class="detail-title-box mt-3">
-                        Khu vực
-                    </div>
-                    <div class="d-flex flex-row mt-2">
-                        @foreach (var item in Model.Job.Cities)
-                        {
-                            <div class="deadline mr-2">
-                                @item.Name
-                            </div>
-                        }
-                    </div>
-                </div>
+                @if (Model.CompanyJob != null)
+                {
+                   <div class="box-maybe">
+                       <div class="job-detail__box--right-title my-3">
+                           Có thể bạn quan tâm
+                       </div>
+                       <div class="box-maybe-interested__company">
+                           <div class="box-maybe-banner">
+                               @if (Model.CompanyJob.Cover != null)
+                               {
+                                   <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", Model.CompanyJob.Cover)" alt="@Model.CompanyJob.Name" class="lazyload">
+                               }
+                               else
+                               {
+                                   <img src="~/Content/images/cover-null.png" alt="@Model.CompanyJob.Name" class="lazyload">
+                               }
+                           </div>
+                           <div class="company__info mt-3">
+                               <div class="company__info--logo">
+                                   <a href="@Url.Action("Employer", new {url = Model.CompanyJob.Url})">
+                                       @if (Model.CompanyJob.Avatar != null)
+                                       {
+                                           <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", Model.CompanyJob.Avatar)" alt="@Model.CompanyJob.Name" class="img-responsive lazyload">
+                                       }
+                                       else
+                                       {
+                                           <img src="~/Content/images/avatar-default.jpg" alt="@Model.CompanyJob.Name" class="img-responsive lazyload">
+                                       }
+                                   </a>
+                               </div>
+                               <div class="company__info--name">
+                                   <a href="@Url.Action("Employer", new {url = Model.CompanyJob.Url})">@Model.CompanyJob.Name</a>
+                               </div>
+                           </div>
+                           <div class="company__job">
+                               @foreach (var item in Model.CompanyJob.JobPosts.Take(3))
+                               {
+                                   <div class="job job-ta shadow-none">
+                                       <a href="@Url.Action("JobDetail", new {url = item.Url })" class="job__name" data-tooltip="@item.Name" data-tooltip-position="top">@item.Name</a>
+                                       <div class="job__info">
+                                           <div class="job__info--salary">
+                                               <i class="fa-solid fa-circle-dollar"></i>
+                                               <span>@Html.DisplayFor(a => item.Wages)</span>
+                                           </div>
+                                           <div class="job__info--address">
+                                               <i class="fa-solid fa-location-dot"></i>
+                                               <span>
+                                                   @if (item.Cities.Any())
+                                                   {
+                                                       if (item.Cities.Count > 1)
+                                                       {
+
+                                                           <span data-tooltip="@string.Join(" , ", item.Cities.Select(city => city.Name))" data-tooltip-position="top">
+                                                               @item.Cities.Count Thành phố
+                                                           </span>
+                                                       }
+                                                       else
+                                                       {
+                                                           foreach (var city in item.Cities.Take(1))
+                                                           {
+                                                               <span data-tooltip="@city.Name" data-tooltip-position="top">
+                                                                   @city.Name
+                                                               </span>
+                                                           }
+                                                       }
+                                                   }
+                                               </span>
+                                           </div>
+                                       </div>
+                                   </div>
+                               }
+                               <div class="company__link mb-3">
+                                   <a rel="nofollow" href="@Url.Action("Employer", new {url = Model.CompanyJob.Url})" target="_blank">Tìm hiểu ngay</a>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                }
+
                 <div class="job-detail__box--right mt-3">
                     <div class="job-detail__box--right-title">
                         Chia sẻ công ty tới bạn bè

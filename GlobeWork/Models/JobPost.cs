@@ -71,6 +71,7 @@ namespace GlobeWork.Models
         [ForeignKey("Career")]
         public int CareerId { get; set; }
         public int CounId { get; set; }
+        public int? ServiceId { get; set; }
         public virtual Company Company { get; set; }
         public virtual JobType JobType { get; set; }
         public virtual Rank Rank { get; set; }

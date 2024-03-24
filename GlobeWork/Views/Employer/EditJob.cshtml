@@ -17,7 +17,7 @@
                 @Html.CheckBoxFor(a => a.JobPost.Active, new { @checked = "checked" })
             </div>
             <button class="btn btn-primary">Lưu lại</button>
-            <button class="btn btn-danger">Huỷ bỏ</button>
+            @*<button class="btn btn-danger">Huỷ bỏ</button>*@
         </div>
     </div>
     <div class="container py-3">
@@ -112,6 +112,45 @@
                                 Không yêu cầu
                             </option>
                         </select>
+                    </div>
+                    <div class="form-group col-2">
+                        <div class="btn btn-primary show-service">
+                            Chọn gói hiển thị
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="plans" style="display:none;">
+                            @foreach (var item in Model.Services)
+                            {
+                                <label class="plan basic-plan mb-3" for="basic-@item.Id">
+                                    <input type="radio" value="@item.Id" name="JobPost.ServiceId" id="basic-@item.Id" />
+                                    <div class="plan-content">
+                                        @if (item.Image != null)
+                                        {
+                                            <img loading="lazy" src="@Path.Combine("/images/service/", item.Image)" alt="@item.Name" />
+                                        }
+                                        else
+                                        {
+                                            <img loading="lazy" src="~/Content/images/avatar-default.jpg" alt="@item.Name" />
+                                        }
+                                        <div class="plan-details">
+                                            <span>@item.Name</span>
+                                            <span class="price-service">
+                                                @if (item.Amount > 0)
+                                                {
+                                                    @:Giá: @Html.DisplayFor(a => item.Amount)
+                                                }
+                                                else
+                                                {
+                                                    @:Miễn phí
+                                                }
+                                            </span>
+                                            <p>@item.Description</p>
+                                        </div>
+                                    </div>
+                                </label>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>

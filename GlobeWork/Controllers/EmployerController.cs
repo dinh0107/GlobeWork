@@ -16,6 +16,7 @@ using PagedList;
 using System.Data.Entity;
 using System.Threading.Tasks;
 using Microsoft.Ajax.Utilities;
+using System.Web.Services.Description;
 
 namespace GlobeWork.Controllers
 {
@@ -570,6 +571,7 @@ namespace GlobeWork.Controllers
                 company.VideoYoutube = model.Company.VideoYoutube;
                 company.Age = model.Company.Age;
                 company.CityId = Convert.ToInt32(fc["city"]);
+                company.CountryId = model.Company.CountryId;
                 company.Email = model.Company.Email;
                 company.Url = HtmlHelpers.ConvertToUnSign(null, company.Url ?? company.Name);
                 _unitOfWork.CompanyRepository.Update(company);
@@ -634,7 +636,8 @@ namespace GlobeWork.Controllers
                             model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                             model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
                             model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
-                            return View(model);
+                            return RedirectToAction("Company", new { result = "amount" });
+
                         }
                     }
                     else
@@ -645,7 +648,8 @@ namespace GlobeWork.Controllers
                         model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                         model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
                         model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
-                        return View(model);
+                        return RedirectToAction("Company", new { result = "amount" });
+
                     }
                 }
 
@@ -662,7 +666,7 @@ namespace GlobeWork.Controllers
             model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
             model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
             model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
-            return View(model);
+            return RedirectToAction("Company", new { result = "amount" });
         }
         #endregion
 
@@ -921,13 +925,13 @@ namespace GlobeWork.Controllers
         {
             var model = new InsertEmployerViewModel
             {
-                Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate)),
+                Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Career, o => o.OrderByDescending(a => a.CreateDate)),
                 JobTypes = _unitOfWork.JobTypeRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate)),
                 Ranks = _unitOfWork.RankRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate)),
                 Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)),
                 Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)),
                 Skills = _unitOfWork.SkillRepository.GetQuery(a => a.TypeSkill == TypeSkill.Skill),
-                Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort)),
+                Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort)),
                 JobPost = new JobPost
                 {
                     Active = true,
@@ -957,6 +961,7 @@ namespace GlobeWork.Controllers
                 }
                 model.JobPost.CompanyId = company.EmployerId;
                 model.JobPost.Code = Utils.Utils.GenerateRandomCode();
+                bool addedDateHot = false;
                 if (model.DateHot > 0)
                 {
                     if (User.Amount != 0)
@@ -968,6 +973,7 @@ namespace GlobeWork.Controllers
                             User.Amount -= amountToSubtract;
                             Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + "</strong> để hiển thị tin <strong>" + model.JobPost.Code + " </strong>" + "<strong class='text-danger'>" + model.DateHot + "</strong> ngày ở mục nổi bật", EmployerLogType.Deduction, User.Id, amountToSubtract);
                             model.JobPost.Hot = DateTime.Now.AddDays(model.DateHot);
+                            addedDateHot = true;
                             //Update cookie
                             HttpCookie cookie = Request.Cookies[".ASPXAUTHEMPLOYER"];
                             if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
@@ -991,6 +997,7 @@ namespace GlobeWork.Controllers
                             model.Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
                             model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
                             model.Skills = _unitOfWork.SkillRepository.Get(orderBy: a => a.OrderBy(l => l.Id));
+                            model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
                             return View(model);
                         }
                     }
@@ -1003,7 +1010,59 @@ namespace GlobeWork.Controllers
                         model.Skills = _unitOfWork.SkillRepository.Get(orderBy: a => a.OrderBy(l => l.Id));
                         model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
                         model.Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                        model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
                         return View(model);
+                    }
+                }
+                if(model.JobPost.ServiceId > 0)
+                {
+                    var service = _unitOfWork.ServiceRepository.GetById(model.JobPost.ServiceId);
+                    if(service != null)
+                    {
+                        int amountToSubtract = Convert.ToInt32(service.Amount);
+                        string formattedAmountToSubtract = amountToSubtract.ToString("#,0") + "đ";
+                        if (amountToSubtract < User.Amount)
+                        {
+                            int additionalDays = 0;
+                            if (addedDateHot)
+                            {
+                                additionalDays = model.DateHot;
+                            }
+                            if (additionalDays > 0)
+                            {
+                                model.JobPost.Hot = model.JobPost.Hot?.AddDays(additionalDays);
+                            }
+                            if (amountToSubtract > 0)
+                            {
+                                User.Amount -= amountToSubtract;
+                                Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + "</strong> để mua gói <strong>" + service.Name + " </strong>", EmployerLogType.Deduction, User.Id, amountToSubtract);
+                            }
+                            model.JobPost.Hot = DateTime.Now.AddDays(service.IntDate + additionalDays);
+                            HttpCookie cookie = Request.Cookies[".ASPXAUTHEMPLOYER"];
+                            if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
+                            {
+                                var userData = User.Avatar + "|" + User.Id + "|" + User.Email + "|" + User.FullName + "|" + User.Amount;
+                                var ticket = new FormsAuthenticationTicket(2, User.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
+                                    userData, FormsAuthentication.FormsCookiePath);
+                                var encTicket = FormsAuthentication.Encrypt(ticket);
+                                HttpCookie updatedCookie = new HttpCookie(".ASPXAUTHEMPLOYER");
+                                updatedCookie.Value = encTicket;
+                                updatedCookie.Expires = DateTime.Now.AddDays(30);
+                                Response.SetCookie(updatedCookie);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", @"Số tiền trong tài khoản của bạn không đủ vui lòng nạp tiền để tiếp tục sử dụng");
+                            model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+                            model.JobTypes = _unitOfWork.JobTypeRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate));
+                            model.Ranks = _unitOfWork.RankRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate));
+                            model.Skills = _unitOfWork.SkillRepository.Get(orderBy: a => a.OrderBy(l => l.Id));
+                            model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            model.Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
+                            return View(model);
+                        }
                     }
                 }
 
@@ -1012,10 +1071,6 @@ namespace GlobeWork.Controllers
                 var cities = fc["city"];
                 if (cities != null)
                 {
-                    //if (model.JobPost.Cities == null)
-                    //{
-                    //    model.JobPost.Cities = new List<City>();
-                    //}
                     foreach (var id in cities.Split(','))
                     {
                         var cityId = Convert.ToInt32(id);
@@ -1027,10 +1082,6 @@ namespace GlobeWork.Controllers
                 var skill = fc["skill"];
                 if (skill != null)
                 {
-                    //if (model.JobPost.Skills == null)
-                    //{
-                    //    model.JobPost.Skills = new List<Skill>();
-                    //}
                     foreach (var id in skill.Split(','))
                     {
                         var skillId = Convert.ToInt32(id);
@@ -1053,9 +1104,10 @@ namespace GlobeWork.Controllers
             model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
             model.Skills = _unitOfWork.SkillRepository.Get(orderBy: a => a.OrderBy(l => l.Id));
             model.Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+            model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
             return View(model);
         }
-
+       
         [Route("cap-nhat-tin-tuyen-dung")]
         public ActionResult EditJob(int id)
         {
@@ -1068,12 +1120,12 @@ namespace GlobeWork.Controllers
             {
                 JobPost = jobs,
                 DateHot = 0,
-                Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate)),
+                Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Career, o => o.OrderByDescending(a => a.CreateDate)),
                 JobTypes = _unitOfWork.JobTypeRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate)),
                 Ranks = _unitOfWork.RankRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate)),
                 Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)),
                 Skills = _unitOfWork.SkillRepository.GetQuery(a => a.TypeSkill == TypeSkill.Skill),
-                Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort)),
+                Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort)),
                 Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)),
             };
             return View(model);
@@ -1083,6 +1135,8 @@ namespace GlobeWork.Controllers
         public ActionResult EditJob(InsertEmployerViewModel model, FormCollection fc)
         {
             var jobs = _unitOfWork.JobPostRepository.GetById(model.JobPost.Id);
+            bool addedDateHot = false;
+
             if (jobs == null)
             {
                 return RedirectToAction("PostNews");
@@ -1094,7 +1148,6 @@ namespace GlobeWork.Controllers
                 jobs.RankId = Convert.ToInt32(fc["RankId"]);
                 jobs.CareerId = Convert.ToInt32(fc["CareerId"]);
                 jobs.JobTypeId = Convert.ToInt32(fc["JobTypeId"]);
-                //jobs.CityId = Convert.ToInt32(fc["CityId"]);
                 jobs.CounId = model.JobPost.CounId;
                 jobs.Country = _unitOfWork.CountryRepository.GetById(model.JobPost.CounId);
                 jobs.Image = fc["Pictures"] == "" ? null : fc["Pictures"];
@@ -1114,6 +1167,7 @@ namespace GlobeWork.Controllers
                 jobs.SalalyMin = model.JobPost.SalalyMin;
                 jobs.SalalyMax = model.JobPost.SalalyMax;
                 jobs.Wages = model.JobPost.Wages;
+                jobs.ServiceId = model.JobPost.ServiceId;
                 if (jobs.Cities.Any())
                 {
                     jobs.Cities.Clear();
@@ -1194,6 +1248,7 @@ namespace GlobeWork.Controllers
                             model.Skills = _unitOfWork.SkillRepository.Get(orderBy: a => a.OrderBy(l => l.Id));
                             model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
                             model.Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
                             return View(model);
                         }
                     }
@@ -1206,10 +1261,72 @@ namespace GlobeWork.Controllers
                         model.Skills = _unitOfWork.SkillRepository.Get(orderBy: a => a.OrderBy(l => l.Id));
                         model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
                         model.Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                        model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
                         return View(model);
                     }
                 }
-                
+                if (model.JobPost.ServiceId > 0)
+                {
+                    var service = _unitOfWork.ServiceRepository.GetById(model.JobPost.ServiceId);
+                    if (service != null)
+                    {
+                        int amountToSubtract = Convert.ToInt32(service.Amount);
+                        string formattedAmountToSubtract = amountToSubtract.ToString("#,0") + "đ";
+                        if (amountToSubtract < User.Amount)
+                        {
+                            int additionalDays = 0;
+                            if (addedDateHot)
+                            {
+                                additionalDays = model.DateHot;
+                            }
+                            if(jobs.Hot != null)
+                            {
+                                if (jobs.Hot < DateTime.Now)
+                                {
+                                    jobs.Hot = DateTime.Now.AddDays(model.DateHot);
+                                }
+                                else
+                                {
+                                    jobs.Hot = jobs.Hot?.AddDays(model.DateHot);
+                                }
+                            }
+                            if (additionalDays > 0)
+                            {
+                                jobs.Hot = jobs.Hot?.AddDays(additionalDays);
+                            }
+                            if (amountToSubtract > 0)
+                            {
+                                User.Amount -= amountToSubtract;
+                                Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + "</strong> để mua gói <strong>" + service.Name + " </strong>", EmployerLogType.Deduction, User.Id, amountToSubtract);
+                            }
+                            jobs.Hot = DateTime.Now.AddDays(service.IntDate + additionalDays);
+                            HttpCookie cookie = Request.Cookies[".ASPXAUTHEMPLOYER"];
+                            if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
+                            {
+                                var userData = User.Avatar + "|" + User.Id + "|" + User.Email + "|" + User.FullName + "|" + User.Amount;
+                                var ticket = new FormsAuthenticationTicket(2, User.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
+                                    userData, FormsAuthentication.FormsCookiePath);
+                                var encTicket = FormsAuthentication.Encrypt(ticket);
+                                HttpCookie updatedCookie = new HttpCookie(".ASPXAUTHEMPLOYER");
+                                updatedCookie.Value = encTicket;
+                                updatedCookie.Expires = DateTime.Now.AddDays(30);
+                                Response.SetCookie(updatedCookie);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", @"Số tiền trong tài khoản của bạn không đủ vui lòng nạp tiền để tiếp tục sử dụng");
+                            model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+                            model.JobTypes = _unitOfWork.JobTypeRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate));
+                            model.Ranks = _unitOfWork.RankRepository.GetQuery(orderBy: o => o.OrderByDescending(a => a.CreateDate));
+                            model.Skills = _unitOfWork.SkillRepository.Get(orderBy: a => a.OrderBy(l => l.Id));
+                            model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            model.Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
+                            return View(model);
+                        }
+                    }
+                }
                 var job = _unitOfWork.JobPostRepository.GetQuery().AsNoTracking();
                 if (job.Any(p => p.Url.ToLower().Trim() == jobs.Url.ToLower().Trim()))
                 {
@@ -1224,6 +1341,7 @@ namespace GlobeWork.Controllers
             model.Skills = _unitOfWork.SkillRepository.Get(orderBy: a => a.OrderBy(l => l.Id));
             model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
             model.Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+            model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
             return View(model);
         }
         [HttpPost]
@@ -1298,6 +1416,7 @@ namespace GlobeWork.Controllers
                 Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate)),
                 StudyAbroadCategories = StudyAbroadCategories(),
                 Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)),
+                Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort)),
                 StudyAbroad = new StudyAbroad
                 {
                     Active = true,
@@ -1321,7 +1440,10 @@ namespace GlobeWork.Controllers
                 model.StudyAbroad.StudyAbroadCategory = _unitOfWork.StudyAbroadCategoryRepository.GetById(model.StudyAbroad.CategoryId) ?? null;
                 model.StudyAbroad.CompanyId = User.Id;
                 model.StudyAbroad.Code = Utils.Utils.GenerateRandomCode();
+                model.StudyAbroad.ServiceId = model.StudyAbroad.ServiceId;
                 model.StudyAbroad.ListImage = fc["Pictures"];
+                bool addedDateHot = false;
+
                 var company = _unitOfWork.CompanyRepository.GetQuery(a => a.EmployerId == User.Id).FirstOrDefault();
                 if (company == null)
                 {
@@ -1358,6 +1480,7 @@ namespace GlobeWork.Controllers
                             model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
                             model.StudyAbroadCategories = StudyAbroadCategories();
                             model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
                             return View(model);
                         }
                     }
@@ -1367,9 +1490,59 @@ namespace GlobeWork.Controllers
                         model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
                         model.StudyAbroadCategories = StudyAbroadCategories();
                         model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                        model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
                         return View(model);
                     }
                 }
+                if (model.StudyAbroad.ServiceId > 0)
+                {
+                    var service = _unitOfWork.ServiceRepository.GetById(model.StudyAbroad.ServiceId);
+                    if (service != null)
+                    {
+                        int amountToSubtract = Convert.ToInt32(service.Amount);
+                        string formattedAmountToSubtract = amountToSubtract.ToString("#,0") + "đ";
+                        if (amountToSubtract < User.Amount)
+                        {
+                            int additionalDays = 0;
+                            if (addedDateHot)
+                            {
+                                additionalDays = model.DateHot;
+                            }
+                            if (additionalDays > 0)
+                            {
+                                model.StudyAbroad.Hot = model.StudyAbroad.Hot?.AddDays(additionalDays);
+                            }
+                            if (amountToSubtract > 0)
+                            {
+                                User.Amount -= amountToSubtract;
+                                Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + "</strong> để mua gói <strong>" + service.Name + " </strong>", EmployerLogType.Deduction, User.Id, amountToSubtract);
+                            }
+                            model.StudyAbroad.Hot = DateTime.Now.AddDays(service.IntDate + additionalDays);
+                            HttpCookie cookie = Request.Cookies[".ASPXAUTHEMPLOYER"];
+                            if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
+                            {
+                                var userData = User.Avatar + "|" + User.Id + "|" + User.Email + "|" + User.FullName + "|" + User.Amount;
+                                var ticket = new FormsAuthenticationTicket(2, User.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
+                                    userData, FormsAuthentication.FormsCookiePath);
+                                var encTicket = FormsAuthentication.Encrypt(ticket);
+                                HttpCookie updatedCookie = new HttpCookie(".ASPXAUTHEMPLOYER");
+                                updatedCookie.Value = encTicket;
+                                updatedCookie.Expires = DateTime.Now.AddDays(30);
+                                Response.SetCookie(updatedCookie);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", @"Số tiền trong tài khoản của bạn không đủ vui lòng nạp tiền để tiếp tục sử dụng");
+                            model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+                            model.StudyAbroadCategories = StudyAbroadCategories();
+                            model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
+                            return View(model);
+                        }
+                    }
+                }
+
                 var file = Request.Files["StudyAbroad.Image"];
                 if (file == null || file.ContentLength <= 0)
                 {
@@ -1377,6 +1550,7 @@ namespace GlobeWork.Controllers
                     model.StudyAbroadCategories = StudyAbroadCategories();
                     model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
                     model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                    model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
 
                     return View(model);
                 }
@@ -1387,6 +1561,7 @@ namespace GlobeWork.Controllers
                         ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg, svg");
                         model.StudyAbroadCategories = StudyAbroadCategories();
                         model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+                        model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
                         return View(model);
                     }
 
@@ -1395,6 +1570,7 @@ namespace GlobeWork.Controllers
                         ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
                         model.StudyAbroadCategories = StudyAbroadCategories();
                         model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+                        model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
                         return View(model);
                     }
                     var imgPath = "/images/studyAbroad/" + DateTime.Now.ToString("yyyy/MM/dd");
@@ -1416,6 +1592,7 @@ namespace GlobeWork.Controllers
             model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
             model.StudyAbroadCategories = StudyAbroadCategories();
             model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+            model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
             return View(model);
         }
         [Route("cap-nhat-tin-du-hoc")]
@@ -1433,6 +1610,7 @@ namespace GlobeWork.Controllers
                 Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate)),
                 StudyAbroadCategories = StudyAbroadCategories(),
                 Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)),
+                Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.StudyAbroad, o => o.OrderBy(a => a.Sort)),
             };
             return View(model);
         }
@@ -1440,6 +1618,7 @@ namespace GlobeWork.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult EditStudyAbroad(InsertStudyAbroadViewModel model, FormCollection fc)
         {
+            bool addedDateHot = false;
             var study = _unitOfWork.StudyAbroadRepository.GetById(model.StudyAbroad.Id);
             if (study == null)
             {
@@ -1520,6 +1699,7 @@ namespace GlobeWork.Controllers
                             model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
                             model.StudyAbroadCategories = StudyAbroadCategories();
                             model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.StudyAbroad, o => o.OrderBy(a => a.Sort));
                             return View(model);
                         }
                     }
@@ -1528,8 +1708,69 @@ namespace GlobeWork.Controllers
                         ModelState.AddModelError("", @"Số tiền trong tài khoản của bạn không đủ vui lòng nạp tiền để tiếp tục sử dụng");
                         model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
                         model.StudyAbroadCategories = StudyAbroadCategories();
+                        model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.StudyAbroad, o => o.OrderBy(a => a.Sort));
                         model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
                         return View(model);
+                    }
+                }
+                if (model.StudyAbroad.ServiceId > 0)
+                {
+                    var service = _unitOfWork.ServiceRepository.GetById(model.StudyAbroad.ServiceId);
+                    if (service != null)
+                    {
+                        int amountToSubtract = Convert.ToInt32(service.Amount);
+                        string formattedAmountToSubtract = amountToSubtract.ToString("#,0") + "đ";
+                        if (amountToSubtract < User.Amount)
+                        {
+
+                            int additionalDays = 0;
+                            if (addedDateHot)
+                            {
+                                additionalDays = model.DateHot;
+                            }
+                            if (study.Hot != null)
+                            {
+                                if (study.Hot < DateTime.Now)
+                                {
+                                    study.Hot = DateTime.Now.AddDays(model.DateHot);
+                                }
+                                else
+                                {
+                                    study.Hot = study.Hot?.AddDays(model.DateHot);
+                                }
+                            }
+                            if (additionalDays > 0)
+                            {
+                                study.Hot = study.Hot?.AddDays(additionalDays);
+                            }
+                            if (amountToSubtract > 0)
+                            {
+                                User.Amount -= amountToSubtract;
+                                Utils.Utils.EmployerLog("Tài khoản bị trừ <strong>" + formattedAmountToSubtract + "</strong> để mua gói <strong>" + service.Name + " </strong>", EmployerLogType.Deduction, User.Id, amountToSubtract);
+                            }
+                            study.Hot = DateTime.Now.AddDays(service.IntDate + additionalDays);
+                            HttpCookie cookie = Request.Cookies[".ASPXAUTHEMPLOYER"];
+                            if (cookie != null && !string.IsNullOrEmpty(cookie.Value))
+                            {
+                                var userData = User.Avatar + "|" + User.Id + "|" + User.Email + "|" + User.FullName + "|" + User.Amount;
+                                var ticket = new FormsAuthenticationTicket(2, User.Email.ToLower(), DateTime.Now, DateTime.Now.AddDays(30), true,
+                                    userData, FormsAuthentication.FormsCookiePath);
+                                var encTicket = FormsAuthentication.Encrypt(ticket);
+                                HttpCookie updatedCookie = new HttpCookie(".ASPXAUTHEMPLOYER");
+                                updatedCookie.Value = encTicket;
+                                updatedCookie.Expires = DateTime.Now.AddDays(30);
+                                Response.SetCookie(updatedCookie);
+                            }
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", @"Số tiền trong tài khoản của bạn không đủ vui lòng nạp tiền để tiếp tục sử dụng");
+                            model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
+                            model.StudyAbroadCategories = StudyAbroadCategories();
+                            model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.StudyAbroad, o => o.OrderBy(a => a.Sort));
+                            return View(model);
+                        }
                     }
                 }
                 study.Url = HtmlHelpers.ConvertToUnSign(null, model.StudyAbroad.Name);
@@ -1549,6 +1790,7 @@ namespace GlobeWork.Controllers
                 study.Requirements = model.StudyAbroad.Requirements;
                 study.Incentives = model.StudyAbroad.Incentives;
                 study.TypeStudyAbroad = model.StudyAbroad.TypeStudyAbroad;
+                study.ServiceId = model.StudyAbroad.ServiceId;
                 _unitOfWork.Save();
                 var stu = _unitOfWork.StudyAbroadRepository.GetQuery().AsNoTracking();
                 if (stu.Any(p => p.Url.ToLower().Trim() == study.Url.ToLower().Trim()))
@@ -1561,6 +1803,7 @@ namespace GlobeWork.Controllers
             model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
             model.StudyAbroadCategories = StudyAbroadCategories();
             model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+            model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.StudyAbroad, o => o.OrderBy(a => a.Sort));
             return View(model);
         }
 

@@ -57,6 +57,7 @@ namespace GlobeWork.Models
         public bool Scholarship { get; set; }
         public DateTime? Hot { get; set; }
         public string ListImage { get; set; }
+        public int? ServiceId { get; set; }
         public int? CareerId { get; set; }
         public virtual StudyAbroadCategory  StudyAbroadCategory { get; set; }    
         public virtual Career Careers { get; set; }
@@ -65,6 +66,7 @@ namespace GlobeWork.Models
         public virtual ICollection<ApplyJob> ApplyJobs { get; set; }
         public TypeStudyAbroad  TypeStudyAbroad { get; set; }
         public Wage Wages { get; set; }
+        public virtual Service Service { get; set; }
         public StudyAbroad()
         {
             CreateDate = DateTime.Now;

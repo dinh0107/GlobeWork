@@ -1432,6 +1432,29 @@ namespace GlobeWork.Controllers
                 {
                     model.Service.Amount = Convert.ToDecimal(model.Amount.Replace(",", ""));
                 }
+                for (var i = 0; i < Request.Files.Count; i++)
+                {
+                    if (Request.Files[i] == null || Request.Files[i].ContentLength <= 0) continue;
+                    if (!HtmlHelpers.CheckFileExt(Request.Files[i].FileName, "jpg|jpeg|png|gif")) continue;
+                    if (Request.Files[i].ContentLength > 1024 * 1024 * 4) continue;
+
+                    var imgFileName = HtmlHelpers.ConvertToUnSign(null, Path.GetFileNameWithoutExtension(Request.Files[i].FileName)) +
+                        "-" + DateTime.Now.Millisecond + Path.GetExtension(Request.Files[i].FileName);
+                    var imgPath = "/images/service/" + DateTime.Now.ToString("yyyy/MM/dd");
+                    HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
+
+                    var imgFile = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
+
+                    var newImage = Image.FromStream(Request.Files[i].InputStream);
+                    var fixSizeImage = HtmlHelpers.FixedSize(newImage, 1000, 1000, false);
+                    HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
+
+                    if (Request.Files.Keys[i] == "Service.Image")
+                    {
+                        model.Service.Image = imgFile;
+                    }
+                }
+
                 _unitOfWork.ServiceRepository.Insert(model.Service);
                 _unitOfWork.Save();
                 return RedirectToAction("ListService" , new {result = "success"});
@@ -1453,7 +1476,7 @@ namespace GlobeWork.Controllers
             return View(model);
         }
         [HttpPost]
-        public ActionResult EditService(ServiceViewModel model)
+        public ActionResult EditService(ServiceViewModel model , FormCollection fc)
         {
             var service = _unitOfWork.ServiceRepository.GetById(model.Service.Id);
             if(service == null)
@@ -1470,9 +1493,38 @@ namespace GlobeWork.Controllers
                 {
                     service.Amount = null;
                 }
+                for (var i = 0; i < Request.Files.Count; i++)
+                {
+                    if (Request.Files[i] == null || Request.Files[i].ContentLength <= 0) continue;
+                    if (!HtmlHelpers.CheckFileExt(Request.Files[i].FileName, "jpg|jpeg|png|gif")) continue;
+                    if (Request.Files[i].ContentLength > 1024 * 1024 * 4) continue;
+
+                    var imgFileName = HtmlHelpers.ConvertToUnSign(null, Path.GetFileNameWithoutExtension(Request.Files[i].FileName)) +
+                        "-" + DateTime.Now.Millisecond + Path.GetExtension(Request.Files[i].FileName);
+                    var imgPath = "/images/service/" + DateTime.Now.ToString("yyyy/MM/dd");
+                    HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
+
+                    var imgFile = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
+
+                    var newImage = Image.FromStream(Request.Files[i].InputStream);
+                    var fixSizeImage = HtmlHelpers.FixedSize(newImage, 1000, 1000, false);
+                    HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
+
+                    if (Request.Files.Keys[i] == "Service.Image")
+                    {
+                        service.Image = imgFile;
+                    }
+                }
+                var file = Request.Files["Service.Image"];
+
+                if (file != null && file.ContentLength == 0)
+                {
+                    service.Image = fc["CurrentFile"] == "" ? null : fc["CurrentFile"];
+                }
                 service.Name = model.Service.Name;
                 service.IntDate = model.Service.IntDate;
                 service.Sort = model.Service.Sort;
+                service.Description = model.Service.Description;
                 service.Active = model.Service.Active;
                 service.TypeService = model.Service.TypeService;
                 _unitOfWork.Save();

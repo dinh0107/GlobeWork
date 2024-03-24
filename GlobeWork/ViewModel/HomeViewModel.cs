@@ -77,6 +77,7 @@ namespace GlobeWork.ViewModel
         public IEnumerable<JobPost> JobCompanys { get; set; }
         public IEnumerable<JobPost> JobPosts { get; set; }
         public IEnumerable<Company> Companies  { get; set; }
+        public Company CompanyJob { get; set; }
         public IEnumerable<Follow> Follows { get; set; }
         public IEnumerable<Like> Likes { get; set; }
         public IEnumerable<ApplyJob>  ApplyJobs { get; set; }

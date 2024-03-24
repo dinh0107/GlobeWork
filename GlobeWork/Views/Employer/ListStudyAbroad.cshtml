@@ -77,6 +77,11 @@
                                 }
                                 <p class="my-2">
                                     Tiêu đề tuyển dụng: <strong>@item.Name</strong>
+                                    <br />
+                                    @if (item.Service != null && item.Hot > DateTime.Now)
+                                    {
+                                        @:Gói hiển thị: @item.Service.Name
+                                    }
                                 </p>
                                 <a href="@Url.Action("ListCVStudy", new {jobId = item.Id})" class="btn btn-primary">Xem CV ứng tuyển</a>
                             </td>
@@ -126,6 +131,12 @@
                                 }
 
                             </td>
+                        </tr>
+                    }
+                    @if (Model.StudyAbroads.PageCount > 1)
+                    {
+                        <tr>
+                            <td colspan="8">@Html.PagedListPager(Model.StudyAbroads, page => Url.Action("ListStudyAbroad", new { page, name = Model.Name, type = Model.Type }))</td>
                         </tr>
                     }
                 </tbody>

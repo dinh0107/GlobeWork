@@ -95,5 +95,43 @@ namespace GlobeWork.Utils
 
             return $"{hours} giờ {minutes} phút trước";
         }
+        public static string UpdateDateVn(DateTime? sdate)
+        {
+            if (!sdate.HasValue)
+            {
+                return null;
+            }
+
+            DateTime value = sdate.Value;
+            DateTime now = DateTime.Now;
+            TimeSpan timeSpan = now - value;
+            int minutes = timeSpan.Minutes;
+            int hours = timeSpan.Hours;
+            int days = timeSpan.Days;
+            if (days >= 365)
+            {
+                return $"{days / 365} năm trước";
+            }
+            else if (days >= 30)
+            {
+                return $"{days / 30} tháng trước";
+            }
+            else if (days >= 7)
+            {
+                return $"{days / 7} tuần trước";
+            }
+            else if (days >= 1)
+            {
+                return $"{days} ngày trước";
+            }
+            else if (hours < 1)
+            {
+                return $"{minutes} phút trước";
+            }
+
+            return $"{hours} giờ {minutes} phút trước";
+        }
+
+
     }
 }

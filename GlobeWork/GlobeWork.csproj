@@ -421,6 +421,18 @@
     <Compile Include="Migrations\202403210238259_add-service-price.Designer.cs">
       <DependentUpon>202403210238259_add-service-price.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202403220141563_uodate-jobpost.cs" />
+    <Compile Include="Migrations\202403220141563_uodate-jobpost.Designer.cs">
+      <DependentUpon>202403220141563_uodate-jobpost.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202403220801305_uodate-service.cs" />
+    <Compile Include="Migrations\202403220801305_uodate-service.Designer.cs">
+      <DependentUpon>202403220801305_uodate-service.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202403241317045_update-study.cs" />
+    <Compile Include="Migrations\202403241317045_update-study.Designer.cs">
+      <DependentUpon>202403241317045_update-study.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Advise.cs" />
@@ -566,6 +578,7 @@
     <Content Include="Content\style2.min.css">
       <DependentUpon>style2.css</DependentUpon>
     </Content>
+    <Content Include="Content\sweetalert2.css" />
     <Content Include="Content\themes\adminSite.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
@@ -811,6 +824,7 @@
     <Content Include="Scripts\src\utils\setAttributes.js" />
     <Content Include="Scripts\src\utils\setStyles.js" />
     <Content Include="Scripts\src\utils\setupEventListeners.js" />
+    <Content Include="Scripts\sweetalert2.js" />
     <Content Include="Scripts\tooltip.min.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
     <Content Include="Scripts\umd\popper-utils.min.js" />
@@ -1116,6 +1130,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202403210238259_add-service-price.resx">
       <DependentUpon>202403210238259_add-service-price.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403220141563_uodate-jobpost.resx">
+      <DependentUpon>202403220141563_uodate-jobpost.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403220801305_uodate-service.resx">
+      <DependentUpon>202403220801305_uodate-service.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403241317045_update-study.resx">
+      <DependentUpon>202403241317045_update-study.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

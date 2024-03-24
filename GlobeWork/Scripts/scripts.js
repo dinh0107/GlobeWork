@@ -53,7 +53,7 @@ function HomeJs() {
                     slidesToScroll: 1,
                     rows: 1,
                     arrows: false,
-                    dots: true,
+                    dots: false,
                 }
             }
         ]

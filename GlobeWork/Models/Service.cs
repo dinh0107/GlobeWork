@@ -15,6 +15,13 @@ namespace GlobeWork.Models
         public decimal? Amount { get; set; }
         [Display(Name = "Số ngày"), UIHint("NumberBox")]
         public int IntDate {  get; set; }
+        [Display(Name = "Trích dẫn ngắn"), Required(ErrorMessage = "Hãy nhập trích dẫn ngắn"),
+        StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), DataType(DataType.MultilineText)]
+        public string Description { get; set; }
+
+        [Display(Name = "Ảnh đại diện")]
+        public string Image { get; set; }
+
         [Display(Name = "Hoạt động")]
         public bool Active { get; set; }
         [Display(Name = "Thứ tự"), Required(ErrorMessage = "Hãy nhập số thứ tự"), RegularExpression(@"\d+", ErrorMessage = "Chỉ nhập số nguyên dương"), UIHint("NumberBox")]

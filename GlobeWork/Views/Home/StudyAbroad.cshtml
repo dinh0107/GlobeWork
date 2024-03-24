@@ -8,7 +8,7 @@
     <div class="container">
         <form class="row custom-row" action="@Url.Action("SearchStudyAbroad")">
             <div class="col-lg-7 col-md-9 col-8">
-                <input type="text" name="name" value="" placeholder="Nhập từ khóa" class="form-control font-size-12"/>
+                <input type="text" name="name" value="" placeholder="Nhập từ khóa" class="form-control font-size-12" />
             </div>
             <div class="col-lg-3 col-md-3 col-4">
                 <div class="form-control d-flex align-items-center justify-content-between font-size-12">
@@ -75,12 +75,12 @@
                         </a>
                         <div class="card-body">
                             <a href="@Url.Action("StudyAbroadDetail" , new {url = item.Url})" class="card-title">
-                               @item.Name
+                                @item.Name
                             </a>
                             <p class="card-text">@item.Company.Name</p>
                             <div class="card-btns">
                                 <a href="#" class="link-scholarship">
-                                   @Html.DisplayFor(a => item.Wages)
+                                    @Html.DisplayFor(a => item.Wages)
                                 </a>
                                 <a href="#" class="link-scholarship">
                                     @item.StudyAbroadCategory.Country.Name
@@ -130,74 +130,78 @@
         }
     </div>
 </div>
-<div class="container py-4">
-    <h2 class="title custom-title mt-3">
-        tin tức du học
-    </h2>
-    <div class="row mt-4 custom-row">
-        <div class="col-lg-8">
-            @*<div class="title-name">
-                Tin tức tiêu biểu
-                <a href="@Url.Action("ArticleHot")">Xem thêm<i class="fa-regular fa-arrow-right ml-2"></i></a>
-            </div>*@
-            <div class="row custom-row mt-3">
-                @foreach (var item in Model.HotArticle.Take(2))
+@if (Model.HotArticle.Any())
+{
+    <div class="container py-4">
+        <h2 class="title custom-title mt-3">
+            tin tức du học
+        </h2>
+        <div class="row mt-4 custom-row">
+            <div class="col-lg-8">
+                @*<div class="title-name">
+                        Tin tức tiêu biểu
+                        <a href="@Url.Action("ArticleHot")">Xem thêm<i class="fa-regular fa-arrow-right ml-2"></i></a>
+                    </div>*@
+                <div class="row custom-row mt-3">
+                    @foreach (var item in Model.HotArticle.Take(2))
+                    {
+                        <div class="col-lg-6">
+                            <article class="study-article card">
+                                <a href="@Url.Action("ArticleDetail", new {url = item.Url})">
+                                    @if (item.Image != null)
+                                    {
+                                        <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/articles/", item.Image)" alt="@item.Subject" class="lazyload" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/Content/images/on-image.jpg" alt="@item.Subject" class="lazyload" />
+                                    }
+                                </a>
+                                <div class="card-body p-0">
+                                    <div class="date">
+                                        <i class="fa-regular fa-calendar-days mr-1"></i> @item.CreateDate.ToString("dd/MM/yyyy")
+                                    </div>
+                                    <a href="@Url.Action("ArticleDetail", new {url = item.Url})" class="subject-study">@item.Subject</a>
+                                    <div class="study-des">
+                                        @item.Description
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-4">
+                @*<div class="title-name mb-4">
+                        Xem nhiều
+                        <a href="#">Xem thêm<i class="fa-regular fa-arrow-right ml-2"></i></a>
+                    </div>*@
+                @foreach (var item in Model.HotArticle.Skip(2).Take(4))
                 {
-                    <div class="col-lg-6">
-                        <article class="study-article card">
-                           <a href="@Url.Action("ArticleDetail", new {url = item.Url})">
-                               @if (item.Image != null)
-                               {
-                                   <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/articles/", item.Image)" alt="@item.Subject" class="lazyload" />
-                               }
-                               else
-                               {
-                                   <img src="~/Content/images/on-image.jpg" alt="@item.Subject" class="lazyload" />
-                               }
-                           </a>
-                           <div class="card-body p-0">
-                               <div class="date">
-                                   <i class="fa-regular fa-calendar-days mr-1"></i> @item.CreateDate.ToString("dd/MM/yyyy")
-                               </div>
-                               <a href="@Url.Action("ArticleDetail", new {url = item.Url})" class="subject-study">@item.Subject</a>
-                               <div class="study-des">
-                                   @item.Description
-                               </div>
-                           </div>
-                        </article>
+                    <div class="media study-media my-3">
+                        <a href="@Url.Action("ArticleDetail", new {url = item.Url})">
+                            @if (item.Image != null)
+                            {
+                                <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/articles/", item.Image)" alt="@item.Subject" class="lazyload" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/images/on-image.jpg" alt="@item.Subject" class="lazyload" />
+                            }
+                        </a>
+                        <div class="media-body ml-3">
+                            <a href="@Url.Action("ArticleDetail", new {url = item.Url})" class="subject-study-media">@item.Subject</a>
+                            <div class="study-media-des">
+                                @item.Description
+                            </div>
+                        </div>
                     </div>
                 }
             </div>
         </div>
-        <div class="col-lg-4">
-            @*<div class="title-name mb-4">
-                Xem nhiều
-                <a href="#">Xem thêm<i class="fa-regular fa-arrow-right ml-2"></i></a>
-            </div>*@
-            @foreach (var item in Model.HotArticle.Skip(2).Take(4))
-            {
-                <div class="media study-media my-3">
-                    <a href="@Url.Action("ArticleDetail", new {url = item.Url})">
-                        @if (item.Image != null)
-                        {
-                            <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/articles/", item.Image)" alt="@item.Subject" class="lazyload" />
-                        }
-                        else
-                        {
-                            <img src="~/Content/images/on-image.jpg" alt="@item.Subject" class="lazyload" />
-                        }
-                    </a>
-                    <div class="media-body ml-3">
-                        <a href="@Url.Action("ArticleDetail", new {url = item.Url})" class="subject-study-media">@item.Subject</a>
-                        <div class="study-media-des">
-                            @item.Description
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
     </div>
-</div>
+}
+
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @section scripts{
     <script src="~/Scripts/select2.js"></script>

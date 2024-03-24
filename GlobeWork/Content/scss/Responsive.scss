@@ -430,7 +430,7 @@
 
 @include maxWidth(600px) {
     .job-detail-fixed-menu__tabs--item.active {
-       display:none;
+        display: none;
     }
 
     .hot-keyword > span {
@@ -644,7 +644,7 @@
     }
 
     .list-bannerjob img {
-        height: 8.9375rem;
+        height: 4.9375rem;
     }
 
     .detail-job .job-name {
@@ -736,7 +736,7 @@
     }
 
     .company-detail-overview {
-        height: 23.6875rem;
+        min-height: 20.6875rem;
     }
 
     .box-follow {
@@ -772,7 +772,7 @@
     }
 
     .job-detail__info--section-content-value, .job-detail__info--section-content-title {
-        font-size: .9rem;
+        font-size: .8rem;
     }
 
     .button1 {
@@ -816,4 +816,76 @@
     .job-in-company-name {
         font-size: .9rem;
     }
+
+    .media-mb {
+        display: block;
+    }
+
+    .price-job {
+        display: flex;
+        font-size: 12px;
+        font-weight: 600;
+        justify-content: flex-start;
+    }
+
+    .apply-url {
+        display: none;
+    }
+
+    .samefield {
+        display: block;
+    }
+
+    .fl-samefield {
+        display: none;
+    }
+
+    .job-detail__information-detail--title {
+        font-size: 1rem;
+    }
+
+    .detail-title-box {
+        font-size: 15px;
+    }
+
+    .job-in-company .heart {
+        position: absolute;
+        bottom: 18px;
+        right: 0px;
+    }
+
+    .grid-form1 {
+        grid-area: 1 / 1 / 2 / 13;
+        font-size: 14px;
+    }
+
+    .grid-form2 {
+        font-size: 14px;
+        grid-area: 2 / 1 / 3 / 7;
+    }
+
+    .grid-form3 {
+        font-size: 14px;
+        grid-area: 2 / 7 / 3 / 13;
+    }
+
+    .grid-form4 {
+        font-size: 14px;
+        grid-area: 3 / 1 / 4 / 13;
+    }
+
+    .grid-form {
+        grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+    }
+
+    .recruitment {
+        padding: 1.25rem 1rem;
+    }
+    /* .box-follow a {
+        width: 8.5rem;
+        height: 2rem;
+        font-size: 0.9rem;
+        line-height: unset;
+    }*/
 }

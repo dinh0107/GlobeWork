@@ -56,34 +56,53 @@
             </div>
             foreach (var item in Model.JobPosts)
             {
+                var tooltip = "";
+                if (item.ExpirationDate != null)
+                {
+                    if (item.ExpirationDate > DateTime.Now)
+                    {
+                        tooltip = "Còn" + @Utils.DateCountDown(item.ExpirationDate) + "để ứng tuyển";
+                    }
+                    else
+                    {
+                        tooltip = "Hết thời gian ứng tuyển";
+                    }
+                }
+                else
+                {
+                    tooltip = "Luôn tuyển";
+                }
                 <div class="job bg-white detail-job @if (item.Hot != null && item.Hot > DateTime.Now) { @Html.Raw("active") } ">
-                    <div class="media ">
+                    <div class="media">
                         <div>
                             <a href="@Url.Action("JobDetail", new {url = item.Url})" class="job-name custom-w" data-tooltip="@item.Name" data-tooltip-position="top">@item.Name</a>
                             <div class="company-name">
                                 @item.Company.Name
                             </div>
                         </div>
-                        <div class="media-body time-deadline text-right">
-                            @if (item.ExpirationDate != null)
-                            {
-                                if (item.ExpirationDate > DateTime.Now)
+                        <div class="media-body text-right">
+                            <div class="right-item">
+                                <a href="@Url.Action("JobDetail", new {url = item.Url})" class="apply-url">Ứng tuyển</a>
+                                @if (email == "")
                                 {
-                                    @:Còn <strong>@Utils.DateCountDown(item.ExpirationDate)</strong> để ứng tuyển
+                                    <a href="#" data-tooltip="Phải đăng nhập để lưu tin" data-tooltip-position="top" data-toggle="modal" data-target="#qick-form" class="heart"><i class="fa-regular fa-heart"></i></a>
                                 }
                                 else
                                 {
-                                    @:Hết thời gian ứng tuyển
+                                    if (Model.Likes.Any(a => a.JobId == item.Id))
+                                    {
+                                        <a href="javascripts:;" class="heart active unlikejob" data-id="@item.Id"><i class="fa-regular fa-heart"></i></a>
+                                    }
+                                    else
+                                    {
+                                        <a href="javascripts:;" class="heart likejob" data-id="@item.Id"><i class="fa-regular fa-heart"></i></a>
+                                    }
                                 }
-                            }
-                            else
-                            {
-                                @:Luôn tuyển
-                            }
+                            </div>
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-between mt-1">
-                        <div class="w-75">
+                        <div class="w-75 custom-gap">
                             <span class="info-job price">@Html.DisplayFor(a => item.Wages)</span>
                             <span class="info-job">
                                 @if (item.Cities.Any())
@@ -106,8 +125,26 @@
                                     }
                                 }
                             </span>
+                            <span class="info-job" data-tooltip="@tooltip" data-tooltip-position="top">
+                                @if (item.ExpirationDate != null)
+                                {
+                                    if (item.ExpirationDate > DateTime.Now)
+                                    {
+                                        @:Còn <strong>@Utils.DateCountDown(item.ExpirationDate)</strong> để ứng tuyển
+                                    }
+                                    else
+                                    {
+                                        @:Hết thời gian 
+                                    }
+                                }
+                                else
+                                {
+                                    @:Luôn tuyển
+                                }
+                            </span>
                         </div>
-                        @if (email == "")
+                        
+                        @*@if (email == "")
                         {
                             <a href="#" data-target="#qick-form" data-toggle="modal" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
                         }
@@ -121,7 +158,7 @@
                             {
                                 <a href="javascripts:;" class="heart likejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
                             }
-                        }
+                        }*@
                     </div>
                 </div>
             }

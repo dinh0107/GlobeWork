@@ -225,10 +225,11 @@
         </div>
     </div>
 }
-
+<link href="~/Content/sweetalert2.css" rel="stylesheet" />
 <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <link href="~/Content/datepicker.css" rel="stylesheet" />
 @section scripts{
+    <script src="~/Scripts/sweetalert2.js"></script>
     <script>
         $('#Cover').change(function () {
             var input = this;
@@ -283,7 +284,17 @@
                     document.querySelector('#city').setOptions(options);
                     document.querySelector('#city').setValue(selectId);
                  });
-            });
+        });
+            @if (ViewBag.Result == "amount")
+            {
+                <Text>
+                    Swal.fire({
+                        icon: "error",
+                        title: "Tài khoản không đủ",
+                        text: "Vui lòng nạp tiền để tiếp tục sử dụng dịch vụ!",
+                    });
+                </Text>
+             }
         @if (ViewBag.Result == "success")
         {
             <Text>

@@ -340,21 +340,14 @@
                             Việc làm hot
                         </a>
                     </li>
-                    <li>
-                        <a href="@Url.Action("JobInCategory")">
-                            Việc làm theo ngành nghề
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("JobInCountruy")">
-                            Việc làm theo quốc gia
-                        </a>
-                    </li>
-                    <li>
-                        <a href="@Url.Action("JobInWage")">
-                            Việc làm theo mức lương
-                        </a>
-                    </li>
+                    @foreach (var item in Model.Countries)
+                    {
+                        <li>
+                            <a href="@Url.Action("JobInCountruy", new {countruyId = item.Id})">
+                                @item.Name
+                            </a>
+                        </li>
+                    }
                 </ul>
             </li>
             <li>

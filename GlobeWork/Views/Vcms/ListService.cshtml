@@ -26,6 +26,7 @@
         <tbody>
             <tr>
                 <th>STT</th>
+                <th>Ảnh</th>
                 <th>Tên gói</th>
                 <th>Số ngày</th>
                 <th>Giá</th>
@@ -37,6 +38,12 @@
             {
                 <tr data-id="@item.Id">
                     <td>@i</td>
+                    <td>
+                        @if (item.Image != null)
+                        {
+                            <img src="@Path.Combine("/images/service/", item.Image)" style="width:50px; height:50px ; object-fit:cover" />
+                        }
+                    </td>
                     <td class="left">
                         @item.Name
                     </td>
@@ -44,7 +51,7 @@
                     <td>
                         @if (item.Amount > 0)
                         {
-                           @Html.DisplayFor(a => item.Amount)
+                            @Html.DisplayFor(a => item.Amount)
                         }
                         else
                         {

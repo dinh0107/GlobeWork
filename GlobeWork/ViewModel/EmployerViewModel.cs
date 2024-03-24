@@ -91,6 +91,7 @@ namespace GlobeWork.ViewModel
     {
         public StudyAbroad StudyAbroad { get; set; }
         public IEnumerable<Career> Careers { get; set; }
+        public IEnumerable<Service> Services { get; set; }
         public IEnumerable<StudyAbroadCategory> StudyAbroadCategories { get; set; }
         public IEnumerable<City> Citys { get; set; }
         [Display(Name = "Số ngày"), Required(ErrorMessage = "Hãy nhập thứ tự"), RegularExpression(@"\d+", ErrorMessage = "Chỉ nhập số nguyên")]
