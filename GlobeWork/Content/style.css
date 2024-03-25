@@ -4122,3 +4122,7 @@ summary {
   text-align: center;
   text-decoration: none;
 }
+
+.strong-text strong {
+  padding: 0 0.3rem;
+}

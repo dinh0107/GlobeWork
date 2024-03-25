@@ -1,4 +1,5 @@
 ﻿@model GlobeWork.ViewModel.StudyDetailViewModel
+@using GlobeWork.Utils 
 @using Helpers;
 @{
     ViewBag.Title = Model.StudyAbroad.Name;
@@ -38,7 +39,7 @@
             </div>
             <div class="company-detail-overview">
                 <div class="box-detail">
-                    <h2 class="company-detail-name ">@Model.StudyAbroad.Company.Name <span class="tag-name">@Model.StudyAbroad.Company.City.Name</span></h2>
+                    <h2 class="company-detail-name "><span class="nam-compa">@Model.StudyAbroad.Company.Name</span> <span class="tag-name">@Model.StudyAbroad.Company.City.Name</span></h2>
                     <div class="company-subdetail">
                         <a href="@Model.StudyAbroad.Company.WebsiteUrl" target="_blank">
                             <i class="fa-light fa-globe"></i>
@@ -265,6 +266,22 @@
                         <hr />
                         @foreach (var item in Model.StudyAbroadCompanys)
                         {
+                            var tooltip = "";
+                            if (item.ExpirationDate != null)
+                            {
+                                if (item.ExpirationDate > DateTime.Now)
+                                {
+                                    tooltip = "Còn" + @Utils.DateCountDown(item.ExpirationDate) + "để ứng tuyển";
+                                }
+                                else
+                                {
+                                    tooltip = "Hết thời gian ứng tuyển";
+                                }
+                            }
+                            else
+                            {
+                                tooltip = "Luôn tuyển";
+                            }
                             <div class="job-in-company">
                                 <div class="media">
                                     <div class="company-avata border rounded">
@@ -289,22 +306,29 @@
                                     <div class="info-job-company2">
                                         @item.StudyAbroadCategory.Country.Name
                                     </div>
-                                    <div class="info-job-company3">Cập nhật @Html.DateVn(item.CreateDate, 2) </div>
-                                    <div class="info-job-company4 p-3">
+                                    <div class="info-job-company3">Cập nhật @Utils.UpdateDateVn(item.CreateDate)</div>
+                                    <div class="info-job-company4 strong-text p-3" data-tooltip="@tooltip" data-tooltip-position="top">
                                         <i class="fa-solid fa-clock mr-2"></i>
                                         @if (item.ExpirationDate != null)
                                         {
-                                            @:Hạn nộp hồ sơ : @Html.DisplayFor(a => item.ExpirationDate)
+                                            if (item.ExpirationDate > DateTime.Now)
+                                            {
+                                                @:Còn <strong>@Utils.DateCountDown(item.ExpirationDate)</strong> để ứng tuyển
+                                            }
+                                            else
+                                            {
+                                                @:Hết thời gian ứng tuyển
+                                            }
                                         }
                                         else
                                         {
-                                            @:Hạn nộp hồ sơ : Luôn tuyển
+                                            @:Luôn tuyển
                                         }
                                     </div>
                                 </div>
                                 @if (email == "")
                                 {
-                                    <a href="@Url.Action("Login","User" , new {returnUrl = Url.Action("StudyAbroadDetail", new { url = Model.StudyAbroad.Url })})" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                                    <a href="#" data-toggle="modal" data-target="#qick-form" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
                                 }
                                 else
                                 {
