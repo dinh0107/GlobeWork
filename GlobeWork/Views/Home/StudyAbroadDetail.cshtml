@@ -12,6 +12,11 @@
     var request = Request.Url;
     var email = ViewContext.RouteData.Values["Email"].ToString();
 }
+<style>
+    header {
+        position: initial;
+    }
+</style>
 <div class="bg-light py-4">
     <div class="container">
         <div class="company-cover-inner">
@@ -174,7 +179,7 @@
                         }
                     </div>
                 </div>
-                <div class="job-detail__box--left my-3">
+                @*<div class="job-detail__box--left my-3">
                     <div class="detail-title-box">
                         Yêu cầu chung
                     </div>
@@ -202,8 +207,8 @@
                             @Model.StudyAbroad.Address
                         </div>
                     </div>
-                </div>
-                <div class="job-detail__box--left my-3">
+                </div>*@
+                <div class="job-detail__box--left my-3" id="detail-job">
                     <div class="job-detail__information-detail--title">
                         Chi tiết tin
                     </div>
@@ -248,10 +253,281 @@
                             @Html.Raw(Model.StudyAbroad.Incentives)
                         </div>
                     }
-                </div>
+                    <div class="box-ac">
+                        <div class="detail-title-box">
+                            Cách thức nộp học bổng
+                        </div>
+                        <div class="job-description__item--content">
+                            Ứng viên nộp hồ sơ trực tuyến bằng cách bấm <strong>Ứng tuyển</strong> ngay dưới đây.
+                        </div>
+                        <div class="job-detail__information-detail--actions-button box-apply-current">
+                            @if (email != "")
+                            {
+                                if (Model.ApplyJobs.Any())
+                                {
+                                    <a href="#" class="job-detail__info--actions-button" data-toggle="modal">
+                                        Đã ứng tuyển
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a href="#" class="job-detail__info--actions-button apply-btn" data-toggle="modal" data-target="#exampleModalCenter">
+                                        Ứng tuyển ngay
+                                    </a>
+                                }
+                            }
+                            else
+                            {
+                                <a href="#" class="job-detail__info--actions-button" data-toggle="modal" data-target="#qick-form">
+                                    Ứng tuyển ngay
+                                </a>
+                            }
 
+                            @if (email == "")
+                            {
+                                <div id="box-save-job-1257219" class="box-save-job  job-saved ">
+                                    <a href="#" data-toggle="modal" data-target="#qick-form" class="job-detail__info--actions-button button-white" id="save-job">
+                                        Lưu tin
+                                    </a>
+                                </div>
+                            }
+                            else
+                            {
+                                if (Model.Likes.Any(a => a.JobId == Model.StudyAbroad.Id))
+                                {
+                                    <div id="box-save-job-1257219" class="box-save-job  job-saved ">
+                                        <button data-toggle="modal" data-job="@Model.StudyAbroad.Id" class="job-detail__info--actions-button button-white unlike" id="save-job">
+                                            Bỏ lưu
+                                        </button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div id="box-save-job-1257219" class="box-save-job  job-saved ">
+                                        <button data-toggle="modal" data-job="@Model.StudyAbroad.Id" class="job-detail__info--actions-button button-white like" id="save-job">
+                                            Lưu tin
+                                        </button>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <div class="job-description__item--content">
+                            Hạn nộp hồ sơ:
+                            @if (Model.StudyAbroad.ExpirationDate != null)
+                            {
+                                @Html.DisplayFor(a => a.StudyAbroad.ExpirationDate)
+                            }
+                            else
+                            {
+                                @:Luôn tuyển
+                            }
+                        </div>
+                    </div>
+                </div>
+                @if (Model.StudyAbroads.Any())
+                {
+                    <div class="job-detail__box--left my-3 job-section" id="job-relate">
+                        <div class="job-detail__information-detail--title mb-3">
+                            Tin du học liên quan
+                        </div>
+                        @foreach (var item in Model.StudyAbroads)
+                        {
+                            <div class="job bg-white detail-job @if (item.Hot != null && item.Hot >= DateTime.Now) { @Html.Raw("active") } mb-2">
+                                <div class="media media-mb">
+                                    <div>
+                                        <a href="@Url.Action("StudyAbroadDetail", new {url = item.Url})" class="job-name" data-tooltip="@item.Name" data-tooltip-position="top">@item.Name</a>
+                                        <div class="company-name">
+                                            @item.Company.Name
+                                        </div>
+                                    </div>
+                                    <div class="media-body time-deadline text-right">
+                                        <div class="price-job">
+                                            @Html.DisplayFor(a => item.Wages)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between mt-1">
+                                    <div class="w-75">
+                                        <span class="info-job price">@Html.DisplayFor(a => item.Wages)</span>
+                                        <span class="info-job">
+                                            @if (item.Cities.Any())
+                                            {
+                                                if (item.Cities.Count > 1)
+                                                {
+
+                                                    <span data-tooltip="@string.Join(" , ", item.Cities.Select(city => city.Name))" data-tooltip-position="top">
+                                                        @item.Cities.Count Thành phố
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    foreach (var city in item.Cities.Take(1))
+                                                    {
+                                                        <span data-tooltip="@city.Name" data-tooltip-position="top">
+                                                            @city.Name
+                                                        </span>
+                                                    }
+                                                }
+                                            }
+                                        </span>
+                                    </div>
+                                    <div class="w-25 right-item">
+                                        <a href="@Url.Action("StudyAbroadDetail", new {url = item.Url})" class="apply-url">
+                                            Nộp học bổng
+                                        </a>
+                                        @if (email == "")
+                                        {
+                                            <a href="#" data-tooltip="Phải đăng nhập để lưu tin" data-tooltip-position="top" data-toggle="modal" data-target="#qick-form" class="heart"><i class="fa-regular fa-heart"></i></a>
+                                        }
+                                        else
+                                        {
+                                            if (Model.Likes.Any(a => a.JobId == item.Id))
+                                            {
+                                                <a href="javascripts:;" class="heart active unlikejob" data-id="@item.Id"><i class="fa-regular fa-heart"></i></a>
+                                            }
+                                            else
+                                            {
+                                                <a href="javascripts:;" class="heart likejob" data-id="@item.Id"><i class="fa-regular fa-heart"></i></a>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
             </div>
             <div class="col-xl-4">
+                <div class="job-detail__box--right mb-3 d-lg-block d-none">
+                    <div class="job-detail__information-detail--title mb-4">
+                        Thông tin chung
+                    </div>
+                    <div class="media section-info mt-3">
+                        <div class="section-info__icon">
+                            <i class="fa-solid fa-ranking-star"></i>
+                        </div>
+                        <div class="media-body">
+                            <span class="job-detail__info--section-content-title">Trình độ học vấn, bằng cấp</span>
+                            <span class="job-detail__info--section-content-value">@Model.StudyAbroad.LearningProblems</span>
+                        </div>
+                    </div>
+                    <div class="media section-info mt-4">
+                        <div class="section-info__icon">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div class="media-body">
+                            <span class="job-detail__info--section-content-title">Số lượng tuyển</span>
+                            <span class="job-detail__info--section-content-value">@Model.StudyAbroad.Quantity</span>
+                        </div>
+                    </div>
+                    <div class="media section-info mt-4">
+                        <div class="section-info__icon">
+                            <i class="fas fa-heart-rate"></i>
+                        </div>
+                        <div class="media-body">
+                            <span class="job-detail__info--section-content-title">Sức khỏe</span>
+                            <span class="job-detail__info--section-content-value">@Model.StudyAbroad.Health</span>
+                        </div>
+                    </div>
+                    <div class="media section-info mt-4">
+                        <div class="section-info__icon">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div class="media-body">
+                            <span class="job-detail__info--section-content-title">Giới tính</span>
+                            <span class="job-detail__info--section-content-value">@Model.StudyAbroad.Gender</span>
+                        </div>
+                    </div>
+                    <div class="media section-info mt-4">
+                        <div class="section-info__icon">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <div class="media-body">
+                            <span class="job-detail__info--section-content-title">
+                                Địa chỉ:
+                            </span>
+                            <span class="job-detail__info--section-content-value">@Model.StudyAbroad.Address</span>
+                        </div>
+                    </div>
+                </div>
+                @if (Model.CompanyStudy != null)
+                {
+                    <div class="box-maybe">
+                        <div class="job-detail__box--right-title my-3">
+                            Có thể bạn quan tâm
+                        </div>
+                        <div class="box-maybe-interested__company">
+                            <div class="box-maybe-banner">
+                                @if (Model.CompanyStudy.Cover != null)
+                                {
+                                    <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", Model.CompanyStudy.Cover)" alt="@Model.CompanyStudy.Name" class="lazyload">
+                                }
+                                else
+                                {
+                                    <img src="~/Content/images/cover-null.png" alt="@Model.CompanyStudy.Name" class="lazyload">
+                                }
+                            </div>
+                            <div class="company__info mt-3">
+                                <div class="company__info--logo">
+                                    <a href="@Url.Action("Employer", new {url = Model.CompanyStudy.Url})">
+                                        @if (Model.CompanyStudy.Avatar != null)
+                                        {
+                                            <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", Model.CompanyStudy.Avatar)" alt="@Model.CompanyStudy.Name" class="img-responsive lazyload">
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Content/images/avatar-default.jpg" alt="@Model.CompanyStudy.Name" class="img-responsive lazyload">
+                                        }
+                                    </a>
+                                </div>
+                                <div class="company__info--name">
+                                    <a href="@Url.Action("Employer", new {url = Model.CompanyStudy.Url})">@Model.CompanyStudy.Name</a>
+                                </div>
+                            </div>
+                            <div class="company__job">
+                                @foreach (var item in Model.CompanyStudy.StudyAbroads.Take(3))
+                                {
+                                    <div class="job job-ta shadow-none">
+                                        <a href="@Url.Action("StudyAbroadDetail", new {url = item.Url})" class="job__name" data-tooltip="@item.Name" data-tooltip-position="top">@item.Name</a>
+                                        <div class="job__info">
+                                            <div class="job__info--salary">
+                                                <i class="fa-solid fa-circle-dollar"></i>
+                                                <span>@Html.DisplayFor(a => item.Wages)</span>
+                                            </div>
+                                            <div class="job__info--address">
+                                                <i class="fa-solid fa-location-dot"></i>
+                                                <span>
+                                                    @if (item.Cities.Any())
+                                                    {
+                                                        if (item.Cities.Count > 1)
+                                                        {
+
+                                                            <span data-tooltip="@string.Join(" , ", item.Cities.Select(city => city.Name))" data-tooltip-position="top">
+                                                                @item.Cities.Count Thành phố
+                                                            </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            foreach (var city in item.Cities.Take(1))
+                                                            {
+                                                                <span data-tooltip="@city.Name" data-tooltip-position="top">
+                                                                    @city.Name
+                                                                </span>
+                                                            }
+                                                        }
+                                                    }
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <div class="company__link mb-3">
+                                    <a rel="nofollow" href="@Url.Action("Employer", new {url = Model.CompanyStudy.Url})" target="_blank">Tìm hiểu ngay</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
                 @if (Model.StudyAbroadCompanys.Any())
                 {
                     <div class="job-detail__box--right ">
@@ -346,93 +622,80 @@
                         <a href="@Url.Action("StudyAbroadCom", new {url = Model.StudyAbroad .Company.Url})" class="view-more-job">Xem thêm công việc<i class="fal fa-long-arrow-right ml-2"></i></a>
                     </div>
                 }
-
-                @if (Model.StudyAbroads.Any())
-                {
-                    <div class="job-detail__box--right mt-3">
-                        <div class="job-detail__box--right-title">
-                            Tin liên quan
+                <div class="job-detail__box--right mt-3">
+                    <div class="job-detail__box--right-title">
+                        Chia sẻ tin tới bạn bè
+                    </div>
+                    <div class="copy-link">
+                        <div class="link">
+                            <span id="url-request" data-value="@request">
+                                @request
+                            </span>
                         </div>
-                        <form class="job-search-box" action="@Url.Action("SearchStudyAbroad")">
-                            <input type="text" name="name" required placeholder="Tên công việc, vị trí bạn muốn ứng tuyển..." />
-                            <button type="submit"><i class="fas fa-search"></i></button>
-                        </form>
-                        <hr />
-                        @foreach (var item in Model.StudyAbroads)
-                        {
-                            <div class="job-in-company pt-0 mb-3">
-                                <div class="media align-items-center">
-                                    <div class="company-avata border rounded rounded-circle">
-                                        @if (item.Company.Avatar != null)
-                                        {
-                                            <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Company.Avatar)" alt="@item.Company.Name" class="lazyload rounded-circle" />
-                                        }
-                                        else
-                                        {
-                                            <img src="~/Content/images/avatar-default.jpg" alt="@item.Company.Name" class="lazyload rounded-circle" />
-                                        }
-                                    </div>
-                                    <div class="media-body ml-2">
-                                        <a href="@Url.Action("StudyAbroadDetail", new {url = item.Url})" class="job-in-company-name mt-0">@item.Name</a>
-                                        <div class="company-job-name">
-                                            @item.Company.Name
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="info-job-company resize-h">
-                                    <div class="info-job-company1 price">@Html.DisplayFor(a => item.Wages)</div>
-                                    <div class="info-job-company2">
-                                        @item.StudyAbroadCategory.Country.Name
-                                    </div>
-                                </div>
-                                @if (email == "")
-                                {
-                                    <a href="@Url.Action("Login", "User")" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
-                                }
-                                else
-                                {
-                                    if (Model.Likes.Any(a => a.StudyAbroadId == item.Id))
-                                    {
-                                        <a href="javascripts:;" class="heart active unlikejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
-                                    }
-                                    else
-                                    {
-                                        <a href="javascripts:;" class="heart likejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
-                                    }
-                                }
-                            </div>
-                        }
-                        @*<a href="" class="view-more-job">Xem thêm công việc<i class="fal fa-long-arrow-right ml-2"></i></a>*@
+                        <button type="button" class="copy-value"><i class="fas fa-copy"></i></button>
                     </div>
-                }
-            <div class="job-detail__box--right mt-3">
-                <div class="job-detail__box--right-title">
-                    Chia sẻ công ty tới bạn bè
-                </div>
-                <div class="copy-link">
-                    <div class="link">
-                        <span id="url-request" data-value="@request">
-                            @request
-                        </span>
+                    <div class="job-detail__box--right-title mt-4">
+                        Chia sẻ qua mạng xã hội
                     </div>
-                    <button type="button" class="copy-value"><i class="fas fa-copy"></i></button>
+                    <ul class="ul-reset share-social mt-2">
+                        <li>
+                            <a href="javascripts:;" onclick="window.open('https://www.facebook.com/sharer.php?u='+encodeURIComponent(location.href)+'&amp;t='+encodeURIComponent(document.title));return false" target="_blank"><img src="~/Content/images/facebook.png" alt="Facebook" /></a>
+                        </li>
+                        <li>
+                            <a href="javascripts:;" onclick="window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(location.href)+'&amp;text='+encodeURIComponent(document.title));return false" target="_blank"><img src="~/Content/images/twitter.png" alt="Facebook" /></a>
+                        </li>
+                        <li>
+                            <a href="javascripts:;" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href)+'&amp;t='+encodeURIComponent(document.title));return false" target="_blank"><img src="~/Content/images/linkedin.png" alt="Facebook" /></a>
+                        </li>
+                    </ul>
                 </div>
-                <div class="job-detail__box--right-title mt-4">
-                    Chia sẻ qua mạng xã hội
-                </div>
-                <ul class="ul-reset share-social mt-2">
-                    <li>
-                        <a href="javascripts:;" onclick="window.open('https://www.facebook.com/sharer.php?u='+encodeURIComponent(location.href)+'&amp;t='+encodeURIComponent(document.title));return false" target="_blank"><img src="~/Content/images/facebook.png" alt="Facebook" /></a>
-                    </li>
-                    <li>
-                        <a href="javascripts:;" onclick="window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(location.href)+'&amp;text='+encodeURIComponent(document.title));return false" target="_blank"><img src="~/Content/images/twitter.png" alt="Facebook" /></a>
-                    </li>
-                    <li>
-                        <a href="javascripts:;" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url='+encodeURIComponent(location.href)+'&amp;t='+encodeURIComponent(document.title));return false" target="_blank"><img src="~/Content/images/linkedin.png" alt="Facebook" /></a>
-                    </li>
-                </ul>
-            </div>
 
+            </div>
+        </div>
+    </div>
+</div>
+<div class="job-detail-fixed-menu" id="job-detail-fixed-menu" style="display: none;">
+    <div class="container">
+        <div class="job-detail-fixed-menu__left">
+            <div class="job-detail-fixed-menu__tabs">
+                <a href="#detail-job" class="job-detail-fixed-menu__tabs--item active" id="fixed-menu-tab-job-info">
+                    Chi tiết tin
+                </a>
+                <a href="#job-relate" class="job-detail-fixed-menu__tabs--item" id="fixed-menu-tab-job-similar">
+                    Tin du học liên quan
+                </a>
+            </div>
+            <div class="job-detail-fixed-menu__actions" id="job-detail-fixed-menu-actions">
+                @if (email != "")
+                {
+                    if (Model.ApplyJobs.Any())
+                    {
+                        <a href="#" class="job-detail-fixed-menu__actions--button open-apply-modal" data-toggle="modal" data-target="">
+                            <span class="button-icon">
+                                <i class="fa-light fa-paper-plane"></i>
+                            </span>
+                            Đã ứng tuyển
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="#" class="job-detail-fixed-menu__actions--button open-apply-modal apply-btn" data-toggle="modal" data-target="#exampleModalCenter">
+                            <span class="button-icon">
+                                <i class="fa-light fa-paper-plane"></i>
+                            </span>
+                            Ứng tuyển ngay
+                        </a>
+                    }
+                }
+                else
+                {
+                    <a href="#" class="job-detail-fixed-menu__actions--button open-apply-modal" data-toggle="modal" data-target="#qick-form">
+                        <span class="button-icon">
+                            <i class="fa-light fa-paper-plane"></i>
+                        </span>
+                        Ứng tuyển ngay
+                    </a>
+                }
             </div>
         </div>
     </div>
@@ -508,5 +771,22 @@
                 $('.drop_box').removeClass('active');
             }
         });
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 300) {
+                $('#job-detail-fixed-menu').addClass('show');
+            } else {
+                $('#job-detail-fixed-menu').removeClass('show');
+            }
+        });
+        $(window).scroll(function () {
+            var scrollDistance = $(window).scrollTop();
+            $('.job-section').each(function (i) {
+                var sectionTop = $(this).offset().top - 300; // Adjusted by 400px
+                if (sectionTop <= scrollDistance) {
+                    $('.job-detail-fixed-menu__tabs--item').removeClass('active');
+                    $('.job-detail-fixed-menu__tabs--item').eq(i).addClass('active');
+                }
+            });
+        }).scroll();
     </script>
 }

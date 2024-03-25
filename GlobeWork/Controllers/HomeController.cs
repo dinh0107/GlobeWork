@@ -936,7 +936,7 @@ namespace GlobeWork.Controllers
         {
             var studyAbroad = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && a.TypeStudyAbroad == TypeStudyAbroad.Scholarship, o => o.OrderByDescending(a => a.Hot), 10);
             var hot = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active /*&& a.Hot >= DateTime.Now*/, o => o.OrderByDescending(a => a.CreateDate)).Take(20);
-            var article = _unitOfWork.ArticleRepository.GetQuery(a => a.Active && (a.Hot >= DateTime.Now && a.TypeArticle == TypeArticle.Article), o => o.OrderByDescending(a => a.Hot), 6);
+            var article = _unitOfWork.ArticleRepository.GetQuery(a => a.Active && (a.ShowHot && a.TypeArticle == TypeArticle.Article), o => o.OrderByDescending(a => a.Hot), 6);
             var model = new StudyAbroadViewModel
             {
                 NewStudyAbroad = studyAbroad,
@@ -1010,12 +1010,15 @@ namespace GlobeWork.Controllers
             var like = _unitOfWork.LikeRepository.GetQuery(a => a.UserID == User.Id);
             study.View += 1;
             _unitOfWork.Save();
+            var careers = study.Company.Careers.Select(c => c.Id).ToList();
+            var companyStudy = _unitOfWork.CompanyRepository.GetQuery(a => a.EmployerId != study.Company.EmployerId && a.Careers.Any(c => careers.Contains(c.Id))).FirstOrDefault();
             var model = new StudyDetailViewModel
             {
                 StudyAbroad = study,
                 StudyAbroadCompanys = studyCompany,
                 StudyAbroads = relate,
                 Follows = follow,
+                CompanyStudy = companyStudy,
                 Likes = like,
                 ApplyJobs = _unitOfWork.ApplyJobRepository.GetQuery(a => a.UserId == User.Id && a.StudyAbroadId == study.Id)
             };

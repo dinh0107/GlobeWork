@@ -149,9 +149,9 @@
                 {
                     <div class="card career-top">
                         <a href="@Url.Action("Employer", new {url = item.Url})" class="thuml">
-                            @if (item.Cover != null)
+                            @if (item.Avatar != null)
                             {
-                                <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Cover)" alt="@item.Name" class="lazyload" />
+                                <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/company/", item.Avatar)" alt="@item.Name" class="lazyload" />
                             }
                             else
                             {

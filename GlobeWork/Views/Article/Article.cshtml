@@ -12,6 +12,25 @@
         @Html.ValidationSummary(true)
     <table class="form_table">
         <tr>
+            <td class="form_name">Danh mục du học</td>
+            <td class="form_text">
+                <select class="form_control w300" name="StudyAbroadCategoryId">
+                    @foreach (var item in Model.StudyAbroadCategories.Where(a => a.ParentId == null))
+                    {
+                        <option value="@item.Id">
+                            @item.CategoryName
+                        </option>
+                        foreach (var child in Model.StudyAbroadCategories.Where(a => a.ParentId == item.Id))
+                        {
+                            <option value="@child.Id">
+                                -- @child.CategoryName
+                            </option>
+                        }
+                    }
+                </select>
+            </td>
+        </tr>
+        <tr>
             <td class="form_name">@Html.LabelFor(model => model.Article.TypeArticle)</td>
             <td class="form_text">@Html.EnumDropDownListFor(model => model.Article.TypeArticle, new { @class = "form_control w300" })</td>
         </tr>
@@ -36,14 +55,14 @@
             <td class="form_name">@Html.LabelFor(model => model.Article.Body)</td>
             <td class="form_text">@Html.EditorFor(model => model.Article.Body)</td>
         </tr>
-        <tr>
+        @*<tr>
             <td class="form_name">@Html.LabelFor(model => model.DateHot)</td>
             <td class="form_text pt-3">@Html.EditorFor(model => model.DateHot)</td>
         </tr>
         <tr>
             <td class="form_name">@Html.LabelFor(model => model.TruTien)</td>
             <td class="form_text pt-3">@Html.CheckBoxFor(model => model.TruTien)</td>
-        </tr>
+        </tr>*@
         <tr>
             <td class="form_name">@Html.LabelFor(model => model.Article.Menu)</td>
             <td class="form_text">@Html.CheckBoxFor(model => model.Article.Menu)</td>
@@ -59,6 +78,10 @@
         <tr>
             <td class="form_name">@Html.LabelFor(model => model.Article.Sort)</td>
             <td class="form_text">@Html.EditorFor(model => model.Article.Sort)</td>
+        </tr>
+        <tr>
+            <td class="form_name">@Html.LabelFor(model => model.Article.ShowHot)</td>
+            <td class="form_text">@Html.EditorFor(model => model.Article.ShowHot)</td>
         </tr>
         <tr>
             <td class="form_name">@Html.LabelFor(model => model.Article.Url)</td>

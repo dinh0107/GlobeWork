@@ -18,6 +18,7 @@ namespace GlobeWork.Controllers
     {
         private readonly UnitOfWork _unitOfWork = new UnitOfWork();
         public ConfigSite ConfigSite => (ConfigSite)HttpContext.Application["ConfigSite"];
+        private IEnumerable<StudyAbroadCategory> StudyAbroadCategories() => _unitOfWork.StudyAbroadCategoryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort));
         #region Article
         public ActionResult ListArticle(int? page, string name, int? catId, int? childId, string result = "")
         {
@@ -43,7 +44,8 @@ namespace GlobeWork.Controllers
             var model = new InsertArticleViewModel
             {
                 Article = new Article { Active = true , IsAdmin = true },
-                DateHot = 0
+                DateHot = 0,
+                StudyAbroadCategories = StudyAbroadCategories(),
             };
             return View(model);
         }
@@ -82,6 +84,9 @@ namespace GlobeWork.Controllers
                     model.Article.Url += "-" + DateTime.Now.Millisecond;
                 }
                 model.Article.IsAdmin = true;
+                model.Article.StudyAbroadCategoryId = Convert.ToInt32(fc["StudyAbroadCategoryId"]);
+                model.Article.StudyAbroadCategory = _unitOfWork.StudyAbroadCategoryRepository.GetById(Convert.ToInt32(fc["StudyAbroadCategoryId"])) ?? null;
+                model.StudyAbroadCategories = StudyAbroadCategories();
                 _unitOfWork.ArticleRepository.Insert(model.Article);
                 _unitOfWork.Save();
                 if (model.DateHot > 0)
@@ -145,8 +150,9 @@ namespace GlobeWork.Controllers
             var model = new InsertArticleViewModel
             {
                 Article = article,
-                DateHot = 0
-            };
+                DateHot = 0,
+                StudyAbroadCategories = StudyAbroadCategories()
+        };
             return View(model);
         }
 
@@ -201,7 +207,9 @@ namespace GlobeWork.Controllers
                 article.TypeArticle = model.Article.TypeArticle;
                 article.TitleMeta = model.Article.TitleMeta;
                 article.DescriptionMeta = model.Article.DescriptionMeta;
-
+                article.ShowHot = model.Article.ShowHot;    
+                article.StudyAbroadCategoryId = Convert.ToInt32(fc["StudyAbroadCategoryId"]);
+                article.StudyAbroadCategory = _unitOfWork.StudyAbroadCategoryRepository.GetById(Convert.ToInt32(fc["StudyAbroadCategoryId"])) ?? null;
                 _unitOfWork.Save();
 
                 var articles = _unitOfWork.ArticleRepository.GetQuery().AsNoTracking();

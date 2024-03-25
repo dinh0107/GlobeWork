@@ -55,6 +55,7 @@ namespace GlobeWork.Models
         public virtual ICollection<Career> Careers { get; set; }
         public virtual Employer Employer { get; set; }
         public virtual ICollection<JobPost> JobPosts { get; set; }
+        public virtual ICollection<StudyAbroad> StudyAbroads { get; set; }
         public virtual ICollection<Candidate> Candidates { get; set; }
         public virtual ICollection<Follow> Followers { get; set; }
         public Company()

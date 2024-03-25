@@ -433,6 +433,10 @@
     <Compile Include="Migrations\202403241317045_update-study.Designer.cs">
       <DependentUpon>202403241317045_update-study.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202403251628150_update-article.cs" />
+    <Compile Include="Migrations\202403251628150_update-article.Designer.cs">
+      <DependentUpon>202403251628150_update-article.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Advise.cs" />
@@ -1139,6 +1143,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202403241317045_update-study.resx">
       <DependentUpon>202403241317045_update-study.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202403251628150_update-article.resx">
+      <DependentUpon>202403251628150_update-article.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

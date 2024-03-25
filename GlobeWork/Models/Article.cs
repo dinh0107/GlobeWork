@@ -31,6 +31,8 @@ namespace GlobeWork.Models
         public int? AdminId { get; set; }
         [Display(Name = "Hoạt động")]
         public bool Active { get; set; }
+        [Display(Name = "Nổi bật")]
+        public bool ShowHot { get; set; }
         [Display(Name = "Hiện trang chủ")]
         public bool IsAdmin { get; set; }
         [Display(Name = "Hiện Menu")]

@@ -354,6 +354,7 @@ namespace GlobeWork.ViewModel
         public IEnumerable<Follow> Follows { get; set; }
         public IEnumerable<Like> Likes { get; set; }
         public IEnumerable<ApplyJob> ApplyJobs { get; set; }
+        public Company CompanyStudy { get; set; }
     }
     public class ListCompanyViewModel
     {
