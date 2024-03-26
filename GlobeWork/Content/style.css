@@ -260,6 +260,7 @@ header {
   border-radius: 0.425rem;
   transition: all 0.5s;
   transform: translateY(1.25rem);
+  z-index: 999;
 }
 .sub-menu li {
   background: #f4f5f5;
@@ -307,6 +308,7 @@ header {
   visibility: hidden;
   opacity: 0;
   transition: all 0.5s;
+  z-index: 999;
 }
 .box-menu a {
   margin-top: 0.6rem;
@@ -3453,6 +3455,7 @@ input, button {
   align-items: center;
   justify-content: center;
   position: relative;
+  z-index: 9999;
 }
 .box-notification i {
   color: #66BC46;

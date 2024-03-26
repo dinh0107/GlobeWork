@@ -397,6 +397,9 @@
   .user-form input, .user-form select {
     font-size: 0.75rem;
   }
+  .user-form input::placeholder {
+    font-size: 0.75rem;
+  }
   .popupBtn {
     padding: 0.8rem 1rem;
     font-size: 0.6rem;
@@ -513,7 +516,8 @@
     height: 2.2rem;
   }
   .info-job {
-    font-size: 0.7rem;
+    font-size: 0.6rem;
+    padding: 0.275rem 0.463rem;
   }
   .detail-job .company-name {
     font-size: 0.7125rem;
@@ -679,10 +683,50 @@
   .recruitment {
     padding: 1.25rem 1rem;
   }
-  /* .box-follow a {
-      width: 8.5rem;
-      height: 2rem;
-      font-size: 0.9rem;
-      line-height: unset;
-  }*/
+  .control-user {
+    font-size: 0.7rem;
+  }
+  .agreement-login a {
+    font-size: 0.775rem;
+  }
+  .job .w-75 {
+    width: 90% !important;
+  }
+  .detail-job .job-name {
+    font-size: 0.8rem;
+    width: 14rem !important;
+  }
+  .study-name {
+    font-size: 0.8rem;
+  }
+  .study-company {
+    font-size: 0.6125rem;
+  }
+  .group-info span {
+    font-size: 0.6125rem;
+  }
+  .study-article img {
+    height: 14.84775rem;
+  }
+  .study-article .date {
+    font-size: 0.675rem;
+  }
+  .subject-study {
+    font-size: 0.9rem;
+    height: 2.8rem;
+  }
+  .item-scholarship .card-title {
+    font-size: 0.9rem;
+  }
+  .item-scholarship .card-text {
+    font-size: 12px;
+  }
+  .sub-title {
+    font-size: 0.6125rem;
+  }
+  .box-notification .notification {
+    right: -50%;
+    transform: translateX(11%);
+    width: 25rem;
+  }
 }

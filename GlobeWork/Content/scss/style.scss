@@ -285,7 +285,7 @@ header {
     border-radius: 0.425rem;
     transition: all .5s;
     transform: translateY(1.25rem);
-
+    z-index:999;
     li {
         background: #f4f5f5;
         border-radius: 6px;
@@ -339,7 +339,7 @@ header {
     visibility: hidden;
     opacity: 0;
     transition: all .5s;
-
+    z-index:999;
     a {
         margin-top: .6rem;
         display: block;
@@ -3600,6 +3600,7 @@ input, button {
     margin-right: 1.5rem;
     @include flex-center;
     position: relative;
+    z-index:9999;
 
     i {
         color: $green;
