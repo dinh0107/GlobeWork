@@ -116,13 +116,13 @@
                                     <span class="job-detail__info--section-content-title">Quốc gia</span>
                                     <span class="job-detail__info--section-content-value">
                                         @*@foreach (var countruy in Model.Job.Cities)
+                                {
+                                    @countruy.Name
+                                    if (countruy != Model.Job.Cities.Last())
                                     {
-                                        @countruy.Name
-                                        if (countruy != Model.Job.Cities.Last())
-                                        {
-                                            @: ,
-                                        }
-                                    }*@
+                                        @: ,
+                                    }
+                                }*@
                                         @Html.DisplayFor(a => Model.Job.Country.Name)
                                     </span>
                                 </div>
@@ -472,36 +472,22 @@
                                 </div>
                                 <div class="media-body ml-3">
                                     <a href="@Url.Action("Employer", new {url = item.Url})" class="samefield-name">@item.Name</a>
-                                    <div class="job-qtity">
-                                        @item.JobPosts.Count() việc làm
+                                    <div class="d-flex" style="gap:.6rem">
+                                        <div class="job-qtity">
+                                            @item.JobPosts.Count() việc làm đang tuyển
+                                        </div>
+                                        <div class="job-qtity">
+                                            Cập nhật @Utils.UpdateDateVn(item.LastEditDate)
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            @if (email == "")
-                            {
-                                <a href="#" data-toggle="modal" data-target="#qick-form" class="fl-samefield">
-                                    @*<i class="fa-light fa-plus mr-2"></i>*@ Theo dõi
-                                </a>
-                            }
-                            else
-                            {
-                                if (Model.Follows.Any(a => a.CompanyId == item.EmployerId))
-                                {
-                                    <a href="javascripts:;" class="fl-samefield unfollow" data-company-id="@item.EmployerId ">
-                                        @*<i class="fa-light fa-plus mr-2"></i>*@ Bỏ theo dõi công ty
-                                    </a>
-                                }
-                                else
-                                {
-                                    <a href="javascripts:;" class="fl-samefield follow" data-company-id="@item.EmployerId ">
-                                        @*<i class="fa-light fa-plus mr-2"></i>*@ Theo dõi
-                                    </a>
-                                }
-                            }
-
+                            <a href="@Url.Action("Employer", new {url = item.Url})" data-toggle="modal" data-target="#qick-form" class="fl-samefield">
+                               Xem ngay
+                            </a>
                             <div class="tag-i">
-                            TOP @a
-                        </div>
+                                TOP @a
+                            </div>
                         </div>
                         a++;
                     }
@@ -721,7 +707,7 @@
                                </div>
                            </div>
                            <div class="company__job">
-                               @foreach (var item in Model.CompanyJob.JobPosts.Take(3))
+                               @foreach (var item in Model.CompanyJob.JobPosts.Take(5))
                                {
                                    <div class="job job-ta shadow-none">
                                        <a href="@Url.Action("JobDetail", new {url = item.Url })" class="job__name" data-tooltip="@item.Name" data-tooltip-position="top">@item.Name</a>

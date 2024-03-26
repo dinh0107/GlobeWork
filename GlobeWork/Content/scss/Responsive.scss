@@ -360,11 +360,40 @@
     .ul-studyAbroad {
         margin-bottom: 1.25rem;
     }
+    /* .company-image-logo {
+        overflow: unset;
+    }*/
+    /*.change-avater {
+        visibility: visible;
+        opacity: 1;
+    }
 
-    
+    .company-image-logo img{
+        border-radius:50%;
+    }*/
 }
 
 @include maxWidth(900px) {
+    .sub-dashboard {
+        font-size: 1rem;
+    }
+
+    .pen-edit {
+        right: 0;
+    }
+
+    .custom-mb {
+        height: 19.6875rem;
+
+        .custom-top-detail {
+            margin-top: 99px;
+        }
+    }
+
+    .custom-top-detail {
+        margin-top: 130px;
+    }
+
     .job-detail-fixed-menu__left {
         width: 100%;
     }
@@ -429,6 +458,121 @@
 }
 
 @include maxWidth(600px) {
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        font-size: 12px;
+    }
+
+    .sort-contruy {
+        span {
+            display: none;
+        }
+    }
+
+    .name-profile {
+        position: relative;
+    }
+
+    .edit {
+        font-size: .8rem;
+    }
+
+    .user-dashboard-title {
+        font-size: 1rem;
+    }
+
+    .user-dashboard-sub {
+        font-size: 1rem;
+    }
+
+
+    .box-dashboard {
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .item-description {
+        font-size: 0.7rem;
+    }
+
+    .skill-profile-title {
+        font-size: 1.25rem;
+    }
+
+    .thuml-shill, .skill-img {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .skill-sub, .skill-time {
+        font-size: 0.7rem;
+        font-weight: 400;
+    }
+
+    .thuml-shill i, .skill-img i {
+        font-size: 1rem;
+    }
+
+    .count-dashboard {
+        font-size: 2rem;
+        font-weight: 400;
+    }
+
+    .skill-name {
+        width: 12.25rem;
+        font-size: 1rem;
+    }
+
+    .user-profile {
+        .company-image-logo {
+            width: 6.5625rem;
+            height: 6.5625rem;
+            top: -55px;
+
+            img {
+                width: 6.5625rem;
+                height: 6.5625rem;
+            }
+        }
+
+        .company-detail-overview {
+            min-height: 4.6875rem;
+            height: 8.6875rem;
+        }
+
+        .box-detail {
+            margin-top: 4rem;
+        }
+    }
+
+    .group-btn-profile {
+        display: none;
+    }
+
+    .custom-grid-detail {
+        grid-template-rows: repeat(2, 1fr) !important;
+
+        .grid-form4 {
+            grid-area: 2/13/2/10;
+        }
+
+        .grid-form2 {
+            grid-area: 2 / 1 / 3 / 10;
+        }
+    }
+
+    .custom-mb {
+        .custom-top-detail {
+            margin-top: 60px;
+        }
+
+        .box-follow a {
+            width: 6.5rem;
+            height: 2rem;
+            line-height: unset;
+            overflow: hidden;
+        }
+    }
+
     .job-detail-fixed-menu__tabs--item.active {
         display: none;
     }
@@ -589,7 +733,6 @@
 
     .filter-btn {
         font-size: 0.75rem;
-        ;
     }
 
     .filter-parent {
@@ -804,7 +947,7 @@
     }
 
     .job-qtity {
-        font-size: 0.65rem;
+        font-size: 0.55rem;
     }
 
     .fl-samefield {
@@ -830,7 +973,7 @@
 
     .price-job {
         display: flex;
-        font-size: 12px;
+        font-size: 10px;
         font-weight: 600;
         justify-content: flex-start;
     }
@@ -953,6 +1096,63 @@
     .box-notification .notification {
         right: -50%;
         transform: translateX(11%);
-        width: 25rem;
+        width: 22.3rem;
+    }
+
+    .detail-subject {
+        font-size: 1.25rem;
+    }
+
+    .date {
+        font-size: .8rem;
+    }
+
+    .custom-cv {
+        font-size: .8rem;
+    }
+
+    .job-detail__info--actions-button {
+        font-size: 0.65rem;
+        height: 2rem;
+    }
+
+    .job-description__item--content {
+        font-size: 0.7rem;
+        color: #212f3f;
+        line-height: unset;
+    }
+
+    .view-more-job {
+        font-size: 0.75rem;
+    }
+
+    .employer-title {
+        font-size: 1rem;
+    }
+
+    .employ-form {
+        input {
+            font-size: .8rem;
+        }
+
+        button {
+            padding: 0.625rem 1rem;
+        }
+    }
+
+    .navs-employer a {
+        font-size: .9rem;
+    }
+
+    .year {
+        font-size: 1rem;
+    }
+
+    .pagination > li > a, .pagination > li > span {
+        font-size: .7rem;
+    }
+
+    .custom-top-detail {
+        margin-top: 50px;
     }
 }

@@ -101,10 +101,11 @@ else
         nextArrow: '<button class="next-slie"><i class="fal fa-chevron-circle-right"></i></button>',
         responsive: [
             {
-                breakpoint: 1024,
+                breakpoint: 1044,
                 settings: {
-                    slidesToShow: 6,
-                    slidesToScroll: 3,
+                    slidesToShow: 2,
+                    slidesToScroll: 2,
+                    rows: 3,
                     infinite: true,
                     dots: false
                 }
@@ -112,16 +113,11 @@ else
             {
                 breakpoint: 600,
                 settings: {
-                    slidesToShow: 3,
+                    slidesToShow: 1,
                     slidesToScroll: 1,
-                    slidesToShow: 3,
-                }
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3
+                    rows: 1,
+                    arrows: false,
+                    dots: false,
                 }
             }
         ]

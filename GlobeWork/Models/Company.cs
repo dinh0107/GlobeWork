@@ -43,9 +43,11 @@ namespace GlobeWork.Models
         public string GoogleMap { get; set; }
         [Display(Name = "Sản phẩm dịch vụ"), UIHint("EditorBox")]
         public string Product { get; set; }
-        [Display(Name = "Số điện thoại"), RegularExpression(@"^\(?(09|03|07|08|05)\)?[-. ]?([0-9]{8})$", ErrorMessage = "Số điện thoại không đúng định dạng!"),
+        [Display(Name = "Số điện thoại"),
          Required(ErrorMessage = "Hãy nhập số điện thoại"), StringLength(10, ErrorMessage = "Tối đa 20 ký tự"), UIHint("TextBox")]
         public string Phone { get; set; }
+                [Display(Name = "Ngày sửa gần nhất"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        public DateTime LastEditDate { get; set; }
 
         [ForeignKey("City")]
         public int? CityId { get; set; }

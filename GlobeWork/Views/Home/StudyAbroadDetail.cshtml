@@ -102,7 +102,7 @@
                                     <i class="fa-sharp fa-solid fa-coins"></i>
                                 </div>
                                 <div class="media-body">
-                                    <span class="job-detail__info--section-content-title">Mức lương</span>
+                                    <span class="job-detail__info--section-content-title">Mức học bổng</span>
                                     <span class="job-detail__info--section-content-value">@Html.DisplayFor(a => Model.StudyAbroad.Wages)</span>
                                 </div>
                             </div>
@@ -258,7 +258,7 @@
                             Cách thức nộp học bổng
                         </div>
                         <div class="job-description__item--content">
-                            Ứng viên nộp hồ sơ trực tuyến bằng cách bấm <strong>Ứng tuyển</strong> ngay dưới đây.
+                            Ứng viên nộp hồ sơ trực tuyến bằng cách bấm <strong>Nộp hồ sơ</strong> ngay dưới đây.
                         </div>
                         <div class="job-detail__information-detail--actions-button box-apply-current">
                             @if (email != "")
@@ -266,20 +266,20 @@
                                 if (Model.ApplyJobs.Any())
                                 {
                                     <a href="#" class="job-detail__info--actions-button" data-toggle="modal">
-                                        Đã ứng tuyển
+                                        Đã nộp hồ sơ
                                     </a>
                                 }
                                 else
                                 {
                                     <a href="#" class="job-detail__info--actions-button apply-btn" data-toggle="modal" data-target="#exampleModalCenter">
-                                        Ứng tuyển ngay
+                                        Nộp hồ sơ
                                     </a>
                                 }
                             }
                             else
                             {
                                 <a href="#" class="job-detail__info--actions-button" data-toggle="modal" data-target="#qick-form">
-                                    Ứng tuyển ngay
+                                    Nộp hồ sơ
                                 </a>
                             }
 
@@ -321,6 +321,58 @@
                             {
                                 @:Luôn tuyển
                             }
+                        </div>
+                    </div>
+                </div>
+                <div class="job-detail__box--left my-3 d-lg-none d-block">
+                    <div class="job-detail__information-detail--title mb-4">
+                        Thông tin chung
+                    </div>
+                    <div class="media section-info mt-3">
+                        <div class="section-info__icon">
+                            <i class="fa-solid fa-ranking-star"></i>
+                        </div>
+                        <div class="media-body">
+                            <span class="job-detail__info--section-content-title">Trình độ học vấn, bằng cấp</span>
+                            <span class="job-detail__info--section-content-value">@Model.StudyAbroad.LearningProblems</span>
+                        </div>
+                    </div>
+                    <div class="media section-info mt-4">
+                        <div class="section-info__icon">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div class="media-body">
+                            <span class="job-detail__info--section-content-title">Số lượng tuyển</span>
+                            <span class="job-detail__info--section-content-value">@Model.StudyAbroad.Quantity</span>
+                        </div>
+                    </div>
+                    <div class="media section-info mt-4">
+                        <div class="section-info__icon">
+                            <i class="fas fa-heart-rate"></i>
+                        </div>
+                        <div class="media-body">
+                            <span class="job-detail__info--section-content-title">Sức khỏe</span>
+                            <span class="job-detail__info--section-content-value">@Model.StudyAbroad.Health</span>
+                        </div>
+                    </div>
+                    <div class="media section-info mt-4">
+                        <div class="section-info__icon">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div class="media-body">
+                            <span class="job-detail__info--section-content-title">Giới tính</span>
+                            <span class="job-detail__info--section-content-value">@Model.StudyAbroad.Gender</span>
+                        </div>
+                    </div>
+                    <div class="media section-info mt-4">
+                        <div class="section-info__icon">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <div class="media-body">
+                            <span class="job-detail__info--section-content-title">
+                                Địa chỉ:
+                            </span>
+                            <span class="job-detail__info--section-content-value">@Model.StudyAbroad.Address</span>
                         </div>
                     </div>
                 </div>
@@ -452,7 +504,7 @@
                 </div>
                 @if (Model.CompanyStudy != null)
                 {
-                    <div class="box-maybe">
+                    <div class="box-maybe mb-3">
                         <div class="job-detail__box--right-title my-3">
                             Có thể bạn quan tâm
                         </div>
@@ -485,7 +537,7 @@
                                 </div>
                             </div>
                             <div class="company__job">
-                                @foreach (var item in Model.CompanyStudy.StudyAbroads.Take(3))
+                                @foreach (var item in Model.CompanyStudy.StudyAbroads.Take(5))
                                 {
                                     <div class="job job-ta shadow-none">
                                         <a href="@Url.Action("StudyAbroadDetail", new {url = item.Url})" class="job__name" data-tooltip="@item.Name" data-tooltip-position="top">@item.Name</a>
@@ -674,7 +726,7 @@
                             <span class="button-icon">
                                 <i class="fa-light fa-paper-plane"></i>
                             </span>
-                            Đã ứng tuyển
+                            Đã nộp hồ sơ
                         </a>
                     }
                     else
@@ -683,7 +735,7 @@
                             <span class="button-icon">
                                 <i class="fa-light fa-paper-plane"></i>
                             </span>
-                            Ứng tuyển ngay
+                            Nộp hồ sơ
                         </a>
                     }
                 }
@@ -693,7 +745,7 @@
                         <span class="button-icon">
                             <i class="fa-light fa-paper-plane"></i>
                         </span>
-                        Ứng tuyển ngay
+                        Nộp hồ sơ
                     </a>
                 }
             </div>
@@ -704,7 +756,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="job-detail__name" id="exampleModalLongTitle">Ứng tuyển: <span class="text-success">@Model.StudyAbroad.Name</span></div>
+                <div class="job-detail__name" id="exampleModalLongTitle">Nộp hồ sơ: <span class="text-success">@Model.StudyAbroad.Name</span></div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

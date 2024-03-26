@@ -485,6 +485,7 @@ namespace GlobeWork.Controllers
                 company.Age = model.Company.Age;
                 company.CityId = Convert.ToInt32(fc["city"]);
                 company.Email = model.Company.Email;
+                company.LastEditDate = DateTime.Now;
                 company.Url = HtmlHelpers.ConvertToUnSign(null, company.Url ?? company.Name);
                 _unitOfWork.CompanyRepository.Update(company);
                 if (company.Careers.Any())

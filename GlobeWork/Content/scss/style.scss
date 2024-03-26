@@ -961,7 +961,7 @@ header {
 
     img {
         border-radius: 0.625rem 0.625rem 0rem 0rem;
-        object-fit: contain;
+        object-fit: cover;
         aspect-ratio: 1.5;
         width: 100%;
         transition: all .5s;
@@ -3600,7 +3600,7 @@ input, button {
     margin-right: 1.5rem;
     @include flex-center;
     position: relative;
-    z-index:9999;
+    z-index:9;
 
     i {
         color: $green;

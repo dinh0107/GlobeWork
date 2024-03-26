@@ -921,7 +921,7 @@ header {
 }
 .thuml img {
   border-radius: 0.625rem 0.625rem 0rem 0rem;
-  object-fit: contain;
+  object-fit: cover;
   aspect-ratio: 1.5;
   width: 100%;
   transition: all 0.5s;
@@ -3455,7 +3455,7 @@ input, button {
   align-items: center;
   justify-content: center;
   position: relative;
-  z-index: 9999;
+  z-index: 9;
 }
 .box-notification i {
   color: #66BC46;

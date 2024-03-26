@@ -263,8 +263,8 @@ namespace GlobeWork.Controllers
             {
                 return RedirectToAction("NotFound", "Home", new { status = 404 });
             }
-            var jobCompany = _unitOfWork.JobPostRepository.GetQuery(a => a.Active && (a.CompanyId == job.CompanyId && a.Id != job.Id), o => o.OrderByDescending(a => a.CreateDate), 6);
-            var jobRelated = _unitOfWork.JobPostRepository.GetQuery(a => a.Active && (a.CounId == job.CounId && a.Id != job.Id), o => o.OrderByDescending(a => a.Hot), 10);
+            var jobCompany = _unitOfWork.JobPostRepository.GetQuery(a => a.Active && (a.CompanyId == job.CompanyId && a.Id != job.Id), o => o.OrderByDescending(a => a.CreateDate), 5);
+            var jobRelated = _unitOfWork.JobPostRepository.GetQuery(a => a.Active && (a.CounId == job.CounId && a.Id != job.Id), o => o.OrderByDescending(a => a.Hot), 5);
             var jobCareers = job.Company.Careers.Select(c => c.Id).ToList();
             var companyRelate = _unitOfWork.CompanyRepository.GetQuery(a => a.EmployerId != job.Company.EmployerId && a.Careers.Any(c => jobCareers.Contains(c.Id))).Take(5);
             var follow = _unitOfWork.FollowRepository.GetQuery(a => a.UserId == User.Id);
@@ -1004,8 +1004,8 @@ namespace GlobeWork.Controllers
             {
                 return RedirectToAction("NotFound", "Home", new { status = 404 });
             }
-            var studyCompany = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.Id != study.Id && a.CompanyId == study.CompanyId), o => o.OrderByDescending(a => a.CreateDate), 4);
-            var relate = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.Id != study.Id && a.CategoryId == study.CategoryId), o => o.OrderByDescending(a => a.CreateDate), 6);
+            var studyCompany = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.Id != study.Id && a.CompanyId == study.CompanyId), o => o.OrderByDescending(a => a.CreateDate), 5);
+            var relate = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.Id != study.Id && a.CategoryId == study.CategoryId), o => o.OrderByDescending(a => a.CreateDate), 5);
             var follow = _unitOfWork.FollowRepository.GetQuery(a => a.UserId == User.Id);
             var like = _unitOfWork.LikeRepository.GetQuery(a => a.UserID == User.Id);
             study.View += 1;

@@ -16,7 +16,7 @@
                 {
                     foreach (var item in Model.Companies)
                     {
-                        <div class="col-lg-4 col-6">
+                        <div class="col-lg-4 col-md-6">
                             <a href="@Url.Action("Employer", new {url = item.Url})" class="card card-company border-0">
                                 @if (item.Cover != null)
                                 {

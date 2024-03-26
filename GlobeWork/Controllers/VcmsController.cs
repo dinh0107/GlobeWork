@@ -1401,9 +1401,9 @@ namespace GlobeWork.Controllers
                     case 2:
                         service = service.Where(a => a.TypeService == TypeService.StudyAbroad);
                         break;
-                    case 3:
-                        service = service.Where(a => a.TypeService == TypeService.Company);
-                        break;
+                    //case 3:
+                    //    service = service.Where(a => a.TypeService == TypeService.Company);
+                    //    break;
                 }
             }
             var model = new ListServiceViewModel

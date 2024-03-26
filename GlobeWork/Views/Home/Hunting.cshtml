@@ -12,10 +12,10 @@
 <div class="studyAbroad-filter">
     <div class="container">
         <form class="row custom-row" action="@Url.Action("Hunting", new { url = Model.StudyAbroadCategory.Url })">
-            <div class="col-lg-7">
+            <div class="col-lg-7 col-7">
                 @Html.TextBoxFor(a => a.Name, new { @placeholder = "Nhập từ khóa", @class = "form-control", @required = "" })
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-3 col-5">
                 <div class="form-control d-flex align-items-center justify-content-between">
                     <select class="select2 w-100 border-0" name="countruyId">
                         <option value="">Quốc gia</option>
@@ -27,7 +27,7 @@
                     <i class="far fa-location"></i>
                 </div>
             </div>
-            <div class="col-lg-2">
+            <div class="col-lg-2 mt-lg-0 mt-3">
                 <button type="submit" class="btn btn-block filter-btn">
                     <i class="far fa-search"></i>
                     TÌM KIẾM

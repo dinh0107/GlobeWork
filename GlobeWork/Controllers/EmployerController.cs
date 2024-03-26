@@ -305,6 +305,7 @@ namespace GlobeWork.Controllers
                 Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault(),
                 Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)),
                 Countries = _unitOfWork.CountryRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)),
+                //Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active  && a.TypeService == TypeService.Company , o => o.OrderBy(a => a.Sort))
             };
             return View(model);
         }
@@ -327,6 +328,7 @@ namespace GlobeWork.Controllers
                         model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                         model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
                         model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                        //model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Company, o => o.OrderBy(a => a.Sort));
                         return View(model);
                     }
                     else
@@ -339,6 +341,7 @@ namespace GlobeWork.Controllers
                             model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                             model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
                             model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            //model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Company, o => o.OrderBy(a => a.Sort));
                             return View(model);
                         }
                         else
@@ -364,6 +367,7 @@ namespace GlobeWork.Controllers
                         model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                         model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
                         model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                        //model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Company, o => o.OrderBy(a => a.Sort));
                         return View(model);
                     }
                     else
@@ -376,6 +380,7 @@ namespace GlobeWork.Controllers
                             model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                             model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
                             model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            //model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Company, o => o.OrderBy(a => a.Sort));
                             return View(model);
                         }
                         else
@@ -425,6 +430,7 @@ namespace GlobeWork.Controllers
                                 model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                                 model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
                                 model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                                //model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Company, o => o.OrderBy(a => a.Sort));
                                 return View(model);
                             }
                         }
@@ -435,9 +441,11 @@ namespace GlobeWork.Controllers
                             model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                             model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
                             model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            //model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Company, o => o.OrderBy(a => a.Sort));
                             return View(model);
                         }
                     }
+                    model.Company.LastEditDate = DateTime.Now;
                     model.Company.EmployerId = User.Id;
                     model.Company.Url = HtmlHelpers.ConvertToUnSign(null, model.Company.Url ?? model.Company.Name);
                     model.Company.CityId = Convert.ToInt32(fc["city"]);
@@ -472,6 +480,7 @@ namespace GlobeWork.Controllers
             model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
             model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
             model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+            //model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Company, o => o.OrderBy(a => a.Sort));
             return View(model);
         }
         [HttpPost, ValidateInput(false)]
@@ -496,6 +505,7 @@ namespace GlobeWork.Controllers
                         model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                         model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
                         model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                        //model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Company, o => o.OrderBy(a => a.Sort));
                         return View(model);
                     }
                     else
@@ -507,6 +517,7 @@ namespace GlobeWork.Controllers
                             model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                             model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
                             model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            //model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Company, o => o.OrderBy(a => a.Sort));
                             return View(model);
                         }
                         else
@@ -532,6 +543,7 @@ namespace GlobeWork.Controllers
                         model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                         model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
                         model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                        //model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Company, o => o.OrderBy(a => a.Sort));
                         return View(model);
                     }
                     else
@@ -573,6 +585,7 @@ namespace GlobeWork.Controllers
                 company.CityId = Convert.ToInt32(fc["city"]);
                 company.CountryId = model.Company.CountryId;
                 company.Email = model.Company.Email;
+                company.LastEditDate = DateTime.Now;
                 company.Url = HtmlHelpers.ConvertToUnSign(null, company.Url ?? company.Name);
                 _unitOfWork.CompanyRepository.Update(company);
                 company.Careers.Clear();
@@ -636,6 +649,7 @@ namespace GlobeWork.Controllers
                             model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                             model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
                             model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                            //model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Company, o => o.OrderBy(a => a.Sort));
                             return RedirectToAction("Company", new { result = "amount" });
 
                         }
@@ -648,6 +662,7 @@ namespace GlobeWork.Controllers
                         model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
                         model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
                         model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+                        //model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Company, o => o.OrderBy(a => a.Sort));
                         return RedirectToAction("Company", new { result = "amount" });
 
                     }
@@ -666,6 +681,7 @@ namespace GlobeWork.Controllers
             model.Careers = _unitOfWork.CareerRepository.Get(orderBy: o => o.OrderBy(a => a.Name));
             model.Company = _unitOfWork.CompanyRepository.Get(a => a.EmployerId == User.Id).FirstOrDefault();
             model.Cities = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
+            //model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Company, o => o.OrderBy(a => a.Sort));
             return RedirectToAction("Company", new { result = "amount" });
         }
         #endregion

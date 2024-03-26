@@ -14,10 +14,10 @@
 <div class="studyAbroad-filter">
     <div class="container">
         <form class="row custom-row" action="@Url.Action("SearchStudyAbroad")">
-            <div class="col-lg-7 col-md-9 col-8">
+            <div class="col-lg-7 col-md-9 col-7">
                 <input type="text" name="name" value="" placeholder="Nhập từ khóa" class="form-control font-size-12" required />
             </div>
-            <div class="col-lg-3 col-md-3 col-4">
+            <div class="col-lg-3 col-md-3 col-5">
                 <div class="form-control d-flex align-items-center justify-content-between font-size-12">
                     <select class="select2 w-100" name="countruyId">
                         <option value="">Khu vực</option>
@@ -58,7 +58,8 @@
             <h2 class="title custom-title mt-3">
                 Học bổng mới nhất
             </h2>
-            <span class="sub-title">Bạn muốn tìm học bổng mới? Xem danh sách học bổng @Model.StudyAbroadCategory.CategoryName <a href="@Url.Action("StudyAbroadCategoryUrl" , new {url = Model.StudyAbroadCategory.Url})" class="link-green">tại đây</a></span>
+            <span class="sub-title d-lg-block d-none">Bạn muốn tìm học bổng mới? Xem danh sách học bổng @Model.StudyAbroadCategory.CategoryName <a href="@Url.Action("StudyAbroadCategoryUrl" , new {url = Model.StudyAbroadCategory.Url})" class="link-green">tại đây</a></span>
+            <span class="sub-title d-lg-none d-block">Bạn muốn tìm học bổng mới? Xem danh sách học bổng <br /> @Model.StudyAbroadCategory.CategoryName <a href="@Url.Action("StudyAbroadCategoryUrl" , new {url = Model.StudyAbroadCategory.Url})" class="link-green">tại đây</a></span>
             <div class="scholarship">
                 @foreach (var item in Model.NewStudyAbroad)
                 {
@@ -116,7 +117,7 @@
                             <div class="group-info">
                                 <span><i class="fa-solid fa-briefcase-blank"></i> @Html.DisplayFor(a => item.Wages)</span>
                                 <span><i class="fa-sharp fa-solid fa-location-dot"></i> @item.StudyAbroadCategory.Country.Name</span>
-                                <span><i class="fa-regular fa-calendar-days"></i> @Utils.DateVn(item.CreateDate)</span>
+                                <span><i class="fa-regular fa-calendar-days"></i> @Utils.UpdateDateVn(item.CreateDate)</span>
                                 <span class="hot"><i class="fa-solid fa-thumbs-up mr-1"></i> Nổi bật</span>
                             </div>
                         </div>

@@ -42,8 +42,8 @@
                     }
                 </div>
             </div>
-            <div class="company-detail-overview employer-detail">
-                <div class="box-detail">
+            <div class="company-detail-overview employer-detail custom-mb">
+                <div class="box-detail custom-top-detail">
                     <h1 class="company-detail-name text-dark"><span class="nam-compa">@Model.Company.Name </span><span class="tag-name">@Model.Company.City.Name</span></h1>
                     <div class="company-subdetail">
                         <a href="@Model.Company.WebsiteUrl" target="_blank">
@@ -120,7 +120,7 @@
                         </div>
                         <div class="media-body ml-3">
                             <div class="year">
-                                @Model.Company.EstablishmentDate.ToString("dd/MM/yyyy")
+                                @Model.Company.EstablishmentDate.ToString("yyyy")
                             </div>
                             <div class="info-employ-sub">
                                 Năm thành lập công ty
@@ -153,15 +153,17 @@
                             </div>
                         </div>
                     </div>
-                    <hr />
-                    <div class="employer-title">Video giới thiệu</div>
-                    <div class="video">
-                        @if (Model.Company.VideoYoutube != null)
-                        {
-                            @Html.Raw(Model.Company.VideoYoutube)
-                        }
-                    </div>
-
+                    @if (Model.Company.VideoYoutube != null)
+                    {
+                        <hr />
+                        <div class="employer-title">Video giới thiệu</div>
+                        <div class="video">
+                            @if (Model.Company.VideoYoutube != null)
+                            {
+                                @Html.Raw(Model.Company.VideoYoutube)
+                            }
+                        </div>
+                    }
                 </div>
                 <div class="employer-left mt-3">
                     <div class="employer-title">Liên hệ</div>
@@ -201,31 +203,32 @@
                             </a>
                         </li>
                     </ul>
-                    <div class="employer-title">Địa chỉ trụ sở chính </div>
-                    <div class="embed-responsive embed-responsive-21by9 mt-3">
-                        @if (Model.Company.GoogleMap != null)
-                        {
-                            @Html.Raw(Model.Company.GoogleMap)
-                        }
-                    </div>
+                    @if (Model.Company.GoogleMap != null)
+                    {
+                        <div class="employer-title">Địa chỉ trụ sở chính </div>
+                        <div class="embed-responsive embed-responsive-21by9 mt-3">
+                            @if (Model.Company.GoogleMap != null)
+                            {
+                                @Html.Raw(Model.Company.GoogleMap)
+                            }
+                        </div>
+                    }
                 </div>
                 <div class="employer-left mt-3 d-xl-none d-block">
-                    <div class="employer-right mt-3">
-                        <div class="employer-title">Sản phẩm và dịch vụ</div>
-                        @if (Model.Company.Product != null)
-                        {
-                            <div class="content-detail">
-                                @Html.Raw(Model.Company.Product)
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="none-suitable-job__content shadow-none">
-                                <img src="https://static.topcv.vn/v4/image/job-list/none-result.png" alt="None suitable job">
-                                <span>Chưa có thông tin sản phẩm và dịch vụ</span>
-                            </div>
-                        }
-                    </div>
+                    <div class="employer-title">Sản phẩm và dịch vụ</div>
+                    @if (Model.Company.Product != null)
+                    {
+                        <div class="content-detail">
+                            @Html.Raw(Model.Company.Product)
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="none-suitable-job__content shadow-none">
+                            <img src="https://static.topcv.vn/v4/image/job-list/none-result.png" alt="None suitable job">
+                            <span>Chưa có thông tin sản phẩm và dịch vụ</span>
+                        </div>
+                    }
                 </div>
             </div>
             <div class="col-xl-8 order-xl-1 order-0">

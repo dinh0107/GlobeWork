@@ -394,8 +394,23 @@
             </li>
             <li>
                 <div class="d-flex justify-content-between">
-                    <a href="@Url.Action("ListCompany")" class="link-repon">Doanh nghiệp</a>
+                    <a href="@Url.Action("ListCompany")" class="link-repon">Công ty</a>
+                    <div class="icon-reponsive">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
                 </div>
+                <ul class="ul-reset ul-reponsive">
+                    <li>
+                        <a href="@Url.Action("ListCompany")">
+                            Danh sách công ty
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("CompanyTop")">
+                            Top công ty
+                        </a>
+                    </li>
+                </ul>
             </li>
             @if (id == 0)
             {
@@ -413,16 +428,27 @@
                     </div>
                 </li>
             }
-            <li>
-                <div class="d-flex justify-content-between">
-                    <a href="@Url.Action("ListCompany")" class="link-repon">Doanh nghiệp</a>
+        <li>
+            <div class="d-flex justify-content-between">
+                <a href="@Url.Action("StudyAbroadHot")" class="link-repon">Săn học bổng</a>
+                <div class="icon-reponsive">
+                    <i class="fas fa-chevron-down"></i>
                 </div>
-            </li>
-            <li>
-                <div class="d-flex justify-content-between">
-                    <a href="@Url.Action("StudyAbroadHot")" class="link-repon">Săn học bổng</a>
-                </div>
-            </li>
+            </div>
+            @if (Model.Scholarship.Any())
+            {
+                <ul class="ul-reset ul-reponsive">
+                    @foreach (var item in Model.Scholarship)
+                    {
+                        <li>
+                            <a href="@Url.Action("Hunting" , new {url = item.Url})">
+                                @item.CategoryName
+                            </a>
+                        </li>
+                    }
+                </ul>
+            }
+        </li>
             <li>
                 <div class="d-flex justify-content-between">
                     <a href="@Url.Action("Contact")" class="link-repon">Liên hệ</a>

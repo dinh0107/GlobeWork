@@ -7,7 +7,7 @@
 }
 <div class="bg-light py-4">
     <div class="container" id="element-to-print">
-        <div class="company-cover-inner">
+        <div class="company-cover-inner user-profile">
             <div class="cover-wrapper">
                 @if (Model.User.Cover != null)
                 {
@@ -51,7 +51,12 @@
             </div>
             <div class="company-detail-overview employer-detail">
                 <div class="box-detail name-profile">
-                    <h1 class="company-detail-name text-dark">@Model.User.FullName</h1>
+                    <h1 class="company-detail-name text-dark position-relative">
+                        @Model.User.FullName
+                        <span class="position-absolute pen-edit" data-toggle="modal" data-target="#infoUser">
+                            <i class="fa-solid fa-pen d-lg-none d-block"></i>
+                        </span>
+                    </h1>
                     <div class="sub-line" id="classtify">
                         @Model.User.Classtify
                     </div>
@@ -220,7 +225,7 @@
                 <span class="user-dashboard-title mb-3">Thống kê số lượt xem từ Nhà tuyển dụng</span>
                 <span class="user-dashboard-sub ">Phần này chỉ hiển thị với riêng bạn</span>
                 <div class="row mt-4">
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 col-md-4">
                         <div class="box-dashboard">
                             <div class="count-dashboard">
                                 @Model.ViewsByWeek
@@ -230,7 +235,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 col-md-4">
                         <div class="box-dashboard">
                             <div class="count-dashboard">
                                 @Model.ViewsByMonth
@@ -240,7 +245,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 col-md-4">
                         <div class="box-dashboard">
                             <div class="count-dashboard">
                                 @Model.ViewsByYear
@@ -329,7 +334,7 @@
                             {
                                 foreach (var arr in item.Image.Split(','))
                                 {
-                                    <div class="col-lg-4 mb-3">
+                                    <div class="col-lg-4 col-6 mb-3">
                                         <a href="@Path.Combine("/images/exp/", arr)" data-fancybox="gallery" class="card card-ex shadow">
                                             <img src="@Path.Combine("/images/exp/", arr)">
                                         </a>
@@ -414,7 +419,7 @@
                             {
                                 foreach (var arr in item.Image.Split(','))
                                 {
-                                    <div class="col-lg-4 mb-3">
+                                    <div class="col-lg-4 col-6 mb-3">
                                         <a href="@Path.Combine("/images/cer/", arr)" data-fancybox="cer" class="card card-ex shadow">
                                             <img src="@Path.Combine("/images/cer/", arr)">
                                         </a>
@@ -468,7 +473,7 @@
                             {
                                 foreach (var arr in item.Image.Split(','))
                                 {
-                                    <div class="col-lg-4 mb-3">
+                                    <div class="col-lg-4 col-6 mb-3">
                                         <a href="@Path.Combine("/images/project/", arr)" data-fancybox="cer" class="card card-ex shadow">
                                             <img src="@Path.Combine("/images/project/", arr)">
                                         </a>
@@ -522,7 +527,7 @@
                             {
                                 foreach (var arr in item.Image.Split(','))
                                 {
-                                    <div class="col-lg-4 mb-3">
+                                    <div class="col-lg-4 col-6 mb-3">
                                         <a href="@Path.Combine("/images/activity/", arr)" data-fancybox="cer" class="card card-ex shadow">
                                             <img src="@Path.Combine("/images/activity/", arr)">
                                         </a>

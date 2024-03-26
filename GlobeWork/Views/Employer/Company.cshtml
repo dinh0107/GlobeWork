@@ -10,7 +10,9 @@
     {
         action = "UpdateCompany";
     }
+    var year = 1900;
 }
+
 @using (Html.BeginForm(action, "Employer", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="contents-header">
@@ -127,10 +129,10 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div class="form-group">
+                                    <div class="form-group cusotomp-datepicker">
                                         @*@Html.LabelFor(a => a.Company.EstablishmentDate)*@
-                                        <label>Ngày thành lập</label>
-                                        <input type="text" placeholder="Ngày thành lập" class="form-control datepicker" name="Company.EstablishmentDate" value="@formattedDate" autocomplete="off" />
+                                        <label>Năm thành lập</label>
+                                        <input type="text" placeholder="Năm thành lập" class="form-control yearpicker" name="Company.EstablishmentDate" value="@formattedDate" autocomplete="off" />
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
@@ -256,6 +258,16 @@
             changeMonth: true,
             changeYear: true
         });
+        $(".yearpicker").datepicker({
+            dateFormat: 'dd/mm/yy',
+            changeYear: true, // Cho phép thay đổi năm
+            yearRange: 'c-100:c', // Chỉ cho phép chọn năm từ năm hiện tại trở về 100 năm trước đến năm hiện tại
+            showButtonPanel: true, // Hiển thị nút để chuyển đến tháng và năm hiện tại
+            onClose: function (dateText, inst) {
+                $(this).datepicker('setDate', new Date(inst.selectedYear, 0, 1)); // Thiết lập ngày thành 1 tháng 1 của năm đã chọn
+            }
+        });
+
         VirtualSelect.init({
             ele: 'select.career',
             required: true,

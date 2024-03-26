@@ -40,7 +40,7 @@ namespace GlobeWork.Models
         Job,
         [Display(Name ="Du học")]
         StudyAbroad,
-        [Display(Name ="Công ty")]
-        Company
+        //[Display(Name ="Công ty")]
+        //Company
     }
 }
