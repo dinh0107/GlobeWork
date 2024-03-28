@@ -240,7 +240,7 @@
   .video iframe {
     width: 100%;
     aspect-ratio: auto;
-    height: 500px;
+    aspect-ratio: 16/9;
   }
   .intro {
     position: relative;
@@ -358,6 +358,40 @@
   }
 }
 @media (max-width: 600px) {
+  .career-name {
+    font-size: 0.8rem;
+  }
+  .job-detail-fixed-menu__tabs--item {
+    padding: 5px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    font-size: 12px;
+  }
+  .career-quantity {
+    font-size: 0.675rem;
+  }
+  .job-detail-fixed-menu__actions--button {
+    font-size: 10px;
+  }
+  .job-detail-fixed-menu__actions {
+    padding-right: 0px;
+  }
+  .samefield-thuml {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+  .tag-i {
+    width: 3.75rem;
+    line-height: 20px;
+    height: 1.5625rem;
+    font-size: 12px;
+  }
+  .video iframe {
+    height: auto;
+    aspect-ratio: 16/9;
+  }
   .select2-container--default .select2-selection--single .select2-selection__rendered {
     font-size: 12px;
   }
@@ -433,14 +467,16 @@
   .custom-grid-detail .grid-form2 {
     grid-area: 2/1/3/10;
   }
+  .custom-mb {
+    /*.box-follow a {
+        width: 6.5rem;
+        height: 2rem;
+        line-height: unset;
+        overflow: hidden;
+    }*/
+  }
   .custom-mb .custom-top-detail {
     margin-top: 60px;
-  }
-  .custom-mb .box-follow a {
-    width: 6.5rem;
-    height: 2rem;
-    line-height: unset;
-    overflow: hidden;
   }
   .job-detail-fixed-menu__tabs--item.active {
     display: none;

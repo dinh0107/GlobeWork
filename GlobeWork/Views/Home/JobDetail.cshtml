@@ -367,15 +367,18 @@
                             }
                         </div>
                         <div class="detail-title-box mt-3">
-                            Khu vực
+                            Địa điểm
                         </div>
                         <div class="d-flex flex-row mt-2">
-                            @foreach (var item in Model.Job.Cities)
-                            {
-                                <div class="deadline mr-2">
+                            <div class="deadline mr-2">
+                                @Model.Job.Address ,
+                                @foreach (var item in Model.Job.Cities)
+                                {
                                     @item.Name
-                                </div>
-                            }
+                                }
+                                ,
+                                @Model.Job.Country.Name
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -548,15 +551,18 @@
                         }
                     </div>
                     <div class="detail-title-box mt-3">
-                        Khu vực
+                       Địa điểm
                     </div>
                     <div class="d-flex flex-row mt-2">
-                        @foreach (var item in Model.Job.Cities)
-                        {
-                            <div class="deadline mr-2">
+                        <div class="deadline mr-2">
+                            @Model.Job.Address ,
+                            @foreach (var item in Model.Job.Cities)
+                            {
                                 @item.Name
-                            </div>
-                        }
+                            }
+                            ,
+                            @Model.Job.Country.Name
+                        </div>
                     </div>
                 </div>
                 @if (Model.JobCompanys.Any())

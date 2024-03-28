@@ -6,6 +6,9 @@
     var amount = string.Format("{0:N0}" + " VNĐ", Convert.ToDecimal(ViewContext.RouteData.Values["Amount"]));
 }
 <div class="sidebar">
+    <div class="close" onclick="closeSidebarMobile()">
+        <i class="fa-sharp fa-regular fa-xmark"></i>
+    </div>
     <div class="media user-sidebar">
         <div class="w-show">
             @if (avatar == "" || avatar == null)
@@ -115,6 +118,16 @@
                 </div>
                 <div class="w-hidden">
                     Cài đặt tài khoản
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="@Url.Action("Logout", "Employer")">
+                <div class="w-show">
+                    <i class="fa-regular fa-arrow-right-from-bracket"></i>
+                </div>
+                <div class="w-hidden">
+                    Đăng xuất
                 </div>
             </a>
         </li>

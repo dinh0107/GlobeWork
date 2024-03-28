@@ -177,7 +177,7 @@ namespace GlobeWork.Controllers
                 study.StudyAbroadCategory = _unitOfWork.StudyAbroadCategoryRepository.GetById(study.CategoryId) ?? null;
                 study.Careers = _unitOfWork.CareerRepository.GetById(study.CareerId) ?? null;
                 study.Name = model.StudyAbroad.Name;
-                study.Wages = model.StudyAbroad.Wages;
+                study.WageScholarship = model.StudyAbroad.WageScholarship;
                 study.Health = model.StudyAbroad.Health;
                 study.Quantity = model.StudyAbroad.Quantity;
                 study.Gender = model.StudyAbroad.Gender;

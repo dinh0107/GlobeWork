@@ -924,7 +924,7 @@ namespace GlobeWork.Controllers
                     job = job.Where(a => !a.Active);
                     break;
                 case 3:
-                    job = job.Where(a => a.Hot != null);
+                    job = job.Where(a => a.Hot != null && a.Hot > DateTime.Now);
                     break;
             }
             var model = new ListMyJobPost
@@ -1432,7 +1432,7 @@ namespace GlobeWork.Controllers
                 Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate)),
                 StudyAbroadCategories = StudyAbroadCategories(),
                 Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort)),
-                Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort)),
+                Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.StudyAbroad, o => o.OrderBy(a => a.Sort)),
                 StudyAbroad = new StudyAbroad
                 {
                     Active = true,
@@ -1496,7 +1496,7 @@ namespace GlobeWork.Controllers
                             model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
                             model.StudyAbroadCategories = StudyAbroadCategories();
                             model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
-                            model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
+                            model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.StudyAbroad, o => o.OrderBy(a => a.Sort));
                             return View(model);
                         }
                     }
@@ -1506,7 +1506,7 @@ namespace GlobeWork.Controllers
                         model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
                         model.StudyAbroadCategories = StudyAbroadCategories();
                         model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
-                        model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
+                        model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.StudyAbroad, o => o.OrderBy(a => a.Sort));
                         return View(model);
                     }
                 }
@@ -1553,7 +1553,7 @@ namespace GlobeWork.Controllers
                             model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
                             model.StudyAbroadCategories = StudyAbroadCategories();
                             model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
-                            model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
+                            model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.StudyAbroad, o => o.OrderBy(a => a.Sort));
                             return View(model);
                         }
                     }
@@ -1566,7 +1566,7 @@ namespace GlobeWork.Controllers
                     model.StudyAbroadCategories = StudyAbroadCategories();
                     model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
                     model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
-                    model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
+                    model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.StudyAbroad, o => o.OrderBy(a => a.Sort));
 
                     return View(model);
                 }
@@ -1577,7 +1577,7 @@ namespace GlobeWork.Controllers
                         ModelState.AddModelError("", @"Chỉ chấp nhận định dạng jpg, png, gif, jpeg, svg");
                         model.StudyAbroadCategories = StudyAbroadCategories();
                         model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
-                        model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
+                        model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.StudyAbroad, o => o.OrderBy(a => a.Sort));
                         return View(model);
                     }
 
@@ -1586,7 +1586,7 @@ namespace GlobeWork.Controllers
                         ModelState.AddModelError("", @"Dung lượng lớn hơn 4MB. Hãy thử lại");
                         model.StudyAbroadCategories = StudyAbroadCategories();
                         model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
-                        model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
+                        model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.StudyAbroad, o => o.OrderBy(a => a.Sort));
                         return View(model);
                     }
                     var imgPath = "/images/studyAbroad/" + DateTime.Now.ToString("yyyy/MM/dd");
@@ -1608,7 +1608,7 @@ namespace GlobeWork.Controllers
             model.Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active, o => o.OrderByDescending(a => a.CreateDate));
             model.StudyAbroadCategories = StudyAbroadCategories();
             model.Citys = _unitOfWork.CityRepository.Get(a => a.Active, q => q.OrderBy(a => a.Sort));
-            model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.Job, o => o.OrderBy(a => a.Sort));
+            model.Services = _unitOfWork.ServiceRepository.GetQuery(a => a.Active && a.TypeService == TypeService.StudyAbroad, o => o.OrderBy(a => a.Sort));
             return View(model);
         }
         [Route("cap-nhat-tin-du-hoc")]
@@ -1795,7 +1795,7 @@ namespace GlobeWork.Controllers
                 study.StudyAbroadCategory = _unitOfWork.StudyAbroadCategoryRepository.GetById(study.CategoryId) ?? null;
                 study.Careers = _unitOfWork.CareerRepository.GetById(study.CareerId) ?? null;
                 study.Name = model.StudyAbroad.Name;
-                study.Wages = model.StudyAbroad.Wages;
+                study.WageScholarship = model.StudyAbroad.WageScholarship;
                 study.Health = model.StudyAbroad.Health;
                 study.Quantity = model.StudyAbroad.Quantity;
                 study.Gender = model.StudyAbroad.Gender;

@@ -1,12 +1,23 @@
 @import "mixins";
 @import "variables";
-
+.sidebar {
+    .close {
+        display:none;
+    }
+}
 @include maxWidth(1024px) {
     .sidebar {
         padding-top: 20px;
         width: 100%;
         order: 1;
         margin: 0 15px;
+
+        .close {
+            display: block;
+            position: absolute;
+            top: 4px;
+            right: 10px;
+        }
     }
 
     .contents {
@@ -42,6 +53,38 @@
             display: none;
         }
     }
+
+    .sidebar {
+        width: 20rem;
+        z-index: 99999;
+        position: fixed;
+        margin: 0;
+        left: -100%;
+
+        &.active {
+            left: 0;
+        }
+    }
+
+    .table thead th {
+        font-size: 13px;
+    }
+
+    .wrapper .contents > * {
+        padding: 0;
+    }
+
+    .wrapper .contents-header {
+        padding: .5rem 1rem;
+    }
+
+    .box-header {
+        border-bottom: 0;
+    }
+
+    .view-cv {
+        font-size: 12px;
+    }
 }
 
 @include maxWidth(900px) {
@@ -50,5 +93,124 @@
 }
 
 @include maxWidth(600px) {
+    .cover-wrapper img {
+        height: 10.4375rem;
+    }
 
+    .company-image-logo {
+        width: 6.5625rem;
+        height: 6.5625rem;
+        left:50%;
+        transform: translateX(-50%);
+        top: -111%;
+    }
+
+    .wrapper .contents {
+        overflow-y: unset;
+        height: auto;
+    }
+
+    .company-logo {
+        height: 60px;
+    }
+
+    .sidebar {
+        height: auto;
+        margin: 0;
+        height: 100vh;
+
+        .close {
+            position: absolute;
+        }
+    }
+
+    .wrapper .contents-header {
+        top: 68px;
+    }
+
+    .form-employer {
+        display: flex;
+        flex-direction: column-reverse;
+        padding: 0 !important;
+    }
+
+    .contents-header {
+        display: none !important;
+    }
+
+    .li-notification {
+        .notification {
+            top: 150%;
+            width: 21rem;
+        }
+    }
+
+    header .header-employer a > span {
+        font-size: 14px;
+    }
+
+    header.header-employer .hamburger {
+        width: 3rem;
+        font-size: 1.25rem;
+    }
+
+    .wrapper .contents > * {
+        padding: 10px;
+    }
+
+    .list-date, .badge, .input-group-text, .input-resize {
+        font-size: 12px;
+    }
+
+    .name-list, .custom-size {
+        font-size: 14px;
+    }
+
+    .table-responsive {
+        display: grid;
+        justify-content: flex-start;
+        grid-auto-columns: max-content;
+        overflow: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scroll-snap-stop: always;
+        touch-action: manipulation;
+        scroll-padding: 1rem;
+        grid-template-columns: unset;
+    }
+
+    #ListImages {
+        padding-left: 0;
+        flex-wrap: wrap;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .btn-mb {
+        padding: 5px 30px;
+        font-size: 15px;
+    }
+
+    .plans {
+        margin: 0 0px !important;
+        padding: 0px !important;
+    }
+
+    .plans .plan .plan-details span {
+        font-size: 16px;
+    }
+
+    .price-service {
+        font-size: 14px !important;
+    }
+
+    .ui-tabs .ui-tabs-panel {
+        padding-left: 0 !important;
+    }
+
+    .time-line li {
+        padding-bottom: 1rem;
+    }
 }

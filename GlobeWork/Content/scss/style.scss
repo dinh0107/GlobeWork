@@ -1239,7 +1239,7 @@ footer {
 }
 .nam-compa {
     max-width: 80%;
-    @include truncate(1);
+    @include truncate(2);
 }
 
 .tag-name {

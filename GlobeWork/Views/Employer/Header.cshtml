@@ -8,10 +8,13 @@
 }
 
 <header class="header-employer">
-    <button type="button" class="hamburger d-none d-lg-block" onclick="toggleSidebar()">
+    <button type="button" class="hamburger d-xl-block d-none" onclick="toggleSidebar()">
         <i class="fa-solid fa-bars"></i>
     </button>
-    <div class="d-flex align-items-center d-lg-none dropdown dropdown-menu-lg-right">
+    <button type="button" class="hamburger d-xl-none d-block" onclick="toggleSidebarMobile()">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+    @*<div class="d-flex align-items-center d-lg-none dropdown dropdown-menu-lg-right">
         <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
             @if (avatar == "" || avatar == null)
             {
@@ -22,16 +25,16 @@
                 <img src="@Path.Combine("/images/employer/", avatar)" alt="@FullName" />
             }
         </button>
-        <div class="dropdown-menu">
+        <div class="dropdown-menu d-xl-block d-none">
             <a class="dropdown-item" href="@Url.Action("Logout")">Đăng xuất</a>
         </div>
-    </div>
-    <a href="/" class="logo mx-auto mx-lg-0">
-        @if (config.Image != null)
-        {
-            <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/configs/", config.Image)" alt="@config.Title" class="lazyload" />
-        }
-    </a>
+    </div>*@
+    @*<a href="/" class="logo mx-auto mx-lg-0">
+            @if (config.Image != null)
+            {
+                <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/configs/", config.Image)" alt="@config.Title" class="lazyload" />
+            }
+        </a>*@
     <ul class="p-0 ml-0 ml-lg-auto">
         @Html.Action("Notify")
         <li class="d-none d-lg-block">
@@ -41,13 +44,13 @@
             </a>
         </li>
         @*<li class="d-none d-lg-block">
-            <a href="@Url.Action("ShoppingCart", "Employer")">
-                <i class="fa-solid fa-cart-shopping"></i>
-                Giỏ hàng
-                <span>99+</span>
-            </a>
-        </li>*@
-        <li class="d-none d-lg-block">
+                <a href="@Url.Action("ShoppingCart", "Employer")">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    Giỏ hàng
+                    <span>99+</span>
+                </a>
+            </li>*@
+        @*<li class="d-none d-lg-block">
             <div class="dropdown dropdown-menu-lg-right">
                 <button class="btn dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                     @if (avatar == "" || avatar == null)
@@ -64,6 +67,6 @@
                     <a class="dropdown-item" href="@Url.Action("Logout")">Đăng xuất</a>
                 </div>
             </div>
-        </li>
+        </li>*@
     </ul>
 </header>

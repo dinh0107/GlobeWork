@@ -3,7 +3,7 @@
     ViewBag.Title = "Đăng tin tuyển dụng";
     Layout = "~/Views/Shared/_EmployerLayout.cshtml";
 }
-@using (Html.BeginForm("PostNews", "Employer", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("PostNews", "Employer", FormMethod.Post, new { enctype = "multipart/form-data" , @class="form-employer" }))
 {
     @Html.AntiForgeryToken()
     <div class="contents-header">
@@ -36,7 +36,7 @@
                     @Html.ValidationMessageFor(a => a.JobPost.Name)
                 </div>
                 <div class="row">
-                    <div class="form-group col-4">
+                    <div class="form-group col-lg-4 col-md-4">
                         <label>
                             Ngành nghề <i class="text-danger">*</i>
                         </label>
@@ -49,7 +49,7 @@
                             }
                         </select>
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-lg-4 col-md-4">
                         <label>
                             Hình thức <i class="text-danger">*</i>
                         </label>
@@ -62,7 +62,7 @@
                             }
                         </select>
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-lg-4 col-md-4">
                         <label>
                             Cấp bậc <i class="text-danger">*</i>
                         </label>
@@ -77,26 +77,26 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-4">
+                    <div class="form-group col-xl-4 col-12">
                         <label>
                             Hạn nhận hồ sơ
                         </label>
                         @*@Html.TextBoxFor(a => a.JobPost.ExpirationDate, new { @class = "form-control datetimepicker", @placeholder = "Chọn ngày hết hạn nhận hồ sơ" })*@
                         <input type="text" name="JobPost.ExpirationDate" class="form-control datetimepicker" placeholder="Chọn ngày hết hạn nhận hồ sơ" autocomplete="off" />
                     </div>
-                    <div class="form-group col-2">
+                    <div class="form-group col-xl-2 col-lg-4 col-md-4">
                         <label>
                             Số lượng <i class="text-danger">*</i>
                         </label>
                         @Html.TextBoxFor(a => a.JobPost.Quantity, new { @class = "input-number custom-input" })
                     </div>
-                    <div class="form-group col-2">
+                    <div class="form-group col-xl-2 col-lg-4 col-md-4">
                         <label>
                             Số ngày hiện thị nổi bật
                         </label>
                         @Html.TextBoxFor(a => a.DateHot, new { @class = "input-number custom-input" })
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-xl-4 col-lg-4 col-md-4">
                         <label>
                             Giới tính <i class="text-danger">*</i>
                         </label>
@@ -112,45 +112,48 @@
                             </option>
                         </select>
                     </div>
-                    <div class="form-group col-2">
-                        <div class="btn btn-primary show-service">
-                            Chọn gói hiển thị
+                    @if (Model.Services.Any())
+                    {
+                        <div class="form-group col-xl-4 col-md-4 ">
+                            <div class="btn btn-primary show-service">
+                                Chọn gói hiển thị
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="plans" style="display:none;">
-                            @foreach (var item in Model.Services)
-                            {
-                                <label class="plan basic-plan mb-3" for="basic-@item.Id">
-                                    <input type="radio" value="@item.Id" name="JobPost.ServiceId" id="basic-@item.Id" />
-                                    <div class="plan-content">
-                                        @if (item.Image != null)
-                                        {
-                                            <img loading="lazy" src="@Path.Combine("/images/service/", item.Image)" alt="@item.Name" />
-                                        }
-                                        else
-                                        {
-                                            <img loading="lazy" src="~/Content/images/avatar-default.jpg" alt="@item.Name" />
-                                        }
-                                    <div class="plan-details">
-                                        <span>@item.Name</span>
-                                        <span class="price-service">
-                                            @if (item.Amount > 0)
+                        <div class="col-12">
+                            <div class="plans" style="display:none;">
+                                @foreach (var item in Model.Services)
+                                {
+                                    <label class="plan basic-plan mb-3" for="basic-@item.Id">
+                                        <input type="radio" value="@item.Id" name="JobPost.ServiceId" id="basic-@item.Id" />
+                                        <div class="plan-content">
+                                            @if (item.Image != null)
                                             {
-                                                @:Giá: @Html.DisplayFor(a => item.Amount)
+                                                <img loading="lazy" src="@Path.Combine("/images/service/", item.Image)" alt="@item.Name" />
                                             }
                                             else
                                             {
-                                                @:Miễn phí
+                                                <img loading="lazy" src="~/Content/images/avatar-default.jpg" alt="@item.Name" />
                                             }
-                                        </span>
-                                        <p>@item.Description</p>
-                                    </div>
-                                    </div>
-                                </label>
-                            }
+                                            <div class="plan-details">
+                                                <span>@item.Name</span>
+                                                <span class="price-service">
+                                                    @if (item.Amount > 0)
+                                                    {
+                                                        @:Giá: @Html.DisplayFor(a => item.Amount)
+                                                    }
+                                                    else
+                                                    {
+                                                        @:Miễn phí
+                                                    }
+                                                </span>
+                                                <p>@item.Description</p>
+                                            </div>
+                                        </div>
+                                    </label>
+                                }
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>
@@ -162,15 +165,15 @@
             </div>
             <div class="box-body">
                 <div class="row">
-                    <div class="form-group col-4">
+                    <div class="form-group col-lg-4 col-md-4 col-6">
                         <label>
                             Kinh nghiệm <i class="text-danger">*</i>
                         </label>
                         @Html.EnumDropDownListFor(model => model.JobPost.Experiences, new { @class = "v-select" })
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-lg-4 col-md-4 col-6">
                         <label>
-                            Kỹ năng cần có <i class="text-danger">*</i>
+                            Từ khóa công việc <i class="text-danger">*</i>
                         </label>
                         <select class="v-select-multiple" name="skill" required>
                             @foreach (var item in Model.Skills)
@@ -179,7 +182,7 @@
                             }
                         </select>
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-lg-4 col-md-4">
                         <label>
                             Mức lương <i class="text-danger">*</i>
                         </label>
@@ -194,7 +197,7 @@
                             @Html.TextBoxFor(a => a.JobPost.SalalyMax, new { @class = "form-control input-money", @placeholder = "Đến" })
                         </div>
                     </div>*@
-                    <div class="form-group col-3">
+                    <div class="form-group col-xl-3 col-md-3 col-6">
                         <label>
                             Quốc gia <i class="text-danger">*</i>
                         </label>
@@ -210,21 +213,21 @@
                             }
                         </select>
                     </div>
-                    <div class="form-group col-3">
+                    <div class="form-group col-xl-3 col-md-3 col-6">
                         <label>
                             Thành phố <i class="text-danger">*</i>
                         </label>
-                        <select name="city" required id="city" multiple="">
+                        <select name="city" required id="city">
                         </select>
                     </div>
-                    <div class="form-group col-6">
+                    <div class="form-group col-xl-6 col-md-6">
                         <label>
                             Địa chỉ cụ thể <i class="text-danger">*</i>
                         </label>
                         @Html.TextBoxFor(a => a.JobPost.Address, new { @class = "form-control", @placeholder = "Địa chỉ cụ thể" })
                         @Html.ValidationMessageFor(a => a.JobPost.Address)
                     </div>
-                    <div class="form-group col">
+                    <div class="col-lg-6 form-group">
                         <label>
                             Danh sách ảnh
                         </label>
@@ -238,7 +241,6 @@
                 </div>
             </div>
         </div>
-
         <div class="box-content mb-4">
             <div class="box-header">
                 <h3>
@@ -271,75 +273,19 @@
                     @Html.EditorFor(a => a.JobPost.WorkLocation)
                 </div>
             </div>
-        </div>
-        @*<div class="box-content">
-            <div class="box-header">
-                <h3>
-                    Thông tin nhận CV
-                </h3>
-            </div>
-            <div class="box-body">
-                <div class="row">
-                    <div class="form-group col-6">
-                        <label>
-                            Họ và tên người nhận <i class="text-danger">*</i>
-                        </label>
-                        <input class="form-control" />
-                    </div>
-                    <div class="form-group col-6">
-                        <label>
-                            Số điện thoại <i class="text-danger">*</i>
-                        </label>
-                        <input class="form-control" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>
-                        Email nhận hồ sơ <i class="text-danger">*</i>
+            <div class="d-lg-none d-md-none d-block text-center">
+                <div class="d-flex align-items-center mr-3">
+                    <label class="mb-0 mr-2">
+                        Hiển thị
                     </label>
-                    <input class="form-control" />
+                    @Html.CheckBoxFor(a => a.JobPost.Active, new { @checked = "checked" })
                 </div>
-            </div>
-        </div>*@
-    </div>
-    @*<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
-            <div class="modal-content ">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="row p-3">
-                    @foreach (var item in Model.Services)
-                    {
-                        <div class="col-lg-4">
-                            <div class="card card-service">
-                                <input type="radio" name="JobPost.ServiceId" id="card-@item.Id" value="@item.Id">
-                                <label for="card-@item.Id">
-                                    <span class="service-name">@item.Name</span>
-                                    <span class="service-price">
-                                        @if (item.Amount > 0)
-                                        {
-                                            @Html.DisplayFor(a => item.Amount)
-                                            <small>(@item.IntDate Ngày)</small>
-                                        }
-                                        else
-                                        {
-                                            @:Miễn phí
-                                        }
-                                    </span>
-                                </label>
-                            </div>
-                        </div>
-                    }
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Chọn</button>
-                </div>
+                <button type="submit" class="btn btn-primary">Lưu lại</button>
+                @*<button class="btn btn-danger">Huỷ bỏ</button>*@
             </div>
         </div>
-    </div>*@
+
+    </div>
 }
 
 @section scripts{

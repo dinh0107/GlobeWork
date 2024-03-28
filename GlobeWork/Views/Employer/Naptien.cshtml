@@ -10,9 +10,9 @@
 </div>
 <div class="container py-3">
     <div class="row">
-        <div class="col-xl-8 mb-3">
+        <div class="col-xl-8 mb-3 order-lg-0 order-1">
             <div class="bg-white shadow p-3 rounded">
-                <div>
+                <div class="custom-size">
                     LƯU Ý KHI NẠP TIỀN <span class="text-danger">TẢI LẠI TRANG TRƯỚC KHI NẠP TIỀN</span>
                     <br />
                     Hãy quét mã QR để nạp tiền chính xác nhất. <span class="text-danger">Mỗi giao dịch nội dung chuyển khoản chỉ được chuyển 1 lần</span>
@@ -20,8 +20,8 @@
                 <div class="alert-success alert mt-3">
                     <strong>NỘI DUNG CHUYỂN TIỀN.</strong>
                     <div class="d-flex align-items-center mt-3">
-                        <input type="text" data-value="@Model.Employer.FullName" value="" class="form-control" disabled  id="fullNameInput"/>
-                        <div class="copy-value btn btn-primary">
+                        <input type="text" data-value="@Model.Employer.Email" value="@Model.Employer.Email" class="form-control input-resize bg-white rounded-0" disabled  id="fullNameInput"/>
+                        <div class="copy-value btn btn-primary input-resize rounded-0">
                             Copy
                         </div>
                     </div>
@@ -31,8 +31,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-4">
-            <div class="info-box bg-white shadow rounded">
+        <div class="col-xl-4 order-lg-1 order-0">
+            <div class="info-box bg-white shadow rounded mb-lg-0 mb-3">
                 <div class="media">
                     @if (Model.Employer.Avatar != null)
                     {
@@ -70,17 +70,17 @@
 </div>
 @section Scripts{
    <script>
-       var dataValue = $("#fullNameInput").data("value");
-       var result = convertToSlug(dataValue);
-       $("#fullNameInput").val("naptien" + result);
-       function convertToSlug(text) {
-           return text
-               .toLowerCase()
-               .normalize("NFD")
-               .replace(/[\u0300-\u036f]/g, "") 
-               .replace(/[^a-z0-9]/g, "")
-               .replace(/\s+/g, ""); 
-       }
+       //var dataValue = $("#fullNameInput").data("value");
+       //var result = convertToSlug(dataValue);
+       //$("#fullNameInput").val("naptien" + result);
+       //function convertToSlug(text) {
+       //    return text
+       //        .toLowerCase()
+       //        .normalize("NFD")
+       //        .replace(/[\u0300-\u036f]/g, "") 
+       //        .replace(/[^a-z0-9]/g, "")
+       //        .replace(/\s+/g, ""); 
+       //}
 
        $(".copy-value").click(function () {
            var valueToCopy = $("#fullNameInput").data("value");

@@ -3,7 +3,7 @@
     ViewBag.Title = "Sửa tin tuyển dụng";
     Layout = "~/Views/Shared/_EmployerLayout.cshtml";
 }
-@using (Html.BeginForm("EditStudyAbroad", "Employer", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("EditStudyAbroad", "Employer", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-employer" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(a => a.StudyAbroad.Id)
@@ -36,7 +36,7 @@
                         @Html.TextBoxFor(a => a.StudyAbroad.Name, new { @class = "form-control" })
                         @Html.ValidationMessageFor(a => a.StudyAbroad.Name)
                     </div>
-                    <div class="form-group col-3">
+                    <div class="form-group col-lg-4 col-md-6">
                         <label>
                             Ngành nghề <i class="text-danger">*</i>
                         </label>
@@ -49,7 +49,7 @@
                             }
                         </select>
                     </div>
-                    <div class="form-group col-3">
+                    <div class="form-group col-lg-4 col-md-6">
                         <label>
                             Danh mục <i class="text-danger">*</i>
                         </label>
@@ -68,32 +68,32 @@
                             }
                         </select>
                     </div>
-                    <div class="form-group col-3">
+                    <div class="form-group col-lg-4 col-md-6">
                         <label>
-                            Mức lương <i class="text-danger">*</i>
+                            Mức học bổng <i class="text-danger">*</i>
                         </label>
-                        @Html.EnumDropDownListFor(model => model.StudyAbroad.Wages, new { @class = "v-select" })
+                        @Html.EnumDropDownListFor(model => model.StudyAbroad.WageScholarship, new { @class = "v-select" })
                     </div>
-                    <div class="form-group col-3">
+                    @*<div class="form-group col-3">
                         <label>
                             Sức khỏe <i class="text-danger">*</i>
                         </label>
                         @Html.TextBoxFor(a => a.StudyAbroad.Health, new { @class = "form-control ", @placeholder = "Yêu cầu sức khỏe" })
-                    </div>
-                    <div class="form-group col-4">
+                    </div>*@
+                    <div class="form-group col-lg-2 col-md-6">
                         <label>
                             Loại tin <i class="text-danger">*</i>
                         </label>
-                        @Html.EnumDropDownListFor(model => model.StudyAbroad.TypeStudyAbroad, new { @class = "v-select" })
+                        @Html.EnumDropDownListFor(model => model.StudyAbroad.TypeStudyAbroad, new { @class = "form-control  " })
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-lg-5 col-md-6">
                         <label>
                             Hạn nhận hồ sơ <i class="text-danger">*</i>
                         </label>
                         @* @Html.TextBoxFor(a => a.StudyAbroad.ExpirationDate, new { @class = "form-control datetimepicker", @placeholder = "Chọn ngày hết hạn nhận hồ sơ" })*@
                         <input type="text" name="StudyAbroad.ExpirationDate" class="form-control datetimepicker" placeholder="Chọn ngày hết hạn nhận hồ sơ" autocomplete="off" value="@Model.StudyAbroad.ExpirationDate" />
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-lg-5 col-md-6">
                         <label>
                             Trình độ học vấn, bằng cấp <i class="text-danger">*</i>
                         </label>
@@ -101,7 +101,7 @@
                         @Html.ValidationMessageFor(a => a.StudyAbroad.LearningProblems)
                     </div>
                 </div>
-                <div class="form-group col-2">
+                <div class="form-group col-lg-2 col-md-4">
                     <div class="btn btn-primary show-service">
                         Chọn gói hiển thị
                     </div>
@@ -150,19 +150,19 @@
             </div>
             <div class="box-body">
                 <div class="row">
-                    <div class="form-group col-3">
+                    <div class="form-group col-lg-3 col-md-6">
                         <label>
                             Số lượng <i class="text-danger">*</i>
                         </label>
                         @Html.TextBoxFor(a => a.StudyAbroad.Quantity, new { @class = "input-number custom-input" })
                     </div>
-                    <div class="form-group col-3">
+                    <div class="form-group col-lg-3 col-md-6">
                         <label>
                             Số ngày hiện thị nổi bật
                         </label>
                         @Html.TextBoxFor(a => a.DateHot, new { @class = "input-number custom-input" })
                     </div>
-                    <div class="form-group col-4">
+                    @*<div class="form-group col-4">
                         <label>
                             Giới tính <i class="text-danger">*</i>
                         </label>
@@ -177,7 +177,7 @@
                                 Không yêu cầu
                             </option>
                         </select>
-                    </div>
+                    </div>*@
                     @*<div class="form-group col-4">
                         <label>
                             Cấp bậc
@@ -197,7 +197,7 @@
                             }
                         </select>
                     </div>*@
-                    <div class="form-group col-12">
+                    <div class="form-group col-lg-6">
                         <label>
                             Địa chỉ cụ thể <i class="text-danger">*</i>
                         </label>
@@ -270,11 +270,21 @@
                     @Html.EditorFor(a => a.StudyAbroad.Incentives)
                 </div>
                 @*<div class="form-group">
-                    <label>
-                        Địa điểm làm việc <i class="text-danger">*</i>
+                <label>
+                    Địa điểm làm việc <i class="text-danger">*</i>
+                </label>
+                @Html.EditorFor(a => a.StudyAbroad.WorkLocation)
+            </div>*@
+            </div>
+            <div class="d-lg-none d-md-none d-block text-center">
+                <div class="d-flex align-items-center mr-3">
+                    <label class="mb-0 mr-2">
+                        Hiển thị
                     </label>
-                    @Html.EditorFor(a => a.StudyAbroad.WorkLocation)
-                </div>*@
+                    @Html.CheckBoxFor(a => a.StudyAbroad.Active, new { @checked = "checked" })
+                </div>
+                <button type="submit" class="btn btn-primary">Lưu lại</button>
+                @*<button class="btn btn-danger">Huỷ bỏ</button>*@
             </div>
         </div>
     </div>

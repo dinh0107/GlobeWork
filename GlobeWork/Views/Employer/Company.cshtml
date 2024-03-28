@@ -13,7 +13,7 @@
     var year = 1900;
 }
 
-@using (Html.BeginForm(action, "Employer", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm(action, "Employer", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-employer" }))
 {
     <div class="contents-header">
         <h2>@ViewBag.Title</h2>
@@ -207,18 +207,22 @@
                                         @Html.EditorFor(a => a.Company.Product)
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         @Html.LabelFor(a => a.Company.GoogleMap)
                                         @Html.TextAreaFor(a => a.Company.GoogleMap, new { @class = "form-control" })
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-lg-6">
                                     <div class="form-group">
                                         @Html.LabelFor(a => a.Company.VideoYoutube)
                                         @Html.TextAreaFor(a => a.Company.VideoYoutube, new { @class = "form-control" })
                                     </div>
                                 </div>
+                            </div>
+                            <div class="d-lg-none d-md-none d-block text-center">
+                                <button type="submit" class="btn btn-primary">Lưu lại</button>
+                                @*<button class="btn btn-danger">Huỷ bỏ</button>*@
                             </div>
                         </div>
                     </div>

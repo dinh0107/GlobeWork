@@ -20,7 +20,7 @@
             <div class="col-lg-3 col-md-3 col-5">
                 <div class="form-control d-flex align-items-center justify-content-between font-size-12">
                     <select class="select2 w-100" name="countruyId">
-                        <option value="">Khu vực</option>
+                        <option value="">Quốc gia</option>
                         @foreach (var item in Model.Countries)
                         {
                             <option value="@item.Id">@item.Name</option>
@@ -81,7 +81,7 @@
                             <p class="card-text">@item.Company.Name</p>
                             <div class="card-btns">
                                 <a href="#" class="link-scholarship">
-                                    @Html.DisplayFor(a => item.Wages)
+                                    @Html.DisplayFor(a => item.WageScholarship)
                                 </a>
                                 <a href="#" class="link-scholarship">
                                     @item.StudyAbroadCategory.Country.Name
@@ -115,7 +115,7 @@
                                 @item.Company.Name
                             </div>
                             <div class="group-info">
-                                <span><i class="fa-solid fa-briefcase-blank"></i> @Html.DisplayFor(a => item.Wages)</span>
+                                <span><i class="fa-solid fa-briefcase-blank"></i> @Html.DisplayFor(a => item.WageScholarship)</span>
                                 <span><i class="fa-sharp fa-solid fa-location-dot"></i> @item.StudyAbroadCategory.Country.Name</span>
                                 <span><i class="fa-regular fa-calendar-days"></i> @Utils.UpdateDateVn(item.CreateDate)</span>
                                 <span class="hot"><i class="fa-solid fa-thumbs-up mr-1"></i> Nổi bật</span>
@@ -215,7 +215,7 @@
 <div class="info-footer">
     <div class="container">
         <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-5 mb-lg-0 mb-3">
                 <div class="media">
                     <i class="fa-sharp fa-solid fa-location-dot"></i>
                     <div class="media-body">
@@ -223,7 +223,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-3 mb-lg-0 mb-3">
                 <div class="media">
                     <i class="fa-sharp fa-solid fa-phone"></i>
                     <div class="media-body">
@@ -232,7 +232,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3">
+            @*<div class="col-lg-3">
                 <div class="media">
                     <i class="fa-sharp fa-solid fa-phone"></i>
                     <div class="media-body">
@@ -240,13 +240,13 @@
                         <a href="tel:@config.Hotline2">@config.Hotline2</a>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3">
+            </div>*@
+            <div class="col-lg-4 mb-lg-0 mb-3">
                 <div class="media">
-                    <i class="fa-sharp fa-solid fa-phone"></i>
+                    <i class="fa-sharp fa-solid fa-envelope"></i>
                     <div class="media-body">
-                        <span>Điện thoại tư vấn</span>
-                        <a href="tel:@config.Hotline3">@config.Hotline3</a>
+                        <span>Gmail</span>
+                        <a href="mailto:@config.Email">@config.Email</a>
                     </div>
                 </div>
             </div>

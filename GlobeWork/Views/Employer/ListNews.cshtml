@@ -12,20 +12,20 @@
 <div class="container py-4">
     <div class="box-content">
         <form class="box-header form-row mb-n3" action="@Url.Action("ListNews")" method="get">
-            <div class="col-lg-4 mb-3">
+            <div class="col-lg-4 col-md-6 mb-3">
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <div class="input-group-text"><i class="fa-regular fa-magnifying-glass"></i></div>
                     </div>
-                    @Html.TextBoxFor(a => a.Name , new {@class = "form-control" , @placeholder = "Tìm kiếm theo tiêu đề hoặc mã tin" })
+                    @Html.TextBoxFor(a => a.Name , new {@class = "form-control input-resize" , @placeholder = "Tìm kiếm theo tiêu đề hoặc mã tin" })
                 </div>
             </div>
-            <div class="col-lg-4 mb-3">
+            <div class="col-lg-4 col-md-6 mb-3">
                 <div class="input-group flex-nowrap">
                     <div class="input-group-prepend">
                         <div class="input-group-text">Trạng thái hiển thị:</div>
                     </div>
-                    <select class="form-control" name="type">
+                    <select class="form-control input-resize" name="type">
                         <option value="1" @if(Model.Type == 1) { @Html.Raw("selected") }>
                             Hoạt động
                         </option>
@@ -38,10 +38,11 @@
                     </select>
                 </div>
             </div>
-            <div class="col-lg-4 mb-3">
-                <button type="submit" class="btn btn-success">
+            <div class="col-lg-4 mb-3 d-flex" style="gap:20px;">
+                <button type="submit" class="btn btn-success input-resize">
                     Tìm kiếm
                 </button>
+                <a href="@Url.Action("PostNews")" class="btn btn-success input-resize text-white d-lg-none d-md-none d-block" ><i class="fa-sharp fa-solid fa-pen-to-square mr-2"></i>Đăng tin</a>
             </div>
         </form>
         <div class="box-body table-responsive">
@@ -75,7 +76,7 @@
                                     </div>
                                     <span class="badge badge-secondary">Không hiển thị</span>
                                 }
-                                <p class="my-2">
+                                <p class="my-2 name-list">
                                     Tiêu đề tuyển dụng: <strong>@item.Name</strong>
                                     <br />
                                     @if (item.Service != null && item.Hot > DateTime.Now)
@@ -83,7 +84,7 @@
                                         @:Gói hiển thị: @item.Name
                                     }
                                 </p>
-                                <a href="@Url.Action("ListCV", new {jobId = item.Id})" class="btn btn-primary">Xem CV ứng tuyển</a>
+                                <a href="@Url.Action("ListCV", new {jobId = item.Id})" class="btn btn-primary view-cv">Xem CV ứng tuyển</a>
                             </td>
                             <td class="text-center align-middle">
                                 <ul class="tools-group">
@@ -105,10 +106,10 @@
                                     </li>
                                 </ul>
                             </td>
-                            <td class="text-center align-middle">
+                            <td class="text-center align-middle list-date">
                                 @Html.DisplayFor(a => item.LastEditDate)
                             </td>
-                            <td class="text-center align-middle">
+                            <td class="text-center align-middle list-date">
                                 @if (now > item.Hot)
                                 {
                                     <span class="text-danger"> Hết thời gian hiển thị</span>

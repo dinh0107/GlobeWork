@@ -53,9 +53,13 @@
                 <div class="box-detail name-profile">
                     <h1 class="company-detail-name text-dark position-relative">
                         @Model.User.FullName
-                        <span class="position-absolute pen-edit" data-toggle="modal" data-target="#infoUser">
-                            <i class="fa-solid fa-pen d-lg-none d-block"></i>
-                        </span>
+
+                        @if (Model.IsAccount)
+                        {
+                            <span class="position-absolute pen-edit" data-toggle="modal" data-target="#infoUser">
+                                <i class="fa-solid fa-pen d-lg-none d-block"></i>
+                            </span>
+                        }
                     </h1>
                     <div class="sub-line" id="classtify">
                         @Model.User.Classtify

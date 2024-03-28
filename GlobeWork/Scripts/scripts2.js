@@ -138,7 +138,12 @@ $(document).ready(function () {
     $("textarea.ckeditor").ckeditor();
     CKEDITOR.timestamp = new Date();
 })
-
+function toggleSidebarMobile() {
+    $(".sidebar").addClass("active");
+}
+function closeSidebarMobile() {
+    $(".sidebar").removeClass("active");
+}
 function toggleSidebar() {
     $(".sidebar").toggleClass("collapsed");
 }

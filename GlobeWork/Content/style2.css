@@ -1284,16 +1284,16 @@ header.header-employer logo {
   .plans .plan .plan-content .plan-details {
     width: 100%;
   }
-  .plans .plan .plan-content {
-    padding: 20px;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-box-align: baseline;
-    -ms-flex-align: baseline;
-    align-items: baseline;
-  }
+  /*.plans .plan .plan-content {
+      padding: 20px;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+      align-items: baseline;
+  }*/
 }
 /* inspiration */
 .inspiration {

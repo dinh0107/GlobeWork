@@ -65,7 +65,7 @@ namespace GlobeWork.Models
         public virtual ICollection<Like> Likes { get; set; }
         public virtual ICollection<ApplyJob> ApplyJobs { get; set; }
         public TypeStudyAbroad  TypeStudyAbroad { get; set; }
-        public Wage Wages { get; set; }
+        public Scholarship  WageScholarship { get; set; }
         public virtual Service Service { get; set; }
         public StudyAbroad()
         {
@@ -80,5 +80,16 @@ namespace GlobeWork.Models
         StudyAbroad,
         [Display(Name = "Học bổng")]
         Scholarship,
+    }
+    public enum Scholarship
+    {
+        [Display(Name = "Từ 100 - 300 triệu")]
+        Tu100den300,
+        [Display(Name = "Từ 300 - 500 triệu")]
+        Tu300den500,
+        [Display(Name = "Trên 500 triệu")]
+        Tren500,
+        [Display(Name = "Học bổng toàn phần")]
+        Toanphan,
     }
 }
