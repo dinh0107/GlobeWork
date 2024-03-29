@@ -3,7 +3,7 @@
     ViewBag.Title = "Cập nhật tin tuyển dụng";
     Layout = "~/Views/Shared/_EmployerLayout.cshtml";
 }
-@using (Html.BeginForm())
+@using (Html.BeginForm("EditJob", "Employer", FormMethod.Post, new { enctype = "multipart/form-data", @class = "form-employer" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(a => a.JobPost.Id)
@@ -224,7 +224,7 @@
                         <label>
                             Thành phố <i class="text-danger">*</i>
                         </label>
-                        <select id="city" name="city" required >
+                        <select id="city" name="city" required>
                             @*@foreach (var item in Model.Citys)
                                 {
                                     var isSelected = Model.JobPost.Cities.Any(a => a.Id == item.Id);

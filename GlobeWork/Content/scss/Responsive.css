@@ -381,6 +381,7 @@
   .samefield-thuml {
     width: 3.5rem;
     height: 3.5rem;
+    border: none;
   }
   .tag-i {
     width: 3.75rem;
@@ -644,7 +645,7 @@
   }
   .detail-job .job-name {
     font-size: 0.8rem;
-    width: 17rem !important;
+    width: 20rem !important;
   }
   .time-deadline {
     font-size: 0.65rem;
@@ -830,7 +831,7 @@
     padding: 1.25rem 1rem;
   }
   .control-user {
-    font-size: 0.7rem;
+    /*font-size: .7rem;*/
   }
   .agreement-login a {
     font-size: 0.775rem;
@@ -838,10 +839,10 @@
   .job .w-75 {
     width: 90% !important;
   }
-  .detail-job .job-name {
-    font-size: 0.8rem;
-    width: 14rem !important;
-  }
+  /*  .detail-job .job-name {
+      font-size: 0.8rem;
+      width: 14rem !important;
+  }*/
   .study-name {
     font-size: 0.8rem;
   }
@@ -916,5 +917,21 @@
   }
   .custom-top-detail {
     margin-top: 50px;
+  }
+  .checkbox-wrapper-18 .round label:after {
+    top: 5px;
+  }
+  .study-img {
+    width: 3.5625rem;
+    height: 3.5625rem;
+  }
+  .employer-right {
+    padding: 1.25rem 0.6rem;
+  }
+  .p-mb {
+    padding: 1.25rem 0.6rem;
+  }
+  .job-detail__box--left {
+    padding: 1rem 0.7rem;
   }
 }

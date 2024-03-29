@@ -43,8 +43,8 @@
                 </div>
             </div>
             <div class="company-detail-overview employer-detail custom-mb">
-                <div class="box-detail">
-                    <h1 class="company-detail-name text-dark"><span class="nam-compa">@Model.Company.Name</span><span class="tag-name">@Model.Company.City.Name</span></h1>
+                <div class="box-detail custom-top-detail">
+                    <h1 class="company-detail-name text-dark"><span class="nam-compa">@Model.Company.Name </span><span class="tag-name">@Model.Company.City.Name</span></h1>
                     <div class="company-subdetail">
                         <a href="@Model.Company.WebsiteUrl" target="_blank">
                             <i class="fa-sharp fa-solid fa-globe"></i>
@@ -72,13 +72,13 @@
                     {
                         if (Model.Follows.Any())
                         {
-                            <a href="javascripts:;" class="btn btn-follow unfollow" data-company-id="@Model.Company.EmployerId">
+                            <a href="#" class="btn btn-follow unfollow" data-company-id="@Model.Company.EmployerId">
                                 Bỏ theo dõi công ty
                             </a>
                         }
                         else
                         {
-                            <a href="javascripts:;" class="btn btn-follow follow" data-company-id="@Model.Company.EmployerId">
+                            <a href="#" class="btn btn-follow follow" data-company-id="@Model.Company.EmployerId">
                                 Theo dõi công ty
                             </a>
                         }
@@ -91,7 +91,7 @@
                 </div>
             </div>
         </div>
-        <div class="recruitment">
+        <div class="recruitment p-mb">
             <div class="job-q mb-3">
                 Hiện tại đang tuyển dụng <span>@Model.JobPosts.Count()</span> vị trí
             </div>
@@ -138,7 +138,7 @@
                 {
                     tooltip = "Luôn tuyển";
                 }
-                <div class="job bg-white detail-job @if (item.Hot != null && item.Hot > DateTime.Now) { @Html.Raw("active") } ">
+                <div class="job bg-white detail-job overflow-hidden @if (item.Hot != null && item.Hot > DateTime.Now) { @Html.Raw("active") } ">
                     <div class="media ">
                         <div>
                             <a href="@Url.Action("JobDetail", new {url = item.Url})" class="job-name custom-w" data-tooltip="@item.Name" data-tooltip-position="top">@item.Name</a>

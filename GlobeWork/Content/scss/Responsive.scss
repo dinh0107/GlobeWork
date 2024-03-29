@@ -483,6 +483,7 @@
     .samefield-thuml {
         width: 3.5rem;
         height: 3.5rem;
+        border: none;
     }
 
     .tag-i {
@@ -493,8 +494,8 @@
     }
 
     .video iframe {
-      height:auto;
-      aspect-ratio:16/9;
+        height: auto;
+        aspect-ratio: 16/9;
     }
 
     .select2-container--default .select2-selection--single .select2-selection__rendered {
@@ -603,7 +604,6 @@
         .custom-top-detail {
             margin-top: 60px;
         }
-
         /*.box-follow a {
             width: 6.5rem;
             height: 2rem;
@@ -837,7 +837,7 @@
 
     .detail-job .job-name {
         font-size: .8rem;
-        width: 17rem !important;
+        width: 20rem !important;
     }
 
     .time-deadline {
@@ -1073,7 +1073,7 @@
     }
 
     .control-user {
-        font-size: .7rem;
+        /*font-size: .7rem;*/
     }
 
     .agreement-login a {
@@ -1085,11 +1085,10 @@
             width: 90% !important;
         }
     }
-
-    .detail-job .job-name {
+    /*  .detail-job .job-name {
         font-size: 0.8rem;
         width: 14rem !important;
-    }
+    }*/
 
     .study-name {
         font-size: .8rem;
@@ -1193,5 +1192,26 @@
 
     .custom-top-detail {
         margin-top: 50px;
+    }
+
+    .checkbox-wrapper-18 .round label:after {
+        top: 5px;
+    }
+
+    .study-img {
+        width: 3.5625rem;
+        height: 3.5625rem;
+    }
+
+    .employer-right {
+        padding: 1.25rem .6rem;
+    }
+
+    .p-mb {
+        padding: 1.25rem .6rem;
+    }
+
+    .job-detail__box--left {
+        padding: 1rem .7rem;
     }
 }

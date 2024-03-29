@@ -56,7 +56,7 @@
                     </div>
                     @Html.ValidationMessageFor(a => a.FullName)
                 </div>
-                <div class="col-lg-5">
+                <div class="col-lg-5 mt-lg-0 mt-3">
                     @Html.LabelFor(a => a.Gender)
                     <div class=" control-user">
                         <div class="checkbox-wrapper-18">
@@ -83,7 +83,7 @@
             </div>
             @Html.ValidationMessageFor(a => a.PhoneNumber)
             <div class="row">
-                <div class="col-6">
+                <div class="col-lg-6">
                     @Html.LabelFor(a => a.CompanyName, new { @class = "mt-3" })
                     <div class="form-control control-user">
                         <i class="fa-light fa-phone"></i>
@@ -91,7 +91,7 @@
                     </div>
                     @Html.ValidationMessageFor(a => a.CompanyName)
                 </div>
-                <div class="col-6">
+                <div class="col-lg-6">
                     @Html.LabelFor(a => a.RankId , new { @class = "mt-3" })
                     <div class="form-group form-control control-user">
                         <i class="fa-regular fa-user-tie"></i>
@@ -106,22 +106,22 @@
                     </div>
                     @Html.ValidationMessageFor(a => a.RankId)
                 </div>
-                <div class="col-6 mt-3">
+                <div class="col-lg-6 mt-3">
                     <label>
                         Địa điểm làm việc
                     </label>
                     <div class="form-group form-control control-user">
-                        <i class="fa-regular fa-user-tie"></i>
+                        @*<i class="fa-regular fa-user-tie"></i>*@
                         @Html.DropDownListFor(a => a.CityId, Model.CitySelectList, "Chọn thành phố", new { @class = "v-select", @id = "city", data_item = "city"  })
                     </div>
                     @Html.ValidationMessageFor(a => a.CityId)
                 </div>
-                <div class="col-6 mt-3">
+                <div class="col-lg-6 mt-3">
                     <label>
                         Quận/ huyện
                     </label>
-                    <div class="form-group form-control control-user">
-                        <i class="fa-regular fa-user-tie"></i>
+                    <div class="form-group form-control control-user ">
+                        @*<i class="fa-regular fa-user-tie"></i>*@
                         <select data-item="district" name="districtId">
                             <option>Chọn quận/huyện</option>
                         </select>

@@ -87,7 +87,7 @@
                 <div class="navs-employer">
                     <a href="@Url.Action("Employer" , new {url = Model.Company.Url})" class="@(IsLinkActive(Url.Action("Employer", new {url = Model.Company.Url} )))">Trang chủ</a>
                     <a href="@Url.Action("Recruitment" , new {url = Model.Company.Url})" class="@(IsLinkActive(Url.Action("Recruitment")))">Tin tuyển dụng</a>
-                    <a href="@Url.Action("StudyAbroadCom" , new {url = Model.Company.Url})" class="@(IsLinkActive(Url.Action("Recruitment")))">Tin du học</a>
+                    <a href="@Url.Action("StudyAbroadCom" , new {url = Model.Company.Url})" class="@(IsLinkActive(Url.Action("StudyAbroadCom")))">Tin du học</a>
                 </div>
             </div>
         </div>
@@ -255,7 +255,7 @@
                             <div class="job bg-white detail-job @if (item.Hot != null && item.Hot > DateTime.Now) { @Html.Raw("active") } ">
                                 <div class="media ">
                                     <div>
-                                        <a href="@Url.Action("JobDetail", new {url = item.Url})" class="job-name" data-tooltip="@item.Name" data-tooltip-position="top">@item.Name</a>
+                                        <a href="@Url.Action("JobDetail", new {url = item.Url})" class="job-name ip-name" data-tooltip="@item.Name" data-tooltip-position="top">@item.Name</a>
                                         <div class="company-name">
                                             @item.Company.Name
                                         </div>
@@ -269,7 +269,7 @@
                                             }
                                             else
                                             {
-                                                @:Hết thời gian ứng tuyển
+                                                @:Hết thời gian
                                             }
                                         }
                                         else
@@ -311,7 +311,7 @@
                                                 }
                                                 else
                                                 {
-                                                    @:Hết thời gian ứng tuyển
+                                                    @:Hết thời gian
                                                 }
                                             }
                                             else

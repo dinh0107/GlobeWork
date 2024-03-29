@@ -67,7 +67,7 @@
                     </a>
                     @if (email == "")
                     {
-                        <a href="@Url.Action("Login","User" , new {returnUrl = Url.Action("JobDetail", new { url = Model.StudyAbroad.Url })})" class="btn btn-follow">
+                        <a href="#" data-target="#qick-form" data-toggle="modal" class="btn btn-follow">
                             <i class="fa-light fa-plus"></i> Theo dõi công ty
                         </a>
                     }
@@ -96,7 +96,7 @@
                         @Model.StudyAbroad.Name
                     </h1>
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-4 col-md-4">
                             <div class="media section-info">
                                 <div class="section-info__icon">
                                     <i class="fa-sharp fa-solid fa-coins"></i>
@@ -107,7 +107,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-4 col-md-4">
                             <div class="media section-info">
                                 <div class="section-info__icon">
                                     <i class="fa-sharp fa-solid fa-location-dot"></i>
@@ -120,7 +120,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-4 col-md-4">
                             <div class="media section-info">
                                 <div class="section-info__icon">
                                     <i class="fa-solid fa-book-open-cover"></i>
@@ -157,13 +157,13 @@
                         }
                         else
                         {
-                            <a href="@Url.Action("Login", "User")" class="button1">Nộp hồ sơ</a>
+                            <a href="#" data-target="#qick-form" data-toggle="modal" class="button1">Nộp hồ sơ</a>
                         }
 
                         <div class="button2" data-toggle="modal" data-target="#Advise">Cần tư vấn</div>
                         @if (email == "")
                         {
-                            <a href="@Url.Action("Login","User" , new {returnUrl = Url.Action("StudyAbroadDetail", new { url = Model.StudyAbroad.Url })})" class="button3"><i class="fa-regular fa-heart mr-2"></i> Lưu tin </a>
+                            <a href="#" data-target="#qick-form" data-toggle="modal" class="button3"><i class="fa-regular fa-heart mr-2"></i> Lưu tin </a>
                         }
                         else
                         {
@@ -348,29 +348,11 @@
                     </div>
                     <div class="media section-info mt-4">
                         <div class="section-info__icon">
-                            <i class="fas fa-heart-rate"></i>
-                        </div>
-                        <div class="media-body">
-                            <span class="job-detail__info--section-content-title">Sức khỏe</span>
-                            <span class="job-detail__info--section-content-value">@Model.StudyAbroad.Health</span>
-                        </div>
-                    </div>
-                    <div class="media section-info mt-4">
-                        <div class="section-info__icon">
-                            <i class="fa-solid fa-user"></i>
-                        </div>
-                        <div class="media-body">
-                            <span class="job-detail__info--section-content-title">Giới tính</span>
-                            <span class="job-detail__info--section-content-value">@Model.StudyAbroad.Gender</span>
-                        </div>
-                    </div>
-                    <div class="media section-info mt-4">
-                        <div class="section-info__icon">
                             <i class="fas fa-map-marked-alt"></i>
                         </div>
                         <div class="media-body">
                             <span class="job-detail__info--section-content-title">
-                                Địa chỉ:
+                               Quốc gia:
                             </span>
                             <span class="job-detail__info--section-content-value">@Model.StudyAbroad.Address</span>
                         </div>

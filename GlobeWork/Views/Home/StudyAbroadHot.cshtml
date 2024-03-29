@@ -51,7 +51,7 @@
                                 @item.Company.Name
                             </div>
                         </div>
-                        <div class="media-body time-deadline text-right">
+                        <div class="media-body time-deadline text-right d-lg-block d-none">
                             @if (item.ExpirationDate != null)
                             {
                                 if (item.ExpirationDate > DateTime.Now)
@@ -70,8 +70,8 @@
                         </div>
                     </div>
                     <div class="d-flex align-items-center justify-content-between mt-1">
-                        <div class="w-75">
-                            <span class="info-job price">@Html.DisplayFor(a => item.Wages)</span>
+                        <div class="w-75 custom-gap">
+                            <span class="info-job price">@Html.DisplayFor(a => item.WageScholarship)</span>
                             <span class="info-job">
                                 @if (item.Cities.Any())
                                 {
@@ -93,20 +93,37 @@
                                     }
                                 }
                             </span>
+                            <span class="info-job">
+                                @if (item.ExpirationDate != null)
+                                {
+                                    if (item.ExpirationDate > DateTime.Now)
+                                    {
+                                        @:Còn <strong>@Utils.DateCountDown(item.ExpirationDate)</strong> để ứng tuyển
+                                    }
+                                    else
+                                    {
+                                        @:Hết thời gian ứng tuyển
+                                    }
+                                }
+                                else
+                                {
+                                    @:Luôn tuyển
+                                }
+                            </span>
                         </div>
                         @if (email == "")
                         {
-                            <a href="@Url.Action("Login", "User" , new {returnUrl = Url.Action("AllStudyAbroad")})" class="heart"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
+                            <a href="@Url.Action("Login", "User" , new {returnUrl = Url.Action("AllStudyAbroad")})" class="heart d-lg-block d-none"><i class="fas fa-heart" style="color: #d1d0d2;"></i></a>
                         }
                         else
                         {
                             if (Model.Likes.Any(a => a.StudyAbroadId == item.Id))
                             {
-                                <div class="heart active unlikejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></div>
+                                <div class="heart active unlikejob d-lg-block d-none" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></div>
                             }
                             else
                             {
-                                <div class="heart likejob" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></div>
+                                <div class="heart likejob d-lg-block d-none" data-id="@item.Id"><i class="fas fa-heart" style="color: #d1d0d2;"></i></div>
                             }
                         }
                     </div>
