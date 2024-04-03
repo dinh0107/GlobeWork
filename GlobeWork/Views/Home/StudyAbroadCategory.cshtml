@@ -110,7 +110,7 @@
                             <img src="~/Content/images/on-image.jpg" alt="@item.Name" class="study-img" />
                         }
                         <div class="media-body py-2">
-                            <a href="@Url.Action("StudyAbroadDetail", new { url = item.Url })" class="study-name">Tuyển sinh du học vừa học vừa làm tại Nhật Bản 2023</a>
+                            <a href="@Url.Action("StudyAbroadDetail", new { url = item.Url })" class="study-name">@item.Name</a>
                             <div class="study-company">
                                 @item.Company.Name
                             </div>
@@ -128,7 +128,7 @@
         @if (Model.HotArticle.Any())
         {
             <h2 class="title custom-title mt-4">
-                chương trình du học nghề tại úc
+                chương trình du học nghề tại @Model.StudyAbroadCategory.Country.Name
             </h2>
             <div class="row mt-4 custom-row">
                 @foreach (var item in Model.HotArticle)
@@ -159,7 +159,13 @@
                 }
             </div>
         }
-
+        else
+        {
+            <div class="none-suitable-job__content">
+                <img src="https://static.topcv.vn/v4/image/job-list/none-result.png" alt="None suitable job">
+                <span>Chưa tìm thấy việc làm phù hợp với yêu cầu của bạn</span>
+            </div>
+        }
     </div>
 </div>
 <div class="studyAbroad-footer">
@@ -219,6 +225,7 @@
                 <div class="media">
                     <i class="fa-sharp fa-solid fa-location-dot"></i>
                     <div class="media-body">
+                        <span>Địa chỉ</span>
                         <a href="#">@config.Place</a>
                     </div>
                 </div>

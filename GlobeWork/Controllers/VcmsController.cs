@@ -890,6 +890,8 @@ namespace GlobeWork.Controllers
             countruy.Hot = model.Hot;
             countruy.Job = model.Job;
             countruy.School = model.School;
+            countruy.FilterJob = model.FilterJob;
+            countruy.FilterStudy = model.FilterStudy;
             countruy.Filter = model.Filter;
             countruy.Scholarship = model.Scholarship;
             _unitOfWork.Save();

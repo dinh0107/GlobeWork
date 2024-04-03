@@ -445,6 +445,22 @@
     <Compile Include="Migrations\202403270739262_upadte-sutdy.Designer.cs">
       <DependentUpon>202403270739262_upadte-sutdy.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202404010831237_countruy-up.cs" />
+    <Compile Include="Migrations\202404010831237_countruy-up.Designer.cs">
+      <DependentUpon>202404010831237_countruy-up.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202404011441137_advise.cs" />
+    <Compile Include="Migrations\202404011441137_advise.Designer.cs">
+      <DependentUpon>202404011441137_advise.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202404011503268_advise-update.cs" />
+    <Compile Include="Migrations\202404011503268_advise-update.Designer.cs">
+      <DependentUpon>202404011503268_advise-update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202404011511297_advise-update-em.cs" />
+    <Compile Include="Migrations\202404011511297_advise-update-em.Designer.cs">
+      <DependentUpon>202404011511297_advise-update-em.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Advise.cs" />
@@ -1160,6 +1176,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202403270739262_upadte-sutdy.resx">
       <DependentUpon>202403270739262_upadte-sutdy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202404010831237_countruy-up.resx">
+      <DependentUpon>202404010831237_countruy-up.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202404011441137_advise.resx">
+      <DependentUpon>202404011441137_advise.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202404011503268_advise-update.resx">
+      <DependentUpon>202404011503268_advise-update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202404011511297_advise-update-em.resx">
+      <DependentUpon>202404011511297_advise-update-em.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -6,8 +6,26 @@
     ViewBag.Title = "Danh sách trường" + Model.Country.Name;
     ViewBag.Canonical = Request.Url?.GetLeftPart(UriPartial.Authority) + Url.Action("SchoolCountruy", new { id = Model.Country.Id }); ;
 }
-<div class="container my-3">
-    <div class="row">
+<div class="studyAbroad-filter">
+    <div class="container">
+        <form class="row custom-row" action="@Url.Action("SchoolCountruy",new { id = Model.Country.Id })">
+            <div class="col-10 col-7">
+                @Html.TextBoxFor(a => a.Name, new { @placeholder = "Nhập từ khóa", @class = "form-control", @required = "" })
+            </div>
+            <div class="col-2 mt-lg-0 mt-3">
+                <button type="submit" class="btn btn-block filter-btn">
+                    <i class="far fa-search"></i>
+                    TÌM KIẾM
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="container my-4">
+    <h2 class="title custom-title mt-3">
+        Danh sách trường @Model.Country.Name
+    </h2>
+    <div class="row mt-4">
         @if (Model.Articles.Any())
         {
             foreach (var item in Model.Articles)
@@ -36,7 +54,7 @@
                     </article>
                 </div>
             }
-            if (Model.StudyAbroads.PageCount > 1)
+            if (Model.Articles.PageCount > 1)
             {
                 <div class="col-12 text-center">
                     @Html.PagedListPager(Model.StudyAbroads, page => Url.Action("SchoolCountruy", new { page, id = Model.Country.Id }), new PagedListRenderOptions { MaximumPageNumbersToDisplay = 5 })

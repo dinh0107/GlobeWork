@@ -42,7 +42,9 @@ namespace GlobeWork
                       "~/Content/simple-notify.min.css",
                       "~/Content/owl.carousel.css",
                       "~/Content/jquery.fancybox.css",
-                      "~/Content/style.css"));
+                      "~/Content/style.css",
+                      "~/Content/scss/Responsive.css"
+                      ));
 
             bundles.Add(new StyleBundle("~/Content/admincss").Include(
                       "~/Content/bootstrap.css",

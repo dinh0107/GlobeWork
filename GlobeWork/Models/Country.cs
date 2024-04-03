@@ -27,6 +27,10 @@ namespace GlobeWork.Models
         public bool School { get; set; }
         [Display(Name = "Việc làm")]
         public bool Job { get; set; }
+        [Display(Name = "Bộ lọc Việc làm")]
+        public bool FilterJob { get; set; }
+        [Display(Name = "Bộ lọc du học")]
+        public bool FilterStudy { get; set; }
         public virtual ICollection<City> Cities { get; set; }
         public virtual ICollection<JobPost> JobPosts { get; set; }
         public virtual ICollection<StudyAbroadCategory> StudyAbroadCategories { get; set; }

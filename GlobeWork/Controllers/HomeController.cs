@@ -85,14 +85,14 @@ namespace GlobeWork.Controllers
             {
                 Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Hot && (a.Active && a.TypeCareer == TypeCareer.Career), o => o.OrderBy(a => a.Sort), 16),
                 SearchCareers = _unitOfWork.CareerRepository.GetQuery(a => a.Active),
-                Countries = _unitOfWork.CountryRepository.Get(a => a.Active, o => o.OrderBy(a => a.Sort)),
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.FilterJob, o => o.OrderBy(a => a.Sort)),
                 JobTypes = _unitOfWork.JobTypeRepository.Get(),
                 Ranks = _unitOfWork.RankRepository.Get(),
                 Items = items,
                 Banners = banner,
                 Skills = _unitOfWork.SkillRepository.GetQuery(a => a.ShowHome && a.TypeSkill == TypeSkill.Keyword, o => o.OrderBy(a => a.SkillName), 10),
                 Companies = _unitOfWork.CompanyRepository.GetQuery(a => a.Vipdate > DateTime.Now, o => o.OrderByDescending(a => a.Vipdate), 10),
-                StudyAbroads = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.Hot != null && a.Hot > DateTime.Now), o => o.OrderByDescending(a => a.CreateDate), 10)
+                StudyAbroads = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.Hot != null && a.Hot > DateTime.Now && a.TypeStudyAbroad == TypeStudyAbroad.Scholarship), o => o.OrderByDescending(a => a.CreateDate), 10)
             };
             return View(model);
         }
@@ -249,7 +249,7 @@ namespace GlobeWork.Controllers
                 JobNew = _unitOfWork.JobPostRepository.GetQuery(a => a.Active && a.CreateDate == DateTime.Now).Count(),
                 Banners = _unitOfWork.BannerRepository.GetQuery(a => a.Active && a.GroupId == 3, o => o.OrderBy(a => a.Sort)),
                 Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Career, o => o.OrderByDescending(a => a.CreateDate)),
-                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort)),
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.FilterJob, o => o.OrderBy(a => a.Sort)),
                 CareerHot = _unitOfWork.CareerRepository.GetQuery(a => a.Hot && a.Active, o => o.OrderBy(a => a.Sort), 16),
                 Companies = _unitOfWork.CompanyRepository.GetQuery(a => a.Vipdate != null && a.Vipdate > DateTime.Now, o => o.OrderByDescending(a => a.Vipdate), 10),
             };
@@ -340,7 +340,7 @@ namespace GlobeWork.Controllers
                 CareerId = careerId,
                 Likes = like,
                 Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Career, o => o.OrderByDescending(a => a.CreateDate)),
-                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort)),
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.FilterJob, o => o.OrderBy(a => a.Sort)),
             };
             return View(model);
         }
@@ -411,7 +411,7 @@ namespace GlobeWork.Controllers
                 CompanyId = companyId,
                 Likes = like,
                 Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Career, o => o.OrderByDescending(a => a.CreateDate)),
-                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort))
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.FilterJob, o => o.OrderBy(a => a.Sort))
             };
             return View(model);
         }
@@ -638,7 +638,7 @@ namespace GlobeWork.Controllers
                 CountryId = countruyId,
                 Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Career, o => o.OrderByDescending(a => a.CreateDate)),
                 Career = caree,
-                Countries = _unitOfWork.CountryRepository.Get(orderBy: a => a.OrderBy(l => l.Id)),
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.FilterJob, a => a.OrderBy(l => l.Id)),
                 Likes = like
             };
             return View(model);
@@ -832,7 +832,7 @@ namespace GlobeWork.Controllers
                 CountryId = cityId,
                 Url = url,
                 Careers = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.TypeCareer == TypeCareer.Career, o => o.OrderByDescending(a => a.CreateDate)),
-                Countries = _unitOfWork.CountryRepository.Get(orderBy: a => a.OrderBy(l => l.Id))
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.FilterJob, o => o.OrderBy(a => a.Sort)),
             };
             return View(model);
         }
@@ -942,7 +942,7 @@ namespace GlobeWork.Controllers
                 NewStudyAbroad = studyAbroad,
                 HotArticle = article,
                 HotStudyAbroad = hot,
-                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort)),
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.FilterStudy, o => o.OrderBy(a => a.Sort)),
                 Banners = _unitOfWork.BannerRepository.GetQuery(a => a.Active && a.GroupId == 2, o => o.OrderBy(a => a.Sort)),
                 Skills = _unitOfWork.SkillRepository.GetQuery(a => a.ShowHome, o => o.OrderBy(a => a.SkillName), 10),
             };
@@ -965,7 +965,7 @@ namespace GlobeWork.Controllers
                 HotStudyAbroad = study,
                 HotArticle = article,
                 NewStudyAbroad = studyAbroad,
-                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort)),
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.FilterStudy, o => o.OrderBy(a => a.Sort)),
                 Banners = _unitOfWork.BannerRepository.GetQuery(a => a.Active && a.GroupId == 2, o => o.OrderBy(a => a.Sort)),
                 Skills = _unitOfWork.SkillRepository.GetQuery(a => a.ShowHome, o => o.OrderBy(a => a.SkillName), 10),
                 FooterCountries = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.Hot, o => o.OrderBy(a => a.Sort), 9),
@@ -990,7 +990,7 @@ namespace GlobeWork.Controllers
             {
                 StudyAbroadCategory = cat,
                 StudyAbroads = study.ToPagedList(pageNumber, 9),
-                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort)),
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.FilterStudy, o => o.OrderBy(a => a.Sort)),
                 Skills = _unitOfWork.SkillRepository.GetQuery(a => a.ShowHome, o => o.OrderBy(a => a.SkillName), 10),
                 Likes = like
             };
@@ -1045,7 +1045,7 @@ namespace GlobeWork.Controllers
             {
                 Name = name,
                 StudyAbroads = study.ToPagedList(pageNumber, 10),
-                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort)),
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.FilterStudy, o => o.OrderBy(a => a.Sort)),
                 CountruyId = countruyId,
                 CompanyId = companyId
             };
@@ -1070,7 +1070,7 @@ namespace GlobeWork.Controllers
             {
                 Name = name,
                 StudyAbroads = study.ToPagedList(pageNumber, 10),
-                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort)),
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.FilterStudy, o => o.OrderBy(a => a.Sort)),
                 CountruyId = countruyId,
                 Likes = like
             };
@@ -1090,14 +1090,14 @@ namespace GlobeWork.Controllers
             {
                 Name = name,
                 StudyAbroads = study.ToPagedList(pageNumber, 10),
-                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort)),
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.FilterStudy, o => o.OrderBy(a => a.Sort)),
                 CountruyId = countruyId,
                 Likes = like
             };
             return View(model);
         }
         [Route("du-hoc/nuoc/{id}")]
-        public ActionResult CountruyStudy(int? page, int id)
+        public ActionResult CountruyStudy(int? page, int id , string name = "" , int countruyId = 0)
         {
             var pageNumber = page ?? 1;
             var countruy = _unitOfWork.CountryRepository.GetById(id);
@@ -1106,15 +1106,26 @@ namespace GlobeWork.Controllers
                 return RedirectToAction("NotFound", "Home", new { status = 404 });
             }
             var study = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.StudyAbroadCategory.CountryId == countruy.Id && a.TypeStudyAbroad == TypeStudyAbroad.StudyAbroad), o => o.OrderByDescending(a => a.Hot));
+            if (!string.IsNullOrEmpty(name))
+            {
+                study = study.Where(a => a.Name.Contains(name));
+            }
+            if (countruyId > 0)
+            {
+                study = study.Where(a => a.StudyAbroadCategory.CountryId == countruyId);
+            }
             var model = new CountruyStudyAbroadViewModel
             {
-                StudyAbroads = study.ToPagedList(pageNumber, 9),
-                Country = countruy
+                StudyAbroads = study.ToPagedList(pageNumber, 10),
+                Country = countruy,
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.FilterStudy, o => o.OrderBy(a => a.Sort)),
+                Name = name,
+                CountruyId = countruyId
             };
             return View(model);
         }
         [Route("du-hoc/hoc-bong/{id}")]
-        public ActionResult Scholarship(int? page, int id)
+        public ActionResult Scholarship(int? page, int id, string name = "", int countruyId = 0)
         {
             var pageNumber = page ?? 1;
             var countruy = _unitOfWork.CountryRepository.GetById(id);
@@ -1123,10 +1134,21 @@ namespace GlobeWork.Controllers
                 return RedirectToAction("NotFound", "Home", new { status = 404 });
             }
             var study = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.StudyAbroadCategory.CountryId == countruy.Id && a.TypeStudyAbroad == TypeStudyAbroad.Scholarship), o => o.OrderByDescending(a => a.Hot));
+            if (!string.IsNullOrEmpty(name))
+            {
+                study = study.Where(a => a.Name.Contains(name));
+            }
+            if (countruyId > 0)
+            {
+                study = study.Where(a => a.StudyAbroadCategory.CountryId == countruyId);
+            }
             var model = new CountruyStudyAbroadViewModel
             {
                 Country = countruy,
-                StudyAbroads = study.ToPagedList(pageNumber, 9),
+                StudyAbroads = study.ToPagedList(pageNumber, 10),
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.FilterStudy, o => o.OrderBy(a => a.Sort)),
+                Name = name,
+                CountruyId = countruyId
             };
             return View(model);
         }
@@ -1153,7 +1175,7 @@ namespace GlobeWork.Controllers
             {
                 StudyAbroads = hunting.ToPagedList(pageNumber, 9),
                 StudyAbroadCategory = cat,
-                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort)),
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.FilterStudy, o => o.OrderBy(a => a.Sort)),
                 CountruyId = countruyId,
                 Likes = like
             };
@@ -1161,7 +1183,7 @@ namespace GlobeWork.Controllers
         }
 
         [Route("du-hoc/nganh/{url}")]
-        public ActionResult StudyCareer(int? page, string url)
+        public ActionResult StudyCareer(int? page, string url , string name = "" , int countruyId = 0)
         {
             var pageNumber = page ?? 1;
             var career = _unitOfWork.CareerRepository.GetQuery(a => a.Active && a.Code == url).FirstOrDefault();
@@ -1170,15 +1192,26 @@ namespace GlobeWork.Controllers
                 return RedirectToAction("NotFound", "Home", new { status = 404 });
             }
             var study = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.Active && (a.CareerId == career.Id && a.TypeStudyAbroad == TypeStudyAbroad.StudyAbroad), o => o.OrderByDescending(a => a.Hot));
+            if (!string.IsNullOrEmpty(name))
+            {
+                study = study.Where(a => a.Name.Contains(name));
+            }
+            if (countruyId > 0)
+            {
+                study = study.Where(a => a.StudyAbroadCategory.CountryId == countruyId);
+            }
             var model = new CountruyStudyAbroadViewModel
             {
-                StudyAbroads = study.ToPagedList(pageNumber, 9),
-                Career = career
+                StudyAbroads = study.ToPagedList(pageNumber, 10),
+                Career = career,
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active && a.FilterStudy, o => o.OrderBy(a => a.Sort)),
+                Name = name,
+                CountruyId = countruyId
             };
             return View(model);
         }
         [Route("danh-sach-truong/{id}")]
-        public ActionResult SchoolCountruy(int? page, int id)
+        public ActionResult SchoolCountruy(int? page, int id , string name="")
         {
             var pageNumber = page ?? 1;
             var countruy = _unitOfWork.CountryRepository.GetById(id);
@@ -1187,6 +1220,10 @@ namespace GlobeWork.Controllers
                 return RedirectToAction("NotFound", "Home", new { status = 404 });
             }
             var article = _unitOfWork.ArticleRepository.GetQuery(a => a.Active && a.StudyAbroadCategory.CountryId == countruy.Id, o => o.OrderByDescending(a => a.Hot));
+            if (!string.IsNullOrEmpty(name))
+            {
+                article = article.Where(a => a.Subject.Contains(name));
+            }
             var model = new CountruyStudyAbroadViewModel
             {
                 Articles = article.ToPagedList(pageNumber, 9),
@@ -1533,53 +1570,47 @@ namespace GlobeWork.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (model.JobId > 0)
+                if (model.Advise.JobPostId > 0)
                 {
-                    var job = _unitOfWork.JobPostRepository.GetById(model.JobId);
+                    var job = _unitOfWork.JobPostRepository.GetById(model.Advise.JobPostId);
                     if (job == null)
                     {
                         return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
                     }
-                    model.Advise.UserId = User.Id;
-                    model.Advise.User = User;
                     model.Advise.JobPostId = job.Id;
-                    model.Advise.JobPost = job;
                     _unitOfWork.AdviseRepository.Insert(model.Advise);
                     _unitOfWork.Save();
                     var jobsubject = "Yêu cầu tư vấn: " + Request.Url?.Host;
-                    var jobbody = $"<p>Tên người liên hệ: {model.Advise.User.FullName},</p>" +
-                                $"<p>Email liên hệ: {model.Advise.User.Email},</p>" +
-                                $"<p>Số điện thoại: {model.Advise.User.Phone},</p>" +
-                                $"<p>Việc làm cần tư vấn: {model.Advise.JobPost.Name},</p>" +
+                    var jobbody = $"<p>Tên người liên hệ: {model.Advise.CustomerInfo.Fullname},</p>" +
+                                $"<p>Email liên hệ: {model.Advise.CustomerInfo.Email},</p>" +
+                                $"<p>Số điện thoại: {model.Advise.CustomerInfo.Mobile},</p>" +
+                                $"<p>Việc làm cần tư vấn: {model.Advise.Name},</p>" +
                                 $"<p>Nội dung:{model.Advise.Body}</p>" +
                                 $"<p>Đây là hệ thống gửi email tự động, vui lòng không phản hồi lại email này.</p>";
 
-                    Task.Run(() => HtmlHelpers.SendEmail("gmail", jobsubject, jobbody, model.Advise.JobPost.Company.Email, ConfigSite.EmailConfigs, ConfigSite.EmailConfigs, ConfigSite.PassWordMail, ConfigSite.Title));
+                    Task.Run(() => HtmlHelpers.SendEmail("gmail", jobsubject, jobbody, job.Company.Email, ConfigSite.EmailConfigs, ConfigSite.EmailConfigs, ConfigSite.PassWordMail, ConfigSite.Title));
                     return Json(new { success = true, message = "Gửi thông yêu cầu tư vấn thành công!!!" });
                 }
-                if (model.StudyAbroadId > 0)
+                if (model.Advise.StudyAbroadId > 0)
                 {
-                    var study = _unitOfWork.StudyAbroadRepository.GetById(model.StudyAbroadId);
+                    var study = _unitOfWork.StudyAbroadRepository.GetById(model.Advise.StudyAbroadId);
                     if (study == null)
                     {
                         return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
                     }
-                    model.Advise.UserId = User.Id;
-                    model.Advise.User = User;
                     model.Advise.StudyAbroadId = study.Id;
-                    model.Advise.StudyAbroad = study;
+                    _unitOfWork.AdviseRepository.Insert(model.Advise);
+                    _unitOfWork.Save();
+                    var subject = "Yêu cầu tư vấn: " + Request.Url?.Host;
+                    var body = $"<p>Tên người liên hệ: {model.Advise.CustomerInfo.Fullname},</p>" +
+                                $"<p>Email liên hệ: {model.Advise.CustomerInfo.Email},</p>" +
+                                $"<p>Số điện thoại: {model.Advise.CustomerInfo.Mobile},</p>" +
+                                $"<p>Tin du học cần tư vấn: {model.Advise.Name},</p>" +
+                                $"<p>Nội dung:{model.Advise.Body}</p>" +
+                                $"<p>Đây là hệ thống gửi email tự động, vui lòng không phản hồi lại email này.</p>";
+                    Task.Run(() => HtmlHelpers.SendEmail("gmail", subject, body, study.Company.Email, ConfigSite.EmailConfigs, ConfigSite.EmailConfigs, ConfigSite.PassWordMail, ConfigSite.Title));
+                    return Json(new { success = true, message = "Gửi thông yêu cầu tư vấn thành công!!!" });
                 }
-                _unitOfWork.AdviseRepository.Insert(model.Advise);
-                _unitOfWork.Save();
-                var subject = "Yêu cầu tư vấn: " + Request.Url?.Host;
-                var body = $"<p>Tên người liên hệ: {model.Advise.User.FullName},</p>" +
-                            $"<p>Email liên hệ: {model.Advise.User.Email},</p>" +
-                            $"<p>Số điện thoại: {model.Advise.User.Phone},</p>" +
-                            $"<p>Tin du học cần tư vấn: {model.Advise.StudyAbroad.Name},</p>" +
-                            $"<p>Nội dung:{model.Advise.Body}</p>" +
-                            $"<p>Đây là hệ thống gửi email tự động, vui lòng không phản hồi lại email này.</p>";
-                Task.Run(() => HtmlHelpers.SendEmail("gmail", subject, body, model.Advise.StudyAbroad.Company.Email, ConfigSite.EmailConfigs, ConfigSite.EmailConfigs, ConfigSite.PassWordMail, ConfigSite.Title));
-                return Json(new { success = true, message = "Gửi thông yêu cầu tư vấn thành công!!!" });
             }
             return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
         }

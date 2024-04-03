@@ -290,9 +290,6 @@ namespace GlobeWork.ViewModel
     {
         public Advise Advise { get; set; }
         public User User { get; set; }
-        public int JobId { get; set; }
-        public int StudyAbroadId { get; set; }
-        public int CompanyId { get; set; }
     }
     public class StudyAbroadViewModel
     {
@@ -380,7 +377,9 @@ namespace GlobeWork.ViewModel
         public Country Country { get; set; }
         public Career  Career { get; set; }
         public IEnumerable<Like> Likes { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
         public string Name { get; set; }
+        public int CountruyId { get; set; }
     }
     public class HuntingViewModel
     {

@@ -53,7 +53,7 @@
                                 <img src="~/Content/images/on-image.jpg" alt="@item.Name" class="study-img"/>
                             }
                             <div class="media-body py-2">
-                                <a href="@Url.Action("StudyAbroadDetail" , new {url = item.Url})" class="study-name">Tuyển sinh du học vừa học vừa làm tại Nhật Bản 2023</a>
+                                <a href="@Url.Action("StudyAbroadDetail" , new {url = item.Url})" class="study-name">@item.Name</a>
                                 <div class="study-company">
                                     @item.Company.Name
                                 </div>

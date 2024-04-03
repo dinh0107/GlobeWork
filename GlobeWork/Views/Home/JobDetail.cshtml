@@ -883,36 +883,33 @@
 
 
 @* Advise form *@
-@if (id > 0)
-{
-    <div class="modal fade bd-example-modal-lg" id="Advise" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="job-detail__name" id="exampleModalLongTitle">Tư vấn: <span class="text-success">@Model.Job.Name</span></div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                @using (Html.BeginForm("Advise", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "advise-form" }))
-                {
-                    <input type="hidden" name="JobId" value="@Model.Job.Id" />
-                    <input type="hidden" name="Advise.EmployerId" value="@Model.Job.CompanyId" />
-                    <input type="hidden" name="UserId" value="@id" />
-                    @Html.AntiForgeryToken();
-                    @Html.ValidationSummary(true)
-                    <div class="modal-body">
-                        @Html.Action("AdviseForm")
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
-                        <button type="submit" class="btn btn-primary">Gửi thông tin</button>
-                    </div>
-                }
+<div class="modal fade bd-example-modal-lg" id="Advise" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="job-detail__name" id="exampleModalLongTitle">Tư vấn: <span class="text-success">@Model.Job.Name</span></div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+            @using (Html.BeginForm("Advise", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "advise-form" }))
+            {
+                <input type="hidden" name="Advise.JobPostId" value="@Model.Job.Id" />
+                <input type="hidden" name="Advise.EmployerId" value="@Model.Job.CompanyId" />
+                <input type="hidden" name="Advise.Name" value="@Model.Job.Name" />
+                @Html.AntiForgeryToken();
+                @Html.ValidationSummary(true)
+                <div class="modal-body">
+                    @Html.Action("AdviseForm")
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Gửi thông tin</button>
+                </div>
+            }
         </div>
     </div>
-}
+</div>
 
 @Scripts.Render("~/bundles/jqueryval")
 @section scripts{

@@ -774,9 +774,10 @@
                 </div>
                 @using (Html.BeginForm("Advise", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "advise-form" }))
                 {
-                    <input type="hidden" name="StudyAbroadId" value="@Model.StudyAbroad.Id" />
+                    <input type="hidden" name="Advise.StudyAbroadId" value="@Model.StudyAbroad.Id" />
                     <input type="hidden" name="Advise.EmployerId" value="@Model.StudyAbroad.CompanyId" />
-                    <input type="hidden" name="UserId" value="@id" />
+                    <input type="hidden" name="Advise.Name" value="@Model.StudyAbroad.Name" />
+                    @Html.AntiForgeryToken();
                     @Html.AntiForgeryToken();
                     @Html.ValidationSummary(true)
                     <div class="modal-body">

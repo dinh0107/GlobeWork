@@ -47,7 +47,7 @@
                             <select class="v-slelect" name="CareerId">
                                 @foreach (var item in Model.Careers)
                                 {
-                                    <option value="@item.Id">@item.Name</option>
+                                    <option @if (item.Id == Model.StudyAbroad.CareerId) { @Html.Raw("selected") } value="@item.Id">@item.Name</option>
                                 }
                             </select>
                         </div>

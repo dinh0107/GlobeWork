@@ -31,6 +31,7 @@ function HomeJs() {
         arrows: true,
         infinite: true,
         speed: 800,
+        dots: true,
         slidesToShow: 3,
         slidesToScroll: 3,
         prevArrow: '<button class="previous-slie"><i class="fal fa-chevron-circle-left"></i></button>',
@@ -135,7 +136,7 @@ function HomeJs() {
     });
     $('.list-career').slick({
         rows: 2,
-        dots: false,
+        dots: true,
         arrows: true,
         infinite: true,
         speed: 800,
