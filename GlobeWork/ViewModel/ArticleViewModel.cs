@@ -27,4 +27,11 @@ namespace GlobeWork.ViewModel
         public int DateHot { get; set; }
         public bool TruTien { get; set; }
     }
+
+    public class ListContactEmployer
+    {
+        public PagedList.IPagedList<Advise> Advises { get; set; }
+        public string Name { get; set;}
+        public int Type { get; set; }
+    }
 }

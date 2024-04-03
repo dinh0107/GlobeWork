@@ -170,4 +170,7 @@
     background-color: unset;
     box-shadow: unset;
   }
+  .ui-dialog {
+    width: 100% !important;
+  }
 }

@@ -1,0 +1,46 @@
+﻿@model GlobeWork.Models.Advise
+
+<style>
+    .avatar-pro {
+        width: 130px;
+        height: auto;
+    }
+    .load-order-view {
+        padding: 0 15px;
+    }
+</style>
+<div class="load-order-view shadow-border">
+    <div class="contents-header mb-3">
+        <h2 class="text-center">Thông tin yêu cầu tư vấn</h2>
+    </div>
+    <div style="overflow: hidden">
+        <table class="form_table table order-view table-responsive">
+            <tr>
+                <td style="width: 142px">Ngày liên hệ</td>
+                <td>@Model.CreateDate.ToString("dd/MM/yyyy HH:mm")</td>
+            </tr>
+            <tr>
+                <td>Họ và tên</td>
+                <td>@Model.CustomerInfo.Fullname</td>
+            </tr>
+            <tr>
+                <td>Điện thoại</td>
+                <td>@Model.CustomerInfo.Mobile</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>@Model.CustomerInfo.Email</td>
+            </tr>
+            <tr>
+                <td>Tiêu đề tin</td>
+                <td>@Model.Name</td>
+            </tr>
+            <tr>
+                <td colspan="2" style="font-weight: bold">Nội dung liên hệ</td>
+            </tr>
+            <tr>
+                <td class="text-left" colspan="2">@Model.Body</td>
+            </tr>
+        </table>
+    </div>
+</div>

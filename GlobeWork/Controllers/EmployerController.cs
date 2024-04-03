@@ -2186,6 +2186,52 @@ namespace GlobeWork.Controllers
             var log = _unitOfWork.EmployerLogRepository.GetQuery(a => a.UserId == User.Id, o => o.OrderByDescending(a => a.CreateDate));
             return View(log);
         }
+
+        [Route("danh-sach-yeu-cau-tu-van")]
+        public ActionResult ListContact(int? page , string name = "" , int type = 0)
+        {
+            var pageNumber = page ?? 1;
+            var contact = _unitOfWork.AdviseRepository.GetQuery(a => a.EmployerId == User.Id, o => o.OrderByDescending(a => a.CreateDate));
+            if (!string.IsNullOrEmpty(name))
+            {
+                contact = contact.Where(a => a.CustomerInfo.Fullname.Contains(name));
+            }
+            switch (type)
+            {
+                case 1:
+                    contact = contact.Where(a => a.JobPostId != null);
+                    break;
+                case 2:
+                    contact = contact.Where(a => a.StudyAbroadId != null);
+                    break;
+            }
+            var model = new ListContactEmployer
+            {
+                Advises = contact.ToPagedList(pageNumber, 9),
+                Name = name,
+                Type = type
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public bool DeleteContact(int id)
+        {
+            var contac = _unitOfWork.AdviseRepository.GetById(id);
+            if(contac == null)
+            {
+                return false;
+            }
+            _unitOfWork.AdviseRepository.Delete(contac);
+            _unitOfWork.Save();
+            return true;
+        }
+
+        public PartialViewResult LoadContact(int id)
+        {
+            var contact = _unitOfWork.AdviseRepository.GetById(id);
+            return PartialView(contact);
+        }
         public JsonResult CheckEmail(string email)
         {
             var user = _unitOfWork.UserRepository.GetQuery(a => a.Email == email).SingleOrDefault();

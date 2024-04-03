@@ -1092,6 +1092,8 @@
     <Content Include="Views\Vcms\Service.cshtml" />
     <Content Include="Views\Vcms\EditService.cshtml" />
     <Content Include="Views\Home\NotFound.cshtml" />
+    <Content Include="Views\Employer\ListContact.cshtml" />
+    <Content Include="Views\Employer\LoadContact.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
