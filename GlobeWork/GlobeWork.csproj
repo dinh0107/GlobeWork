@@ -461,6 +461,10 @@
     <Compile Include="Migrations\202404011511297_advise-update-em.Designer.cs">
       <DependentUpon>202404011511297_advise-update-em.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202404041626503_add-advise.cs" />
+    <Compile Include="Migrations\202404041626503_add-advise.Designer.cs">
+      <DependentUpon>202404041626503_add-advise.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Advise.cs" />
@@ -1094,6 +1098,7 @@
     <Content Include="Views\Home\NotFound.cshtml" />
     <Content Include="Views\Employer\ListContact.cshtml" />
     <Content Include="Views\Employer\LoadContact.cshtml" />
+    <Content Include="Views\Contact\ListAdvise.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1190,6 +1195,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202404011511297_advise-update-em.resx">
       <DependentUpon>202404011511297_advise-update-em.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202404041626503_add-advise.resx">
+      <DependentUpon>202404041626503_add-advise.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

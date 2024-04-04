@@ -6,13 +6,13 @@
     </label>
     <div class="form-group">
         <label for="type-1" class="custom-cv">
-            <input type="radio" name="Type" checked id="type-1" value="0"/>
+            <input type="radio" name="Type" checked id="type-1" value="0" />
             <span>Sử dụng trang cá nhân</span>
         </label>
     </div>
     <div class="form-group">
         <label for="type-2" class="upload-cv custom-cv">
-            <input type="radio" name="Type" id="type-2" value="1"/>
+            <input type="radio" name="Type" id="type-2" value="1" />
             <span>Tải lên Cv từ máy tính</span>
         </label>
         <label class="drop_box" for="fileID">
@@ -22,6 +22,7 @@
     </div>
     <div class="form-group">
         @Html.LabelFor(a => a.ApplyJob.Body)
-        @Html.TextAreaFor(a => a.ApplyJob.Body , new {@class= "form-control text-cv" , @placeholder = "Viết giới thiệu ngắn gọn về bản thân (điểm mạnh, điểm yếu) và nêu rõ mong muốn, lý do bạn muốn ứng tuyển cho vị trí này." })
+        @Html.TextAreaFor(a => a.ApplyJob.Body, new { @class = "form-control text-cv", @placeholder = "Viết giới thiệu ngắn gọn về bản thân (điểm mạnh, điểm yếu) và nêu rõ mong muốn, lý do bạn muốn ứng tuyển cho vị trí này." })
     </div>
 </div>
+@Scripts.Render("~/bundles/jqueryval")

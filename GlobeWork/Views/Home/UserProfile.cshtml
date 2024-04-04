@@ -52,7 +52,9 @@
             <div class="company-detail-overview employer-detail">
                 <div class="box-detail name-profile">
                     <h1 class="company-detail-name text-dark position-relative">
-                        @Model.User.FullName
+                        <div class="truncate-1">
+                            @Model.User.FullName
+                        </div>
 
                         @if (Model.IsAccount)
                         {
@@ -222,6 +224,10 @@
                     @Model.User.Description
                 </div>
             }
+        </div>
+        <div class="d-lg-none d-md-none d-flex">
+            <a href="@Url.Action("ViewAndEx", new {url = Model.User.Url})" class="convertPDF">Tải xuống PDF</a>
+            <a href="#" data-toggle="modal" data-target="#share">Chia sẻ profile</a>
         </div>
         @if (Model.IsAccount)
         {
@@ -553,7 +559,10 @@
 </div>
 <div id="share" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-modal="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+        <div class="modal-content d-block pr-2">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
             <div class="job-detail__box--right mt-3">
                 <div class="job-detail__box--right-title">
                     Chia sẻ trang cá nhân
@@ -683,5 +692,27 @@
             newInputBox.find("img.preview-image").attr("src", "");
             $("#chungchi").append(newInputBox);
         });
+        $(".copy-value").click(function () {
+            var dataValue = $("#url-request").data("value");
+            navigator.clipboard.writeText(dataValue).then(function () {
+                new Notify({
+                    status: 'success',
+                    text: "Sao chép thành công !!!",
+                    effect: 'slide',
+                    speed: 600,
+                    showIcon: true,
+                    showCloseButton: true,
+                    autoclose: true,
+                    autotimeout: 3000,
+                    gap: 10,
+                    distance: 20,
+                    type: 3,
+                    position: 'right bottom'
+                });
+            }, function (err) {
+                console.error('Failed to copy: ', err);
+            });
+        });
+
     </script>
 }

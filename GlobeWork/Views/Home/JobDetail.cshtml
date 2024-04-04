@@ -187,6 +187,76 @@
                         }
                     </div>
                 </div>
+                <div class="d-lg-none d-block">
+                    <div class="job-detail__box--right my-3">
+                        <div class="job-detail__information-detail--title mb-4">
+                            Thông tin chung
+                        </div>
+                        <div class="media section-info mt-3">
+                            <div class="section-info__icon">
+                                <i class="fa-solid fa-ranking-star"></i>
+                            </div>
+                            <div class="media-body">
+                                <span class="job-detail__info--section-content-title">Cấp bậc</span>
+                                <span class="job-detail__info--section-content-value">@Model.Job.Rank.Name</span>
+                            </div>
+                        </div>
+                        <div class="media section-info mt-4">
+                            <div class="section-info__icon">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                            <div class="media-body">
+                                <span class="job-detail__info--section-content-title">Số lượng tuyển</span>
+                                <span class="job-detail__info--section-content-value">@Model.Job.Quantity</span>
+                            </div>
+                        </div>
+                        <div class="media section-info mt-4">
+                            <div class="section-info__icon">
+                                <i class="fa-solid fa-briefcase"></i>
+                            </div>
+                            <div class="media-body">
+                                <span class="job-detail__info--section-content-title">Hình thức làm việc</span>
+                                <span class="job-detail__info--section-content-value">@Model.Job.JobType.Name</span>
+                            </div>
+                        </div>
+                        <div class="media section-info mt-4">
+                            <div class="section-info__icon">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div class="media-body">
+                                <span class="job-detail__info--section-content-title">Giới tính</span>
+                                <span class="job-detail__info--section-content-value">@Model.Job.Gender</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="job-detail__box--right mt-3 d-lg-none d-block">
+                        <div class="detail-title-box">
+                            Từ khóa công việc
+                        </div>
+                        <div class="d-flex flex-row mt-2">
+                            @foreach (var item in Model.Job.Skills)
+                            {
+                                <div class="deadline mr-2">
+                                    @item.SkillName
+                                </div>
+                            }
+                        </div>
+                        <div class="detail-title-box mt-3">
+                            Địa điểm
+                        </div>
+                        <div class="d-flex flex-row mt-2">
+                            <div class="deadline mr-2">
+                                @Model.Job.Address ,
+                                @foreach (var item in Model.Job.Cities)
+                                {
+                                    @item.Name
+                                }
+                                ,
+                                @Model.Job.Country.Name
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="job-detail__box--left my-3 job-section  " id="detail-job">
                     <div class="job-detail__information-detail--title">
                         Chi tiết tin tuyển dụng
@@ -312,76 +382,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="d-lg-none d-block">
-                    <div class="job-detail__box--right mb-3">
-                        <div class="job-detail__information-detail--title mb-4">
-                            Thông tin chung
-                        </div>
-                        <div class="media section-info mt-3">
-                            <div class="section-info__icon">
-                                <i class="fa-solid fa-ranking-star"></i>
-                            </div>
-                            <div class="media-body">
-                                <span class="job-detail__info--section-content-title">Cấp bậc</span>
-                                <span class="job-detail__info--section-content-value">@Model.Job.Rank.Name</span>
-                            </div>
-                        </div>
-                        <div class="media section-info mt-4">
-                            <div class="section-info__icon">
-                                <i class="fa-solid fa-users"></i>
-                            </div>
-                            <div class="media-body">
-                                <span class="job-detail__info--section-content-title">Số lượng tuyển</span>
-                                <span class="job-detail__info--section-content-value">@Model.Job.Quantity</span>
-                            </div>
-                        </div>
-                        <div class="media section-info mt-4">
-                            <div class="section-info__icon">
-                                <i class="fa-solid fa-briefcase"></i>
-                            </div>
-                            <div class="media-body">
-                                <span class="job-detail__info--section-content-title">Hình thức làm việc</span>
-                                <span class="job-detail__info--section-content-value">@Model.Job.JobType.Name</span>
-                            </div>
-                        </div>
-                        <div class="media section-info mt-4">
-                            <div class="section-info__icon">
-                                <i class="fa-solid fa-user"></i>
-                            </div>
-                            <div class="media-body">
-                                <span class="job-detail__info--section-content-title">Giới tính</span>
-                                <span class="job-detail__info--section-content-value">@Model.Job.Gender</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="job-detail__box--right mt-3 d-lg-none d-block">
-                        <div class="detail-title-box">
-                            Từ khóa công việc
-                        </div>
-                        <div class="d-flex flex-row mt-2">
-                            @foreach (var item in Model.Job.Skills)
-                            {
-                                <div class="deadline mr-2">
-                                    @item.SkillName
-                                </div>
-                            }
-                        </div>
-                        <div class="detail-title-box mt-3">
-                            Địa điểm
-                        </div>
-                        <div class="d-flex flex-row mt-2">
-                            <div class="deadline mr-2">
-                                @Model.Job.Address ,
-                                @foreach (var item in Model.Job.Cities)
-                                {
-                                    @item.Name
-                                }
-                                ,
-                                @Model.Job.Country.Name
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
                 @if (Model.JobPosts.Any())
                 {
                     <div class="job-detail__box--left my-3 job-section" id="job-relate">
@@ -486,7 +487,7 @@
                                 </div>
                             </div>
                             <a href="@Url.Action("Employer", new {url = item.Url})" data-toggle="modal" data-target="#qick-form" class="fl-samefield">
-                               Xem ngay
+                                Xem ngay
                             </a>
                             <div class="tag-i">
                                 TOP @a
@@ -897,6 +898,7 @@
                 <input type="hidden" name="Advise.JobPostId" value="@Model.Job.Id" />
                 <input type="hidden" name="Advise.EmployerId" value="@Model.Job.CompanyId" />
                 <input type="hidden" name="Advise.Name" value="@Model.Job.Name" />
+                <input type="hidden" name="Advise.CompanyName" value="@Model.Job.Company.Name" />
                 @Html.AntiForgeryToken();
                 @Html.ValidationSummary(true)
                 <div class="modal-body">
@@ -943,5 +945,6 @@
                 $('.drop_box').removeClass('active');
             }
         });
+
     </script>
 } 

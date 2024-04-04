@@ -1,0 +1,120 @@
+﻿@model GlobeWork.ViewModel.ListAdviseViewModel
+@using PagedList.Mvc
+@{ ViewBag.Title = "Liên hệ tư vấn";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; }
+<h2>Liên hệ tư vấn</h2>
+<div class="box_content mt-0">
+    <form action="@Url.Action("ListAdvise")">
+        <div class="row">
+            <div class="col-lg-5">
+                <label>Từ khóa</label>
+                @Html.TextBoxFor(model => model.Name, new { @placeholder = "Từ khóa" })
+            </div>
+            <div class="col-lg-3">
+                <label>Phân loại</label>
+                <select name="type">
+                    <option value="">Loại</option>
+                    <option value="1" @if (Model.Type == 1) { @Html.Raw("selected='selected'") }>Việc làm</option>
+                    <option value="2" @if (Model.Type == 2) { @Html.Raw("selected='selected'") }>Du học</option>
+                </select>
+            </div>
+            <div class="col-lg-3 d-flex align-items-center">
+                <button type="submit" class="btn-search">Tìm kiếm</button>
+            </div>
+        </div>
+    </form>
+    <p>Có tổng <strong>@Model.Advises.TotalItemCount</strong> liên hệ.</p>
+    <table class="list_table tablecenter table-striped">
+        <tbody>
+            <tr>
+                <th width="16%">Tên tin</th>
+                <th width="10%">Nhà tuyển dụng</th>
+                <th width="8%">Ngày gửi</th>
+                <th width="20%">Thông tin</th>
+                <th width="26%">Nội dung</th>
+                <th width="8%"></th>
+            </tr>
+            @foreach (var item in Model.Advises)
+            {
+                <tr data-id="@item.Id" class="text-sm">
+                    <td>
+                        <div class="text-left">
+                            <strong>
+                                <a href="">
+                                    @item.Name
+                                </a>
+                            </strong>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="text-left">
+                            @item.CompanyName
+                        </div>
+                    </td>
+                    <td>@item.CreateDate.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <div class="text-left">
+                            <p class="mb-2">Số điện thoại: @item.CustomerInfo.Fullname</p>
+                            <p class="mb-2">Địa chỉ: @item.CustomerInfo.Address</p>
+                            <p class="mb-2">
+                                Email: @item.CustomerInfo.Email
+                            </p>
+                            <p class="mb-2">Số điện thoại: @item.CustomerInfo.Mobile</p>
+                        </div>
+                    </td>
+                    <td>@item.Body</td>
+                    <td>
+                        <a href="javascript:;" onclick="deleteApplyJob('@item.Id')" class="red-warring">Xóa</a>
+                    </td>
+                </tr>
+            }
+            @if (Model.Advises.PageCount > 1)
+            {
+                <tr>
+                    <td colspan="9">
+                        @Html.PagedListPager(Model.Advises, page => Url.Action("ListApplyJob", new { page, name = Model.Name, type = Model.Type }))
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+@section scripts
+{
+    <script type="text/javascript">
+        function deleteApplyJob(id) {
+            if (confirm("Bạn có chắc chắn xóa liên hệ này không?")) {
+                $.post("/Contact/DeleteAdvise", { id: id }, function (data) {
+                    if (data === "True") {
+                        $.toast({
+                            text: 'Xóa thành công',
+                            position: 'bottom-right',
+                            icon: 'success'
+                        });
+                        $("tr[data-id='" + id + "']").fadeOut();
+                    }
+                    else {
+                        $.toast({
+                            text: 'Quá trình thực hiện không thành công. Hãy thử lại',
+                            icon: 'error'
+                        });
+                    }
+                });
+            }
+        }
+        $('#date-range').dateRangePicker({
+            format: 'DD/MM/YYYY',
+            language: 'vn',
+            autoClose: true,
+            separator: ' đến ',
+            setValue: function (s, s1, s2) {
+                $(this).val(s);
+                $('#startTime').val(s1);
+                $('#endTime').val(s2);
+            },
+        });
+    </script>
+}
+
+

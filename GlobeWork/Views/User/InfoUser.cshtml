@@ -1,6 +1,8 @@
 ﻿@model GlobeWork.ViewModel.ChangeInfoUserViewModel
 @{
     Layout = null;
+
+    var year = DateTime.Now.Year;
 }
 
 <div id="infoUser" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-modal="true">
@@ -244,13 +246,15 @@
  var modelDate =  @Model.Date;
 
  var namSelect = $("#year");
- for (var i = 1900; i <= 2100; i++) {
-     var option = $('<option></option>').val(i).html(i);
-     if (i === modelYear) {
-         option.attr('selected', true);
-     }
-     namSelect.append(option);
- }
+var currentYear = new Date().getFullYear(); // Lấy năm hiện tại
+for (var i = currentYear; i >= 1924; i--) {
+    var option = $('<option></option>').val(i).text(i);
+    if (i === modelYear) {
+        option.prop('selected', true);
+    }
+    namSelect.append(option);
+}
+
  // Đổ giá trị cho tháng
  var thangSelect = $("#thang");
  for (var i = 1; i <= 12; i++) {

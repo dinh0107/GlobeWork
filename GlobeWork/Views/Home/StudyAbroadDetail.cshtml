@@ -180,34 +180,69 @@
                     </div>
                 </div>
                 @*<div class="job-detail__box--left my-3">
-                    <div class="detail-title-box">
-                        Yêu cầu chung
+            <div class="detail-title-box">
+                Yêu cầu chung
+            </div>
+            <div class="d-flex flex-row align-items-center">
+                Sức khỏe:
+                <div class="deadline mx-2">
+                    @Model.StudyAbroad.Health
+                </div>
+            </div>
+            <div class="d-flex flex-row align-items-center">
+                Trình độ học vấn, bằng cấp:
+                <div class="deadline mx-2">
+                    @Model.StudyAbroad.LearningProblems
+                </div>
+            </div>
+            <div class="d-flex flex-row align-items-center">
+                Số lượng:
+                <div class="deadline mx-2">
+                    @Model.StudyAbroad.Quantity
+                </div>
+            </div>
+            <div class="d-flex flex-row align-items-center">
+                Địa chỉ:
+                <div class="deadline mx-2">
+                    @Model.StudyAbroad.Address
+                </div>
+            </div>
+        </div>*@
+                <div class="job-detail__box--left my-3 d-lg-none d-block">
+                    <div class="job-detail__information-detail--title mb-4">
+                        Thông tin chung
                     </div>
-                    <div class="d-flex flex-row align-items-center">
-                        Sức khỏe:
-                        <div class="deadline mx-2">
-                            @Model.StudyAbroad.Health
+                    <div class="media section-info mt-3">
+                        <div class="section-info__icon">
+                            <i class="fa-solid fa-ranking-star"></i>
+                        </div>
+                        <div class="media-body">
+                            <span class="job-detail__info--section-content-title">Trình độ học vấn, bằng cấp</span>
+                            <span class="job-detail__info--section-content-value">@Model.StudyAbroad.LearningProblems</span>
                         </div>
                     </div>
-                    <div class="d-flex flex-row align-items-center">
-                        Trình độ học vấn, bằng cấp:
-                        <div class="deadline mx-2">
-                            @Model.StudyAbroad.LearningProblems
+                    <div class="media section-info mt-4">
+                        <div class="section-info__icon">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div class="media-body">
+                            <span class="job-detail__info--section-content-title">Số lượng tuyển</span>
+                            <span class="job-detail__info--section-content-value">@Model.StudyAbroad.Quantity</span>
                         </div>
                     </div>
-                    <div class="d-flex flex-row align-items-center">
-                        Số lượng:
-                        <div class="deadline mx-2">
-                            @Model.StudyAbroad.Quantity
+                    <div class="media section-info mt-4">
+                        <div class="section-info__icon">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <div class="media-body">
+                            <span class="job-detail__info--section-content-title">
+                                Quốc gia:
+                            </span>
+                            <span class="job-detail__info--section-content-value">@Model.StudyAbroad.Address</span>
                         </div>
                     </div>
-                    <div class="d-flex flex-row align-items-center">
-                        Địa chỉ:
-                        <div class="deadline mx-2">
-                            @Model.StudyAbroad.Address
-                        </div>
-                    </div>
-                </div>*@
+                </div>
+
                 <div class="job-detail__box--left my-3" id="detail-job">
                     <div class="job-detail__information-detail--title">
                         Chi tiết tin
@@ -321,40 +356,6 @@
                             {
                                 @:Luôn tuyển
                             }
-                        </div>
-                    </div>
-                </div>
-                <div class="job-detail__box--left my-3 d-lg-none d-block">
-                    <div class="job-detail__information-detail--title mb-4">
-                        Thông tin chung
-                    </div>
-                    <div class="media section-info mt-3">
-                        <div class="section-info__icon">
-                            <i class="fa-solid fa-ranking-star"></i>
-                        </div>
-                        <div class="media-body">
-                            <span class="job-detail__info--section-content-title">Trình độ học vấn, bằng cấp</span>
-                            <span class="job-detail__info--section-content-value">@Model.StudyAbroad.LearningProblems</span>
-                        </div>
-                    </div>
-                    <div class="media section-info mt-4">
-                        <div class="section-info__icon">
-                            <i class="fa-solid fa-users"></i>
-                        </div>
-                        <div class="media-body">
-                            <span class="job-detail__info--section-content-title">Số lượng tuyển</span>
-                            <span class="job-detail__info--section-content-value">@Model.StudyAbroad.Quantity</span>
-                        </div>
-                    </div>
-                    <div class="media section-info mt-4">
-                        <div class="section-info__icon">
-                            <i class="fas fa-map-marked-alt"></i>
-                        </div>
-                        <div class="media-body">
-                            <span class="job-detail__info--section-content-title">
-                               Quốc gia:
-                            </span>
-                            <span class="job-detail__info--section-content-value">@Model.StudyAbroad.Address</span>
                         </div>
                     </div>
                 </div>
@@ -478,7 +479,7 @@
                         </div>
                         <div class="media-body">
                             <span class="job-detail__info--section-content-title">
-                                Quốc gia:
+                                Quốc gia
                             </span>
                             <span class="job-detail__info--section-content-value">@Model.StudyAbroad.Address</span>
                         </div>
@@ -775,6 +776,7 @@
                 <input type="hidden" name="Advise.StudyAbroadId" value="@Model.StudyAbroad.Id" />
                 <input type="hidden" name="Advise.EmployerId" value="@Model.StudyAbroad.CompanyId" />
                 <input type="hidden" name="Advise.Name" value="@Model.StudyAbroad.Name" />
+                <input type="hidden" name="Advise.CompanyName" value="@Model.StudyAbroad.Company.Name" />
                 @Html.AntiForgeryToken();
                 @Html.AntiForgeryToken();
                 @Html.ValidationSummary(true)

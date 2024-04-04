@@ -463,9 +463,10 @@
     }
 
     .job-detail-fixed-menu__tabs--item {
-        padding: 5px;
+        /*padding: 5px;
         @include truncate(1);
-        font-size: 12px;
+        font-size: 12px;*/
+        display:none;
     }
 
     .career-quantity {

@@ -12,6 +12,12 @@ namespace GlobeWork.ViewModel
         public PagedList.IPagedList<Contact> Contacts { get; set; }
         public string Name { get; set; }
     }
+    public class ListAdviseViewModel
+    {
+        public PagedList.IPagedList<Advise> Advises { get; set; }
+        public string Name { get; set; }
+        public int Type { get; set; }
+    }
     public class LoadContactViewModel
     {
         public Contact Contact { get; set; }

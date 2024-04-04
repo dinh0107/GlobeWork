@@ -362,12 +362,10 @@
     font-size: 0.8rem;
   }
   .job-detail-fixed-menu__tabs--item {
-    padding: 5px;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    -webkit-line-clamp: 1;
-    font-size: 12px;
+    /*padding: 5px;
+    @include truncate(1);
+    font-size: 12px;*/
+    display: none;
   }
   .career-quantity {
     font-size: 0.675rem;
