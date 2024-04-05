@@ -275,11 +275,11 @@
 <script>
        const options = {
            background: '#585c68', // Đặt màu nền là màu trắng
-           scale: 2, // Hệ số tỷ lệ để có độ phân giải tốt hơn
+           scale: 3, // Hệ số tỷ lệ để có độ phân giải tốt hơn
            unit: 'mm', // Đơn vị đo lường
            format: 'a4', // Kích thước trang
            orientation: 'portrait', // Hướng trang
-           fontSize: 12, // Cỡ chữ
+           fontSize: 10, // Cỡ chữ
            marginLeft: 0, // Lề trái
            marginTop: 0, // Lề trên
            marginRight: 0, // Lề phải
@@ -288,11 +288,11 @@
         var fileName = "@Model.FullName";
         var element = document.getElementById('content-to-print');
         html2canvas(element, options).then((canvas) => {
-            let imgWidth = 1000; 
+            let imgWidth = 600; 
             let imgHeight = canvas.height * imgWidth / canvas.width;
 
             let pdf = new jsPDF('p', 'px', [imgWidth, imgHeight]);
-            let imgData = canvas.toDataURL('image/png');
+            let imgData = canvas.toDataURL('image/jpeg', 0.8); 
 
             pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
 
