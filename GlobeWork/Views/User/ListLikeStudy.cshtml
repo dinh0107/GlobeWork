@@ -13,56 +13,28 @@
                 {
                     foreach (var item in Model.Likes)
                     {
-                        <div class="job bg-white detail-job">
-                            <div class="media ">
-                                <div>
-                                    <a href="@Url.Action("StudyAbroadDetail","Home", new {url = item.StudyAbroad.Url})" class="job-name custom-w" data-tooltip="@item.StudyAbroad.Name" data-tooltip-position="top">@item.StudyAbroad.Name</a>
-                                    <div class="company-name">
-                                        @item.StudyAbroad.Company.Name
-                                    </div>
+                        <div class="media mb-3 border">
+                            @if (item.StudyAbroad.Image != null)
+                            {
+                                <img src="~/Content/images/base64.gif" data-src="@Path.Combine("/images/studyAbroad/", item.StudyAbroad.Image)" alt="@item.StudyAbroad.Name" class="lazyload study-img" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/images/on-image.jpg" alt="@item.StudyAbroad.Name" class="study-img" />
+                            }
+                            <div class="media-body py-2">
+                                <a href="@Url.Action("StudyAbroadDetail", new { url = item.StudyAbroad.Url })" class="study-name">@item.StudyAbroad.Name</a>
+                                <div class="study-company">
+                                    @item.StudyAbroad.Company.Name
                                 </div>
-                                <div class="media-body time-deadline text-right">
-                                    @if (item.StudyAbroad.ExpirationDate != null)
+                                <div class="group-info">
+                                    <span><i class="fa-solid fa-briefcase-blank"></i> @Html.DisplayFor(a => item.StudyAbroad.WageScholarship)</span>
+                                    <span><i class="fa-sharp fa-solid fa-location-dot"></i> @item.StudyAbroad.StudyAbroadCategory.Country.Name</span>
+                                    <span><i class="fa-regular fa-calendar-days"></i> @Utils.UpdateDateVn(item.StudyAbroad.CreateDate)</span>
+                                    @if (item.StudyAbroad.Hot >= DateTime.Now)
                                     {
-                                        if (item.StudyAbroad.ExpirationDate > DateTime.Now)
-                                        {
-                                            @:Còn <strong>@Utils.DateCountDown(item.StudyAbroad.ExpirationDate)</strong> để ứng tuyển
-                                        }
-                                        else
-                                        {
-                                            @:Hết thời gian ứng tuyển
-                                        }
+                                        <span class="hot"><i class="fa-solid fa-thumbs-up mr-1"></i> Nổi bật</span>
                                     }
-                                    else
-                                    {
-                                        @:Luôn tuyển
-                                    }
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-between mt-1">
-                                <div class="w-75">
-                                    <span class="info-job price">@Html.DisplayFor(a => item.StudyAbroad.WageScholarship)</span>
-                                    <span class="info-job">
-                                        @if (item.StudyAbroad.Cities.Any())
-                                        {
-                                            if (item.StudyAbroad.Cities.Count > 1)
-                                            {
-
-                                                <span data-tooltip="@string.Join(" , ", item.StudyAbroad.Cities.Select(city => city.Name))" data-tooltip-position="top">
-                                                    @item.StudyAbroad.Cities.Count Thành phố
-                                                </span>
-                                            }
-                                            else
-                                            {
-                                                foreach (var city in item.StudyAbroad.Cities.Take(1))
-                                                {
-                                                    <span data-tooltip="@city.Name" data-tooltip-position="top">
-                                                        @city.Name
-                                                    </span>
-                                                }
-                                            }
-                                        }
-                                    </span>
                                 </div>
                             </div>
                         </div>
