@@ -247,6 +247,15 @@
     <Reference Include="RestSharp, Version=110.2.0.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.110.2.0\lib\net471\RestSharp.dll</HintPath>
     </Reference>
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.7.3\lib\net461\Rotativa.dll</HintPath>
+    </Reference>
+    <Reference Include="Rotativa.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.Core.2.0.0\lib\net45\Rotativa.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Rotativa.MVC, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.MVC.2.0.3\lib\net45\Rotativa.MVC.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -465,6 +474,18 @@
     <Compile Include="Migrations\202404041626503_add-advise.Designer.cs">
       <DependentUpon>202404041626503_add-advise.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202404090217013_update-some-table.cs" />
+    <Compile Include="Migrations\202404090217013_update-some-table.Designer.cs">
+      <DependentUpon>202404090217013_update-some-table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202404090327502_education.cs" />
+    <Compile Include="Migrations\202404090327502_education.Designer.cs">
+      <DependentUpon>202404090327502_education.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202404090435333_update-CustomerInfo.cs" />
+    <Compile Include="Migrations\202404090435333_update-CustomerInfo.Designer.cs">
+      <DependentUpon>202404090435333_update-CustomerInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Advise.cs" />
@@ -664,6 +685,10 @@
     <Content Include="Content\Site.css" />
     <Content Include="LinkedIn-Icon-Logo.wine.ico" />
     <Content Include="Partner.xml" />
+    <Content Include="Rotativa\help-wkhtmltoimage.txt" />
+    <Content Include="Rotativa\help-wkhtmltopdf.txt" />
+    <Content Include="Rotativa\wkhtmltoimage.exe" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\aos.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -723,6 +748,7 @@
     <Content Include="Scripts\ckeditor\README.md" />
     <Content Include="Scripts\jquery-3.6.0.min.map" />
     <Content Include="Scripts\jquery-3.6.0.slim.min.map" />
+    <Content Include="App_Browsers\qt.browser" />
     <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
@@ -1198,6 +1224,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202404041626503_add-advise.resx">
       <DependentUpon>202404041626503_add-advise.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202404090217013_update-some-table.resx">
+      <DependentUpon>202404090217013_update-some-table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202404090327502_education.resx">
+      <DependentUpon>202404090327502_education.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202404090435333_update-CustomerInfo.resx">
+      <DependentUpon>202404090435333_update-CustomerInfo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

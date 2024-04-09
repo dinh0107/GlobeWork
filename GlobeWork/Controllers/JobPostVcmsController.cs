@@ -218,6 +218,8 @@ namespace GlobeWork.Controllers
                 jobs.SalalyMin = model.JobPost.SalalyMin;
                 jobs.SalalyMax = model.JobPost.SalalyMax;
                 jobs.Wages = model.JobPost.Wages;
+                jobs.CounId = model.JobPost.CounId;
+                jobs.Country = _unitOfWork.CountryRepository.GetById(model.JobPost.CounId);
                 if (jobs.Cities.Any())
                 {
                     jobs.Cities.Clear();

@@ -7,7 +7,12 @@
     <div class="list-hotjob">
         @foreach (var item in Model.JobPosts)
         {
-            <div class="job border bg-white hot">
+            <div class="job border bg-white hot active">
+                @if (item.Country.Image != null)
+                {
+                    <img class="flag-job" src="@Path.Combine("/images/country/", item.Country.Image)" alt="@item.Country.Name">
+                }
+
                 @if (item.Hot != null && item.Hot >= DateTime.Now)
                 {
                     <div class="hot-job" data-tooltip="Việc làm tốt nhất" data-tooltip-position="top">
@@ -26,7 +31,7 @@
                         }
                     </div>
                     <div class="media-body ml-2">
-                        <a href="@Url.Action("JobDetail", new { url = item.Url })" class="job-name" data-tooltip="@item.Name" data-tooltip-position="top">@item.Name</a>
+                        <a href="@Url.Action("JobDetail", new { url = item.Url })" class="job-name truncate-2" data-tooltip="@item.Name" data-tooltip-position="top">@item.Name</a>
                         <div class="company-name" data-tooltip="@item.Company.Name" data-tooltip-position="top">
                             @item.Company.Name
                         </div>

@@ -30,6 +30,7 @@
         <tbody>
             <tr>
                 <th style="width: 100px">STT</th>
+                <th style="width: 300px">Hình ảnh</th>
                 <th style="width: 700px">Tên</th>
                 <th>Hoạt động</th>
                 <th>Bộ lọc</th>
@@ -41,6 +42,16 @@
                 <tr data-id="@country.Id">
                     <td style="width: 120px;">
                         <input type="number" name="Sort" value="@country.Sort" class="form_control" />
+                    </td>
+                    <td class="left">
+                        @if (country.Image != null)
+                        {
+                            <img src="@Path.Combine("/images/country/", country.Image)" style="width:100px; object-fit:contain"/>
+}
+else
+                {
+                    @:Không có ảnh
+                }
                     </td>
                     <td class="left">
                         <strong>@country.Name</strong>

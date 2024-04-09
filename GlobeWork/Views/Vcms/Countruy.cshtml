@@ -10,7 +10,7 @@
 </style>
 <h2>Thêm mới quốc gia</h2>
 <div class="box_content mt-0">
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Countruy", "Vcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.ValidationSummary(true)
         <div class="row">
@@ -23,6 +23,15 @@
                     <tr>
                         <td class="form_name">@Html.LabelFor(model => model.Sort)</td>
                         <td class="form_text">@Html.EditorFor(model => model.Sort)</td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(a => Model.Image)</td>
+                        <td class="form_text">
+                            @Html.TextBoxFor(a => Model.Image, new { type = "file" })
+                            <span class="red-warring">
+                                Chấp nhận ảnh jpg, png, gif, jpeg < 4MB
+                            </span>
+                        </td>
                     </tr>
                     <tr>
                         <td class="form_name">@Html.LabelFor(model => model.School)</td>

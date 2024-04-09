@@ -34,6 +34,14 @@ namespace GlobeWork.Models
         public string Address { get; set; }
         [Display(Name = "Giới tính")]
         public string  Gender { get; set; }
+
+        [Display(Name = "Chiều cao")]
+        public string Height { get; set; }
+        [Display(Name = "Cân nặng")]
+        public string Weight { get; set; }
+        //[Display(Name = "Sức khỏe")]
+        //public string Health { get; set; }
+
         [Display(Name = "Chức vụ")]
         public string Classtify { get; set; }
         [Display(Name = "Tên công ty")]
@@ -49,6 +57,8 @@ namespace GlobeWork.Models
         public DateTime CreateDate { get; set; }
         public TypeRegister TypeRegister { get; set; }
         public virtual Skill Skill { get; set; }
+        public virtual Marriage  Marriage { get; set; }
+        public virtual Health Health { get; set; }
         public virtual ICollection<UserLog> UserLog { get; set; }
         public virtual ICollection<Education> Educations { get; set; }
         public virtual ICollection<Experiences> Experiences { get; set; }
@@ -92,7 +102,7 @@ namespace GlobeWork.Models
     public class Education
     {
         public int Id { get; set; }
-        [Required(ErrorMessage = "Chưa nhập ngành học")]
+        //[Required(ErrorMessage = "Chưa nhập ngành học")]
         public string Majors { get; set; }
         [Required(ErrorMessage = "Chưa nhập tên trường")]
         public string School { get; set; }
@@ -203,4 +213,21 @@ namespace GlobeWork.Models
         }
     }
 
+
+    public enum Marriage
+    {
+        [Display(Name ="Độc thân")]
+        Single,
+        [Display(Name = "Đã kết hôn")]
+        Married,
+        [Display(Name = "Đã ly hôn")]
+        Divorced
+    }
+    public enum Health
+    {
+        [Display(Name = "Tốt")]
+        Good,
+        [Display(Name = "Không tốt")]
+        Bad,
+    }
 }

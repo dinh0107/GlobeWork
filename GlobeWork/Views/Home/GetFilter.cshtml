@@ -7,7 +7,14 @@
         @foreach (var item in Model.Countries)
         {
             <div class="contruy-name" data-id="@item.Id">
-                @item.Name
+                @if (item.Image != null)
+                {
+                    <img src="@Path.Combine("/images/country/", item.Image)" alt="@item.Name" class="img-filter" />
+                }
+                <span> @item.Name</span>
+                <div class="job-count">
+                    @item.JobPosts.Where(a => a.Active).Count()
+                </div>
             </div>
         }
     </div>

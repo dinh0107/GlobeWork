@@ -114,7 +114,11 @@
                                 {
                                     <li>
                                         <a href="@Url.Action("Hunting" , new {url = item.Url})">
-                                            @item.CategoryName
+                                            @item.CategoryName 
+                                            @if (item.Image != null)
+                                            {
+                                                <img src="@Path.Combine("/images/country/", item.Image)" class="flag" alt="@item.CategoryName" />
+                                            }
                                         </a>
                                     </li>
                                 }
@@ -442,6 +446,10 @@
                     {
                         <li>
                             <a href="@Url.Action("Hunting" , new {url = item.Url})">
+                                @if (item.Image != null)
+                                {
+                                    <img src="@Path.Combine("/images/country/", item.Image)" class="flag mr-1" alt="@item.CategoryName" />
+                                }
                                 @item.CategoryName
                             </a>
                         </li>

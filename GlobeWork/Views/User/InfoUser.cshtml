@@ -26,6 +26,24 @@
                     @Html.TextBoxFor(a => a.Classtify, new { @placeholder = "Chức vụ", @class = "form-control" })
                 </div>
                 <div class="form-group">
+                    @Html.LabelFor(a => a.Height)
+                    @Html.TextBoxFor(a => a.Height, new { @placeholder = "Chiều cao", @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(a => a.Weight)
+                    @Html.TextBoxFor(a => a.Weight, new { @placeholder = "Cân nặng", @class = "form-control" })
+                </div>
+                <div class="form-row mb-3">
+                    <div class="col-lg-6">
+                        @Html.LabelFor(a => a.Marriage)
+                        @Html.EnumDropDownListFor(model => model.Marriage, new { @class = "form-control" })
+                    </div>
+                    <div class="col-lg-6 mt-lg-0 mt-3">
+                        @Html.LabelFor(a => a.Health)
+                        @Html.EnumDropDownListFor(model => model.Health, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
                     <div class="add-item add-education" data-toggle="modal" data-target="#education">
                         <i class="fal fa-plus mr-2"></i>Thêm thông tin học vấn
                     </div>
@@ -48,26 +66,24 @@
                         </label>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>
-                        Ngày sinh
-                    </label>
-                    <div class="row">
-                        <div class="col-4">
-                            <select class="form-control " name="year" id="year">
-                                <option value="">Năm</option>
-                            </select>
-                        </div>
-                        <div class="col-4">
-                            <select class="form-control " name="month" id="thang">
-                                <option value="">Tháng</option>
-                            </select>
-                        </div>
-                        <div class="col-4">
-                            <select class="form-control " name="day" id="ngay">
-                                <option value="">Ngày</option>
-                            </select>
-                        </div>
+                <label>
+                    Ngày sinh
+                </label>
+                <div class="form-row mb-3">
+                    <div class="col-4">
+                        <select class="form-control " name="year" id="year">
+                            <option value="">Năm</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <select class="form-control " name="month" id="thang">
+                            <option value="">Tháng</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <select class="form-control " name="day" id="ngay">
+                            <option value="">Ngày</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group">
@@ -137,6 +153,10 @@
          Date: $("#ngay").val(),
          Month: $("#thang").val(),
          Year: $("#year").val(),
+         Height: $("input[name='Height']").val(),
+         Weight: $("input[name='Weight']").val(),
+         Marriage: $("select[name='Marriage']").val(),
+         Health: $("select[name='Health']").val(),
          Experiences: [],
          Educations: []
      };
@@ -172,7 +192,6 @@
          contentType: "application/json",
          data: JSON.stringify(formData),
          success: function (response) {
-             //console.log(JSON.stringify(formData))
              new Notify({
                  status: 'success',
                  text: "Cập nhật thông tin thành công",
@@ -189,7 +208,6 @@
              });
              var jsonData = JSON.stringify(formData);
              var parsedData = JSON.parse(jsonData);
-
              $("#Description").empty();
              $(".company-detail-name").empty();
              $("#classtify").empty();
@@ -198,6 +216,7 @@
              $("#Description").text(parsedData.Description);
              $(".close-info").click();
              $(".cat-user").click();
+             window.location.reload();
          },
          error: function (error) {
              new Notify({

@@ -856,10 +856,28 @@ namespace GlobeWork.Controllers
 
         }
         [HttpPost]
-        public ActionResult Countruy(Country country)
+        public ActionResult Countruy(Country country , FormCollection fc)
         {
             if (ModelState.IsValid)
             {
+                for (var i = 0; i < Request.Files.Count; i++)
+                {
+                    if (Request.Files[i] == null || Request.Files[i].ContentLength <= 0) continue;
+                    if (!HtmlHelpers.CheckFileExt(Request.Files[i].FileName, "jpg|jpeg|png|gif")) continue;
+                    if (Request.Files[i].ContentLength > 1024 * 1024 * 4) continue;
+                    var imgFileName = HtmlHelpers.ConvertToUnSign(null, Path.GetFileNameWithoutExtension(Request.Files[i].FileName)) +
+                        "-" + DateTime.Now.Millisecond + Path.GetExtension(Request.Files[i].FileName);
+                    var imgPath = "/images/country/" + DateTime.Now.ToString("yyyy/MM/dd");
+                    HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
+                    var imgFile = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
+                    var newImage = Image.FromStream(Request.Files[i].InputStream);
+                    var fixSizeImage = HtmlHelpers.FixedSize(newImage, 1500, 1700, false);
+                    HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
+                    if (Request.Files.Keys[i] == "Image")
+                    {
+                        country.Image = imgFile;
+                    }
+                }
                 _unitOfWork.CountryRepository.Insert(country);
                 _unitOfWork.Save();
                 return RedirectToAction("ListCountruy", new { result = "success" });
@@ -876,12 +894,41 @@ namespace GlobeWork.Controllers
             return View(countruy);
         }
         [HttpPost]
-        public ActionResult EditCountruy(Country model)
+        public ActionResult EditCountruy(Country model , FormCollection fc)
         {
             var countruy = _unitOfWork.CountryRepository.GetById(model.Id);
             if (countruy == null)
             {
                 return RedirectToAction("ListCountruy");
+            }
+            for (var i = 0; i < Request.Files.Count; i++)
+            {
+                if (Request.Files[i] == null || Request.Files[i].ContentLength <= 0) continue;
+                if (!HtmlHelpers.CheckFileExt(Request.Files[i].FileName, "jpg|jpeg|png|gif")) continue;
+                if (Request.Files[i].ContentLength > 1024 * 1024 * 4) continue;
+
+                var imgFileName = HtmlHelpers.ConvertToUnSign(null, Path.GetFileNameWithoutExtension(Request.Files[i].FileName)) +
+                    "-" + DateTime.Now.Millisecond + Path.GetExtension(Request.Files[i].FileName);
+                var imgPath = "/images/country/" + DateTime.Now.ToString("yyyy/MM/dd");
+                HtmlHelpers.CreateFolder(Server.MapPath(imgPath));
+
+                var imgFile = DateTime.Now.ToString("yyyy/MM/dd") + "/" + imgFileName;
+
+                var newImage = Image.FromStream(Request.Files[i].InputStream);
+                var fixSizeImage = HtmlHelpers.FixedSize(newImage, 1500, 1700, false);
+                HtmlHelpers.SaveJpeg(Server.MapPath(Path.Combine(imgPath, imgFileName)), fixSizeImage, 90);
+
+                if (Request.Files.Keys[i] == "Image")
+                {
+                    countruy.Image = imgFile;
+                }
+            }
+
+            var file = Request.Files["Image"];
+
+            if (file != null && file.ContentLength == 0)
+            {
+                model.Image = fc["CurrentFile"] == "" ? null : fc["CurrentFile"];
             }
             countruy.Name = model.Name;
             countruy.Sort = model.Sort;

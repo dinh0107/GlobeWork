@@ -506,6 +506,11 @@ header {
     @include letterSpacing(10px, -10px);
     margin-top: 30px;
 
+    .company-name {
+        -webkit-line-clamp: 2;
+        height:36px;
+    }
+
     .slick-arrow {
         top: -18%;
         right: 0;
@@ -564,6 +569,12 @@ header {
     margin-bottom: 1.25rem;
     border-radius: 0.3125rem;
     box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.15);
+
+    &.active {
+        .info-job {
+            background: #ccf2dd;
+        }
+    }
 }
 
 .hot-job {
@@ -599,7 +610,7 @@ header {
     color: $black;
     font-size: 0.875rem;
     font-weight: 600;
-    @include truncate(1);
+    @include truncate(2);
 
     &:hover {
         color: $green;
@@ -631,8 +642,8 @@ header {
     font-weight: 400;
     padding: .375rem .563rem;
     border-radius: 0.1875rem;
-    background: #F4F5F5;
-    cursor:pointer;
+    background: #ccf2dd;
+    cursor: pointer;
 }
 
 .heart {
@@ -721,6 +732,10 @@ header {
     @include truncate(1);
     /*width: max-content;*/
     line-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    gap: .5rem;
 
     &.active {
         background: $green;
@@ -755,7 +770,7 @@ header {
     border-radius: 0.625rem;
     background: #F3F5F7;
     margin-bottom: 30px;
-    height: 12.9375rem;
+    height: 15.3rem;
     transition: all .5s;
     border: 1px solid #F3F5F7 !important;
 
@@ -816,13 +831,13 @@ header {
 .thuml-img {
     background: #F3F5F7;
     border-radius: 1.0625rem;
-    width: 6.46556rem;
-    height: 6.1875rem;
+    width: 8.46556rem;
+    height: 8.46556rem;
     margin: 0 auto;
 
     img {
-        width: 5.61656rem;
-        height: 5.375rem;
+        width: 7.61656rem;
+        height: 7.61656rem;
         margin: 0 auto;
         object-fit: contain;
     }
@@ -1985,15 +2000,19 @@ footer {
     }
 
     &.active {
-        background: #F2FBF6 !important;
+        background: #e3f9ec !important;
         box-shadow: none;
 
         .info-job {
-            background: #CCF2DD;
+            background: #ccf2dd;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
         }
     }
 }
-
+.truncate-2 {
+    -webkit-line-clamp: 2;
+    height:42px;
+}
 .time-deadline {
     color: $black;
     text-align: justify;
@@ -3104,7 +3123,8 @@ input, button {
     color: $black;
     font-size: 1rem;
     font-weight: 600;
-    @include truncate(1);
+    @include truncate(2);
+    height:48px;
 }
 
 .study-company {
@@ -4314,4 +4334,23 @@ summary {
     strong {
         padding: 0 .3rem;
     }
+}
+.img-filter {
+    width: 30px !important; 
+}
+.job-count {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: $red;
+    color: $white;
+    @include flex-center;
+    font-size:.7rem;
+}
+.flag-job {
+    position: absolute;
+    width: 30px;
+    right: 1px;
+    top: 1px;
+    object-fit: contain;
 }

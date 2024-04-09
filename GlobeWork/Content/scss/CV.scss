@@ -10,11 +10,10 @@
 }
 
 body {
-    background: #585c68;
+    /*background: #585c68;*/    
     font-size: 14px;
     line-height: 22px;
     color: #555555;
-
 }
 
 .bold {
@@ -29,10 +28,10 @@ body {
 }
 
 .resume {
-    width: 70%;
+    width: 100vw;
     height: auto;
-    display: flex;
-    margin: 50px auto;
+    /*float: right;*/
+    /*margin: 50px auto;*/
 }
 
 .resume .resume_left {
@@ -42,7 +41,8 @@ body {
 
 .resume .resume_left .resume_profile {
     width: 100%;
-    height: 280px;
+    height: 300px;
+    object-fit:cover;
 }
 
 .resume .resume_left .resume_profile img {
@@ -88,11 +88,8 @@ body {
 }
 
 .resume .resume_left ul li .icon {
-    width: 35px;
     height: 35px;
-    background: #fff;
-    color: #66BC46;
-    border-radius: 50%;
+    color: #fff;
     margin-right: 15px;
     font-size: 16px;
     position: relative;
@@ -100,10 +97,6 @@ body {
 
 .resume .icon i,
 .resume .resume_right .resume_hobby ul li i {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
 
 .resume .resume_left ul li .data {
@@ -186,7 +179,7 @@ body {
     content: "";
     position: absolute;
     top: 5px;
-    left: -25px;
+    left: -23px;
     width: 6px;
     height: 6px;
     border-radius: 50%;
@@ -258,7 +251,7 @@ body {
         margin: 0;
     }
 }
-@media (max-width: 900px) {
+/*@media (max-width: 900px) {
     .resume {
         width: 95%;
         margin: 20px auto;
@@ -308,7 +301,7 @@ body {
     .resume .resume_item {
         padding: 15px 0;
     }
-}
+}*/
 @media (max-width: 600px) {
     .resume {
         width: 96%;
@@ -317,25 +310,28 @@ body {
         margin: 14px auto;
     }
 
-    .resume .resume_left .resume_profile {
+   /* .resume .resume_left .resume_profile {
         width: 100%;
         height: 105px;
-    }
+    }*/
 
     .resume .title {
         margin-bottom: 10px;
     }
 
     .bold {
-        font-size: 12px;
+        /*font-size: 12px;*/
     }
 
     .resume .resume_left .resume_content {
         padding: 0 12px;
     }
+    .resume .resume_left ul li{
+        margin-bottom:20px;
+    }
 
     .resume .resume_left ul li .data {
-        font-size: 8px;
+        /*font-size: 8px;*/
         line-height: 15px;
         flex: 1;
     }
@@ -343,20 +339,21 @@ body {
     .resume .resume_left ul li .icon {
         width: 25px;
         height: 25px;
-        font-size: 5px;
-        display: none;
+        /*font-size: 5px;*/
+        /*display: none;*/
+        float:left;
     }
 
     .classtify {
-        font-size: 10px;
+        /*font-size: 10px;*/
     }
 
     .semi-bold {
-        font-size: 10px;
+        /*font-size: 10px;*/
     }
 
     .resume .resume_right ul li .date {
-        font-size: 10px;
+        /*font-size: 10px;*/
         margin-bottom: 0px;
     }
 
@@ -367,7 +364,7 @@ body {
     .info {
         p {
             &:last-child {
-                font-size: 10px;
+                /*font-size: 10px;*/
             }
         }
     }
@@ -379,7 +376,7 @@ body {
 
     .resume .resume_left .resume_skills ul li .skill_name {
         width: 100%;
-        font-size: 10px;
+        /*font-size: 10px;*/
         margin-bottom: 10px;
     }
 
@@ -389,10 +386,10 @@ body {
 
     .resume .resume_left .regular {
         color: #fff;
-        font-size: 10px;
+        /*font-size: 10px;*/
     }
 
     .star {
-        font-size: 10px;
+        /*font-size: 10px;*/
     }
 }

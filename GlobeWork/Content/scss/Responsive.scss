@@ -458,6 +458,32 @@
 }
 
 @include maxWidth(600px) {
+    .flag-job {
+        right: 47px;
+        top: unset;
+        bottom: 16px;
+    }
+
+    .thuml-img {
+        width: 3.61656rem;
+        height: 3.61656rem;
+
+        img {
+            width: 3.61656rem;
+            height: 3.61656rem;
+        }
+    }
+
+    .card-career {
+        height: 7.9375rem;
+        padding: 7px 7px 7px;
+        margin-bottom: 16px;
+
+        .card-body {
+            padding: .5rem;
+        }
+    }
+
     .box-mobile {
         gap: 1rem;
         position: relative;
@@ -469,17 +495,28 @@
             display: block;
             height: 2.3rem;
             border: 2px solid #66BC46;
-            background:$green;
+            background: $green;
             font-size: 0.575rem;
             color: $white;
             font-weight: 700;
             border-radius: 0.3125rem;
-            margin-bottom:1rem;
+            margin-bottom: 1rem;
         }
     }
 
+    .job-name {
+        font-size: 0.775rem;
+        height: 40px;
+    }
+
     .career-name {
-        font-size: .8rem;
+        font-size: 0.7rem;
+        -webkit-line-clamp: 2;
+        height: 35px;
+    }
+
+    .list-career .slick-slide {
+        margin: 0 0.538rem;
     }
 
     .job-detail-fixed-menu__tabs--item {
@@ -490,7 +527,7 @@
     }
 
     .career-quantity {
-        font-size: 0.675rem;
+        font-size: 0.5rem;
     }
 
     .job-detail-fixed-menu__actions--button {

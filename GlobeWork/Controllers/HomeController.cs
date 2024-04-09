@@ -24,6 +24,8 @@ using Antlr.Runtime;
 using System.Data.Entity;
 using GlobeWork.Migrations;
 using System.Web.Security;
+using Rotativa;
+using System.Security.Policy;
 
 namespace GlobeWork.Controllers
 {
@@ -1547,6 +1549,25 @@ namespace GlobeWork.Controllers
             }
             return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
         }
+        public ActionResult GeneratePdf(string url)
+        {
+            var user = _unitOfWork.UserRepository.GetQuery(a => a.Url == url).FirstOrDefault();
+            if (user == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var options = new Rotativa.Options.Margins(0, 0, 0, 0);
+
+            return new ActionAsPdf("ViewAndEx", new { url = url })
+            {
+                FileName = user.FullName + ".pdf",
+                PageSize = Rotativa.Options.Size.A4,
+                PageMargins = options,
+                PageOrientation = Rotativa.Options.Orientation.Portrait,
+            };
+
+        }
         public ActionResult ViewAndEx(string url)
         {
             var user = _unitOfWork.UserRepository.GetQuery(a => a.Url == url).FirstOrDefault();
@@ -1614,7 +1635,6 @@ namespace GlobeWork.Controllers
             }
             return Json(new { success = false, message = "Quá trình thực hiện không thành công" });
         }
-
 
         public PartialViewResult QickLogin()
         {

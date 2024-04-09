@@ -1,30 +1,34 @@
 ﻿@model GlobeWork.ViewModel.AdviseViewModel
 <div class="form-group">
     <label>
-        Họ và tên (<span class="text-danger">*</span>) 
+        Họ và tên (<span class="text-danger">*</span>)
     </label>
-    <input class="form-control" placeholder="Họ và tên" data-val="true" data-val-length="Tối đa 50 ký tự" data-val-length-max="50" data-val-required="Hãy nhập họ và tên" id="Advise_CustomerInfo_Fullname" name="Advise.CustomerInfo.Fullname" type="text" @if (Model.User != null) { @Html.Raw("value='" + Model.User.FullName + "'")  }>
+    @Html.TextBoxFor(a => a.Advise.CustomerInfo.Fullname, new { @class = "form-control", @placeholder = "Họ và tên", @value = Model.User != null ? Model.User.FullName : "" })
+    @*<input class="form-control" placeholder="Họ và tên" data-val="true" data-val-length="Tối đa 50 ký tự" data-val-length-max="50" data-val-required="Hãy nhập họ và tên" id="Advise_CustomerInfo_Fullname" name="Advise.CustomerInfo.Fullname" type="text" @if (Model.User != null) { @Html.Raw("value='" + Model.User.FullName + "'") }>*@
     @Html.ValidationMessageFor(a => a.Advise.CustomerInfo.Fullname)
-</div>
-<div class="form-group">
-    <label>
-        Email (<span class="text-danger">*</span>)
-    </label>
-    <input class="form-control" placeholder="Địa chỉ Email" data-val="true" data-val-email="Email không hợp lệ" data-val-length="Tối đa 50 ký tự" data-val-length-max="50" data-val-required="Hãy nhập email" id="Advise_CustomerInfo_Email" name="Advise.CustomerInfo.Email" type="text" @if (Model.User != null) { @Html.Raw("value='" + Model.User.Email + "'") }>
-    @Html.ValidationMessageFor(a => a.Advise.CustomerInfo.Email)
 </div>
 <div class="form-group">
     <label>
         Số điện thoại (<span class="text-danger">*</span>)
     </label>
-    <input class="form-control" placeholder="Số điện thoại" data-val="true" data-val-length="Điện thoại từ 7, 11 ký tự" data-val-length-max="11" data-val-length-min="7" data-val-required="Hãy nhập điện thoại" id="Advise_CustomerInfo_Mobile" name="Advise.CustomerInfo.Mobile" type="text" @if (Model.User != null) { @Html.Raw("value='" + Model.User.Phone + "'") }>
+    @Html.TextBoxFor(a => a.Advise.CustomerInfo.Mobile, new { @class = "form-control", @placeholder = "Số điện thoại", @value = Model.User != null ? Model.User.Phone : "" })
+    @*<input class="form-control" placeholder="Số điện thoại" data-val="true" data-val-length="Điện thoại từ 7, 11 ký tự" data-val-length-max="11" data-val-length-min="7" data-val-required="Hãy nhập điện thoại" id="Advise_CustomerInfo_Mobile" name="Advise.CustomerInfo.Mobile" type="text" @if (Model.User != null) { @Html.Raw("value='" + Model.User.Phone + "'") }>*@
     @Html.ValidationMessageFor(a => a.Advise.CustomerInfo.Mobile)
 </div>
 <div class="form-group">
     <label>
-        Địa chỉ (<span class="text-danger">*</span>)
+        Email
     </label>
-    <input class="form-control" placeholder="Địa chỉ" data-val="true" data-val-length="Tối đa 200 ký tự" data-val-length-max="200" data-val-required="Hãy nhập địa chỉ" id="Advise_CustomerInfo_Address" name="Advise.CustomerInfo.Address" type="text" @if (Model.User != null) { @Html.Raw("value='" + Model.User.Address + "'") }>
+    @Html.TextBoxFor(a => a.Advise.CustomerInfo.Email, new { @class = "form-control", @placeholder = "Địa chỉ Email", @value = Model.User != null ? Model.User.Email : "" })
+    @*<input class="form-control" placeholder="Địa chỉ Email" data-val-email="Email không hợp lệ" data-val-length="Tối đa 50 ký tự" data-val-length-max="50" id="Advise_CustomerInfo_Email" name="Advise.CustomerInfo.Email" type="text" @if (Model.User != null) { @Html.Raw("value='" + Model.User.Email + "'") }>*@
+    @Html.ValidationMessageFor(a => a.Advise.CustomerInfo.Email)
+</div>
+<div class="form-group">
+    <label>
+        Địa chỉ
+    </label>
+    @Html.TextBoxFor(a => a.Advise.CustomerInfo.Address, new { @class = "form-control", @placeholder = "Số điện thoại", @value = Model.User != null ? Model.User.Address : "" })
+    @*<input class="form-control" placeholder="Địa chỉ" data-val-length="Tối đa 200 ký tự" data-val-length-max="200" id="Advise_CustomerInfo_Address" name="Advise.CustomerInfo.Address" type="text" @if (Model.User != null) { @Html.Raw("value='" + Model.User.Address + "'") }>*@
     @Html.ValidationMessageFor(a => a.Advise.CustomerInfo.Address)
 </div>
 <div class="form-group">

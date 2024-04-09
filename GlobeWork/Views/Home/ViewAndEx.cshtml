@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_LayoutCV.cshtml";
 }
 <div class="resume" id="content-to-print">
-    <div class="resume_left">
+    <div class="resume_left" style="float:left; height:100vh">
         <div class="resume_profile">
             @if (Model.Avatar != null)
             {
@@ -59,16 +59,52 @@
                             </div>
                         </li>
                     }
-
-
-                    @*<li>
+                    @if (Model.Height != null)
+                    {
+                        <li>
                             <div class="icon">
-                                <i class="fab fa-weebly"></i>
+                                <i class="fas fa-user"></i>
                             </div>
                             <div class="data">
-                                www.stephen.com
+                                @Model.Height
                             </div>
-                        </li>*@
+                        </li>
+                    }
+                    @if (Model.Weight != null)
+                    {
+                        <li>
+                            <div class="icon">
+                                <i class="fas fa-weight"></i>
+                            </div>
+                            <div class="data">
+                                @Model.Weight
+                            </div>
+                        </li>
+                    }
+                    <li>
+                        <div class="icon">
+                            <i class="fas fa-user-friends"></i>
+                        </div>
+                        <div class="data">
+                            @Html.DisplayFor(a => Model.Marriage)
+                        </div>
+                    </li>
+                    <li>
+                        <div class="icon">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="data">
+                            @Html.DisplayFor(a => Model.Health)
+                        </div>
+                    </li>
+                    @*<li>
+            <div class="icon">
+                <i class="fab fa-weebly"></i>
+            </div>
+            <div class="data">
+                www.stephen.com
+            </div>
+        </li>*@
 
 
                 </ul>
@@ -144,7 +180,7 @@
                 </div>*@
         </div>
     </div>
-    <div class="resume_right">
+    <div class="resume_right" style="float:left;">
         @if (Model.Description != null)
         {
             <div class="resume_item resume_about">
@@ -270,33 +306,33 @@
         }
     </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-<script>
-       const options = {
-           background: '#585c68', // Đặt màu nền là màu trắng
-           scale: 3, // Hệ số tỷ lệ để có độ phân giải tốt hơn
-           unit: 'mm', // Đơn vị đo lường
-           format: 'a4', // Kích thước trang
-           orientation: 'portrait', // Hướng trang
-           fontSize: 10, // Cỡ chữ
-           marginLeft: 0, // Lề trái
-           marginTop: 0, // Lề trên
-           marginRight: 0, // Lề phải
-           marginBottom: 10,
-        };
-        var fileName = "@Model.FullName";
-        var element = document.getElementById('content-to-print');
-        html2canvas(element, options).then((canvas) => {
-            let imgWidth = 600; 
-            let imgHeight = canvas.height * imgWidth / canvas.width;
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+           const options = {
+               background: '#585c68', // Đặt màu nền là màu trắng
+               scale: 2, // Hệ số tỷ lệ để có độ phân giải tốt hơn
+               unit: 'mm', // Đơn vị đo lường
+               format: 'a4', // Kích thước trang
+               orientation: 'portrait', // Hướng trang
+               fontSize: 12, // Cỡ chữ
+               marginLeft: 0, // Lề trái
+               marginTop: 0, // Lề trên
+               marginRight: 0, // Lề phải
+               marginBottom: 10,
+            };
+            var fileName = "@Model.FullName";
+            var element = document.getElementById('content-to-print');
+            html2canvas(element, options).then((canvas) => {
+                let imgWidth = 1000;
+                let imgHeight = canvas.height * imgWidth / canvas.width;
 
-            let pdf = new jsPDF('p', 'px', [imgWidth, imgHeight]);
-            let imgData = canvas.toDataURL('image/jpeg', 0.8); 
+                let pdf = new jsPDF('p', 'px', [imgWidth, imgHeight]);
+                let imgData = canvas.toDataURL('image/png');
 
-            pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+                pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
 
-            pdf.save(fileName + ".pdf");
-        });
+                pdf.save(fileName + ".pdf");
+            });
 
-</script>
+    </script>*@

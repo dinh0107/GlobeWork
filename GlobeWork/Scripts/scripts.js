@@ -9,8 +9,7 @@ function HomeJs() {
         nav: true,
         dots: false,
         navText: ["<i class='fal fa-chevron-circle-left'></i>", "<i class='fal fa-chevron-circle-right'></i>"],
-        items: 5
-
+        items: 4
     }) 
 
     $(".list-banner").slick({
@@ -168,7 +167,7 @@ function HomeJs() {
             {
                 breakpoint: 480,
                 settings: {
-                    slidesToShow: 2,
+                    slidesToShow: 3,
                     slidesToScroll: 2,
                     dots: true,
                     arrows: false,
@@ -387,6 +386,27 @@ function Details() {
     });
     $(".advise-form").submit(function (e) {
         e.preventDefault();
+
+        var fullname = $("#Advise_CustomerInfo_Fullname").val();
+        var email = $("#Advise_CustomerInfo_Mobile").val();
+        if (!fullname || !email) {
+            new Notify({
+                status: 'error',
+                text: 'Vui lòng điền đầy đủ thông tin vào các trường bắt buộc.',
+                effect: 'slide',
+                speed: 600,
+                showIcon: true,
+                showCloseButton: true,
+                autoclose: true,
+                autotimeout: 3000,
+                gap: 10,
+                distance: 20,
+                type: 3,
+                position: 'right bottom'
+            });
+            return; 
+        }
+
         var formData = new FormData($(this)[0]);
         $.ajax({
             url: "/Home/AdviseForm",
@@ -433,6 +453,7 @@ function Details() {
             }
         });
     });
+
     $(".copy-value").click(function () {
         var dataValue = $("#url-request").data("value");
         var tempInput = $("<input>");

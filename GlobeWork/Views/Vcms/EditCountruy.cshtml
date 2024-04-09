@@ -10,7 +10,7 @@
 </style>
 <h2>Cập nhật quốc gia</h2>
 <div class="box_content mt-0">
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("EditCountruy", "Vcms", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.ValidationSummary(true)
         @Html.HiddenFor(a => a.Id)
@@ -25,6 +25,25 @@
                         <td class="form_name">@Html.LabelFor(model => model.Sort)</td>
                         <td class="form_text">@Html.EditorFor(model => model.Sort)</td>
                     </tr>
+                    <tr>
+                        <td class="form_name">@Html.LabelFor(a => Model.Image)</td>
+                        <td class="form_text">
+                            @Html.TextBoxFor(a => Model.Image, new { type = "file" })
+                            <span class="red-warring">
+                                Chấp nhận ảnh jpg, png, gif, jpeg < 4MB
+                            </span>
+                        </td>
+                    </tr>
+                    @if (Model.Image != null)
+                    {
+                        <tr id="ImgPreview">
+                            <td class="form_name"></td>
+                            <td class="form_text">
+                                <img class="img-border mb-2" src="@Path.Combine("/images/country/", Model.Image)" />
+                            </td>
+                            <input type="hidden" name="CurrentFile" id="CurrentFile" value="@Model.Image" />
+                        </tr>
+                    }
                     <tr>
                         <td class="form_name">@Html.LabelFor(model => model.School)</td>
                         <td class="form_text">@Html.CheckBoxFor(model => model.School)</td>

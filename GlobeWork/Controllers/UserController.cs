@@ -491,10 +491,15 @@ namespace GlobeWork.Controllers
                 Email = user.Email,
                 Phone = user.Phone,
                 Url = user.Url,
+                Weight = user.Weight,
+                Height = user.Height,
+                Marriage = user.Marriage,
+                Health = user.Health,
                 Description = user.Description,
                 Year = Convert.ToInt32(user.DateOfBirth?.ToString("yyyy")),
                 Month = Convert.ToInt32(user.DateOfBirth?.ToString("MM")),
                 Date = Convert.ToInt32(user.DateOfBirth?.ToString("dd")),
+
             };
             return View(model);
         }
@@ -507,69 +512,6 @@ namespace GlobeWork.Controllers
                 return false;
             }
 
-            //if (model.Educations != null && model.Educations.Any())
-            //{
-            //    foreach (var item in model.Educations)
-            //    {
-            //        if (item != null && !string.IsNullOrWhiteSpace(item.StartDate) && !string.IsNullOrWhiteSpace(item.EndDate) && !string.IsNullOrWhiteSpace(item.Majors) && !string.IsNullOrWhiteSpace(item.School) && !string.IsNullOrWhiteSpace(item.Description))
-            //        {
-            //            var myEdu = _unitOfWork.EducationRepository.GetById(item.Id);
-            //            if (myEdu == null)
-            //            {
-            //                var education = new Education
-            //                {
-            //                    StartDate = item.StartDate,
-            //                    EndDate = item.EndDate,
-            //                    School = item.School,
-            //                    Description = item.Description,
-            //                    UserId = User.Id,
-            //                    Majors = item.Majors,
-            //                };
-            //                _unitOfWork.EducationRepository.Insert(education);
-            //            }
-            //            else
-            //            {
-            //                myEdu.StartDate = item.StartDate;
-            //                myEdu.EndDate = item.EndDate;
-            //                myEdu.School = item.School;
-            //                myEdu.Description = item.Description;
-            //                myEdu.UserId = User.Id;
-            //                myEdu.Majors = item.Majors;
-            //            }
-            //        }
-
-            //    }
-            //}
-
-            //foreach (var item in model.Experiences)
-            //{
-            //    if (item != null && !string.IsNullOrWhiteSpace(item.StartDate) && !string.IsNullOrWhiteSpace(item.EndDate) && !string.IsNullOrWhiteSpace(item.Position) && !string.IsNullOrWhiteSpace(item.Company) && !string.IsNullOrWhiteSpace(item.Description))
-            //    {
-            //        var myExp = _unitOfWork.ExperienceRepository.GetById(item.Id);
-            //        if (myExp == null)
-            //        {
-            //            var experience = new Experiences
-            //            {
-            //                StartDate = item.StartDate,
-            //                EndDate = item.EndDate,
-            //                Position = item.Position,
-            //                Company = item.Company,
-            //                Description = item.Description,
-            //                UserId = User.Id
-            //            };
-            //            _unitOfWork.ExperienceRepository.Insert(experience);
-            //        }
-            //        else
-            //        {
-            //            myExp.StartDate = item.StartDate;
-            //            myExp.EndDate = item.EndDate;
-            //            myExp.Position = item.Position;
-            //            myExp.Company = item.Company;
-            //            myExp.Description = item.Description;
-            //        }
-            //    }
-            //}
-
             User.FullName = model.FullName;
             User.Classtify = model.Classtify;
             User.Email = model.Email;
@@ -578,6 +520,10 @@ namespace GlobeWork.Controllers
             User.Description = model.Description;
             User.Gender = model.Gender;
             User.Url = model.Url;
+            User.Weight = model.Weight;
+            User.Height = model.Height;
+            User.Marriage = model.Marriage;
+            User.Health = model.Health;
             if (model.Date > 0 && model.Month > 0 && model.Year > 0)
             {
                 User.DateOfBirth = new DateTime(model.Year, model.Month, model.Date);

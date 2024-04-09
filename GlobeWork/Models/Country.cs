@@ -13,6 +13,8 @@ namespace GlobeWork.Models
         public string Name { get; set; }
         [Display(Name = "Thứ tự"), Required(ErrorMessage = "Hãy nhập thứ tự"), RegularExpression(@"\d+", ErrorMessage = "Chỉ nhập số nguyên")]
         public int Sort { get; set; }
+        [Display(Name = "Ảnh đại diện"), StringLength(500)]
+        public string Image { get; set; }
         [Display(Name ="Hoạt động")]
         public bool Active { get; set; }
         [Display(Name = "Nổi bật")]

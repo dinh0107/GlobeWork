@@ -258,6 +258,10 @@ namespace GlobeWork.ViewModel
         public string Classtify { get; set; }
         [Display(Name = "Giới tính")]
         public string Gender { get; set; }
+        [Display(Name = "Chiều cao")]
+        public string Height { get; set; }
+        [Display(Name = "Cân nặng")]
+        public string Weight { get; set; }
         public int Date { get; set; }
         public int Month { get; set; }
         public int Year { get; set; }
@@ -270,6 +274,10 @@ namespace GlobeWork.ViewModel
         public string Description { get; set; }
         [StringLength(20), Display(Name = "Số điện thoại")]
         public string Phone { get; set; }
+        [Display(Name = "Tình trạng hôn nhân")]
+        public Marriage Marriage { get; set; }
+        [Display(Name = "Tình trạng sức khỏe")]
+        public Health Health { get; set; }
 
     }
     public class EducationViewModel
