@@ -227,7 +227,11 @@ namespace GlobeWork.Models
     {
         [Display(Name = "Tốt")]
         Good,
-        [Display(Name = "Không tốt")]
+        [Display(Name = "Bình thường")]
         Bad,
+        [Display(Name = "Có bệnh nền")]
+        Cobenhnen,
+        [Display(Name = "Có hình xăm")]
+        CoHinhXam,
     }
 }

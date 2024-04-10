@@ -2267,7 +2267,7 @@ footer {
 
 .com-avatar {
     position: absolute;
-    top: 36%;
+    top: 32%;
     left: 5%;
     width: 4.0625rem;
     height: 4.0625rem;
@@ -2288,7 +2288,7 @@ footer {
     font-size: 1rem;
     font-weight: 700;
     text-transform: uppercase;
-    @include truncate(1);
+    @include truncate(2);
 }
 
 .com-des {
