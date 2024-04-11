@@ -481,7 +481,6 @@ namespace GlobeWork.Controllers
                 company.Email = model.Company.Email;
                 company.LastEditDate = DateTime.Now;
                 company.Url = HtmlHelpers.ConvertToUnSign(null, company.Url ?? company.Name);
-                company.LastEditDate = model.Company.LastEditDate;
                 _unitOfWork.CompanyRepository.Update(company);
                 if (company.Careers.Any())
                 {

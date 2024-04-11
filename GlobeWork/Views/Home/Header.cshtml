@@ -52,6 +52,10 @@
                                 <li>
                                     <a href="@Url.Action("JobInCountruy", new {countruyId = item.Id})">
                                         @item.Name
+                                        @if (item.Image != null)
+                                        {
+                                            <img src="@Path.Combine("/images/country/", item.Image)" alt="@item.Name" class="img-filter ml-2" />
+                                        }
                                     </a>
                                 </li>
                             }
@@ -134,7 +138,7 @@
                     <div class="d-flex align-items-center h-100 justify-content-end" style="gap:10px;">
                         <a href="@Url.Action("Register", "User")" class="user-action">Đăng ký</a>
                         <a href="@Url.Action("Login", "User")" class="user-action opacity-1">Đăng nhập</a>
-                        <a href="@Url.Action("EmployerLogin", "Employer")" class="user-action opacity-1 bg-dark text-white">Đăng tuyển</a>
+                        <a href="@Url.Action("EmployerLogin", "Employer")" class="user-action opacity-1">Đăng tuyển</a>
                     </div>
                 }
                 else
@@ -348,6 +352,10 @@
                     {
                         <li>
                             <a href="@Url.Action("JobInCountruy", new {countruyId = item.Id})">
+                                @if (item.Image != null)
+                                {
+                                    <img src="@Path.Combine("/images/country/", item.Image)" alt="@item.Name" class="img-filter mr-2" />
+                                }
                                 @item.Name
                             </a>
                         </li>

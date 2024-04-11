@@ -459,9 +459,7 @@
 
 @include maxWidth(600px) {
     .flag-job {
-        right: 47px;
-        top: unset;
-        bottom: 16px;
+        width: 39px;
     }
 
     .thuml-img {

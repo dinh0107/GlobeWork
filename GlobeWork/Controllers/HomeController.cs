@@ -1557,7 +1557,7 @@ namespace GlobeWork.Controllers
                 return RedirectToAction("Index");
             }
 
-            var options = new Rotativa.Options.Margins(0, 0, 0, 0);
+            var options = new Rotativa.Options.Margins(-2, -2, -2, -2);
 
             return new ActionAsPdf("ViewAndEx", new { url = url })
             {
