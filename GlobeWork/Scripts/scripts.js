@@ -33,8 +33,8 @@ function HomeJs() {
         dots: true,
         slidesToShow: 3,
         slidesToScroll: 3,
-        //autoplay: true,
-        //autoplaySpeed: 3000,
+        autoplay: true,
+        autoplaySpeed: 5000,
         prevArrow: '<button class="previous-slie"><i class="fal fa-chevron-circle-left"></i></button>',
         nextArrow: '<button class="next-slie"><i class="fal fa-chevron-circle-right"></i></button>',
         responsive: [
@@ -144,7 +144,7 @@ function HomeJs() {
         //fade: true,
         //cssEase: 'linear',
         autoplay: true,
-        autoplaySpeed: 3000,
+        autoplaySpeed: 5000,
         slidesToScroll: 3,
         prevArrow: '<button class="previous-career"><i class="fal fa-chevron-circle-left"></i></button>',
         nextArrow: '<button class="next-career"><i class="fal fa-chevron-circle-right"></i></button>',
@@ -181,6 +181,8 @@ function HomeJs() {
     $('.list-support').slick({
         infinite: true,
         speed: 300,
+        autoplay: true,
+        autoplaySpeed: 5000,
         slidesToShow: 4,
         slidesToScroll: 1,
         prevArrow: '<button class="previous-support"><i class="fal fa-chevron-circle-left"></i></button>',

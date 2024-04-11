@@ -1557,13 +1557,13 @@ namespace GlobeWork.Controllers
                 return RedirectToAction("Index");
             }
 
-            var options = new Rotativa.Options.Margins(-2, -2, -2, -2);
+            var options = new Rotativa.Options.Margins(0, 0, 0, 0);
 
             return new ActionAsPdf("ViewAndEx", new { url = url })
             {
                 FileName = user.FullName + ".pdf",
                 PageSize = Rotativa.Options.Size.A4,
-                PageMargins = options,
+                PageMargins = { Left = 10, Right = 10, Top = 20, Bottom = 0 },
                 PageOrientation = Rotativa.Options.Orientation.Portrait,
             };
 

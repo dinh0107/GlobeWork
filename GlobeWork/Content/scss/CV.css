@@ -40,7 +40,7 @@ body {
 
 .resume .resume_left .resume_profile {
   width: 100%;
-  height: 300px;
+  height: 250px;
   object-fit: cover;
 }
 
@@ -50,24 +50,25 @@ body {
   object-fit: cover;
 }
 
-.resume .resume_left .resume_content {
-  padding: 0 25px;
-}
-
+/*.resume .resume_left .resume_content {
+    padding: 0 25px;
+}*/
 .resume .title {
   margin-bottom: 20px;
 }
 
 .resume .resume_left .bold {
   color: #fff;
+  margin-left: 30px;
 }
 
 .resume .resume_left .regular {
+  margin-left: 30px;
   color: #fff;
 }
 
 .resume .resume_item {
-  padding: 25px 0;
+  padding: 10px 0;
   border-bottom: 1px solid #66BC46;
 }
 
@@ -79,6 +80,7 @@ body {
 .resume .resume_left ul li {
   display: flex;
   margin-bottom: 10px;
+  margin-left: 30px;
   align-items: center;
 }
 
@@ -108,6 +110,7 @@ body {
 
 .resume .resume_left .resume_skills ul li .skill_name {
   width: 50%;
+  /*color:$black;*/
 }
 
 .resume .resume_left .resume_skills ul li .skill_progress {
@@ -138,7 +141,7 @@ body {
 .resume .resume_right {
   width: 60%;
   background: #fff;
-  padding: 25px;
+  padding: 0 25px;
 }
 
 .resume .resume_right .bold {
@@ -297,74 +300,92 @@ body {
         padding: 15px 0;
     }
 }*/
-@media (max-width: 600px) {
-  .resume {
-    width: 96%;
-    height: auto;
-    display: flex;
-    margin: 14px auto;
-  }
-  /* .resume .resume_left .resume_profile {
-       width: 100%;
-       height: 105px;
-   }*/
-  .resume .title {
+/*@media (max-width: 600px) {
+    .resume {
+        width: 96%;
+        height: auto;
+        display: flex;
+        margin: 14px auto;
+    }*/
+/* .resume .resume_left .resume_profile {
+     width: 100%;
+     height: 105px;
+ }*/
+/*.resume .title {
     margin-bottom: 10px;
-  }
-  .bold {
-    /*font-size: 12px;*/
-  }
-  .resume .resume_left .resume_content {
+}
+
+.bold {*/
+/*font-size: 12px;*/
+/*}
+
+.resume .resume_left .resume_content {
     padding: 0 12px;
-  }
-  .resume .resume_left ul li {
-    margin-bottom: 20px;
-  }
-  .resume .resume_left ul li .data {
-    /*font-size: 8px;*/
-    line-height: 15px;
+}
+.resume .resume_left ul li{
+    margin-bottom:20px;
+}
+
+.resume .resume_left ul li .data {*/
+/*font-size: 8px;*/
+/*line-height: 15px;
     flex: 1;
-  }
-  .resume .resume_left ul li .icon {
+}
+
+.resume .resume_left ul li .icon {
     width: 25px;
-    height: 25px;
-    /*font-size: 5px;*/
-    /*display: none;*/
-    float: left;
-  }
-  .classtify {
-    /*font-size: 10px;*/
-  }
-  .semi-bold {
-    /*font-size: 10px;*/
-  }
-  .resume .resume_right ul li .date {
-    /*font-size: 10px;*/
-    margin-bottom: 0px;
-  }
-  .resume .resume_right {
+    height: 25px;*/
+/*font-size: 5px;*/
+/*display: none;*/
+/*float:left;
+}
+
+.classtify {*/
+/*font-size: 10px;*/
+/*}
+
+.semi-bold {*/
+/*font-size: 10px;*/
+/*}
+
+.resume .resume_right ul li .date {*/
+/*font-size: 10px;*/
+/*margin-bottom: 0px;
+}
+
+.resume .resume_right {
     padding: 10px;
-  }
-  .info p:last-child {
-    /*font-size: 10px;*/
-  }
-  .resume .resume_left .resume_skills ul li {
+}
+
+.info {
+    p {
+        &:last-child {*/
+/*font-size: 10px;*/
+/*}
+    }
+}
+
+.resume .resume_left .resume_skills ul li {
     display: block;
     margin-bottom: 10px;
-  }
-  .resume .resume_left .resume_skills ul li .skill_name {
-    width: 100%;
-    /*font-size: 10px;*/
-    margin-bottom: 10px;
-  }
-  .resume .resume_item {
-    padding: 12px 0;
-  }
-  .resume .resume_left .regular {
-    color: #fff;
-    /*font-size: 10px;*/
-  }
-  .star {
-    /*font-size: 10px;*/
-  }
 }
+
+.resume .resume_left .resume_skills ul li .skill_name {
+    width: 100%;*/
+/*font-size: 10px;*/
+/*margin-bottom: 10px;
+}
+
+.resume .resume_item {
+    padding: 12px 0;
+}
+
+.resume .resume_left .regular {
+    color: #fff;*/
+/*font-size: 10px;*/
+/*}
+
+.star {*/
+/*font-size: 10px;*/
+/*}
+}*/

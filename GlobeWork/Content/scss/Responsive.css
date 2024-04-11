@@ -204,8 +204,8 @@
     height: 1.063rem !important;
   }
   .study-img {
-    width: 5.5625rem;
-    height: 5.5625rem;
+    width: 6rem;
+    height: 100%;
   }
   .study-abroad-grid .slick-slide {
     margin: 0 10px;
@@ -966,8 +966,8 @@
     top: 5px;
   }
   .study-img {
-    width: 3.5625rem;
-    height: 3.5625rem;
+    width: 5.5625rem;
+    height: 100%;
   }
   .employer-right {
     padding: 1.25rem 0.6rem;
