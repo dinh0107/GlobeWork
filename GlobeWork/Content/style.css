@@ -338,7 +338,12 @@ header {
 
 .opacity-1 {
   color: #000;
-  background: rgba(102, 188, 70, 0.28);
+  background: rgba(102, 188, 70, 0.61);
+}
+
+.opacity-2 {
+  color: #000;
+  background: rgba(102, 188, 70, 0.25);
 }
 
 .filter-parent {

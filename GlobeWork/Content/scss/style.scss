@@ -372,9 +372,13 @@ header {
 
 .opacity-1 {
     color: $black;
-    background: rgb(102 188 70 / 28%);
+    background: rgb(102 188 70 / 61%);
 }
 
+.opacity-2 {
+    color: $black;
+    background: rgb(102 188 70 / 25%);
+}
 .filter-parent {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
