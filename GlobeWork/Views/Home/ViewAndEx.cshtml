@@ -28,9 +28,9 @@
                     @if (Model.Address != null)
                     {
                         <li>
-                            <div class="icon">
+                            @*<div class="icon">
                                 <i class="fas fa-map-signs"></i>
-                            </div>
+                            </div>*@
                             <div class="data">
                                 @Model.Address
                             </div>
@@ -39,9 +39,9 @@
                     @if (Model.Phone != null)
                     {
                         <li>
-                            <div class="icon">
+                            @*<div class="icon">
                                 <i class="fas fa-mobile-alt"></i>
-                            </div>
+                            </div>*@
                             <div class="data">
                                 @Model.Phone
                             </div>
@@ -51,9 +51,9 @@
                     @if (Model.Address != null)
                     {
                         <li>
-                            <div class="icon">
+                            @*<div class="icon">
                                 <i class="fas fa-envelope"></i>
-                            </div>
+                            </div>*@
                             <div class="data">
                                 @Model.Email
                             </div>
@@ -62,9 +62,9 @@
                     @if (Model.Height != null)
                     {
                         <li>
-                            <div class="icon">
+                            @*<div class="icon">
                                 <i class="fas fa-user"></i>
-                            </div>
+                            </div>*@
                             <div class="data">
                                 @Model.Height
                             </div>
@@ -73,26 +73,26 @@
                     @if (Model.Weight != null)
                     {
                         <li>
-                            <div class="icon">
+                            @*<div class="icon">
                                 <i class="fas fa-weight"></i>
-                            </div>
+                            </div>*@
                             <div class="data">
                                 @Model.Weight
                             </div>
                         </li>
                     }
                     <li>
-                        <div class="icon">
+                        @*<div class="icon">
                             <i class="fas fa-user-friends"></i>
-                        </div>
+                        </div>*@
                         <div class="data">
                             @Html.DisplayFor(a => Model.Marriage)
                         </div>
                     </li>
                     <li>
-                        <div class="icon">
+                        @*<div class="icon">
                             <i class="fas fa-heartbeat"></i>
-                        </div>
+                        </div>*@
                         <div class="data">
                             @Html.DisplayFor(a => Model.Health)
                         </div>
