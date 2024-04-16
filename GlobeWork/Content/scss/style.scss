@@ -2293,6 +2293,7 @@ footer {
     font-weight: 700;
     text-transform: uppercase;
     @include truncate(2);
+    height: 3rem;
 }
 
 .com-des {
@@ -4358,6 +4359,7 @@ summary {
     width: 47px;
     height: 100%;
     object-fit: contain;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 .custom-w{
     width:94% !important;

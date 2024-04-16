@@ -2219,6 +2219,7 @@ footer {
   -webkit-box-orient: vertical;
   overflow: hidden;
   -webkit-line-clamp: 2;
+  height: 3rem;
 }
 
 .com-des {
@@ -4176,6 +4177,7 @@ summary {
   width: 47px;
   height: 100%;
   object-fit: contain;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 .custom-w {
