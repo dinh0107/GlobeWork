@@ -16,6 +16,7 @@ namespace GlobeWork.ViewModel
         public string Sort { get; set; }
         public int? Status { get; set; }
         public int? StatusTime { get; set; }
+        public int? CountruyId { get; set; }
         public string StartTime { get; set; }
         public string EndTime { get; set; }
         public string CareerIds { get; set; }

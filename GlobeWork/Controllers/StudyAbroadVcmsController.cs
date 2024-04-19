@@ -21,7 +21,7 @@ namespace GlobeWork.Controllers
         public ConfigSite ConfigSite => (ConfigSite)HttpContext.Application["ConfigSite"];
         private IEnumerable<StudyAbroadCategory> StudyAbroadCategories() => _unitOfWork.StudyAbroadCategoryRepository.GetQuery(a => a.Active, o => o.OrderBy(a => a.Sort));
         #region StudyAbroad
-        public ActionResult ListStudyAbroad(string result, int? page, string EndTime, string careerIds, string StartTime, int? status, int? statusTime, string name, string sort = "date-asc")
+        public ActionResult ListStudyAbroad(string result, int? page, string EndTime, int? countruyId ,  string careerIds, string StartTime, int? status, int? statusTime, string name, string sort = "date-asc")
         {
             var pageNumber = page ?? 1;
             var pageSize = 30;
@@ -73,6 +73,10 @@ namespace GlobeWork.Controllers
                     study = study.Where(a => a.Hot != null && DbFunctions.TruncateTime(a.Hot) <= DbFunctions.TruncateTime(end));
                 }
             }
+            if (countruyId.HasValue)
+            {
+                study = study.Where(a => a.StudyAbroadCategory.CountryId == countruyId);
+            }
 
             switch (sort)
             {
@@ -104,6 +108,7 @@ namespace GlobeWork.Controllers
                 Careers = Careers,
                 CitySelectList = CitySelectList,
                 CareerIds = careerIds,
+                CountruyId = countruyId,
                 Name = name,
                 Sort = sort,
                 Status = status,

@@ -17,7 +17,7 @@
 {
     <div id="AlertBox" class="alert alert-success"><strong>Upload file thành công</strong></div>
 }
-<h2>Danh sách việc làm</h2>
+<h2>Danh sách tin tuyển dụng</h2>
 <a class="btn quick-link" href=""></a>
 <div class="box_content">
     @using (Html.BeginForm("ListStudyAbroad", "StudyAbroadVcms", FormMethod.Get))
@@ -47,7 +47,7 @@
                 <label>Trạng thái</label>
                 @Html.DropDownListFor(model => model.Status, Model.StatuSelectList, "Tất cả")
             </div>
-            
+
             <div class="col-lg-3 mb-2">
                 <label>Ngành nghề</label>
                 <select class="filter" name="CareerIds">
@@ -62,6 +62,16 @@
                         {
                             <option value="@item.Id">@item.Name</option>
                         }
+                    }
+                </select>
+            </div>
+            <div class="col-lg-3 mb-2">
+                <label>Quốc gia</label>
+                <select class="filter" name="countruyId">
+                    <option value="">Quốc gia</option>
+                    @foreach (var item in Model.Countries)
+                    {
+                        <option @if (Model.CountruyId == item.Id ) { @Html.Raw("selected") } value="@item.Id">@item.Name</option>
                     }
                 </select>
             </div>
