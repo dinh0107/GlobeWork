@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     var i = 0;
 }
-<h2>Danh sách người dùng</h2>
+<h2>Danh sách nhà tuyển dụng</h2>
 <div class="box_content mt-0">
     <form action="@Url.Action("ListEmployer")" method="get">
         <div class="row">
@@ -36,6 +36,7 @@
                     <th>Ngày tạo</th>
                     <th>Số dư</th>
                     <th>Chức danh</th>
+                    <th>Công ty</th>
                     <th>Kích hoạt</th>
                     <th style="width: 300px;"></th>
                 </tr>
@@ -48,6 +49,7 @@
                         <td>@user.CreateDate.ToString("dd/MM/yyyy")</td>
                         <td>@Html.DisplayFor(a => user.Amount)</td>
                         <td>@user.Rank.Name</td>
+                        <td>@user.CompanyName</td>
                         <td>@Html.DisplayFor(a => user.Active)</td>
                         <td>
                             <a href="javascript:;" onclick="loadOrder(@user.Id)">Nạp tiền</a>

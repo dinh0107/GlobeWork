@@ -19,7 +19,7 @@ namespace GlobeWork.Controllers
     {
         public ConfigSite ConfigSite => (ConfigSite)HttpContext.Application["ConfigSite"];
         #region JobPost
-        public ActionResult ListJobPost(string result, int? page, string endTime, int? careerId, int? cityIds, string jobTypeIds, string skillIds, string rankIds, string startTime, int? status, int? statusTime, string name, string sort = "date-asc")
+        public ActionResult ListJobPost(string result, int? page, string endTime, int? careerId, int? countruyId, int? cityIds, string jobTypeIds, string skillIds, string rankIds, string startTime, int? status, int? statusTime, string name, string sort = "date-asc")
         {
             var pageNumber = page ?? 1;
             var pageSize = 30;
@@ -74,6 +74,14 @@ namespace GlobeWork.Controllers
                         break;
                 }
             }
+            if (countruyId.HasValue)
+            {
+                jobPosts = jobPosts.Where(a => a.CounId == countruyId);
+            }
+            //if (cityIds.HasValue)
+            //{
+            //    jobPosts = jobPosts.Where(a => a.Cities.Contains());
+            //}
             switch (sort)
             {
                 case "sort-asc":
@@ -132,6 +140,8 @@ namespace GlobeWork.Controllers
                 Careers = Careers,
                 CitySelectList = CitySelectList,
                 Cities = Cities,
+                Countries = _unitOfWork.CountryRepository.GetQuery(a => a.Active , l => l.OrderBy(a => a.Sort)),
+                CountruyId = countruyId,
                 CareerIds = careerId,
                 CityIds = cityIds,
                 SkillIds = skillIds,

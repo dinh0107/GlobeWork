@@ -65,6 +65,15 @@
                 </select>
             </div>
             <div class="col-lg-3 mb-2">
+                <label>Quốc gia</label>
+                <select class="filter" name="countruyId" multiple="multiple">
+                    @foreach (var item in Model.Countries)
+                    {
+                        <option @if (item.Id == Model.CountruyId) { @Html.Raw("selected") } value="@item.Id">@item.Name</option>
+                    }
+                </select>
+            </div>
+            @*<div class="col-lg-3 mb-2">
                 <label>Thành phố</label>
                 <select class="filter" name="cityIds" multiple="multiple">
                     @foreach (var item in Model.Cities)
@@ -72,7 +81,7 @@
                         <option @if (item.Id == Model.CityIds) { @Html.Raw("selected") } value="@item.Id">@item.Name</option>
                     }
                 </select>
-            </div>
+            </div>*@
             <div class="col-lg-3 mb-2">
                 <label>Kỹ năng</label>
                 <select class="filter" name="SkillIds" multiple="multiple">
@@ -161,7 +170,7 @@
                             <td>
                                 @if (item.ApplyJobs.Any())
                                 {
-                                    <a href="@Url.Action("ListApplyByJobPost", new {jobPostId = item.Id})" data-fancybox data-type="iframe">Có @item.ApplyJobs.Count() đơn</a>
+                                    <a href="" data-fancybox data-type="iframe">Có @item.ApplyJobs.Count() đơn</a>
                                 }
                                 else
                                 {

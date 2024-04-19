@@ -153,6 +153,7 @@ namespace GlobeWork.ViewModel
         public string StartTime { get; set; }
         public string EndTime { get; set; }
         public int? CareerIds { get; set; }
+        public int? CountruyId { get; set; }
         public int? CityIds { get; set; }
         public string JobTypeIds { get; set; }
         public string RankIds { get; set; }
@@ -160,6 +161,7 @@ namespace GlobeWork.ViewModel
         public SelectList StatuSelectList { get; set; }
         public IEnumerable<Career> Careers { get; set; }
         public IEnumerable<City> Cities { get; set; }
+        public IEnumerable<Country> Countries { get; set; }
         public SelectList CitySelectList { get; set; }
         public SelectList SkillSelectList { get; set; }
         public SelectList JobTypeSelectList { get; set; }

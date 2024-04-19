@@ -449,6 +449,7 @@ namespace GlobeWork.Controllers
                     model.Company.EmployerId = User.Id;
                     model.Company.Url = HtmlHelpers.ConvertToUnSign(null, model.Company.Url ?? model.Company.Name);
                     model.Company.CityId = Convert.ToInt32(fc["city"]);
+                    User.CompanyName = model.Company.Name;
                     _unitOfWork.CompanyRepository.Insert(model.Company);
                     _unitOfWork.Save();
                     var careers = fc["career"];
@@ -587,6 +588,7 @@ namespace GlobeWork.Controllers
                 company.Email = model.Company.Email;
                 company.LastEditDate = DateTime.Now;
                 company.Url = HtmlHelpers.ConvertToUnSign(null, company.Url ?? company.Name);
+                User.CompanyName = company.Name;
                 _unitOfWork.CompanyRepository.Update(company);
                 company.Careers.Clear();
                 _unitOfWork.Save();

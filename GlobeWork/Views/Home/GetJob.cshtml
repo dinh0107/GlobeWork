@@ -61,7 +61,7 @@
                             }
                         </span>
                         <span>
-                            @if (item.Country.Image != null)
+                            @if (item.Country?.Image != null)
                             {
                                 <img class="flag-job" src="@Path.Combine("/images/country/", item.Country.Image)" alt="@item.Country.Name">
                             }

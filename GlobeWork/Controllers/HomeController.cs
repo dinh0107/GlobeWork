@@ -1078,7 +1078,7 @@ namespace GlobeWork.Controllers
             };
             return View(model);
         }
-        [Route("du-hoc-hot")]
+        [Route("san-hoc-bong")]
         public ActionResult StudyAbroadHot(int? page, string name, int countruyId = 0)
         {
             var pageNumber = page ?? 1;
