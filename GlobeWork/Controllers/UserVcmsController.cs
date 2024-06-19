@@ -12,6 +12,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using static DotNetOpenAuth.OpenId.Extensions.AttributeExchange.WellKnownAttributes;
 
 namespace GlobeWork.Controllers
 {
@@ -21,7 +22,7 @@ namespace GlobeWork.Controllers
         public ConfigSite ConfigSite => (ConfigSite)HttpContext.Application["ConfigSite"];
         #region User
         public ActionResult ListUser(int? page, string startTime, string endTime, int? status, string email, string name, int? typeUser)
-        {   
+        {
 
             var pageNumber = page ?? 1;
             var pageSize = 30;
@@ -166,7 +167,7 @@ namespace GlobeWork.Controllers
         #endregion
 
         #region  Employer
-        public ActionResult ListEmployer(int? page,  int? status, string email, string name)
+        public ActionResult ListEmployer(int? page, int? status, string email, string name)
         {
 
             var pageNumber = page ?? 1;
@@ -287,11 +288,74 @@ namespace GlobeWork.Controllers
             {
                 return false;
             }
+            var log = _unitOfWork.EmployerLogRepository.GetQuery(a => a.UserId == user.Id);
+            if (log.Any())
+            {
+                foreach (var item in log)
+                {
+                    _unitOfWork.EmployerLogRepository.Delete(item);
+                }
+            }
+            var fl = _unitOfWork.FollowRepository.GetQuery(a => a.CompanyId == user.Id);
+            if (fl.Any())
+            {
+                foreach (var item in fl)
+                {
+                    _unitOfWork.FollowRepository.Delete(item);
+                }
+            }
+            var job = _unitOfWork.JobPostRepository.GetQuery(a => a.CompanyId == user.Id);
+            var apply = _unitOfWork.ApplyJobRepository.GetQuery(a => a.CompanyId == user.Id);
+            if (apply.Any())
+            {
+                foreach (var item in apply)
+                {
+
+                    _unitOfWork.ApplyJobRepository.Delete(item);
+                    //_unitOfWork.Save();
+                }
+            }
+            if (job.Any())
+            {
+                foreach (var item in job)
+                {
+
+                    _unitOfWork.JobPostRepository.Delete(item);
+                    //_unitOfWork.Save();
+                }
+            }
+
+            var study = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.CompanyId == user.Id);
+            if (study.Any())
+            {
+                foreach (var item in study)
+                {
+                    _unitOfWork.StudyAbroadRepository.Delete(item);
+                    //_unitOfWork.Save();
+                }
+            }
+
+            var companies = _unitOfWork.CompanyRepository.GetById(userId);
+            if (companies != null)
+            {
+                _unitOfWork.CompanyRepository.Delete(companies);
+            }
+
             _unitOfWork.EmployerRepository.Delete(user);
             _unitOfWork.Save();
             return true;
         }
-
+        [HttpPost]
+        public bool DeleteLog(int id)
+        {
+            var log = _unitOfWork.EmployerLogRepository.GetQuery(a => a.UserId == id);
+            foreach(var item in log)
+            {
+                _unitOfWork.EmployerLogRepository.Delete(item);
+            }
+            _unitOfWork.Save();
+            return true;
+        }
         public PartialViewResult PublicMoney(int id)
         {
             var user = _unitOfWork.EmployerRepository.GetById(id);
@@ -306,20 +370,20 @@ namespace GlobeWork.Controllers
         public ActionResult PublicMoney(PublicMoneyViewModel model)
         {
             var user = _unitOfWork.EmployerRepository.GetById(model.Id);
-            if(user == null)
+            if (user == null)
             {
                 return PartialView(model);
             }
-            if(model.Price != null)
+            if (model.Price != null)
             {
                 user.Amount += Convert.ToDecimal(model.Price.Replace(",", ""));
-                Utils.Utils.EmployerLog("Nạp tiền thành công <strong>" + model.Price + "đ" + " </strong> vào tài khoản" , EmployerLogType.PublicMoney , user.Id, Convert.ToDecimal(model.Price.Replace(",", "")));
+                Utils.Utils.EmployerLog("Nạp tiền thành công <strong>" + model.Price + "đ" + " </strong> vào tài khoản", EmployerLogType.PublicMoney, user.Id, Convert.ToDecimal(model.Price.Replace(",", "")));
                 _unitOfWork.Save();
             }
             return RedirectToAction("ListEmployer");
         }
 
-        public ActionResult History(int? page, int id , string startTime, string endTime )
+        public ActionResult History(int? page, int id, string startTime, string endTime)
         {
             var pageNumber = page ?? 1;
             var pageSize = 30;
@@ -342,8 +406,9 @@ namespace GlobeWork.Controllers
                                                      DbFunctions.TruncateTime(a.CreateDate) <= DbFunctions.TruncateTime(end));
                 }
             }
-            var model = new HistotyEmployerViewModel{
-                EmployerLogs = log.ToPagedList(pageNumber , pageSize),
+            var model = new HistotyEmployerViewModel
+            {
+                EmployerLogs = log.ToPagedList(pageNumber, pageSize),
                 StartTime = startTime,
                 EndTime = endTime,
                 Id = id,
@@ -354,7 +419,7 @@ namespace GlobeWork.Controllers
         public bool DeleteHistory(int id)
         {
             var log = _unitOfWork.EmployerLogRepository.GetById(id);
-            if(log == null)
+            if (log == null)
             {
                 return false;
             }
@@ -589,6 +654,37 @@ namespace GlobeWork.Controllers
             {
                 return false;
             }
+            var job = _unitOfWork.JobPostRepository.GetQuery(a => a.CompanyId == company.EmployerId);
+            var apply = _unitOfWork.ApplyJobRepository.GetQuery(a => a.CompanyId == company.EmployerId);
+            if (apply.Any())
+            {
+                foreach (var item in apply)
+                {
+
+                    _unitOfWork.ApplyJobRepository.Delete(item);
+                    //_unitOfWork.Save();
+                }
+            }
+            if (job.Any())
+            {
+                foreach (var item in job)
+                {
+
+                    _unitOfWork.JobPostRepository.Delete(item);
+                    //_unitOfWork.Save();
+                }
+            }
+
+            var study = _unitOfWork.StudyAbroadRepository.GetQuery(a => a.CompanyId == company.EmployerId);
+            if (study.Any())
+            {
+                foreach (var item in study)
+                {
+                    _unitOfWork.StudyAbroadRepository.Delete(item);
+                    //_unitOfWork.Save();
+                }
+            }
+
             _unitOfWork.CompanyRepository.Delete(company);
             _unitOfWork.Save();
             return true;

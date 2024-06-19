@@ -24,7 +24,7 @@ namespace GlobeWork.Utils
                 unitOfwork.Save();
             }
         }
-        public static void UserLog(string content,bool status, int userId)
+        public static void UserLog(string content, bool status, int userId)
         {
             using (var unitOfwork = new UnitOfWork())
             {
