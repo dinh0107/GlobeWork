@@ -334,7 +334,15 @@ namespace GlobeWork.Controllers
                     //_unitOfWork.Save();
                 }
             }
-
+            var article = _unitOfWork.ArticleRepository.GetQuery(a => a.EmployerId == user.Id);
+            if (article.Any())
+            {
+                foreach (var item in article)
+                {
+                    _unitOfWork.ArticleRepository.Delete(item);
+                    //_unitOfWork.Save();
+                }
+            }
             var companies = _unitOfWork.CompanyRepository.GetById(userId);
             if (companies != null)
             {
@@ -349,7 +357,7 @@ namespace GlobeWork.Controllers
         public bool DeleteLog(int id)
         {
             var log = _unitOfWork.EmployerLogRepository.GetQuery(a => a.UserId == id);
-            foreach(var item in log)
+            foreach (var item in log)
             {
                 _unitOfWork.EmployerLogRepository.Delete(item);
             }

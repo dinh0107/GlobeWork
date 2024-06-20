@@ -486,6 +486,10 @@
     <Compile Include="Migrations\202404090435333_update-CustomerInfo.Designer.cs">
       <DependentUpon>202404090435333_update-CustomerInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202406191014594_remove-city-study.cs" />
+    <Compile Include="Migrations\202406191014594_remove-city-study.Designer.cs">
+      <DependentUpon>202406191014594_remove-city-study.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Advise.cs" />
@@ -1233,6 +1237,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202404090435333_update-CustomerInfo.resx">
       <DependentUpon>202404090435333_update-CustomerInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202406191014594_remove-city-study.resx">
+      <DependentUpon>202406191014594_remove-city-study.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

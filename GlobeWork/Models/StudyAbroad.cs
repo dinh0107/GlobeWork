@@ -61,7 +61,7 @@ namespace GlobeWork.Models
         public int? CareerId { get; set; }
         public virtual StudyAbroadCategory  StudyAbroadCategory { get; set; }    
         public virtual Career Careers { get; set; }
-        public virtual ICollection<City> Cities { get; set; }
+        //public virtual ICollection<City> Cities { get; set; }
         public virtual ICollection<Like> Likes { get; set; }
         public virtual ICollection<ApplyJob> ApplyJobs { get; set; }
         public TypeStudyAbroad  TypeStudyAbroad { get; set; }
