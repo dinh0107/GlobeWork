@@ -300,15 +300,20 @@ namespace GlobeWork.Controllers
                 return  false;
             }
 
-            var apply = _unitOfWork.ApplyJobRepository.GetQuery(a => a.StudyAbroadId == study.Id).ToList();
-            var adv = _unitOfWork.AdviseRepository.GetQuery(a => a.StudyAbroadId == study.Id);
+            var adv = _unitOfWork.AdviseRepository.Get(a => a.StudyAbroadId == study.Id);
             foreach (var item in adv)
             {
                 _unitOfWork.AdviseRepository.Delete(item);
             }
+            var apply = _unitOfWork.ApplyJobRepository.Get(a => a.StudyAbroadId == study.Id);
             foreach (var item in apply)
             {
                 _unitOfWork.ApplyJobRepository.Delete(item);
+            }
+            var likes = _unitOfWork.LikeRepository.Get(a => a.StudyAbroadId == study.Id);
+            foreach (var item in likes)
+            {
+                _unitOfWork.LikeRepository.Delete(item);
             }
 
             _unitOfWork.StudyAbroadRepository.Delete(study);

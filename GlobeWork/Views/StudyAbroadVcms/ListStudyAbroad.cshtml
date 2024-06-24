@@ -1,7 +1,7 @@
 ﻿@model GlobeWork.ViewModel.ListStudyVcmsViewModel
 @using PagedList.Mvc
 @{
-    ViewBag.Title = "Danh sách tin tuyển dụng";
+    ViewBag.Title = "Danh sách tin du học";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 <style>
@@ -17,9 +17,9 @@
 {
     <div id="AlertBox" class="alert alert-success"><strong>Upload file thành công</strong></div>
 }
-<h2>Danh sách tin tuyển dụng</h2>
-<a class="btn quick-link" href=""></a>
-<div class="box_content">
+<h2>Danh sách tin du học</h2>
+@*<a class="btn quick-link" href=""></a>*@
+<div class="box_content mt-0">
     @using (Html.BeginForm("ListStudyAbroad", "StudyAbroadVcms", FormMethod.Get))
     {
         <div class="row">
@@ -108,13 +108,13 @@
                     {
                         <tr data-id="@item.Id">
                             <td class="left">
-                                <a href="@Url.Action("JobPostDetail", "Home", new{url = item.Url, jobId = item.Id})" class="@if (item.Hot != null && item.Hot > DateTime.Now) { @Html.Raw("alert-success")}" target="_blank">@item.Name</a>
+                                <a href="@Url.Action("StudyAbroadDetail", "Home", new{url = item.Url})" class="@if (item.Hot != null && item.Hot > DateTime.Now) { @Html.Raw("alert-success")}" target="_blank">@item.Name</a>
                             </td>
                             <td class="left">@item.Company.Name (@item.Company.Employer.FullName)</td>
                             <td>
                                 @if (item.ApplyJobs.Any())
                                 {
-                                    <a href="@Url.Action("ListApplyByJobPost", new {jobPostId = item.Id})" data-fancybox data-type="iframe">Có @item.ApplyJobs.Count() đơn</a>
+                                    <a href="@Url.Action("ListApplyByJobPost", new {jobPostId = item.Id})" data-fancybox data-type="iframe">Có @item.ApplyJobs.Count đơn</a>
                                 }
                                 else
                                 {

@@ -6,7 +6,8 @@
     <meta charset="utf-8" />
     @*<meta name="viewport" content="width=device-width" />*@
     <title>@ViewBag.Title</title>
-    <link rel="shortcut icon" href="~/favicon.png">
+    <link rel="shortcut icon" href="~/favicon.ico">
+    <meta name="robots" content="noindex" />
     @Styles.Render("~/Content/admincss", "~/Content/themes/base/css")
     <link href="~/Scripts/multi-upload/jquery.fileupload.css" rel="stylesheet" />
     <link href="~/Content/virtual-select.min.css" rel="stylesheet" />
@@ -62,7 +63,7 @@
                             <div>@Html.ActionLink("Đăng xuất", "Logout", "Vcms", null, new { @class = "text_link" })</div>
                         </div>
                     </li>
-                    <li data-id="1">
+                    <li data-id="11">
                         <a href="@Url.Action("ListTitle")" class="root"><span>Tiêu đề</span><i class="fas fa-caret-down"></i></a>
                     </li>
                     <li data-id="2">
@@ -101,14 +102,14 @@
                             <div>@Html.ActionLink("Danh sách đơn ứng tuyển", "ListApplyJob", "StudyAbroadVcms", null, new { @class = "text_link" })</div>
                         </div>
                     </li>
-                    <li data-id="4">
+                    <li data-id="41">
                         <a class="root"><span>Quản lý quốc gia</span><i class="fas fa-caret-down"></i></a>
                         <div class="sub hidden">
                             <div><a href="@Url.Action("ListCountruy", "Vcms")" class="text_link">Danh sách quốc gia</a></div>
                             <div>@Html.ActionLink("Quản lý địa danh", "City", "Vcms", null, new { @class = "text_link" })</div>
                         </div>
                     </li>
-                    <li data-id="4">
+                    <li data-id="42">
                         <a class="root"><span>Quản lý đối tác</span><i class="fas fa-caret-down"></i></a>
                         <div class="sub hidden">
                             <div><a href="@Url.Action("ListParter", "Vcms")" class="text_link">Danh sách đối tác</a></div>

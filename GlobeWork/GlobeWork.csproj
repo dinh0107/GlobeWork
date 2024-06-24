@@ -750,8 +750,6 @@
     <Content Include="Scripts\ckeditor\CHANGES.md" />
     <Content Include="Scripts\ckeditor\LICENSE.md" />
     <Content Include="Scripts\ckeditor\README.md" />
-    <Content Include="Scripts\jquery-3.6.0.min.map" />
-    <Content Include="Scripts\jquery-3.6.0.slim.min.map" />
     <Content Include="App_Browsers\qt.browser" />
     <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
@@ -768,11 +766,6 @@
     <Content Include="Scripts\ckeditor\plugins\lineheight\README.md" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\isotope.pkgd.min.js" />
-    <None Include="Scripts\jquery-3.6.0.intellisense.js" />
-    <Content Include="Scripts\jquery-3.6.0.js" />
-    <Content Include="Scripts\jquery-3.6.0.min.js" />
-    <Content Include="Scripts\jquery-3.6.0.slim.js" />
-    <Content Include="Scripts\jquery-3.6.0.slim.min.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
     <Content Include="Scripts\jquery-3.7.1.min.js" />
     <Content Include="Scripts\jquery-3.7.1.slim.js" />

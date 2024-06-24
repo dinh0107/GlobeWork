@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
-using System.Web.UI.WebControls;
 
 namespace GlobeWork.Models
 {
@@ -32,9 +29,11 @@ namespace GlobeWork.Models
         [Display(Name = "Đường dẫn"), StringLength(500, ErrorMessage = "Tối đa 500 ký tự"), UIHint("TextBox")]
         public string Url { get; set; }
         [Display(Name = "Đăng bài")]
-        public bool Active { get; set; }
+        public bool Active { get; set; } = true;
+
         [Display(Name = "Ngày đăng"), UIHint("DateTimePicker"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; set; } = DateTime.Now;
+
         [Display(Name = "Số lượng"), Required(ErrorMessage = "Hãy nhập thứ tự"), RegularExpression(@"\d+", ErrorMessage = "Chỉ nhập số nguyên")]
         public int Quantity { get; set; }
         [Display(Name = "Mô tả"), UIHint("EditorBox")]
@@ -46,7 +45,7 @@ namespace GlobeWork.Models
         [Display(Name = "Ngày hết hạn"), UIHint("DateTimePicker"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? ExpirationDate { get; set; }
         public virtual Company Company { get; set; }
-        public int View { get; set; }
+        public int View { get; set; } = 1;
         public int CategoryId { get; set; }
         public decimal? Min { get; set; }
         public decimal? Max { get; set; }
@@ -67,12 +66,6 @@ namespace GlobeWork.Models
         public TypeStudyAbroad  TypeStudyAbroad { get; set; }
         public Scholarship  WageScholarship { get; set; }
         public virtual Service Service { get; set; }
-        public StudyAbroad()
-        {
-            CreateDate = DateTime.Now;
-            View = 1;
-            Active = true;
-        }
     }
     public enum TypeStudyAbroad
     {

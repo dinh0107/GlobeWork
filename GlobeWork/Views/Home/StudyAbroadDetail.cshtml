@@ -384,7 +384,7 @@
                                 <div class="d-flex align-items-center justify-content-between mt-1">
                                     <div class="w-75">
                                         <span class="info-job price">@Html.DisplayFor(a => item.WageScholarship)</span>
-                                        <span class="info-job">
+                                        @*<span class="info-job">
                                             @if (item.Cities.Any())
                                             {
                                                 if (item.Cities.Count > 1)
@@ -404,7 +404,7 @@
                                                     }
                                                 }
                                             }
-                                        </span>
+                                        </span>*@
                                     </div>
                                     <div class="w-25 right-item">
                                         <a href="@Url.Action("StudyAbroadDetail", new {url = item.Url})" class="apply-url">
@@ -529,7 +529,7 @@
                                                 <i class="fa-solid fa-circle-dollar"></i>
                                                 <span>@Html.DisplayFor(a => item.WageScholarship)</span>
                                             </div>
-                                            <div class="job__info--address">
+                                            @*<div class="job__info--address">
                                                 <i class="fa-solid fa-location-dot"></i>
                                                 <span>
                                                     @if (item.Cities.Any())
@@ -552,7 +552,7 @@
                                                         }
                                                     }
                                                 </span>
-                                            </div>
+                                            </div>*@
                                         </div>
                                     </div>
                                 }
